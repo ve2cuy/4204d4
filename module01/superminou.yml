@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-superminou
+  labels:
+    app: superminou
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      super: minou # Doit matcher le label du template
+  template:
+    metadata:
+      labels:
+        super: minou # Doit matcher le selector du service
+        petit: chat
+    spec:
+      containers:
+      - name: nginx-de-ve2cuy
+        image: alainboudreault/superminou:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-superminou
+spec:
+  selector:
+    super: minou
+  type: LoadBalancer    
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
