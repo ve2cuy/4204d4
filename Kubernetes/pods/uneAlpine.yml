@@ -1,0 +1,24 @@
+# ------------------------------------------------------------
+# Fichier: uneAlpine.yml
+# Auteur:  Alain Boudreault
+# Exemple d'un manifeste pour un Pod avec des variables d'env.
+# k apply -f uneAlpine.yml
+# k logs meta-une-alpine
+# ------------------------------------------------------------
+apiVersion: v1
+kind: Pod
+# Section 1 - Les Méta-données
+metadata:
+  name: meta-une-alpine
+# Section 2 - Les spécifications
+spec:
+  containers:
+  - name: ma-alpine
+    image: alpine
+    command: ["/bin/sh", "-c",  "env"]
+    env:
+    - name: ENV01
+      value: YoDouloudou
+    - name: ENV02
+      value: Coucou  
+  restartPolicy: Never

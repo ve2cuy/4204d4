@@ -1,0 +1,28 @@
+# ---------------------------------------------------------
+# Fichier: init-via-git.yml
+# Auteur:  Alain Boudreault
+# Exemple d'un 'initContainer' qui clone le contenu 
+# d'un dépôt vers le dossier racine du serveur nginx
+# ---------------------------------------------------------
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-super-init
+spec:
+  volumes:
+  - name: www
+  containers:
+  - name: nginx-superminou
+    image: nginx
+    volumeMounts:
+    - name: www
+      mountPath: /usr/share/nginx/html/
+
+  initContainers:
+  - name: git
+    image: alpine
+    # Installation de git dans le conteneur, suivi d'un git clone vers le dossier de partage
+    command: [ "sh", "-c", "apk add --no-cache git && git clone https://github.com/ve2cuy/superMinou /www" ]
+    volumeMounts:
+    - name: www
+      mountPath: /www/

@@ -1,0 +1,28 @@
+# ---------------------------------------------------------
+# Fichier: demo-pod-init.yml
+# Auteur:  Alain Boudreault
+# Exemple d'un 'initContainer' qui copie un contenu externe
+# vers le dossier racine du serveur nginx.
+# ---------------------------------------------------------
+# demo-pod-init.yml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-demo
+spec:
+  volumes:
+  - name: shared-data
+    emptyDir: {}
+  initContainers:
+  - name: demo-init
+    image: busybox
+    command: ['sh', '-c', 'wget -O /usr/share/data/index.html http://google.com']
+    volumeMounts:
+    - name: shared-data
+      mountPath: /usr/share/data
+  containers:
+  - name: nginx
+    image: nginx
+    volumeMounts:
+    - name: shared-data
+      mountPath: /usr/share/nginx/html

@@ -1,0 +1,30 @@
+# ---------------------------------------------------------
+# Fichier: mem-info.yml
+# Auteur:  Alain Boudreault
+# Exemple d'un 'initContainer' qui envoie le contenu 
+# de /proc/meminfo vers le dossier racine du serveur nginx
+# ---------------------------------------------------------
+apiVersion: v1
+kind: Pod
+metadata:
+  name: plusieurs-pods
+spec:
+
+  volumes:
+  - name: dossier-de-partage
+    emptyDir: {}
+
+  initContainers:
+  - name: meminfo
+    image: alpine
+    restartPolicy: Always
+    command: ['sh', '-c', 'sleep 5; while true; do cat /proc/meminfo > /usr/share/data/index.html; sleep 10; done;']
+    volumeMounts:
+    - name: dossier-de-partage
+      mountPath: /usr/share/data
+  containers:
+  - name: nginx
+    image: nginx
+    volumeMounts:
+    - name: dossier-de-partage
+      mountPath: /usr/share/nginx/html
