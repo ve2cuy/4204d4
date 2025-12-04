@@ -89,6 +89,6 @@ kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/
 
 # 13 - Vérifier que tous les composants sont en fonctionnement:
 kubectl get nodes
-kubectl get pods --all-namespaces
+kubectl get all --all-namespaces
 
 # Fin du script
