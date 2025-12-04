@@ -1,5 +1,5 @@
 # ---------------------------------------------------------
-# Fichier: deploiement-nginx.yml
+# Fichier: 3.1-deploiement-nginx.yml
 # Auteur:  Alain Boudreault
 # Déploiement de deux pods nginx version 1.16
 # ---------------------------------------------------------

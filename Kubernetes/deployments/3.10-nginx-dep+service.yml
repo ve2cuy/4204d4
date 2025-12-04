@@ -1,0 +1,54 @@
+# -----------------------------------------------------------
+# Fichier: 3.10-nginx-dep+service.yml
+# Auteur:  Alain Boudreault
+# -----------------------------------------------------------
+# Voici la version consolidée de:
+#    3.1-deploiement-nginx.yml et
+#    3.7-service-nginx-LB.yml
+# -----------------------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+# Section 1 - Les Méta-données
+metadata:
+  name: nginx-deployment
+  # Les 'labels' ici, sont facultatifs.
+  labels:
+    app: nginx-app
+# Section 2 - Les spécifications
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      # Le label app doit correspondre à celui de la ligne 21 
+      app: nginx-app-label
+  template:
+    metadata:
+      labels:
+      # Le label app doit correspondre à celui de la ligne 16 
+        app: nginx-app-label
+    spec:
+      containers:
+      - name: conteneur-nginx
+        image: nginx
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+      # Le selector app doit correspondre au matchLabel de la ligne 16
+      # Note: Il est aussi possible d'utiliser le nom d'un Pod.   
+    app: nginx-app-label
+  # Ajout 1  
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      # Port à exposer au réseau local K8s
+      port: 80
+      # Port du conteneur
+      targetPort: 80
+      # ajout 2 - port externe.  Doit être entre 30000 et 32767
+      nodePort: 30080

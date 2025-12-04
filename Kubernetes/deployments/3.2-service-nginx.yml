@@ -1,0 +1,24 @@
+# -----------------------------------------------------------------------------------
+# Fichier: 3.2-service-nginx.yml
+# Auteur:  Alain Boudreault
+# Voici comment exposer un service - via un port - au reseau local K8s 
+# pour accéder aux pods nginx déployés dans le manifeste 3.1-deploiement-nginx.yml
+# Le lien entre le service et les pods est fait via les labels:
+#   selector:
+#    app: nginx
+# fait référence au label app: nginx dans le manifeste 3.1-deploiement-nginx.yml
+# -----------------------------------------------------------------------------------
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  # fait référence au label app: nginx dans le manifeste 3.1-deploiement-nginx.yml
+  selector:
+    app: nginx 
+  ports:
+    - protocol: TCP
+      # Port à exposer au reseau local K8s
+      port: 80
+      # Port du conteneur - containerPort
+      targetPort: 80
