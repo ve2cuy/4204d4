@@ -1,0 +1,28 @@
+# ---------------------------------------------------------
+# Fichier: deploiement-nginx.yml
+# Auteur:  Alain Boudreault
+# Déploiement de deux pods nginx version 1.16
+# ---------------------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+# Section 1 - Les Méta-données
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+# Section 2 - Les spécifications
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.16
+        ports:
+        - containerPort: 80
