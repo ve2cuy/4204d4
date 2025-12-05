@@ -13,7 +13,7 @@
 Motivé par nos apprentissages précédents, nous voilà enfin près – du moins, nous tenterons l’exercice – à bâtir une image **docker** personnalisée.
 
 <p align="center">
-    <img src="../images/docker-compose2.png" alt="YAML" width="550" />
+    <img src="../images/docker-compose2.png" alt="YAML" width="750" />
 </p>
 
 ---
