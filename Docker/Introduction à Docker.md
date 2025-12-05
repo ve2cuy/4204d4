@@ -476,6 +476,9 @@ eb66bdef2f73        nginx               "/docker-entrypoint.…"   39 seconds ag
 ```
 
 ### 3.3 – Vérifier le fonctionnement du serveur web : `localhost:8080`
+<p align="center">
+    <img src="../images/nginx.png" alt="YAML" width="550" />
+</p>
 
 ### 3.4 – Consultation de la documentation de l'image 'nginx'
 
@@ -485,6 +488,7 @@ Le répertoire racine du site web est localisé dans :
 `/usr/share/nginx/html`
 
 ### 3.5 – Modifier le contenu : `docker exec`
+
 
 ```bash
 # 1 - Connexion au shell du conteneur nginx
@@ -498,6 +502,10 @@ $ echo "<center><h1>Mon serveur WEB</h1></center>" > index2.html
 
 # 3 - Tester dans le fureteur
 ```
+
+<p align="center">
+    <img src="../images/Capture-decran-le-2021-01-25-a-16.08.28.png" alt="YAML" width="550" />
+</p>
 
 **Question : Est-ce que quitter le 'shell' avec `exit` va terminer le conteneur?**
 

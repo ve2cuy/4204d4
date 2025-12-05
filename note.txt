@@ -1,0 +1,3 @@
+<p align="center">
+    <img src="../images/" alt="YAML" width="350" />
+</p>

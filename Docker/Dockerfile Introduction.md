@@ -168,7 +168,7 @@ docker build -t exercice01:latest .
 $ docker run exercice01
 ```
 
-$$ {\\color{red}1.7 - Labo – Modifier pour la version 1.1} $$
+#### 1.7 - Labo – Modifier pour la version 1.1
 
 Modifier le projet pour obtenir le résultat suivant au démarrage du conteneur version `1.1`:
 
