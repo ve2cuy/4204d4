@@ -40,7 +40,7 @@
 * [Dockerfile – Scripter la construction d'un image](Documentation/Docker/Dockerfile%20Introduction.md) 👍
 * [Dockerfile avec une app node.js](https://4204d4.ve2cuy.com/dockerfile-avec-une-application-node-js/)
 * [Docker – Les réseaux](Documentation/Docker/Introduction%20aux%20réseaux.md) 👍
-* [Docker – Application multi-services](https://4204d4.ve2cuy.com/docker-application-multi-services/)
+* [Docker – Application multi-services](Documentation/Docker/Application%20multi-services.md) 👍
 * [Docker – Retour sur les fusions (bind)](https://4204d4.ve2cuy.com/docker-retour-sur-les-fusions-bind/)
 * [Expérimentation avec MySQL](https://4204d4.ve2cuy.com/docker-mysql-introduction/)
 * [Dockerfile – Atelier de renforcement](https://4204d4.ve2cuy.com/dockerfile-atelier-de-renforcement/)

@@ -225,13 +225,13 @@ docker run --net reseau-3.1 -p 8080:8080 -d adminer
 Dans un fureteur, inscrire l'adresse `localhost:8080`, ce qui devrait afficher l'interface Adminer.
 
 <p align="center">
-    <img src="../images/mariabd-adminer00-1024x463.png" alt="" width="800" />
+    <img src="../images/mariabd-adminer00-1024x463.png" alt="" width="600" />
 </p>
 
 #### Action 3.4.2 – Renseigner les informations de connexion
 
 <p align="center">
-    <img src="../images/mariabd-adminer01-1024x489.png" alt="" width="800" />
+    <img src="../images/mariabd-adminer01-1024x489.png" alt="" width="600" />
 </p>
 
 > **NOTE** : Il n'est pas nécessaire de connaître l'adresse IP du conteneur `mariadb`, étant donné qu'il utilise le même réseau privé que `adminer` alors nous pouvons utiliser le **nom du conteneur** pour la connexion.
@@ -239,7 +239,7 @@ Dans un fureteur, inscrire l'adresse `localhost:8080`, ce qui devrait afficher l
 **Résultat:**
 
 <p align="center">
-    <img src="../images/mariabd-adminer02-1024x580.png" alt="" width="800" />
+    <img src="../images/mariabd-adminer02-1024x580.png" alt="" width="600" />
 </p>
 
 ### Laboratoire 3.5 (durée 30 minutes) – Construire l'application multi-services suivante:
