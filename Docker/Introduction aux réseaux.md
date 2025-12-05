@@ -224,7 +224,7 @@ docker run -it -d --name serveur04 --network reseau01 alpine
 docker network inspect reseau01
 ```
 
-```json
+```text
 ---------------------------------------
     {
         "Name": "reseau01",
