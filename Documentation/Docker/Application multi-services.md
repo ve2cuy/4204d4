@@ -16,8 +16,8 @@
 
 **Pré-requis**
 
-* [Introduction à Dockerfile](https://4204d4.ve2cuy.com/dockerfile-introduction/)
-* [Introduction aux réseaux Docker](https://4204d4.ve2cuy.com/docker-network-2/)
+* [Introduction à Dockerfile](Documentation/Docker/Dockerfile%20Introduction.md)
+* [Introduction aux réseaux Docker](Documentation/Docker/Introduction%20aux%20réseaux.md)
 
 ---
 
