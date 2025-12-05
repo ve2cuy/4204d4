@@ -1,9 +1,8 @@
 # YAML – Introduction
 
-![Description](../images/yaml-768x769.png) { width: 200px; }
-
-
-<img src="../images/yaml-768x769.png" alt="YAML" width="250"/>
+<p align="center">
+    <img src="../images/yaml-768x769.png" alt="YAML" width="250" />
+</p>
 
 ### Ah non, pas un autre façon de représenter des structures de données 😉 !
 
