@@ -1,5 +1,6 @@
 # YAML – Introduction
 
+![Description](../images/yaml-768x769.png)
 ### Ah non, pas un autre façon de représenter des structures de données 😉 !
 
 ---
