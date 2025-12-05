@@ -5,9 +5,6 @@
 *Date : 29 janvier 2021*
 
 
-<p align="center">
-    <img src="../images/docker-compose2.png" alt="YAML" width="350" />
-</p>
 
 ---
 
@@ -15,7 +12,9 @@
 
 Motivé par nos apprentissages précédents, nous voilà enfin près – du moins, nous tenterons l’exercice – à bâtir une image **docker** personnalisée.
 
-![Image Docker Compose](http://4204d4.ve2cuy.com/wp-content/uploads/2021/01/docker-compose2.png)
+<p align="center">
+    <img src="../images/docker-compose2.png" alt="YAML" width="550" />
+</p>
 
 ---
 
