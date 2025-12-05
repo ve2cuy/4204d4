@@ -35,7 +35,7 @@
 * [Installation de Docker](https://4204d4.ve2cuy.com/installation-de-docker/)
 * [Docker – Introduction](Documentation/Docker/Introduction%20à%20Docker.md) 👍
 * [Yaml – Introduction](Documentation/yaml.md)  👍
-* [Yaml – Exemple d'un document Yaml](https://4204d4.ve2cuy.com/)
+* [Yaml – Exemple d'un document Yaml](Documentation/yaml-exemple-ibm.md) 👍
 * [hub.docker.com – Introduction](https://4204d4.ve2cuy.com/hub-docker-com-introduction/)
 * [Dockerfile – Scripter la construction d'un image](Documentation/Docker/Dockerfile%20Introduction.md) 👍
 * [Dockerfile avec une app node.js](https://4204d4.ve2cuy.com/dockerfile-avec-une-application-node-js/)
