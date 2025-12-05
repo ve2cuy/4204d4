@@ -7,6 +7,7 @@
 <p align="center">
     <img src="../images/docker-network.png" alt="" width="550" />
 </p>
+
 -----
 
 ### 1 – Mise en situation
