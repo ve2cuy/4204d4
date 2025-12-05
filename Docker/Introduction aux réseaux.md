@@ -67,7 +67,7 @@ NETWORK ID     NAME      DRIVER    SCOPE
 
 #### Action 1.2 – Afficher la configuration du réseau ‘***bridge***’: `docker network inspect bridge`
 
-```bash
+```json
 $ docker network inspect bridge
 [
     {
@@ -199,7 +199,7 @@ NETWORK ID     NAME       DRIVER    SCOPE
 
 #### Action 1.7 – Afficher la configuration du nouveau réseau docker
 
-```bash
+```json
 docker network inspect reseau01
 
 [
@@ -224,8 +224,7 @@ docker run -it -d --name serveur04 --network reseau01 alpine
 docker network inspect reseau01
 ```
 
-```text
----------------------------------------
+```json
     {
         "Name": "reseau01",
         "Id": "31bdc39ceb129eb1",
@@ -304,7 +303,7 @@ Voir les réseaux disponibles sous Windows: [Windows 10 – place container dire
 
 ## 3 – Réseau de type MACVLan
 
-```bash
+```text
 # 1 - Créer le réseau
 docker network create -d macvlan --subnet 192.168.124.0/23 --gateway=192.168.124.1 -o parent="Ethernet 4"
 # Liste des interfaces réseau sous Windows:
@@ -330,7 +329,7 @@ docker run -d --name srv_macvlan --rm --network macvlan --ip=192.168.125.100 ngi
 
 **Exemple sous Linux**
 
-```bash
+```text
 # 1
 $ ip a
 
