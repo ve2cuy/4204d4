@@ -8,7 +8,7 @@
 ## Introduction à Docker et Kubernetes
 
 <p align="center">
-    <img src="images/k8s.png" alt="" width="300" />
+    <img src="Documentation/images/k8s.png" alt="" width="300" />
 </p>
 
 ### Cours préparé par Alain Boudreault
