@@ -225,21 +225,21 @@ docker run --net reseau-3.1 -p 8080:8080 -d adminer
 Dans un fureteur, inscrire l'adresse `localhost:8080`, ce qui devrait afficher l'interface Adminer.
 
 <p align="center">
-    <img src="../images/mariabd-adminer00-1024x463.png" alt="" width="550" />
+    <img src="../images/mariabd-adminer00-1024x463.png" alt="" width="800" />
 </p>
 
 #### Action 3.4.2 – Renseigner les informations de connexion
 
 <p align="center">
-    <img src="../images/mariabd-adminer01-1024x489.png" alt="" width="550" />
+    <img src="../images/mariabd-adminer01-1024x489.png" alt="" width="800" />
 </p>
 
 > **NOTE** : Il n'est pas nécessaire de connaître l'adresse IP du conteneur `mariadb`, étant donné qu'il utilise le même réseau privé que `adminer` alors nous pouvons utiliser le **nom du conteneur** pour la connexion.
 
-\<p style="color: \#ff0000;"\>Résultat: \<span style="color: \#ff0000;"\>(L'interface de connexion Adminer)\</span\>\</p\>
+**Résultat:**
 
 <p align="center">
-    <img src="../images/mariabd-adminer02-1024x580.png" alt="" width="550" />
+    <img src="../images/mariabd-adminer02-1024x580.png" alt="" width="800" />
 </p>
 
 ### Laboratoire 3.5 (durée 30 minutes) – Construire l'application multi-services suivante:
@@ -257,7 +257,7 @@ Dans un fureteur, inscrire l'adresse `localhost:8080`, ce qui devrait afficher l
   * Ajouter une capture de la page web dans la discussion Teams.
 
 <p align="center">
-    <img src="../images/labo-multi-services-3.5-1024x624.png" alt="" width="550" />
+    <img src="../images/labo-multi-services-3.5-1024x624.png" alt="" width="800" />
 </p>
 
 > **NOTE** : Il faut consulter la documentation de `phpmyadmin` pour identifier les variables d'environnement nécessaires au fonctionnement du conteneur. Il n'est pas nécessaire d'utiliser toutes les variables mentionnées dans la documentation. Seulement celles concernant l'utilisateur PMA, son mot de passe et le nom du conteneur du serveur mySQL.
