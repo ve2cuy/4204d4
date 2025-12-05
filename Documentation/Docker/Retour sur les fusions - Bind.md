@@ -5,9 +5,9 @@
 
 Histoire de bien intégrer les notions acquises lors des ateliers précédents, nous allons revisiter :
 
-<p align="center">
+
     <img src="../images/fusions/mysql_PNG9.png" alt="" width="250" />
-</p>
+
 
   * La notion de **liaison (bind) de volumes** : `docker run -v`
   * La notion de **liaison (bind) de port** : `docker run -p`
@@ -106,17 +106,17 @@ Tester l'accès : `http://localhost`
 > **NOTE** : Remarquer le message d'avertissement '**WARNING**' (concernant l'absence de volume persistant).
 
 
-<p align="center">
+
     <img src="../images/fusions/node-red-01.png" alt="" width="550" />
-</p>
+
 
 ### Action 2.2 – Ajouter deux nœuds dans node-red
 
 > **Note :** À la sortie de node-red, notre schéma sera perdu.
 
-<p align="center">
+
     <img src="../images/fusions/node-red-02.png" alt="" width="550" />
-</p>
+
 
 ### Action 2.3 – Arrêter et effacer le conteneur `node-red`
 
@@ -130,9 +130,9 @@ $ mkdir node-red
 docker run -it -d -p 80:1880 -v "$(pwd)/node-red/:/data" nodered/node-red
 ```
 
-<p align="center">
+
     <img src="../images/fusions/node-red.png" alt="" width="550" />
-</p>
+
 
 > **NOTE** : Remarquer il n'y a plus de message d'avertissement.
 
@@ -184,15 +184,15 @@ docker exec -it maBD mysql -uroot -ppassword
 
 Utiliser l'application (ex: MySQL WorkBench) pour créer une nouvelle connexion en utilisant l'adresse `localhost` et le port **`99`**.
 
-<p align="center">
+
     <img src="../images/fusions/MySQLWorkBench-01.png" alt="" width="550" />
-</p>
+
 
 ### Action 3.4 – Créer un nouveau schéma (BD)
 
-<p align="center">
+
     <img src="../images/fusions/MySQLWorkBench-03.png" alt="" width="550" />
-</p>
+
 
 ### Laboratoire 3.5
 
@@ -386,13 +386,13 @@ Tester l'accès : `http://localhost:8000`
 
 > Voilà, nous avons l'application **WordPress** fonctionnant grâce à deux micro-services; 1) MySQL, 2) WordPress.
 
-<p align="center">
-    <img src="../images/fusions/Capture-decran-le-2021-02-26-a-09.21.39.png" alt="" width="550" />
-</p>
 
-<p align="center">
+    <img src="../images/fusions/Capture-decran-le-2021-02-26-a-09.21.39.png" alt="" width="550" />
+
+
+
     <img src="../images/fusions/Capture-decran-le-2021-02-26-a-09.23.24.png" alt="" width="550" />
-</p>
+
 
 -----
 
@@ -400,9 +400,9 @@ Tester l'accès : `http://localhost:8000`
 
  pour l’app WordPress. Docker-compose sera couvert à la leçon suivante.
 
-<p align="center">
+
     <img src="../images/fusions/docker-run-vs-dockercompose-wordpress.png" alt="" width="550" />
-</p>
+
 
 -----
 
@@ -449,9 +449,9 @@ portainer/portainer-ce:2.11.1
 
 Tester l'accès : `https://localhost:9443`
 
-<p align="center">
+
     <img src="../images/fusions/Capture-decran-le-2022-03-15-a-12.58.38.png" alt="" width="550" />
-</p>
+
 
 -----
 
