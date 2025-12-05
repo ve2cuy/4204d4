@@ -396,7 +396,7 @@ Tester l'accès : `http://localhost:8000`
 
 -----
 
-### Action 5.6 – Comparaison docker run/docker-compose
+### Action 5.7 – Comparaison docker run/docker-compose
 
  pour l’app WordPress. Docker-compose sera couvert à la leçon suivante.
 
