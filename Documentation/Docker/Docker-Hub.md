@@ -5,7 +5,7 @@
 ## Publier une IMAGE à partir d'un conteneur PERSONNALISÉ et Stockage PERSISTANT
 
 <p align="center">
-    <img src="../images/Moby-logo-150x150.png" alt="" width="150" />
+    <img src="../images/docker-logo-s.webp" alt="" width="300" />
 </p>
 
 Dans ce module, nous verrons comment :
