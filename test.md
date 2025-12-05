@@ -1,6 +1,4 @@
-# Cycle de vie d'un cluster
-
-## Voici comment installer un amas Kubernetes avec un seul serveur (contrôleur/noeud) sous Ubuntu.
+# Installation d'un amas/cluster Kubernetes avec un seul serveur (contrôleur/noeud) sous Ubuntu.
 
 ### Étape 1: Préparer le système
 
