@@ -1,3 +1,9 @@
+# Insérer une image
+
 <p align="center">
-    <img src="../images/" alt="YAML" width="350" />
+    <img src="../images/" alt="" width="550" />
 </p>
+
+# Tracer une ligne
+-----
+

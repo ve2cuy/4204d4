@@ -510,8 +510,8 @@ $ echo "<center><h1>Mon serveur WEB</h1></center>" > index2.html
 **Question : Est-ce que quitter le 'shell' avec `exit` va terminer le conteneur?**
 
 > **NOTE :** la commande `attach` va exécuter le point d'entrée. Dans le cas de nginx, cela ne correspond pas à un 'shell'.
-
-### 3.6 – Laboratoire
+-----
+# 3.6 – Laboratoire
 
 1.  Créer un conteneur à partir de l'image d'apache disponible sur docker hub.
 2.  Utiliser l'image officielle de 'The Apache HTTP Server Project'.
