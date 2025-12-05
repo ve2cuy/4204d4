@@ -16,8 +16,8 @@
 
 **Pré-requis**
 
-* [Introduction à Dockerfile](Documentation/Docker/Dockerfile%20Introduction.md)
-* [Introduction aux réseaux Docker](Documentation/Docker/Introduction%20aux%20réseaux.md)
+* [Introduction à Dockerfile](Dockerfile%20Introduction.md)
+* [Introduction aux réseaux Docker](Introduction%20aux%20réseaux.md)
 
 ---
 
