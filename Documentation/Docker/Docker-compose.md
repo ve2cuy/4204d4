@@ -1,10 +1,11 @@
-Je peux convertir la page demandée en Markdown, en incluant des notes d'insertion pour les images et en utilisant le formatage YAML et les exemples de code.
-
------
 
 # 🐳 Docker-compose – Introduction
 
-*Date : 12 février 2021*
+*Date : 12 février 2021 - Révisé le 2025.12.04*
+
+<p align="center">
+    <img src="../images/docker-compose2.png" alt="YAML" width="750" />
+</p>
 
 ## 🚀 Démarrage des services
 
