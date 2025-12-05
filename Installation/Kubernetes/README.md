@@ -88,7 +88,7 @@ sudo sed -i '/swap/ s/^/#/' /etc/fstab
 curl -Ls "https://sbom.k8s.io/$(curl -Ls https://dl.k8s.io/release/stable.txt)/release" | grep "SPDXID: SPDXRef-Package-registry.k8s.io" |  grep -v sha256 | cut -d- -f3- | sed 's/-/\//' | sed 's/-v1/:v1/'
 ```
 
-👉 Pour obtenir l'historique des version, c'est [ici](https://kubernetes.io/releases/).
+👉 Pour obtenir l'historique des versions, c'est [ici](https://kubernetes.io/releases/).
 
 ```bash
 # Utiliser la version entière pour la variable; 1.34.2 = 1.34
