@@ -519,7 +519,7 @@ $ echo "<center><h1>Mon serveur WEB</h1></center>" > index2.html
 4.  Utiliser le port local **`80`** pour la connexion au service web.
 5.  Remplacer la page d'accueil d'apache par votre propre page personnalisée.
 6.  Tester le nouveau service web.
-
+-----
 ### 3.7 – Afficher les statistiques d'utilisation matériel des conteneurs en cours d'exécution : `docker container stats`
 
 ```bash
