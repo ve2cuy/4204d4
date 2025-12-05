@@ -22,7 +22,7 @@ En utilisant le langage de représentation des données **YAML**, il est possibl
 Voici un tableau présentant les analogies entre l'utilisation du CLI de Docker et de `docker-compose` :
 
 
-<img src="../images/fusions/docker-run-vs-dockercompose-wordpress.png" alt="" width="550" />
+<img src="../images/fusions/docker-run-vs-dockercompose-wordpress.png" alt="" width="800" />
 
 
 | `docker-compose.yml` | Équivalent `docker run` | Description |
@@ -38,8 +38,6 @@ Voici un tableau présentant les analogies entre l'utilisation du CLI de Docker 
 | `tty: true` | `-t` | Alloue un pseudo-TTY. |
 | `depends_on:` | (Aucun) | Définit l'ordre de démarrage des services. |
 | `build:` | `docker build` | Spécifie un `Dockerfile` à construire. |
-
-*\[Image : `img-docker-compose-analogie.png` - Schéma illustrant la structure globale d'un fichier docker-compose.yml et sa relation avec plusieurs commandes docker run.]*
 
 Par les exemples suivants, nous verrons comment ça fonctionne.
 

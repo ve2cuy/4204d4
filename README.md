@@ -43,7 +43,7 @@
 * [Docker – Application multi-services](Documentation/Docker/Application%20multi-services.md) 👍
 * [Docker – Retour sur les fusions (bind)](Documentation/Docker/Retour%20sur%20les%20fusions%20-%20Bind.md) 👍
 * [Dockerfile – Atelier de renforcement](https://4204d4.ve2cuy.com/dockerfile-atelier-de-renforcement/)
-* [Docker-Compose – Scripter une application multi-services](https://4204d4.ve2cuy.com/docker-compose-introduction/)
+* [Docker-Compose – Scripter une application multi-services](Documentation/Docker/Docker-compose.md) 👍
 * [Docker-Compose – Laboratoire (Drupal)](https://4204d4.ve2cuy.com/docker-compose-laboratoire-drupal/)
 
 ### Kubernetes (K8s)
