@@ -63,7 +63,7 @@ sudo apt install docker-ce docker-ce-cli containerd.io
 sudo systemctl status docker
 ```
 
-![État du service Docker](../Images/etat-du-service-docker.png)
+<img src="../Images/etat-du-service-docker.png" alt="" width="550" />
 
 ```bash
 # 6 - Tester Docker
@@ -79,7 +79,8 @@ docker run hello-world
 # Ça devrait produire l'erreur suivante (permission denied):
 ```
 
-![Erreur de permission](../Images/erreur-permission-docker.png)
+<img src="../Images/erreur-permission-docker.png" alt="" width="550" />
+
 
 ```bash
 # Si le groupe docker n'est pas présent, il faut le créer
