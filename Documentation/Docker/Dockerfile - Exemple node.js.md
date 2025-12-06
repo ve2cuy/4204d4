@@ -139,11 +139,12 @@ docker run -d --rm -it --name yo -p 80:8080 notre_serveur_web
 
 ### 8 – Tester l'application
 
-8.1 Test 1 avec URL /
+**8.1 Test 1 avec URL /**
 
 <img src="../images/page-denudee-information.png" alt="" width="550" />
 
-8.2 - Test 2 avec URL /yo
+
+**8.2 - Test 2 avec URL /yo**
 
 <img src="../images/non-pas-une-404.png" alt="" width="550" />
 
