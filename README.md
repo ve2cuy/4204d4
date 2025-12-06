@@ -29,6 +29,10 @@
 
 ## Liste des documents de cours
 
+* [Plan de cours - À suivre]()
+* [Horaire et disponibilités H2026 - À suivre]()
+---
+
 ### Concepts et Outils de Base (Docker)
 
 * [1 - Conteneurs vs machines virtuelles](Documentation/Intro%20à%20docker%20et%20kubernetes.md)
