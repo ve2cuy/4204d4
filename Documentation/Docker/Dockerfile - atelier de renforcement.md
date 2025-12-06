@@ -27,7 +27,9 @@ Absolument\! Voici le contenu de l'atelier de renforcement sur le Dockerfile, co
  * Inscrire en commentaire, dans le fichier, la commande à utiliser pour produire l'image.; `# docker build …`
  * Il faut publier l'image finale sur docker hub sous: **votrecompte/docker-lab version latest et 1.0**
  
- **Défi supplémentaire pour les plus téméraires:**
+ ----
+
+ ## Défi supplémentaire pour les plus téméraires
  
  * Créer l'utilisateur **gestionweb**
  * Renseigner **'donttell'** comme mot de passe
