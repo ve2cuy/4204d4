@@ -83,7 +83,8 @@ Kubernetes s'est imposé comme le standard de facto pour l'orchestration de cont
 
 Voici un schéma présentant l'architecture de base de Kubernetes:
 
-![Architecture Kubernetes](http://4204d4.ve2cuy.com/wp-content/uploads/2021/03/k8s_arch.jpg)
+<img src="../images/k8s_arch.jpg" alt="" width="" />
+
 
 ### Helm
 
@@ -264,7 +265,7 @@ minikube tunnel
 # Par exemple, http://localhost:8080
 ```
 
-![Docker Desktop Kubernetes](http://4204d4.ve2cuy.com/wp-content/uploads/2022/05/Capture-decran-le-2022-05-09-a-14.32.17.png)
+<img src="../images/Capture-decran-le-2022-05-09-a-14.32.17.png" alt="" width="" />
 
 ### 2.1.4 – Exemple d'un manifeste pour un service utilisant le pilote 'Docker' avec minikube
 
@@ -288,7 +289,7 @@ spec:
       nodePort: 30081  # Pas requis avec le pilote 'Docker'
 ```
 
-![Service NextCloud](http://4204d4.ve2cuy.com/wp-content/uploads/2022/05/Capture-decran-le-2022-05-09-a-16.23.58-1024x569.png)
+<img src="../images/Capture-decran-le-2022-05-09-a-16.23.58-1024x569.png" alt="" width=""/>
 
 ---
 
@@ -964,7 +965,8 @@ curl 10.244.0.12
 
 **Action:** Tester dans un fureteur sur le serveur
 
-![Demo Pod Init](https://4204d4.ve2cuy.com/wp-content/uploads/2025/12/Capture-decran-2025-12-04-124211.png)
+<img src="../images/Capture-decran-2025-12-04-124211.png" alt="" width="" />
+
 
 ---
 
@@ -1162,7 +1164,8 @@ kubectl get pod -o wide
 
 **Action:** Tester dans le fureteur disponible sur le serveur:
 
-![Test Nginx](https://4204d4.ve2cuy.com/wp-content/uploads/2025/12/Capture-decran-2025-12-04-155550.png)
+<img src="../images/Capture-decran-2025-12-04-155550.png" alt="" width="" />
+
 
 ---
 
