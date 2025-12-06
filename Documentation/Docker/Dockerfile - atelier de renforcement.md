@@ -9,7 +9,7 @@
 
 ---
 
- Vous devez bâtir une image Docker,  à partir d'un fichier Dockerfile nommé 'powercat' qui:
+ ### Il bâtir une image Docker,  à partir d'un fichier Dockerfile nommé 'powercat' qui:
  
  * Utilise comme source de départ, **apache version 2.4**
  * Propose les applications suivantes:  **mc, curl, git, htop et mcedit**
