@@ -22,7 +22,9 @@
 </p>
 
 
- * **NOTE**: Ne pas modifier les fichiers source, html, css, js, du site web.
+ * **NOTE**: Ne pas modifier les fichiers source, html, css, js, du site web.<br>
+
+
  * Remplacer le nom de l'auteur du pied de page dans **index.html** par votre nom.
  * **NOTE**: Il faut utiliser la commande **'sed -i'**. Ne pas modifier le fichier avec un éditeur de texte. La modification doit-être faite dans le Dockerfile. Référence: Rechercher et remplacer une chaine de caractères sous Linux.
  * Le contenu de votre fichier Dockerfile doit être accessible à l'adresse: **http://localhost/info.txt**
