@@ -32,7 +32,7 @@
 ### Concepts et Outils de Base (Docker)
 
 * [1 - Conteneurs vs machines virtuelles](Documentation/Intro%20à%20docker%20et%20kubernetes.md) 👍
-* [2 - Installation de Docker](https://4204d4.ve2cuy.com/installation-de-docker/)
+* [2 - Installation de Docker](Installation/Docker/Installation%20de%20Docker.md) 👍
 * [3 - Docker – Introduction](Documentation/Docker/Introduction%20à%20Docker.md) 👍
 * [4 - Yaml – Introduction](Documentation/yaml.md)  👍
 * [5 - Yaml – Exemple d'un document Yaml](Documentation/yaml-exemple-ibm.md) 👍
@@ -56,13 +56,18 @@
 * [25 - Kubernetes – Les volumes](https://4204d4.ve2cuy.com/kubernetes-les-volumes/)
 * [26 - Kubernetes – LoadBalancer Externe et Ingress](https://4204d4.ve2cuy.com/kubernetes-loadbalancer-externe-et-ingress/)
 * [27 - Espaces de nom (namespaces)](https://4204d4.ve2cuy.com/kubernetes-espaces-de-nom-namespaces/)
+* [28 - Utilisation d’un cluster sur Google Cloud]()
+* [29 - Helm charts]()
+* [30 - Automatisation des ‘builds’ d’images Docker/Github]()
+* [31 - Aide rapide]()
+
 
 ### Évaluations et Automatisation
 
-* [Énoncé du TP01 – Docker (30%)](https://4204d4.ve2cuy.com/tp01-docker/)
+* [Énoncé du TP01 – Docker - Version 2023 (30%)](https://4204d4.ve2cuy.com/tp01-docker/)
 * [Énoncé du TP02 – K8s – Node-red+mosquitto+configmap+secret (20%)](https://4204d4.ve2cuy.com/tp02-k8s/)
 * [Automatisation des 'builds' d'images Docker/Github](https://4204d4.ve2cuy.com/docker-github-actions/)
-* [Énoncé de l'épreuve synthèse (50%)](https://4204d4.ve2cuy.com/epreuve-synthese-2023/)
+* [Énoncé de l'épreuve synthèse - version 2023 (50%)](https://4204d4.ve2cuy.com/epreuve-synthese-2023/)
 
 ---
 *Contenu par ve2cuy*
