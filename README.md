@@ -73,16 +73,14 @@
 
 ---
 
+## Auteur
+
+
 <img src="Documentation/images/moi.jpg" alt="" width="300" />
 
-Alain BOUDREAULT
-
-Enseignant à Techniques de l'Informatique
-
-Cégep de Saint-Jérôme
-
-Aboudrea@cstj.qc.ca
-
-Téléphone: x6516
-
-Local: D125e
+- Alain BOUDREAULT
+- Enseignant à Techniques de l'Informatique
+- Cégep de Saint-Jérôme
+- Courriel: Aboudrea@cstj.qc.ca
+- Téléphone: x6516
+- Local: D125e
