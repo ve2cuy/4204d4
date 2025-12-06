@@ -59,7 +59,7 @@
 * [22 - Kubernetes – Partie 2](Documentation/Kubernetes/Kubernetes%20partie%202.md) 👍🛑
 * [23 - Préparation à l'atelier d'installation d'un 'cluster' K8s avec Vagrant](https://4204d4.ve2cuy.com/pre-requis-atelier-k8s-vagrant/)
 * [24 - Kubernetes – Installation d'un cluster; 1 Master, 2 Nodes](https://4204d4.ve2cuy.com/kubernetes-installation-dun-cluster-1-master-2-nodes/)
-* [25 - Kubernetes – Les volumes](https://4204d4.ve2cuy.com/kubernetes-les-volumes/)
+* [25 - Kubernetes – Les volumes](Documentation/Kubernetes/Kubernetes%20-%20Les%20volumes.md) 👍
 * [26 - Kubernetes – LoadBalancer Externe et Ingress](https://4204d4.ve2cuy.com/kubernetes-loadbalancer-externe-et-ingress/)
 * [27 - Espaces de nom (namespaces)](https://4204d4.ve2cuy.com/kubernetes-espaces-de-nom-namespaces/)
 * [28 - Utilisation d’un cluster sur Google Cloud]()
