@@ -69,6 +69,11 @@
 * [31 - Aide rapide]()
 * [kubectl - Référence rapide](Documentation/Kubernetes/Kubernetes%20-%20Référence%20rapide.md) 👍
 
+---
+
+### Outils
+
+* [Les copier/coller](Documentation/Copier%2Bcoller.md) 👍
 
 ### Évaluations et Automatisation
 
