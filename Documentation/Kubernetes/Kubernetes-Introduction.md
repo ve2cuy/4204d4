@@ -4,6 +4,11 @@
 TODO: Valider le document
 ---
 
+<p align="center">
+    <img src="../images/k8s.png" alt="" width="300" />
+</p>
+
+
 ## 1 – Qu'est-ce que Kubernetes (grec pour « timonier ») ?
 
 À l'origine développé par Google, [Kubernetes](https://kubernetes.io/fr/) est un projet 'open-source' d'[orchestration](https://fr.wikipedia.org/wiki/Orchestration_informatique) de conteneurs conçu pour automatiser le déploiement, la mise à l'échelle ainsi que la gestion d'applications conteneurisées. La version 1.0 de Kubernetes a été publiée en 2015.

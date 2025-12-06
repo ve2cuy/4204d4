@@ -15,7 +15,7 @@ La principale différence entre les **Machines Virtuelles (VM)** et les **Conten
 ### 1. La Machine Virtuelle (VM) : Virtualisation de Matériel
 
 <p align="center">
-    <img src="images/vm-amusante.png" alt="" width="400" />
+    <img src="../images/vm-amusante.png" alt="" width="400" />
 </p>
 
 Une **Machine Virtuelle** est une émulation d'un système informatique physique.
@@ -63,7 +63,7 @@ Les **Conteneurs** sont la solution préférée pour le **développement moderne
 ## I. Les Conteneurs (Docker) : La Révolution de l'Emballage 📦
 
 <p align="center">
-    <img src="images/docker-logo-s.webp" alt="" width="300" />
+    <img src="../images/docker-logo-s.webp" alt="" width="300" />
 </p>
 
 ### 1. Qu'est-ce qu'un Conteneur?
@@ -87,7 +87,7 @@ Un conteneur est une unité logicielle standardisée qui **regroupe le code d'un
 ## II. Kubernetes (K8s) : L'Orchestrateur Géant 🎼
 
 <p align="center">
-    <img src="images/k8s.png" alt="" width="300" />
+    <img src="../images/k8s.png" alt="" width="300" />
 </p>
 
 Lorsque des applications modernes nécessitent la gestion de centaines ou de milliers de conteneurs, un outil d'orchestration devient indispensable.
