@@ -123,7 +123,6 @@ L'efficacité opérationnelle maximale est atteinte en combinant les deux techno
 2.  **Kubernetes (K8s) :** Gère des **milliers de ces paquets** 24/7 sur de multiples serveurs, assurant haute disponibilité et adaptation à la demande.
 
 Ensemble, ils permettent le déploiement rapide et fréquent d'applications (pratiques **DevOps**) tout en garantissant une robustesse et une utilisation optimale des ressources.
-```
 
 -----
 
@@ -173,6 +172,5 @@ Ces outils offrent une expérience utilisateur similaire à Docker, mais fonctio
 | **Développement Local** | **Docker** ou **Podman** | Expérience utilisateur riche et simplicité. |
 | **Environnement Kubernetes** | **containerd** ou **CRI-O** | Légèreté, performance et conformité aux standards K8s. |
 | **Construction Sécurisée d'Images** | **Buildah** ou **Kaniko** | Contrôle granulaire et exécution sans privilèges `root`. |
-```
 
 -----
