@@ -1,9 +1,7 @@
 
-# 📚 4204D4 – Documents de cours
+# 📚 CSTJ.QC.CA - 420-4D4-JR : Serveurs Internet
 
 *Mise à jour : 16 avril 2021 - Révision 2025.12.04*
-
-# CSTJ.QC.CA - 420-4D4-JR : Serveurs Internet
 
 ## Introduction à Docker et Kubernetes
 
