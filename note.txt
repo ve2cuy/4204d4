@@ -1,9 +1,0 @@
-# Insérer une image
-
-<p align="center">
-    <img src="../images/" alt="" width="550" />
-</p>
-
-# Tracer une ligne
------
-
