@@ -265,7 +265,7 @@ minikube tunnel
 # Par exemple, http://localhost:8080
 ```
 
-<img src="../images/Capture-decran-le-2022-05-09-a-14.32.17.png" alt="600" width="" />
+<img src="../images/Capture-decran-le-2022-05-09-a-14.32.17.png" alt="500" width="" />
 
 ### 2.1.4 – Exemple d'un manifeste pour un service utilisant le pilote 'Docker' avec minikube
 
