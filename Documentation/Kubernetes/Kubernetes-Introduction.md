@@ -1,7 +1,7 @@
 # Kubernetes – Introduction
 
 *Date: 14 février 2021 - Révision du 2025.12.05*
-
+TODO: Valider le document
 ---
 
 ## 1 – Qu'est-ce que Kubernetes (grec pour « timonier ») ?
