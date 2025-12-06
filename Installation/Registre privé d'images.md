@@ -4,7 +4,7 @@
  29 novembre 2025
 
 <p align="center">
-    <img src="images/logo-harbor.webp" alt="" width="450" />
+    <img src="Images/logo-harbor.webp" alt="" width="450" />
 </p>
 
 
@@ -78,7 +78,7 @@ docker pull mon.registre.info:8080/library/hello-world:v1
 
 Soit, via le UI de docker.desktop:
 
-<img src="images/docker-desktop-registre-non-securise.png" alt="" width="600" />
+<img src="Images/docker-desktop-registre-non-securise.png" alt="" width="600" />
 
 Soit, via le fichier de configuration de docker:
 
@@ -108,8 +108,8 @@ $ docker info
 
 #### 7.1 - Accès à la console de Harbor
 
-<img src="images/habor-login.png" alt="" width="450" />
-<img src="images/harbor-console.png" alt="" width="450" />
+<img src="Images/habor-login.png" alt="" width="450" />
+<img src="Images/harbor-console.png" alt="" width="450" />
 
 ---
 #### 7.2 - Utilisation du registre
