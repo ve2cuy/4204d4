@@ -83,7 +83,7 @@ Kubernetes s'est imposé comme le standard de facto pour l'orchestration de cont
 
 Voici un schéma présentant l'architecture de base de Kubernetes:
 
-<img src="../images/k8s_arch.jpg" alt="" width="" />
+<img src="../images/k8s_arch.jpg" alt="" width="600" />
 
 
 ### Helm
@@ -265,7 +265,7 @@ minikube tunnel
 # Par exemple, http://localhost:8080
 ```
 
-<img src="../images/Capture-decran-le-2022-05-09-a-14.32.17.png" alt="" width="" />
+<img src="../images/Capture-decran-le-2022-05-09-a-14.32.17.png" alt="600" width="" />
 
 ### 2.1.4 – Exemple d'un manifeste pour un service utilisant le pilote 'Docker' avec minikube
 
@@ -289,7 +289,7 @@ spec:
       nodePort: 30081  # Pas requis avec le pilote 'Docker'
 ```
 
-<img src="../images/Capture-decran-le-2022-05-09-a-16.23.58-1024x569.png" alt="" width=""/>
+<img src="../images/Capture-decran-le-2022-05-09-a-16.23.58-1024x569.png" alt="" width="600"/>
 
 ---
 
@@ -965,7 +965,7 @@ curl 10.244.0.12
 
 **Action:** Tester dans un fureteur sur le serveur
 
-<img src="../images/Capture-decran-2025-12-04-124211.png" alt="" width="" />
+<img src="../images/Capture-decran-2025-12-04-124211.png" alt="" width="600" />
 
 
 ---
@@ -1164,7 +1164,7 @@ kubectl get pod -o wide
 
 **Action:** Tester dans le fureteur disponible sur le serveur:
 
-<img src="../images/Capture-decran-2025-12-04-155550.png" alt="" width="" />
+<img src="../images/Capture-decran-2025-12-04-155550.png" alt="" width="600" />
 
 
 ---
