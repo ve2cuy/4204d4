@@ -51,6 +51,7 @@
 * [13 - Docker-Compose – Scripter une application multi-services](Documentation/Docker/Docker-compose.md)
 * [14 - Docker-Compose – Laboratoire (Drupal) TODO:](https://4204d4.ve2cuy.com/docker-compose-laboratoire-drupal/) 🛑
 * [15 - Dépôt privé d’images – Harbor](Installation/Registre%20privé%20d'images.md)
+* [Docker - Référence rapide](Documentation/Docker/Docker%20-%20Référence%20rapide.md) 👍
 
 ### Kubernetes (K8s)
 
@@ -66,6 +67,7 @@
 * [29 - Helm charts]()
 * [30 - Automatisation des ‘builds’ d’images Docker/Github]()
 * [31 - Aide rapide]()
+* [kubectl - Référence rapide](Documentation/Kubernetes/Kubernetes%20-%20Référence%20rapide.md) 👍
 
 
 ### Évaluations et Automatisation
