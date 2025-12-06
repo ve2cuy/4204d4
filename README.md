@@ -35,12 +35,12 @@
 
 ### Concepts et Outils de Base (Docker)
 
-* [1 - Conteneurs vs machines virtuelles](Documentation/Intro%20à%20docker%20et%20kubernetes.md)
+* [1 - Conteneurs vs machines virtuelles](Documentation/Docker/Intro%20à%20docker%20et%20kubernetes.md)
 * [2 - Installation de Docker](Installation/Docker/Installation%20de%20Docker.md)
 * [3 - Docker – Introduction](Documentation/Docker/Introduction%20à%20Docker.md)
-* [4 - Yaml – Introduction](Documentation/yaml.md)
-* [4b- Référence Yaml](Documentation/yaml-reference.md)
-* [5 - Yaml – Exemple d'un document Yaml](Documentation/yaml-exemple-ibm.md)
+* [4 - Yaml – Introduction](Documentation/Yaml/yaml.md)
+* [4b- Référence Yaml](Documentation/Yaml/yaml-reference.md)
+* [5 - Yaml – Exemple d'un document Yaml](Documentation/Yaml/yaml-exemple-ibm.md)
 * [6 - hub.docker.com – Introduction](/Documentation/Docker/Docker-Hub.md)
 * [7 - Dockerfile – Scripter la construction d'un image](Documentation/Docker/Dockerfile%20Introduction.md)
 * [8 - Dockerfile - Exemple avec une app node.js](Documentation/Docker/Dockerfile%20-%20Exemple%20node.js.md)
