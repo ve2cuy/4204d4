@@ -65,7 +65,7 @@ docker login -u dockerhub_user
 
 ---
 
-## 2 – Voici mes Alias Docker
+## 2 – Voici mes Alias Docker - K8s
 
 ```bash
 # Voici la liste de mes Alias 'Docker'
