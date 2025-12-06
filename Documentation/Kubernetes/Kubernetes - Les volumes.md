@@ -706,12 +706,4 @@ Pour exécuter le conteneur avec les droits de ce propriétaire, il faut ajouter
 
 -----
 
-**Bonus** pour ceux et celles qui se sont rendus jusqu’ici 😉:
-
-```bash
-minikube dashboard
-```
-
------
-
-*\#\#\#\#\#\# Document rédigé par Alain Boudreault – aka ve2cuy – Version du 2022.04.28*\*\*
+Document rédigé par Alain Boudreault – aka ve2cuy – Version du 2022.04.28
