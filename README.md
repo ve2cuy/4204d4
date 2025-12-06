@@ -55,8 +55,8 @@
 ### Kubernetes (K8s)
 
 * [20 - Kubernetes – Installation d'un nœud unique sous Linux](Documentation/Kubernetes/Installation%20d'un%20seul%20noeud.md) 👍
-* [21 - Kubernetes – Introduction](https://4204d4.ve2cuy.com/kubernetes-introduction/)
-* [22 - Kubernetes – Partie 2](https://4204d4.ve2cuy.com/kubernetes-partie-2/)
+* [21 - Kubernetes – Introduction](Documentation/Kubernetes/Kubernetes-Introduction.md) 👍
+* [22 - Kubernetes – Partie 2](Documentation/Kubernetes/Kubernetes%20partie%202.md) 👍
 * [23 - Préparation à l'atelier d'installation d'un 'cluster' K8s avec Vagrant](https://4204d4.ve2cuy.com/pre-requis-atelier-k8s-vagrant/)
 * [24 - Kubernetes – Installation d'un cluster; 1 Master, 2 Nodes](https://4204d4.ve2cuy.com/kubernetes-installation-dun-cluster-1-master-2-nodes/)
 * [25 - Kubernetes – Les volumes](https://4204d4.ve2cuy.com/kubernetes-les-volumes/)
