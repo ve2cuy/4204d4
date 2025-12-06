@@ -97,7 +97,7 @@
 <img src="Documentation/images/moi.jpg" alt="" width="300" />
 
 - Alain BOUDREAULT
-- Enseignant à Techniques de l'Informatique
+- Enseignant au département de Techniques de l'Informatique
 - Cégep de Saint-Jérôme
 - Courriel: Aboudrea@cstj.qc.ca
 - Téléphone: x6516
