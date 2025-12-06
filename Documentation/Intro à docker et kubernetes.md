@@ -15,7 +15,7 @@ La principale différence entre les **Machines Virtuelles (VM)** et les **Conten
 ### 1. La Machine Virtuelle (VM) : Virtualisation de Matériel
 
 <p align="center">
-    <img src="images/vm-amusante.png" alt="" width="300" />
+    <img src="images/vm-amusante.png" alt="" width="400" />
 </p>
 
 Une **Machine Virtuelle** est une émulation d'un système informatique physique.
