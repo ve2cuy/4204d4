@@ -1,4 +1,4 @@
-# Installation d'un amas/cluster Kubernetes avec un seul serveur (contrôleur/noeud) sous Ubuntu.
+# Installation manuelle d'un control-plane Kubernetes sous Ubuntu
 
 ### Étape 1: Préparer le système
 
