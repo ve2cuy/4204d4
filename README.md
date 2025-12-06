@@ -31,6 +31,8 @@
 
 * [Plan de cours - À suivre]()
 * [Horaire et disponibilités H2026 - À suivre]()
+* [Description de l'épreuve synthèse - À suivre]()
+
 ---
 
 ### Concepts et Outils de Base (Docker)
