@@ -45,7 +45,7 @@
 * [12 - Dockerfile – Atelier de renforcement](Documentation/Docker/Dockerfile%20-%20atelier%20de%20renforcement.md) 👍
 * [13 - Docker-Compose – Scripter une application multi-services](Documentation/Docker/Docker-compose.md) 👍
 * [14 - Docker-Compose – Laboratoire (Drupal)](https://4204d4.ve2cuy.com/docker-compose-laboratoire-drupal/)
-* [15 - Dépôt privé d’images – https://goharbor.io]()
+* [15 - Dépôt privé d’images – Harbor](main/Installation/Registre%20privé%20d'images.md) 👍
 
 ### Kubernetes (K8s)
 
