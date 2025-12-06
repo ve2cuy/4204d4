@@ -14,7 +14,9 @@
  * Utilise comme source de départ, **apache version 2.4**
  * Propose les applications suivantes:  **mc, curl, git, htop et mcedit**
  * Le site web doit proposer le contenu du répertoire **4204d4/module01/semaine02/exercice03** du dépôt GitHub **https://github.com/ve2cuy/4204d4.git** comme page d'accueil.
- * **IMPORTANT**, il ne faut pas cloner le dépôt sur votre poste de travail mais plutôt dans l'image du conteneur, dans le répertoire **/420**.
+ 
+ **IMPORTANT**, il ne faut pas cloner le dépôt sur votre poste de travail mais plutôt dans l'image du conteneur, dans le répertoire **/420**.
+ 
  * Remplacer l'image **docker-logo.jpg** par celle-ci: 
 
 <p align="center">
@@ -22,11 +24,13 @@
 </p>
 
 
- * **NOTE**: Ne pas modifier les fichiers source, html, css, js, du site web.<br>
+  **NOTE**: Ne pas modifier les fichiers source, html, css, js, du site web.<br>
 
 
  * Remplacer le nom de l'auteur du pied de page dans **index.html** par votre nom.
- * **NOTE**: Il faut utiliser la commande **'sed -i'**. Ne pas modifier le fichier avec un éditeur de texte. La modification doit-être faite dans le Dockerfile. Référence: Rechercher et remplacer une chaine de caractères sous Linux.
+ 
+  **NOTE**: Il faut utiliser la commande **'sed -i'**. Ne pas modifier le fichier avec un éditeur de texte. La modification doit-être faite dans le Dockerfile. Référence: Rechercher et remplacer une chaine de caractères sous Linux.
+ 
  * Le contenu de votre fichier Dockerfile doit être accessible à l'adresse: **http://localhost/info.txt**
  * Inscrire en commentaire, dans le fichier, la commande à utiliser pour produire l'image.; `# docker build …`
  * Il faut publier l'image finale sur docker hub sous: **votrecompte/docker-lab version latest et 1.0**
