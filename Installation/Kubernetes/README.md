@@ -1,4 +1,4 @@
-# Installation manuelle d'un control-plane Kubernetes sous Ubuntu
+# Installation manuelle d'un control-plane K8s sous Ubuntu
 
 ### Étape 1: Préparer le système
 
