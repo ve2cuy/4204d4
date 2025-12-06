@@ -1,5 +1,5 @@
 
-# Registre (Dépôt) privé d’images – Habor
+# Registre (Dépôt) privé d’images – Harbor
 
  29 novembre 2025
 
@@ -9,6 +9,7 @@
 
 
 Pré-requis: docker, // docker-compose et python3-setuptools doivent-être installés
+
 ---
 
 ## 1 – Télécharger les scripts d’installation
@@ -108,8 +109,8 @@ $ docker info
 
 #### 7.1 - Accès à la console de Harbor
 
-<img src="Images/habor-login.png" alt="" width="450" />
-<img src="Images/harbor-console.png" alt="" width="450" />
+<img src="Images/habor-login.png" alt="" width="550" />
+<img src="Images/harbor-console.png" alt="" width="550" />
 
 ---
 #### 7.2 - Utilisation du registre
