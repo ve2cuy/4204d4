@@ -38,7 +38,7 @@
 * [5 - Yaml – Exemple d'un document Yaml](Documentation/yaml-exemple-ibm.md) 👍
 * [6 - hub.docker.com – Introduction](/Documentation/Docker/Docker-Hub.md) 👍
 * [7 - Dockerfile – Scripter la construction d'un image](Documentation/Docker/Dockerfile%20Introduction.md) 👍
-* [8 - Dockerfile - Exemple avec une app node.js](https://4204d4.ve2cuy.com/dockerfile-avec-une-application-node-js/)
+* [8 - Dockerfile - Exemple avec une app node.js](Documentation/Docker/Dockerfile%20-%20Exemple%20node.js.md) 👍
 * [9 - Docker – Les réseaux](Documentation/Docker/Introduction%20aux%20réseaux.md) 👍
 * [10 - Docker – Application multi-services](Documentation/Docker/Application%20multi-services.md) 👍
 * [11 - Docker – Retour sur les fusions (bind)](Documentation/Docker/Retour%20sur%20les%20fusions%20-%20Bind.md) 👍
