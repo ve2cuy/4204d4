@@ -296,7 +296,7 @@ spec:
 
 ## Kubernetes – Introduction (suite)
 
-<a id="action_2_"></a>
+<a id="action_2_2"></a>
 ### 👉 Action 2.2 – Interaction avec l'amas (cluster) de nœuds (les serveurs)
 
 La commande `kubectl`
