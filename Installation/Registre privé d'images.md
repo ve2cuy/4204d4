@@ -83,7 +83,7 @@ Soit, via le UI de docker.desktop:
 
 Soit, via le fichier de configuration de docker:
 
-```json
+```
 # Ou bien ceci, si docker-desktop n'est pas installée:
 
 $ sudo nano /etc/docker/daemon.json
