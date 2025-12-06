@@ -127,11 +127,6 @@ Ensemble, ils permettent le déploiement rapide et fréquent d'applications (pra
 
 -----
 
-Absolument. Voici la liste des alternatives à Docker en format Markdown pour GitHub, reprenant la structure précédente pour une clarté optimale.
-
------
-
-```markdown
 # 🚀 Alternatives à Docker : Runtimes et Outils de Construction
 
 Bien que Docker soit le pionnier de la conteneurisation, le marché a évolué pour offrir des alternatives axées sur la sécurité, la légèreté et la conformité aux spécifications **OCI (Open Container Initiative)**.
