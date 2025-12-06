@@ -94,7 +94,7 @@ Voici un schéma présentant l'architecture de base de Kubernetes:
 
 ---
 
-## 👉 **Note**: Si l'apprentissage passe par Docker-Desktop ou bien un cluster local alors il faut sauter à la section [Action 2.2](Documentation/Kubernetes/Kubernetes-Introduction.md#-action-22--interaction-avec-lamas-cluster-de-n%C5%93uds-les-serveurs)
+## 👉 **Note**: Si l'apprentissage passe par Docker-Desktop ou bien un cluster local alors il faut sauter à la section [Action 2.2](#action_2_2)
 
 ---
 
@@ -296,6 +296,7 @@ spec:
 
 ## Kubernetes – Introduction (suite)
 
+<a id="action_2_"></a>
 ### 👉 Action 2.2 – Interaction avec l'amas (cluster) de nœuds (les serveurs)
 
 La commande `kubectl`
