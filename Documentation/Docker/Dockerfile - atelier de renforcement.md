@@ -1,12 +1,14 @@
-Absolument\! Voici le contenu de l'atelier de renforcement sur le Dockerfile, converti en format Markdown pour GitHub, sans aucune modification du texte original extrait.
-
------
-
 
 # Dockerfile – Atelier de renforcement
 
  19 février 2021 - Révision du 2025-12-05
- 
+
+<p align="center">
+    <img src="../images/renforcement.png" alt="chat" width="400" />
+</p>
+
+---
+
  Vous devez bâtir une image Docker,  à partir d'un fichier Dockerfile nommé 'powercat' qui:
  
  * Utilise comme source de départ, **apache version 2.4**
