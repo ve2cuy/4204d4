@@ -2,7 +2,9 @@
 
 *Date: 8 avril 2023 - Révision du 2025.12.05*
 
-<img src="../images/load-balancer-icon-19.jpg.png" alt="Load Balancer Icon" width="500" />
+<p align="center">
+    <img src="../images/load-balancer-icon-19.jpg.png" alt="Load Balancer Icon" width="300" />
+</p>
 
 ## 1 – Mise en situation
 
