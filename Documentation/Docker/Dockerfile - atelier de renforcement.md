@@ -15,7 +15,10 @@ Absolument\! Voici le contenu de l'atelier de renforcement sur le Dockerfile, co
  * **IMPORTANT**, il ne faut pas cloner le dépôt sur votre poste de travail mais plutôt dans l'image du conteneur, dans le répertoire **/420**.
  * Remplacer l'image **docker-logo.jpg** par celle-ci: 
 
-<img src="../images/chat.png" alt="" width="550" />
+<p align="center">
+    <img src="../images/chat.png" alt="chat" width="350" />
+</p>
+
 
  * **NOTE**: Ne pas modifier les fichiers source, html, css, js, du site web.
  * Remplacer le nom de l'auteur du pied de page dans **index.html** par votre nom.
