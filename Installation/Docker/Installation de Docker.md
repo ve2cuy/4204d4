@@ -3,7 +3,7 @@
 *Mis à jour le 23 Décembre 2020 - Révision du 2025.12.05*
 
 <p align="center">
-    <img src="../images/docker-logo-768x657.png" alt="" width="400" />
+    <img src="../images/docker.png" alt="" width="400" />
 </p>
 
 ---
