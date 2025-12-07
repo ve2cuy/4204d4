@@ -304,8 +304,9 @@ Ce qui va donner:
 
 ---
 
-## 2 – Laboratoires
 <img src="../images/labo02.png" alt="" width="600" />
+
+## Section 2 
 
 ### Laboratoire 1 – Déployer une application WordPress
 
@@ -656,8 +657,9 @@ Kubectl exec -it meta-mysql-v2 -- bash
 
 ---
 
-### Laboratoire 4
 <img src="../images/labo03.png" alt="" width="600" />
+
+### Laboratoire 4
 
 Reprendre le **Laboratoire 1** en utilisant la directive **envFrom** pour les variables d'environnement du SGDB et de WordPress.
 
@@ -1225,9 +1227,9 @@ spec:
 
 **Expliquer les erreurs:**
 
-\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+---
 
-\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+---
 
 Corriger le(s) manifeste(s) et relancer l'application.
 
@@ -1243,8 +1245,9 @@ mysql> show DATABASES;
 
 ---
 
-### Laboratoire 6
 <img src="../images/labo02.png" alt="" width="600" />
+
+### Laboratoire 6
 
 Reprendre le **Laboratoire 3** en utilisant une ressource 'secret' pour le mot de passe et un configMap pour les autres informations.
 
