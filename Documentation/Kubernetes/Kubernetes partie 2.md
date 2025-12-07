@@ -22,7 +22,7 @@ Contenu:
 
 ---
 
-## **0 –** **Une petite révision d'un** **manifes****te K8s**
+## 💡- Une petite révision d'un manifeste K8s
 
 ```
 apiVersion: apps/v1
@@ -73,7 +73,9 @@ kubectl apply -f https://raw.githubusercontent.com/ve2cuy/4204d4/refs/heads/main
 
 **Étape 1.1 –** Dans l'exemple suivant, nous allons déployer un système proposant un SGBD *MongoDB* et deux instances de – pour des raisons de fiabilité – *Mongo-Express*.
 
-<img src="../images/3030245.webp" alt="" width="250" />
+<p align="center">
+  <img src="../images/3030245.webp" alt="" width="200" />
+</p>
 
 **Action 1.1.1 –** Voici le manifeste de MongoDB:
 
@@ -375,7 +377,7 @@ Résultat:
 
 ## 3 – Les 'configMaps'
 
-<img src="../images/k8s-configmap.png" alt="" width="450" />
+<img src="../images/k8s-configmap.png" alt="" width="550" />
 
 configMap – définition:
 
@@ -669,7 +671,7 @@ Reprendre le **Laboratoire 1** en utilisant la directive **envFrom** pour les va
 
 ## 4 – **Monter un volume à partir d'un configmap**
 
-<img src="../images/graphic-of-persistent-volume-bond.png" alt="" width="450" />
+<img src="../images/graphic-of-persistent-volume-bond.png" alt="" width="550" />
 
 **Note**: Dans ce module, nous verrons comment présenter des donnés stockées dans un configmap sous forme d'un volume. Les notions plus approfondies sur volumes K8S sont disponibles dans ce [document](https://4204d4.ve2cuy.com/kubernetes-les-volumes/).
 
