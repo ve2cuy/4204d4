@@ -305,6 +305,7 @@ Ce qui va donner:
 ---
 
 ## 2 – Laboratoires
+<img src="../images/labo02.png" alt="" width="" />
 
 ### Laboratoire 1 – Déployer une application WordPress
 
@@ -656,6 +657,7 @@ Kubectl exec -it meta-mysql-v2 -- bash
 ---
 
 ### Laboratoire 4
+<img src="../images/labo03.png" alt="" width="" />
 
 Reprendre le **Laboratoire 1** en utilisant la directive **envFrom** pour les variables d'environnement du SGDB et de WordPress.
 
@@ -1242,6 +1244,7 @@ mysql> show DATABASES;
 ---
 
 ### Laboratoire 6
+<img src="../images/labo02.png" alt="" width="" />
 
 Reprendre le **Laboratoire 3** en utilisant une ressource 'secret' pour le mot de passe et un configMap pour les autres informations.
 
