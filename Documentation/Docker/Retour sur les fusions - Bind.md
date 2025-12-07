@@ -193,6 +193,9 @@ Utiliser l'application (ex: MySQL WorkBench) pour créer une nouvelle connexion 
 
 <img src="../images/fusions/MySQLWorkBench-03.png" alt="" width="550" />
 
+---
+
+<img src="../images/labo02.png" alt="" width="700" />
 
 ### Laboratoire 3.5
 
@@ -405,6 +408,8 @@ Tester l'accès : `http://localhost:8000`
 
 
 -----
+
+<img src="../images/labo03.png" alt="" width="700" />
 
 ## 6 – Laboratoire (WordPress avec MariaDB)
 

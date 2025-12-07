@@ -347,6 +347,8 @@ Tester l'accès à l'application via le volume monté : `http://localhost:8080/b
 
 -----
 
+<img src="../images/labo02.png" alt="" width="700" />
+
 ## Laboratoire
 
   * En utilisant votre compte **hub.docker.com**, créer un dépôt `labo-01`.

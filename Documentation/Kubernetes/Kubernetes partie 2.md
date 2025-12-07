@@ -304,7 +304,7 @@ Ce qui va donner:
 
 ---
 
-<img src="../images/labo02.png" alt="" width="600" />
+<img src="../images/labo02.png" alt="" width="700" />
 
 ## Section 2 
 
@@ -657,7 +657,7 @@ Kubectl exec -it meta-mysql-v2 -- bash
 
 ---
 
-<img src="../images/labo03.png" alt="" width="600" />
+<img src="../images/labo03.png" alt="" width="700" />
 
 ### Laboratoire 4
 
@@ -1245,7 +1245,7 @@ mysql> show DATABASES;
 
 ---
 
-<img src="../images/labo02.png" alt="" width="600" />
+<img src="../images/labo02.png" alt="" width="700" />
 
 ### Laboratoire 6
 

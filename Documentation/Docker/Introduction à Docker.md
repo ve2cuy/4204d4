@@ -511,6 +511,8 @@ $ echo "<center><h1>Mon serveur WEB</h1></center>" > index2.html
 
 > **NOTE :** la commande `attach` va exécuter le point d'entrée. Dans le cas de nginx, cela ne correspond pas à un 'shell'.
 -----
+<img src="../images/labo02.png" alt="" width="700" />
+
 # 3.6 – Laboratoire
 
 1.  Créer un conteneur à partir de l'image d'apache disponible sur docker hub.

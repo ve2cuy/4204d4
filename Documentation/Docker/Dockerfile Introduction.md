@@ -241,6 +241,8 @@ docker build -t alainboudreault/bonjour420:latest .
 ```bash
 docker run alainboudreault/bonjour420
 ```
+---
+<img src="../images/labo03.png" alt="" width="700" />
 
 ### Laboratoire 2.6 – Durée 30 minutes
 
@@ -312,6 +314,7 @@ docker run -d -p 99:80 alainboudreault/420-4d4:exemple03
 ```
 
 -----
+<img src="../images/labo02.png" alt="" width="700" />
 
 ## 4.0 – Laboratoire – Durée 30 minutes
 

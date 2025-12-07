@@ -624,6 +624,8 @@ spec:
 
 -----
 
+<img src="../images/labo02.png" alt="" width="700" />
+
 ## 6 – Laboratoire PV/PVC/NFS (durée 30-40 minutes)
 
 ### 1 – Vous devez mettre en place un déploiement K8S qui fait rouler

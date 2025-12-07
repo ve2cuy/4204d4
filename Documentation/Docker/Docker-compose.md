@@ -379,6 +379,7 @@ networks:
 ```
 
 -----
+<img src="../images/labo03.png" alt="" width="700" />
 
 ## 4 – Laboratoire 1 (MySQL + phpMyAdmin)
 
@@ -396,6 +397,8 @@ Démarrer, à partir d'un fichier `docker-compose`, le système de micro-service
 >   * `docker-compose -f docker-labo02.yml exec cie_db bash`
 
 -----
+
+<img src="../images/labo02.png" alt="" width="700" />
 
 ## 5 – Laboratoire 2 (WordPress, MariaDB et phpMyAdmin)
 
