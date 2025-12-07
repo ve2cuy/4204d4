@@ -43,3 +43,12 @@
  * Renseigner **'donttell'** comme mot de passe
  * L'inscrire aux groupes **www-data et sudo**
  * Publier la version **2.0** de l'application
+
+
+---
+
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Version 2025.12.03.1*  
+*Site par ve2cuy*

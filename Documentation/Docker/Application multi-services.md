@@ -262,9 +262,10 @@ Dans un fureteur, inscrire l'adresse `localhost:8080`, ce qui devrait afficher l
 
 > **NOTE** : Il faut consulter la documentation de `phpmyadmin` pour identifier les variables d'environnement nécessaires au fonctionnement du conteneur. Il n'est pas nécessaire d'utiliser toutes les variables mentionnées dans la documentation. Seulement celles concernant l'utilisateur PMA, son mot de passe et le nom du conteneur du serveur mySQL.
 
------
+---
 
-###### Document rédigé par Alain Boudreault (c) 2021-25 – version 2025.12.03.01
+## Crédits
 
-```
-```
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Version 2025.12.03.1*  
+*Site par ve2cuy*

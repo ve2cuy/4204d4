@@ -1392,6 +1392,6 @@ Prochain document: [K8s-partie2](http://ve2cuy.com/420-4d4b/index.php/kubernetes
 
 ## Crédits
 
-*Document rédigé par Alain Boudreault © 2021-2025*  
+*Document rédigé par Alain Boudreault © 2021-2026*  
 *Version 2025.12.03.1*  
 *Site par ve2cuy*

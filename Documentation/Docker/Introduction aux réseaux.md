@@ -350,6 +350,9 @@ $ docker run -d --name nginx_macvlan --rm --network vlan01 --ip=192.168.2.88 ngi
 http://192.168.2.88
 ```
 
------
 
-###### Document rédigé par Alain Boudreault (c) 2021-25 – version 2025.12.03.01
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Version 2025.12.03.1*  
+*Site par ve2cuy*

@@ -187,3 +187,11 @@
 | **Créer un Namespace via YAML** | `kubectl apply -f <fichier.yml>` (où `fichier.yml` définit `kind: Namespace`) | Méthode déclarative pour la création, souvent utilisée en production. |
 
 **ATTENTION:** vérifiez toujours le contexte actif avant toute opération à risque avec `kubectl config current-context`.
+
+---
+
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Version 2025.12.03.1*  
+*Site par ve2cuy*

@@ -173,4 +173,10 @@ Ces outils offrent une expérience utilisateur similaire à Docker, mais fonctio
 | **Environnement Kubernetes** | **containerd** ou **CRI-O** | Légèreté, performance et conformité aux standards K8s. |
 | **Construction Sécurisée d'Images** | **Buildah** ou **Kaniko** | Contrôle granulaire et exécution sans privilèges `root`. |
 
------
+---
+
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Version 2025.12.03.1*  
+*Site par ve2cuy*

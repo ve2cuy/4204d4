@@ -573,9 +573,10 @@ ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["apache2-foreground"]
 ```
 
------
+---
 
-###### Document rédigé par Alain Boudreault (c) 2021-2023 – revision 2023.02.07-01
+## Crédits
 
-```
-```
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Version 2025.12.03.1*  
+*Site par ve2cuy*

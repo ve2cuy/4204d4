@@ -543,9 +543,15 @@ $ docker logs monServeurWeb
 
 -----
 
-## Informations supplémentaires
+## Outils pour Docker
 
-*Document rédigé par Alain Boudreault (c) 2021.*
+- Portainer
+- LazyDocker
 
-```
-```
+---
+
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Version 2025.12.03.1*  
+*Site par ve2cuy*

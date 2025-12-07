@@ -595,6 +595,10 @@ web:
   command: /bin/sh -c "envsubst < /etc/nginx/conf.d/site.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"
 ```
 
------
+---
 
-###### Document rédigé par Alain Boudreault (c) 2021-25 – version 2025.12.04.01
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Version 2025.12.03.1*  
+*Site par ve2cuy*

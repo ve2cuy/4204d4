@@ -342,4 +342,8 @@ sudo kubeadm reset -f
 
 ---
 
-###### Document préparé par Alain Boudreault – Novembre 2025 - Version 2025.12.04
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Version 2025.12.03.1*  
+*Site par ve2cuy*

@@ -453,6 +453,9 @@ Tester l'accès : `https://localhost:9443`
 <img src="../images/fusions/Capture-decran-le-2022-03-15-a-12.58.38.png" alt="" width="550" />
 
 
------
 
-###### Document rédigé par Alain Boudreault (c) 2021-2022 – révision 2025.12.04.01
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Version 2025.12.03.1*  
+*Site par ve2cuy*

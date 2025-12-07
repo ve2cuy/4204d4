@@ -316,5 +316,6 @@ Référence pour la syntaxe [Dockerfile](https://docs.docker.com/engine/referenc
 
 ## Crédits
 
-*Document préparé par Alain Boudreault*  
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Version 2025.12.03.1*  
 *Site par ve2cuy*

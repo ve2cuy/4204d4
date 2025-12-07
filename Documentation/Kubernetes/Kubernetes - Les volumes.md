@@ -704,6 +704,10 @@ Pour exécuter le conteneur avec les droits de ce propriétaire, il faut ajouter
 
 **Cet atelier comporte un bon niveau de difficulté…**
 
------
+---
 
-Document rédigé par Alain Boudreault – aka ve2cuy – Version du 2022.04.28
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Version 2025.12.03.1*  
+*Site par ve2cuy*

@@ -61,3 +61,12 @@
 | `docker compose logs -f` | Suivre les logs des services Compose | `docker compose logs -f` |
 | `docker context ls` | Lister les contexts Docker (ex. remote) | `docker context ls` |
 | `docker context use NAME` | Bascule vers un contexte Docker | `docker context use my-remote` |
+
+
+---
+
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Version 2025.12.03.1*  
+*Site par ve2cuy*

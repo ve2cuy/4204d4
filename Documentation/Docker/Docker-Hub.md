@@ -361,6 +361,10 @@ Tester l'accès à l'application via le volume monté : `http://localhost:8080/b
   * Exécuter l'image à partir de votre dépôt docker.
   * Afficher la page d'accueil du serveur web.
 
------
+---
 
-###### Document rédigé par Alain Boudreault (c) 2021-2023 – révision 2025.12.04.01
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Version 2025.12.03.1*  
+*Site par ve2cuy*
