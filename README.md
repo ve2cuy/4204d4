@@ -62,12 +62,12 @@
 * [24 - Kubernetes – Installation d'un cluster; 1 Master, 2 Nodes](https://4204d4.ve2cuy.com/kubernetes-installation-dun-cluster-1-master-2-nodes/)
 * [25 - Kubernetes – Les volumes](Documentation/Kubernetes/Kubernetes%20-%20Les%20volumes.md) 👍
 * [26 - Kubernetes – LoadBalancer Externe et Ingress](Documentation/Kubernetes/Kubernetes%20-%20LoadBalancer%20et%20Ingress.md) 👍
-* Nouveaux services réseaux pour l'implémentation d'Ingress
+* [Nouveaux services réseaux pour l'implémentation d'Ingress]() 🧠
 * [27 - Espaces de nom (namespaces)](https://4204d4.ve2cuy.com/kubernetes-espaces-de-nom-namespaces/)
-* ServiceAccount
-* [28 - Utilisation d’un cluster sur Google Cloud]()
-* [29 - Helm charts]()
-* [30 - Automatisation des ‘builds’ d’images Docker/Github]()
+* [ServiceAccount]() 🧠
+* [28 - Utilisation d’un cluster sur Google Cloud]() 🧠
+* [29 - Helm charts]() 🧠
+* [30 - Automatisation des ‘builds’ d’images Docker/Github]() 🧠
 * [31 - Aide rapide]()
 * [kubectl - Référence rapide](Documentation/Kubernetes/Kubernetes%20-%20Référence%20rapide.md) 👍
 
