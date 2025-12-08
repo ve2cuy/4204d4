@@ -174,7 +174,7 @@ Ou à partir de votre poste de travail en utilisant l'adresse IP de la station U
 
  ### 14 - Installer l'extension Docker pour VSCode en mode ssh:
 
-- Installation
+- Installation (Attention, il faut s'assurer que l'option 'install in ssh' est proposée)
 
  <img src="../images/vscode-docker-inst-via-ssh.png" alt="YAML" width="550" />
 
