@@ -3,6 +3,8 @@ plugins:
 relative_links:
   enabled: true
   collections: true
+# Inclure ces dossiers
 include:
-  - "Documentation/Contenu/Semaine 01.md"
+  - Installation
+  - Documentation
   
