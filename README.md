@@ -54,13 +54,13 @@
 
 * [20 - Kubernetes – Installation d'un nœud unique sous Linux](Documentation/Kubernetes/Installation-un-seul-noeud.md) 👍
 * [21 - Kubernetes – Introduction](Documentation/Kubernetes/Kubernetes-Introduction.md) 👍
-* [22 - Kubernetes – Partie 2](Documentation/Kubernetes/Kubernetes-partie-02.md) 👍🛑
+* [22 - Kubernetes – Partie 2](Documentation/Kubernetes/Kubernetes-partie-2.md) 👍🛑
 * [23 - Préparation à l'atelier d'installation d'un 'cluster' K8s avec Vagrant](https://4204d4.ve2cuy.com/pre-requis-atelier-k8s-vagrant/)
 * [24 - Kubernetes – Installation d'un cluster; 1 Master, 2 Nodes](https://4204d4.ve2cuy.com/kubernetes-installation-dun-cluster-1-master-2-nodes/)
 * [25 - Kubernetes – Les volumes](Documentation/Kubernetes/Kubernetes-Les-volumes.md) 👍
 * [26 - Kubernetes – LoadBalancer Externe et Ingress](Documentation/Kubernetes/Kubernetes-LoadBalancer-et-Ingress.md) 👍
 * [Nouveaux services réseaux pour l'implémentation d'Ingress]() 🧠
-* [27 - Espaces de nom (namespaces)](https://4204d4.ve2cuy.com/kubernetes-espaces-de-nom-namespaces/)
+* [27 - Espaces de nom (namespaces)]() 🧠
 * [ServiceAccount]() 🧠
 * [28 - Utilisation d’un cluster sur Google Cloud]() 🧠
 * [29 - Helm charts]() 🧠
