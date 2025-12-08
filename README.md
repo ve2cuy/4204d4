@@ -13,18 +13,15 @@
 
 ---
 
-<!--
 ## Navigation Rapide
 
-* [Contenu](https://4204d4.ve2cuy.com/contenu/)
-* [Planif](https://4204d4.ve2cuy.com/planification-hebdomadaire/)
-* [Docum](https://4204d4.ve2cuy.com/)
-* [Épreuve synthèse](https://4204d4.ve2cuy.com/epreuve-synthese-2022/)
-* [Plan](https://4204d4.ve2cuy.com/plan-de-cours/)
-* [Copier/coller](https://4204d4.ve2cuy.com/docker-copier-coller/)
-* [À propos ve2cuy](https://4204d4.ve2cuy.com)
--->
+* [Contenus](Documentation/Contenu/index.md)
+* [Documents](Documentation)
+* [Épreuve synthèse VH22](https://4204d4.ve2cuy.com/epreuve-synthese-2022/)
+* [Copier/coller](Copier+coller.md)
+* [ve2cuy](https://ve2cuy.com/)
 
+---
 ## Liste des documents de cours
 
 * [Plan de cours - À suivre]()
