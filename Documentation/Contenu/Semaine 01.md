@@ -88,6 +88,6 @@ echo -e "\nPour changer de thème: lp_theme nom-du-theme\n\n"
 
 ### Ajouter des alias dan le fichier ~/.bash_aliases
 
-Voir les [copier/coller](Documentation/Copier%2Bcoller.md)
+Voir les [copier/coller](/Documentation/Copier%2Bcoller.md)
 
  
