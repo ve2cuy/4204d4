@@ -61,6 +61,7 @@
 * [25 - Kubernetes – Les volumes](Documentation/Kubernetes/Kubernetes-Les-volumes.md) 👍
 * [26 - Kubernetes – LoadBalancer Externe et Ingress](Documentation/Kubernetes/Kubernetes-LoadBalancer-et-Ingress.md) 👍 [Docum officielle](https://kubernetes.io/docs/concepts/services-networking/ingress/)
 * [Ingress avec Traefik](Documentation/Kubernetes/Ingress-avec-traefik.md)
+* [Équilibreur de charge externe](Documentation/Kubernetes/Equilibreur-de-charge-externe-MetalLB.md) 
 * [Nouveaux services réseaux pour l'implémentation d'Ingress]() 🧠
 * [27 - Espaces de nom (namespaces)]() 🧠
 * [ServiceAccount]() 🧠
