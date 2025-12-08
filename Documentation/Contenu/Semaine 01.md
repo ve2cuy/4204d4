@@ -131,6 +131,8 @@ alias lzd='lazydocker'
 ---
 ### 13 - Installer Arcane
 
+https://getarcane.app/
+
 - Créer le fichier compose.yaml avec le contenu suivant:
 
 ```bash
