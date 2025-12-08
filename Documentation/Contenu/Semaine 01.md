@@ -10,11 +10,11 @@
 - VM nommée Ubuntu-Master
 - Network connection: Bridged
 
-NOTE: Vérifier que la bonne carte réseau est renseignée dans les paramètres de VMware
+🤚 **NOTE**: Vérifier que la bonne carte réseau est renseignée dans les paramètres de VMware
 - Menu: edit -> Virtual Network Editor --> Change settings --> VMNet0 ...
 
 ### 3 - Installation de openssh-server et de firefox
-NOTE: Terminal = Ctl+Alt+T
+💡- Terminal = Ctl+Alt+T
 
 ```bash
 $ sudo apt update && sudo apt upgrade -y
@@ -104,6 +104,8 @@ Voir les [copier/coller](/Documentation/Copier%2Bcoller.md)
 
 ---
 ### 12 - Installer LazyDocker
+https://github.com/jesseduffield/lazydocker
+
 ```bash
 # Obtenir le numéro de la dernière version
 LAZYDOCKER_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazydocker/releases/latest" | grep -Po '"tag_name": "v\K[0-9.]+')
