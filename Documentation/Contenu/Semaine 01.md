@@ -176,8 +176,7 @@ $ docker compose up -d
 ```
 
 - Ouvrir dans Firefox sur la station Ubuntu à http://localhost:3552/
-
-Ou à partir de votre poste de travail en utilisant l'adresse IP de la station Ubuntu (ip a)
+- - Ou à partir de votre poste de travail en utilisant l'adresse IP de la station Ubuntu (ip a)
 
  - 🔑 Username: arcane
  - 🔑 Password: arcane-admin
