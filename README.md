@@ -18,7 +18,7 @@
 * [Contenus](Documentation/Contenu/index.md)
 * [Documents](Documentation)
 * [Épreuve synthèse VH22](https://4204d4.ve2cuy.com/epreuve-synthese-2022/)
-* [Copier/coller](Copier+coller.md)
+* [Copier/coller](Documentation/Copier%2Bcoller.md)
 * [ve2cuy](https://ve2cuy.com/)
 
 ---
