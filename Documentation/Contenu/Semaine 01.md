@@ -181,3 +181,11 @@ Ou à partir de votre poste de travail en utilisant l'adresse IP de la station U
 - Utilisation
 
  <img src="../images/vscode-docker-ssh.png" alt="YAML" width="550" />
+
+ ---
+
+ ## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Version 2025.12.08.1*  
+*Site par ve2cuy*
