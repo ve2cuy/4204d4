@@ -1,5 +1,7 @@
 # YAML- Voici un exemple plus complexe 
+
 ```yaml
+
 #
 # Copyright IBM Corp All Rights Reserved
 #
@@ -126,3 +128,7 @@ services:
     #  - peer0.org1.example.com
     #  - couchdb
     
+    
+    ```
+
+    FIN du Document

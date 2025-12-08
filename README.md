@@ -42,10 +42,10 @@
 * [7 - Dockerfile – Scripter la construction d'un image](Documentation/Docker/Dockerfile-Introduction.md)
 * [8 - Dockerfile - Exemple avec une app node.js](Documentation/Docker/Dockerfile-Exemple-node.js.md)
 * [9 - Docker – Les réseaux](Documentation/Docker/Introduction-aux-réseaux.md)
-* [10 - Docker – Application multi-services](Documentation/Docker/Application-0multi-services.md)
+* [10 - Docker – Application multi-services](Documentation/Docker/Application-multi-services.md)
 * [11 - Docker – Retour sur les fusions (bind)](Documentation/Docker/Retour-sur-les-fusions-Bind.md)
 * [12 - Dockerfile – Atelier de renforcement](Documentation/Docker/Dockerfile-atelier-de-renforcement.md)
-* [13 - Docker-Compose – Scripter une application multi-services](Documentation/Docker/Docker-compose.md)
+* [13 - Docker-Compose – Scripter une application multi-services](Documentation/Docker/Docker-compose.md) 🛑🛑
 * [14 - Docker-Compose – Laboratoire (Drupal) TODO:](https://4204d4.ve2cuy.com/docker-compose-laboratoire-drupal/) 🛑
 * [15 - Dépôt privé d’images – Harbor](Installation/Registre-privé-d-images.md)
 * [Docker - Référence rapide](Documentation/Docker/Docker-Référence-rapide.md) 👍
