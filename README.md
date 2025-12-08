@@ -15,7 +15,7 @@
 
 ## Navigation Rapide
 
-* [Contenus](Documentation/Contenu/index.md)
+* [Contenus](Documentation/Contenu/)
 * [Documents](Documentation)
 * [Épreuve synthèse VH22](https://4204d4.ve2cuy.com/epreuve-synthese-2022/)
 * [Copier/coller](Documentation/Copier%2Bcoller.md)
