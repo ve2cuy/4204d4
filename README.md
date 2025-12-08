@@ -59,7 +59,7 @@
 * [23 - Préparation à l'atelier d'installation d'un 'cluster' K8s avec Vagrant](https://4204d4.ve2cuy.com/pre-requis-atelier-k8s-vagrant/)
 * [24 - Kubernetes – Installation d'un cluster; 1 Master, 2 Nodes](https://4204d4.ve2cuy.com/kubernetes-installation-dun-cluster-1-master-2-nodes/)
 * [25 - Kubernetes – Les volumes](Documentation/Kubernetes/Kubernetes-Les-volumes.md) 👍
-* [26 - Kubernetes – LoadBalancer Externe et Ingress](Documentation/Kubernetes/Kubernetes-LoadBalancer-et-Ingress.md) 👍
+* [26 - Kubernetes – LoadBalancer Externe et Ingress](Documentation/Kubernetes/Kubernetes-LoadBalancer-et-Ingress.md) 👍 [Docum officielle](https://kubernetes.io/docs/concepts/services-networking/ingress/)
 * [Nouveaux services réseaux pour l'implémentation d'Ingress]() 🧠
 * [27 - Espaces de nom (namespaces)]() 🧠
 * [ServiceAccount]() 🧠
