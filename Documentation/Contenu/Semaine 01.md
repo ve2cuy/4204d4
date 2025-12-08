@@ -44,14 +44,25 @@ Host labo
 - Create a linked clone: nommé 'labo'
 
 ### 6 - Démarrer et login sur 'labo'
+```bash
+ssh compte@1.2.3.4
+```
+
 ### 7 - Éditer les fichiers /etc/hostname et /etc/hosts et corriger la référence au nom machine.
+```bash
+$ sudo nano /etc/hostname
+$ sudo nano /etc/hosts
+```
 
 ### 8 - Redémarrer la VM
 ```bash
 $ sudo reboot
 ```
 
-### 9 - ssh sur la VM 'lobo'
+### 9 - ssh sur la VM 'labo'
+```bash
+ssh compte@1.2.3.4
+```
 
 ### 10 - Installer Docker
 
@@ -63,8 +74,9 @@ $ docker version
 $ docker help
 ```
 ---
-### Facultatif : liquidPrompt:
+### 💡Facultatif : Installer liquidPrompt:
 https://liquidprompt.readthedocs.io/en/stable/overview.html
+
 ```bash
 $ git clone --branch stable https://github.com/liquidprompt/liquidprompt.git ~/liquidprompt
 $ source ~/liquidprompt/liquidprompt
@@ -174,7 +186,7 @@ Ou à partir de votre poste de travail en utilisant l'adresse IP de la station U
 
  ### 14 - Installer l'extension Docker pour VSCode en mode ssh:
 
-- Installation - **Attention**, il faut s'assurer que l'option 'install in ssh' est proposée
+- Installation - **🤚 Attention**, il faut s'assurer que l'option '**install in ssh**' est proposée
 
  <img src="../images/vscode-docker-inst-via-ssh.png" alt="YAML" width="550" />
 
