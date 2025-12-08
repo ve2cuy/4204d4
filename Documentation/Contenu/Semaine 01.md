@@ -110,8 +110,15 @@ lazydocker --version
 alias lzd='lazydocker'
 ```
 
+### Tester LazyDocker
+
+<img src="../images/lazydocker.png" alt="YAML" width="550" />
+
 ---
 ### 13 - Installer Arcane
+
+- Créer le fichier compose.yaml avec le contenu suivant:
+
 ```bash
 # Fichier compose.yaml
 services:
@@ -136,29 +143,41 @@ volumes:
   arcane-data:
 ```
 
-Générer la clé et le secret:
+- Générer la clé et le secret:
 ```bash
 $ openssl rand -base64 32
 # Exemple de sortie: qxBW5EkvjIeYgRS4e7Lii3WJ6SqJEF7L5PLjlJ6NzX4=
-
 $ openssl rand -hex 64
 2bbee9ee013f1e2ed0f6b0f03876159637e1e702d345a776ea92d0f3ee1a35a52d1b73c58b01481aca4f3873c78e532570a8eaaed34800eba0bb76440fc3ccc0
+```
+- Modifier le fichier compose.yaml avec le résultat:
+ - - ENCRYPTION_KEY=qxBW5EkvjIeYgRS4e7Lii3WJ6SqJEF7L5PLjlJ6NzX4
+ - - JWT_SECRET=2bbee9ee013f1e2ed0f6b0f03876159637e1e702d345a776ea92d0f3ee1a35a52d1b73c58b01481aca4f3873c78e532570a8eaaed34800eba0bb76440fc3ccc0
 
-# Modifier le fichier compose.yaml avec le résultat:
- - ENCRYPTION_KEY=qxBW5EkvjIeYgRS4e7Lii3WJ6SqJEF7L5PLjlJ6NzX4
- - JWT_SECRET=2bbee9ee013f1e2ed0f6b0f03876159637e1e702d345a776ea92d0f3ee1a35a52d1b73c58b01481aca4f3873c78e532570a8eaaed34800eba0bb76440fc3ccc0
-
+```
 # Démarrer Arcane:
 $ docker compose up -d
-
-# Ouvrir dans Firefox sur la station Ubuntu à http://localhost:3552/
-# Ou à partir de votre poste de travail en utilisant l'adresse IP de la station Ubuntu (ip a)
- 🔑 Username: arcane
- 🔑 Password: arcane-admin
-
-# Changer le mot de passe au premier login (l9l9)
 ```
+
+- Ouvrir dans Firefox sur la station Ubuntu à http://localhost:3552/
+
+Ou à partir de votre poste de travail en utilisant l'adresse IP de la station Ubuntu (ip a)
+
+ - 🔑 Username: arcane
+ - 🔑 Password: arcane-admin
+
+- Changer le mot de passe au premier login (l9l9)
 
 <img src="../images/arcane.png" alt="YAML" width="550" />
 
- 
+ ---
+
+ ### 14 - Installer l'extension Docker pour VSCode en mode ssh:
+
+- Installation
+
+ <img src="../images/vscode-docker-inst-via-ssh.png" alt="YAML" width="550" />
+
+- Utilisation
+
+ <img src="../images/vscode-docker-ssh.png" alt="YAML" width="550" />
