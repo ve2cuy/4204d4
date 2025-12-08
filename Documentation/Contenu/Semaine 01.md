@@ -6,7 +6,7 @@
 
 ---
 
-### 2 - Installation d'Ubuntu Desktop (version minimale) sur VmWare PRO
+### 2 - Installation d'Ubuntu Desktop (version minimale) sur VMware PRO
 - VM nommée Ubuntu-Master
 - Network connection: Bridged
 
