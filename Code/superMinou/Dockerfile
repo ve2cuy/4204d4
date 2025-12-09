@@ -4,3 +4,4 @@ LABEL   auteur: votre nom \
         email: yo@yo.yo
 # ---------- 
 
+# Ceci est un commentaire pour forcer la chaine CI/CD
