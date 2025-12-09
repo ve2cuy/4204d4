@@ -366,7 +366,7 @@ Résultat:
 
 ---
 
-Prochain document: [K8s-partie2](/Documentation/Kubernetes/Kubernetes-Config-map-et-secret.md)
+Prochain document: [K8s-Configmap et Secrets](/Documentation/Kubernetes/Kubernetes-Config-map-et-secret.md)
 
 ---
 
