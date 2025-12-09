@@ -1,1 +1,1 @@
-- Attention: Pas d'espace dans les noms de fichiers, car Jekyll ne fera pas la conversion de MD vers html.
+- Attention: Pas d'espace ni des caractères accentués dans les noms de fichiers, car Jekyll ne fera pas la conversion de MD vers html.
