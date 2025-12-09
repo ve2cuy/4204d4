@@ -1,6 +1,9 @@
 # Les Services Kubernetes
 
+<img src="../images/k8s-services.avif" alt="" width="500" />
+
 ## À quoi sert un Service Kubernetes ?
+
 
 Un **Service** Kubernetes résout un problème fondamental : **comment accéder aux Pods de manière stable ?**
 
@@ -595,8 +598,10 @@ spec:
 | **IP dédiée** | ❌ Non | ❌ Non | ✅ Oui | ❌ Non |
 | **Load balancing** | ✅ Oui | ✅ Oui | ✅ Oui | ❌ Non |
 | **Production** | ✅ Oui | ❌ Non | ✅ Oui | ✅ Oui |
-| **Coût cloud** | Gratuit | Gratuit | 💰 Payant | Gratuit |
+| **Coût cloud** | Gratuit | Gratuit | 💰 Payant *| Gratuit |
 | **Usage typique** | Services internes | Dev/Test | Apps publiques | Services externes |
+
+\* Peut-être implémenté localement, par exemple, MetalLB.
 
 ---
 
