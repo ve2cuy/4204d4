@@ -1,0 +1,24 @@
+name: Construire et publier une image sur Docker Hub
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'Code/superMinou/Dockerfile'
+      # - Autre projet ..
+
+jobs:
+  publish_images:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: build image SuperMinou
+        run: |
+          docker build ./Code/superMinou -t alainboudreault/superminou:v2025.12.09
+          # docker build autre projet ...
+      - name: push image SuperMinou sur docker hub
+        run: |
+          docker login -u alainboudreault -p ${{ secrets.DOCKER_HUB_SECRET }}
+          docker push alainboudreault/superminou:v2025.12.09
+          # docker push autre projet
