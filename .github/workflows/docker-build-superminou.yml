@@ -8,6 +8,9 @@ on:
       - 'Code/superMinou/' # Déclencher le workflow si des fichiers dans ce dossier changent
       # - Autre projet ..
 
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
 jobs:
   publish_images:
     runs-on: ubuntu-latest
