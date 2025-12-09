@@ -313,6 +313,8 @@ docker run -d -p 99:80 test
 docker run -d -p 99:80 alainboudreault/420-4d4:exemple03
 ```
 
+<img src="../images/Dockerfile-labo03.png" alt="YAML" width="550" />
+
 -----
 <img src="../images/labo02.png" alt="" width="700" />
 

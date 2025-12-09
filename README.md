@@ -39,7 +39,7 @@
 * [4b- Référence Yaml](Documentation/Yaml/yaml-reference.md)
 * [5 - Yaml – Exemple d'un document Yaml](Documentation/Yaml/yaml-exemple-ibm.md)
 * [6 - hub.docker.com – Introduction](/Documentation/Docker/Docker-Hub.md)
-* [7 - Dockerfile – Scripter la construction d'un image](Documentation/Docker/Dockerfile-Introduction.md)
+* [7 - Dockerfile – Introduction](Documentation/Docker/Dockerfile-Introduction.md)
 * [8 - Dockerfile - Exemple avec une app node.js](Documentation/Docker/Dockerfile-Exemple-node.js.md)
 * [9 - Docker – Les réseaux](Documentation/Docker/Introduction-aux-réseaux.md)
 * [10 - Docker – Application multi-services](Documentation/Docker/Application-multi-services.md)

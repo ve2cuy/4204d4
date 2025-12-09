@@ -2,7 +2,7 @@
 FROM ubuntu
 
 # Optionnel
-MAINTAINER Alain Boudreault <aboudrea@cstj.qc.ca>
+LABEL maintainer="Alain Boudreault <aboudrea@cstj.qc.ca>"
 
 # Exécuter des commandes dans l'image
 RUN apt-get update
