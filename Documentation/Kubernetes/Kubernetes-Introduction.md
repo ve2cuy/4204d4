@@ -1409,7 +1409,7 @@ kubectl api-resources
 
 ---
 
-Prochain document: [K8s-partie2](http://ve2cuy.com/420-4d4b/index.php/kubernetes-partie-2/)
+Prochain document: [K8s-partie2](/Documentation/Kubernetes/Kubernetes-partie-2.md)
 
 ---
 

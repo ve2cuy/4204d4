@@ -13,12 +13,6 @@ Contenu:
    1. **Déployer une application WordPress**
    2. **Déployer super Minou en 25 duplicatas**
    3. **Déployer PostgreSQL et pgadmin4**
-3. **[Les 'configmaps'](#item3)**
-4. **[Monter un volume à partir d'un configmap](#item4)**
-5. **Laboratoire**
-   1. **Déployer une application utilisant un configmap comme source d'un dossier**
-6. **[Les 'secrets'](#item6)**
-7. **[Exemple complet, mosquitto+Node-RED+volume+configMap+secret](#item7)** (**TP02**)
 
 ---
 
@@ -369,6 +363,10 @@ Résultat:
 * Grace à un manifeste Kubernetes, déployer 1 duplicata de Postgres et 2 de dpage/pgadmin4
 * Appliquer le manifeste et vérifier que l'application fonctionne.
 
+
+---
+
+Prochain document: [K8s-partie2](/Documentation/Kubernetes/Kubernetes-Config-map-et-secret.md)
 
 ---
 
