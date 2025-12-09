@@ -56,8 +56,8 @@
 
 * [20 - Kubernetes – Installation d'un nœud unique sous Linux](Documentation/Kubernetes/Installation-un-seul-noeud.md) 👍
 * [21 - Kubernetes – Introduction](Documentation/Kubernetes/Kubernetes-Introduction.md) 👍
-* [21a- Kubernetes – Introduction](Documentation/Kubernetes/Kubernetes-Manifestes-Expliquées-version-courte.md)
-* [21b- Kubernetes – Introduction](Documentation/Kubernetes/Kubernetes%20-Manisfestes-Expliqués-version-longue.md)
+* [21a- Kubernetes – Manifestes expliqués - version courte](Documentation/Kubernetes/Kubernetes-Manifestes-Expliquées-version-courte.md)
+* [21b- Kubernetes – Manifestes expliqués - version longue](Documentation/Kubernetes/Kubernetes%20-Manisfestes-Expliqués-version-longue.md)
 * [22 - Kubernetes – Partie 2](Documentation/Kubernetes/Kubernetes-partie-2.md) 👍🛑
 * [22b- Kubernetes – Config Map et Secrets](Documentation/Kubernetes/Kubernetes-Config-map-et-secret.md) 👍🛑
 * [23 - Préparation à l'atelier d'installation d'un 'cluster' K8s avec Vagrant](https://4204d4.ve2cuy.com/pre-requis-atelier-k8s-vagrant/)
