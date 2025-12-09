@@ -36,19 +36,20 @@
 * [2 - Installation de Docker](Installation/Docker/Installation-de-Docker.md)
 * [3 - Docker – Introduction](Documentation/Docker/Introduction-à-Docker.md)
 * [4 - Yaml – Introduction](Documentation/Yaml/yaml.md)
-* [4b- Référence Yaml](Documentation/Yaml/yaml-reference.md)
-* [5 - Yaml – Exemple d'un document Yaml](Documentation/Yaml/yaml-exemple-ibm.md)
-* [6 - hub.docker.com – Introduction](/Documentation/Docker/Docker-Hub.md)
-* [7 - Dockerfile – Introduction](Documentation/Docker/Dockerfile-Introduction.md)
-* [8 - Dockerfile - Exemple avec une app node.js](Documentation/Docker/Dockerfile-Exemple-node.js.md)
-* [9 - Docker – Les réseaux](Documentation/Docker/Introduction-aux-réseaux.md)
-* [10 - Docker – Application multi-services](Documentation/Docker/Application-multi-services.md)
-* [11 - Docker – Retour sur les fusions (bind)](Documentation/Docker/Retour-sur-les-fusions-Bind.md)
-* [12 - Dockerfile – Atelier de renforcement](Documentation/Docker/Dockerfile-atelier-de-renforcement.md)
-* [13 - Docker-Compose – Scripter une application multi-services](Documentation/Docker/Docker-compose.md) 🛑🛑
-* [14 - Docker-Compose – Laboratoire (Drupal) TODO:](https://4204d4.ve2cuy.com/docker-compose-laboratoire-drupal/) 🛑
-* [15 - Dépôt privé d’images – Harbor](Installation/Registre-privé-d-images.md)
-* [16 - Automatisation des builds – GitHub actions](/Documentation/Automatisation/github-action.md)
+* [5 - Référence Yaml](Documentation/Yaml/yaml-reference.md)
+* [6 - Yaml – Exemple d'un document Yaml](Documentation/Yaml/yaml-exemple-ibm.md)
+* [7 - hub.docker.com – Introduction](/Documentation/Docker/Docker-Hub.md)
+* [8 - Dockerfile – Introduction](Documentation/Docker/Dockerfile-Introduction.md)
+* [9 - Dockerfile - Exemple avec une app node.js](Documentation/Docker/Dockerfile-Exemple-node.js.md)
+* [10 - Docker – Les réseaux](Documentation/Docker/Introduction-aux-réseaux.md)
+* [11 - Docker – Application multi-services](Documentation/Docker/Application-multi-services.md)
+* [12 - Docker – Retour sur les fusions (bind)](Documentation/Docker/Retour-sur-les-fusions-Bind.md)
+* [13 - Dockerfile – Atelier de renforcement](Documentation/Docker/Dockerfile-atelier-de-renforcement.md)
+* [14 - Docker-Compose – Scripter une application multi-services](Documentation/Docker/Docker-compose.md) 🛑🛑
+* [15 - Docker-Compose – Laboratoire (Drupal) TODO:](https://4204d4.ve2cuy.com/docker-compose-laboratoire-drupal/) 🛑
+* [16 - Dépôt privé d’images – Harbor](Installation/Registre-privé-d-images.md)
+* [17 - Automatisation des builds – GitHub actions](/Documentation/Automatisation/github-action-v2.md)
+* [18 - Automatisation des builds – GitHub actions V2](/Documentation/Automatisation/github-action.md)
 * [Docker - Référence rapide](Documentation/Docker/Docker-Référence-rapide.md) 👍
 
 ### Kubernetes (K8s)
