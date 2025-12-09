@@ -905,4 +905,4 @@ Référence: [K8s-secret](https://kubernetes.io/fr/docs/concepts/configuration/s
 
 ###### Document rédigé par Alain Boudreault (c) 2021-2026 – version 2025.12.05.01
 
-site par ve2cuy</parameter>
+site par ve2cuy

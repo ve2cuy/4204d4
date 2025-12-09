@@ -63,6 +63,7 @@
 * [23 - Préparation à l'atelier d'installation d'un 'cluster' K8s avec Vagrant](https://4204d4.ve2cuy.com/pre-requis-atelier-k8s-vagrant/)
 * [24 - Kubernetes – Installation d'un cluster; 1 Master, 2 Nodes](https://4204d4.ve2cuy.com/kubernetes-installation-dun-cluster-1-master-2-nodes/)
 * [25 - Kubernetes – Les volumes](Documentation/Kubernetes/Kubernetes-Les-volumes.md) 👍
+* [25a - Kubernetes - Services](Documentation/Kubernetes/Kubernetes-Services.md) 🧠
 * [26 - Kubernetes – LoadBalancer Externe et Ingress](Documentation/Kubernetes/Kubernetes-LoadBalancer-et-Ingress.md) 👍 [Docum officielle](https://kubernetes.io/docs/concepts/services-networking/ingress/)
 * [Ingress avec Traefik](Documentation/Kubernetes/Ingress-avec-traefik.md)
 * [Équilibreur de charge externe](Documentation/Kubernetes/Equilibreur-de-charge-externe-MetalLB.md) 
@@ -73,7 +74,7 @@
 * [29 - Helm charts]() 🧠
 * [30 - Automatisation des ‘builds’ d’images Docker/Github]() 🧠
 * [31 - Aide rapide]()
-* [kubectl - Référence rapide](Documentation/Kubernetes/Kubernetes-Référence-rapide.md) 👍
+* [kubectl - Référence rapide](Documentation/Kubernetes/Kubernetes-Reference-rapide.md) 👍
 
 ---
 
