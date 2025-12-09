@@ -717,7 +717,30 @@ kubectl get pod
 
 ---
 
-## 3 – Renseigner un manifeste de déploiement
+## 3 – Les manifestes de K8s
+
+---
+
+## Qu'est-ce qu'un Manifeste Kubernetes ?
+
+Un **manifeste Kubernetes** est un fichier YAML qui décrit l'état désiré d'une ressource. 
+
+Structure commune :
+
+```yaml
+apiVersion:  <version-api>          # Version de l'API, voir le tableau à la fin de ce document.
+kind:        <type-ressource>       # Type de ressource: pod, service, configmap, secret, deployment, ...
+metadata:                           # Nom, labels, annotations
+  name:      <nom-ressource>        # Nom de la ressource (requis!)
+  namespace: <nom-espace-de-nom>    # Indique le 'NS' dans lequel la ressource sera créée (optionnel)
+  labels:                           # Paires de clés pour organiser et sélectionner les objets K8s
+    clé: valeur
+    clé: valeur
+spec:                               # Spécification (état désiré) de la ressource, en fonction de 'kind'
+```
+
+---
+
 
 ### 3.0 – Manifeste d'un Pod
 

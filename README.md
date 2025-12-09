@@ -44,7 +44,7 @@
 * [10 - Docker – Les réseaux](Documentation/Docker/Introduction-aux-réseaux.md)
 * [11 - Docker – Application multi-services](Documentation/Docker/Application-multi-services.md)
 * [12 - Docker – Retour sur les fusions (bind)](Documentation/Docker/Retour-sur-les-fusions-Bind.md)
-* [13 - Dockerfile – Atelier de renforcement](Documentation/Docker/Dockerfile-atelier-de-renforcement.md)
+* [13 - Dockerfile – Atelier de renforcement - SuperMinou 🐈](Documentation/Docker/Dockerfile-atelier-de-renforcement.md)
 * [14 - Docker-Compose – Scripter une application multi-services](Documentation/Docker/Docker-compose.md) 🛑🛑
 * [15 - Docker-Compose – Laboratoire (Drupal) TODO:](https://4204d4.ve2cuy.com/docker-compose-laboratoire-drupal/) 🛑
 * [16 - Dépôt privé d’images – Harbor](Installation/Registre-privé-d-images.md)
@@ -56,7 +56,10 @@
 
 * [20 - Kubernetes – Installation d'un nœud unique sous Linux](Documentation/Kubernetes/Installation-un-seul-noeud.md) 👍
 * [21 - Kubernetes – Introduction](Documentation/Kubernetes/Kubernetes-Introduction.md) 👍
+* [21a- Kubernetes – Introduction](Documentation/Kubernetes/Kubernetes-Manifestes-Expliquées-version-courte.md)
+* [21b- Kubernetes – Introduction](Documentation/Kubernetes/Kubernetes%20-Manisfestes-Expliqués-version-longue.md)
 * [22 - Kubernetes – Partie 2](Documentation/Kubernetes/Kubernetes-partie-2.md) 👍🛑
+* [22b- Kubernetes – Config Map et Secrets](Documentation/Kubernetes/Kubernetes-Config-map-et-secret.md) 👍🛑
 * [23 - Préparation à l'atelier d'installation d'un 'cluster' K8s avec Vagrant](https://4204d4.ve2cuy.com/pre-requis-atelier-k8s-vagrant/)
 * [24 - Kubernetes – Installation d'un cluster; 1 Master, 2 Nodes](https://4204d4.ve2cuy.com/kubernetes-installation-dun-cluster-1-master-2-nodes/)
 * [25 - Kubernetes – Les volumes](Documentation/Kubernetes/Kubernetes-Les-volumes.md) 👍
