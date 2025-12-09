@@ -4,7 +4,8 @@ on:
     branches:
       - main
     paths:
-      - 'Code/superMinou/Dockerfile'
+      # - 'Code/superMinou/Dockerfile' # Seulement si vous voulez déclencher le workflow lors de la modification du Dockerfile
+      - 'Code/superMinou/' # Déclencher le workflow si des fichiers dans ce dossier changent
       # - Autre projet ..
 
 jobs:
