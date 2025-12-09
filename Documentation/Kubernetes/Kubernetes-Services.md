@@ -1,6 +1,8 @@
 # Les Services Kubernetes
 
-<img src="../images/k8s-services.avif" alt="" width="500" />
+<p align="center">
+    <img src="../images/k8s-services.avif" alt="" width="500" />
+</p>
 
 ## À quoi sert un Service Kubernetes ?
 
