@@ -4,4 +4,6 @@ LABEL   auteur: votre nom \
         email: yo@yo.yo
 # ---------- 
 
-# Ceci est un commentaire pour forcer la chaine CI/CD
+# Commande à exécuter au démarrage d'un conteneur
+# Modifier la ligne suivante dans votre solution
+CMD ["echo"," --------------------------\n","Je suis SuperMinou!\n","--------------------------\n"]
