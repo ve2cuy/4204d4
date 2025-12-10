@@ -571,5 +571,5 @@ $ docker ps --filter ancestor=nginx --format "table {{.ID}}\t{{.Names}}\t{{.Stat
 ## Crédits
 
 *Document rédigé par Alain Boudreault © 2021-2026*  
-*Version 2025.12.03.1*  
+*Version 2025.12.10.1*  
 *Site par ve2cuy*
