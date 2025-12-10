@@ -530,6 +530,35 @@ $ docker logs monServeurWeb
 ...
 ```
 
+### 3.9 – Afficher le détail complet (json) d'un conteneur : `docker inspect ID|NAME`
+
+```bash
+$ docker inspect serveur-web 
+
+$ docker inspect serveur-web | grep  "IPAddress"
+    "IPAddress": "172.17.0.3",
+
+ $ inspect serveur-web | grep  "Image"
+    "Image": "sha256:325b00a35073d9aa1d3df16da8afbbae1ac7d824c505f7490cd5cdbb79d60f6d",
+    "Image": "nginx:latest",
+```
+
+### 3.10 – Appliquer un filtre à une commande: `docker --filter`
+
+```bash
+$ docker container ls --filter "status=exited"
+
+$ docker run -d --name "toto" --label "app=web-service" --label "environment=production" nginx:latest
+$ docker container ls --filter "name=toto"
+$ docker container ls --filter "label=env=production"
+
+# Afficher les conteneurs d'image de type x
+$ docker ps -a --filter ancestor=nginx
+
+#  Afficher avec un format personnalisé :
+$ docker ps --filter ancestor=nginx --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}"
+```
+
 -----
 
 ## Outils pour Docker
