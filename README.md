@@ -98,7 +98,6 @@
 
 ## Auteur
 
-
 <img src="Documentation/images/moi.jpg" alt="" width="300" />
 
 - Alain BOUDREAULT
