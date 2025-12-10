@@ -18,7 +18,7 @@
 * [Contenus](Documentation/Contenu/)
 * [Documents](Documentation)
 * [Épreuve synthèse VH22](https://4204d4.ve2cuy.com/epreuve-synthese-2022/)
-* [Copier/coller](Documentation/Copier%2Bcoller.md)
+* [Copier/coller](Documentation/CopierColler.md)
 * [ve2cuy](https://ve2cuy.com/)
 
 ---
@@ -80,7 +80,7 @@
 
 ### Outils
 
-* [Les copier/coller](Documentation/Copier-coller.md) 👍
+* [Les copier/coller](Documentation/CopierColler.md) 👍
 * [LazyDocker](https://github.com/jesseduffield/lazydocker)
 * [K9s]()
 * [Portainer]()
