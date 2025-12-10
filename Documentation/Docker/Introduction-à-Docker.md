@@ -304,8 +304,11 @@ Deleted: sha256:47e12946765b355fb29cdd14f54e78a05d24cb5d68afc1e0e92cd4a0243a1b1a
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES
 d09c5b00adca        hello-world         "/hello"            50 minutes ago      Exited (0) 50 minutes ago                   charming_mcnulty
 
-# Il peut-être redémarré à partir de son ID ou de son nom
-$docker restart d09c5b00adca$ docker restart charming_mcnulty
+# Il peut-être redémarré à partir de son ID
+$docker restart d09c5b00adca$ 
+
+# Ou, en utilisant le nom du conteneur: 
+$ docker restart charming_mcnulty
 ```
 
 ### 2.6 – Démarrer un conteneur en mode terminal (`-t`) interactif (`-i`) : `docker run -it image`
@@ -476,6 +479,8 @@ root@eb66bdef2f73:/usr/share/nginx/html# ls
 
 # 2 - Créer un nouveau document html
 $ echo "<center><h1>Mon serveur WEB</h1></center>" > index2.html
+# Ou installer nano dans le conteneur:
+$ apt update $$ apt install nano -y
 
 # 3 - Tester dans le fureteur
 ```
@@ -484,9 +489,10 @@ $ echo "<center><h1>Mon serveur WEB</h1></center>" > index2.html
     <img src="../images/Capture-decran-le-2021-01-25-a-16.08.28.png" alt="YAML" width="550" />
 </p>
 
-**Question : Est-ce que quitter le 'shell' avec `exit` va terminer le conteneur?**
+❓Question : Est-ce que quitter le 'shell' avec `exit` va terminer le conteneur?
 
-> 💡NOTE : la commande `attach` va exécuter le point d'entrée. Dans le cas de nginx, cela ne correspond pas à un 'shell'.
+>💡NOTE : la commande `attach` va exécuter le point d'entrée. Dans le cas de nginx, cela ne correspond pas à un 'shell'.
+
 -----
 
 
@@ -503,7 +509,7 @@ $ echo "<center><h1>Mon serveur WEB</h1></center>" > index2.html
   
 -----
 
-### 3.7 – Afficher les statistiques d'utilisation matériel des conteneurs en cours d'exécution : `docker container stats`
+### 3.7 – Afficher les statistiques d'utilisation matériel des conteneurs:
 
 ```bash
 $ docker container stats
