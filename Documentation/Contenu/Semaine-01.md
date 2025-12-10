@@ -29,6 +29,7 @@ $ ssh-keygen -C UserName
 $ ssh-copy-id -i nom-du-fichier.pub userName@adresse-ip
 ```
 #### 4.2 Renseigner une référence dans le fichier ~/.ssh/config
+#### Avec l'adresse IP de la machine clonée (labo)
 ```bash
 Au besoin: 
 chmod 600 ~/.ssh/config
@@ -47,6 +48,8 @@ Host labo
 ```bash
 ssh compte@1.2.3.4
 ```
+
+👉 Obtenir l'adresse IP et compléter l'étape 4.2 
 
 ### 7 - Éditer les fichiers /etc/hostname et /etc/hosts et corriger la référence au nom machine.
 ```bash
@@ -98,9 +101,9 @@ echo -e "\nPour changer de thème: lp_theme nom-du-theme\n\n"
 ```
 ---
 
-### Ajouter des alias dan le fichier ~/.bash_aliases
+### Ajouter des alias dans le fichier ~/.bash_aliases
 
-Voir les [copier/coller](/Documentation/Copier%2Bcoller.md)
+Voir les [copier/coller](/Documentation/Copier+coller.md)
 
 ---
 ### 12 - Installer LazyDocker
