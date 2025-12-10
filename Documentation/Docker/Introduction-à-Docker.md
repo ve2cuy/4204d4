@@ -11,6 +11,20 @@
 
 ## Introduction
 
+Après avoir installé Docker, nous aurons accès à la commande 'docker' à partir du 'shell' du système d'exploitation du poste de l'installation.
+
+Cette commande nous permettra de gérer l'ensemble des ressources disponibles sous Docker.
+
+Si Docker est installé sur une machine distante, par exemple un serveur Linux, il sera alors possoble d'y avoir accès suite à une connexion 'ssh' à partir d'un terminal ou en utilisant l'extension 'ssh' de VS Code.
+
+
+#### Ouvrir un terminal vers la station possédant une installation de Docker.
+
+```bash
+$ ssh username@adresse_ip <mot de passe ou clé tls>
+
+# Sous Code, utiliser l'option: Open a remote window.
+```
 
 -----
 
@@ -43,9 +57,8 @@ Commands:
 ...
 ```
 
-### Note (Problème de permission sous Linux)
 
-> **Note :** Sous Linux, si vous obtenez un message de permission refusée :
+> **💡Note :** Sous Linux, si vous obtenez un message de permission refusée :
 
 ```bash
 # Exemple d'erreur:
@@ -81,12 +94,15 @@ Options:
   -q, --quiet           Only display container IDs
   -s, --size            Display total file sizes
 ```
+---
 
-**Action – Afficher l'aide de la commande 'run'**
+**👉 Action – Afficher l'aide de la commande 'run'**
 
-**Question – À quoi servent les options `-i -t` et `-d` ?**
+**❓Question – À quoi servent les options `-i -t` et `-d` ?**
 
-### Problème avec la console interactive (`-it`) sous `git-bash`
+---
+
+#### 💡Problème possible avec la console interactive (`-it`) sous `git-bash`
 
 [https://willi.am/blog/2016/08/08/docker-for-windows-interactive-sessions-in-mintty-git-bash/](https://willi.am/blog/2016/08/08/docker-for-windows-interactive-sessions-in-mintty-git-bash/)
 
@@ -184,8 +200,21 @@ grycap/cowsay            Alpine-less Cowsay (with Fortune)               2      
 ...
 ```
 
-----
+```bash
+ $ docker search alainboudreault
+NAME                                DESCRIPTION                                     STARS     OFFICIAL
+alainboudreault/phpweb              Roule un petit script php qui identifie le h…   0         
+alainboudreault/superminou                                                          0         
+alainboudreault/docker-hub-github   Lorem ipsum ...                                 0         
+alainboudreault/420-4d4-mercredi    Premier pas avec hub.docker.com                 0         
+alainboudreault/labo-01             semaine 02                                      0         
+alainboudreault/bonjour420                                                          0         
+alainboudreault/momo-dit            Exemple d'utilisation de variables d'environ…   0         
+alainboudreault/unserveurweb        Mon premier test push avec docker-hub           0         
+...
 
+```
+---
 
 #### 2.4.2 – Obtenir une image à partir d'un dépôt : `docker pull éditeur/image`
 
@@ -225,6 +254,18 @@ ________________________________________
               ||     ||
 ```
 
+Un autre exemple:
+
+```bash
+$ docker run -e MESSAGE="Bonjour le monde!"  alainboudreault/momo-dit
+
+-----------------------------------------------------
+Momo dit:  Bonjour le monde!
+-----------------------------------------------------
+```
+
+
+
 #### 2.4.4 – Effacer un conteneur : `docker rm ID`
 
 ```bash
@@ -254,7 +295,7 @@ Deleted: sha256:47e12946765b355fb29cdd14f54e78a05d24cb5d68afc1e0e92cd4a0243a1b1a
 ...
 ```
 
-> **Note :** S'il existe des instances 'conteneurs' de cette image, il faudra effacer les conteneurs avant ou bien utiliser l'option `-f` pour forcer la suppression de l'image.
+> **💡Note :** S'il existe des instances 'conteneurs' de cette image, il faudra effacer les conteneurs avant ou bien utiliser l'option `-f` pour forcer la suppression de l'image.
 
 ### 2.5 – Redémarrer un conteneur : `docker restart ID`
 
@@ -276,7 +317,7 @@ bin  dev  etc  home  lib  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp 
 / #
 ```
 
-> **Note :** la commande `exit` va quitter et **terminer** le conteneur.
+> **💡Note :** la commande `exit` va quitter et **terminer** le conteneur.
 
 ### 2.7 – S'attacher à un conteneur en cours d'exécution : `docker attach ID`
 
@@ -297,7 +338,7 @@ $ docker attach intelligent_noether
 $
 ```
 
-> **Note :** La commande `exit` a provoqué l'arrêt du conteneur.
+> **💡Note :** La commande `exit` a provoqué l'arrêt du conteneur.
 
 ### 2.8 – Redémarrer le conteneur précédent : `docker restart ID`
 
@@ -315,7 +356,7 @@ drwxr-xr-x    2 root     root          4096 Jan 25 18:44 420-4C4
 ...
 ```
 
-> **Note :** Il n'est pas nécessaire de fournir tout le numéro d'ID dans une commande. Seulement un nombre suffisant de caractères pour rendre l'ID unique.
+> **💡Note :** Il n'est pas nécessaire de fournir tout le numéro d'ID dans une commande. Seulement un nombre suffisant de caractères pour rendre l'ID unique.
 
 ### 2.9 – Quitter un conteneur sans provoquer son arrêt : Séquence **CTRL P + Q**
 
@@ -366,7 +407,7 @@ ce5bde565bfa        alpine              "/bin/sh"           4 minutes ago       
 
 Voici comment réinitialiser à zéro votre installation de docker :
 
-> ***DANGER : CETTE COMMANDE EFFACE AUSSI LES IMAGES DE MINIKUBE***
+> 🛑 DANGER : CETTE COMMANDE EFFACE AUSSI LES IMAGES DE MINIKUBE***
 
 **Commande pour Linux/macOS :**
 
@@ -445,8 +486,10 @@ $ echo "<center><h1>Mon serveur WEB</h1></center>" > index2.html
 
 **Question : Est-ce que quitter le 'shell' avec `exit` va terminer le conteneur?**
 
-> **NOTE :** la commande `attach` va exécuter le point d'entrée. Dans le cas de nginx, cela ne correspond pas à un 'shell'.
+> 💡NOTE : la commande `attach` va exécuter le point d'entrée. Dans le cas de nginx, cela ne correspond pas à un 'shell'.
 -----
+
+
 <img src="../images/labo02.png" alt="" width="700" />
 
 # 3.6 – Laboratoire
@@ -457,7 +500,9 @@ $ echo "<center><h1>Mon serveur WEB</h1></center>" > index2.html
 4.  Utiliser le port local **`80`** pour la connexion au service web.
 5.  Remplacer la page d'accueil d'apache par votre propre page personnalisée.
 6.  Tester le nouveau service web.
+  
 -----
+
 ### 3.7 – Afficher les statistiques d'utilisation matériel des conteneurs en cours d'exécution : `docker container stats`
 
 ```bash

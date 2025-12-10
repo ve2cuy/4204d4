@@ -1,6 +1,7 @@
 # Liste des contenus du cours 420-4D4.H26
 
-- [Semaine 01 - Présentation du cours et installation des outils](/Documentation/Contenu/Semaine-01.md)
+- [Semaine 01 - Présentation du cours et installation des outils](Semaine-01.md)
+- - [Semaine 01 - Labo CLI Docker](labo-semaine01.md) 
 - [Semaine 02 - Introduction à Docker - suite]()
 - [Semaine 03]()
 - [Semaine 04]()
