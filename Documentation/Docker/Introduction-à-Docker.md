@@ -14,7 +14,7 @@ Après avoir installé Docker, nous aurons accès à la commande 'docker' à par
 
 Cette commande nous permettra de gérer l'ensemble des ressources disponibles sous Docker.
 
-Si Docker est installé sur une machine distante, par exemple un serveur Linux, il sera alors possible d'y avoir accès suite à une connexion 'ssh' à partir d'un terminal ou en utilisant l'extension 'ssh' de VS Code.
+Si Docker est installé sur une machine distante, par exemple un serveur Linux, il sera possible d'y avoir accès suite à une connexion 'ssh' à partir d'un terminal ou en utilisant l'extension 'ssh' de VS Code.
 
 
 #### Ouvrir un terminal vers la station possédant une installation de Docker.
