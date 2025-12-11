@@ -69,7 +69,7 @@ ssh compte@1.2.3.4
 
 ### 10 - Installer Docker
 
-Voir le document : [Installation de Docker](/Installation/Docker/Installation%20de%20Docker.md)
+Voir le document : [Installation de Docker](/Installation/Docker/Installation-de-Docker.md)
 
 ### 11 - Tester Docker
 ```bash
@@ -103,7 +103,7 @@ echo -e "\nPour changer de thème: lp_theme nom-du-theme\n\n"
 
 ### Ajouter des alias dans le fichier ~/.bash_aliases
 
-👉 Voir les [copier/coller](https://ve2cuy.github.io/4204d4/Documentation/CopierColler.html)
+👉 Voir les [copier/coller](/420-4d4/Documentation/CopierColler.md)
 
 ---
 ### 12 - Installer LazyDocker

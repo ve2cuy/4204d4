@@ -508,7 +508,7 @@ $ apt update $$ apt install nano -y
   
 -----
 
-### 3.7 – Afficher les statistiques d'utilisation matériel des conteneurs: `container stat`
+### 3.7 – Afficher les statistiques d'utilisation matériel des conteneurs: `docker ontainer stat`
 
 ```bash
 $ docker container stats
@@ -562,8 +562,9 @@ $ docker ps --filter ancestor=nginx --format "table {{.ID}}\t{{.Names}}\t{{.Stat
 
 ## Outils pour Docker
 
-- Portainer
-- LazyDocker
+- [Portainer](https://www.portainer.io/resources/get-started)
+- [Arcane](https://getarcane.app/)
+- [LazyDocker](https://github.com/jesseduffield/lazydocker)
 
 ---
 
