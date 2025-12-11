@@ -20,7 +20,7 @@ En utilisant le langage de représentation des données **YAML**, il est possibl
 
 Voici un tableau présentant les analogies entre l'utilisation du CLI de Docker et de `docker-compose` :
 
-
+<!--
 <img src="../images/fusions/docker-run-vs-dockercompose-wordpress.png" alt="" width="800" />
 
 
@@ -105,7 +105,7 @@ docker run --name serveur01 --network lab01-docker-compose_default alpine
 docker run --name serveur02 --network lab01-docker-compose_default alpine
 docker run --name serveur03 --network lab01-docker-compose_default alpine
 ```
-<!--
+
 ### Action 1.2 – Vérification des conteneurs
 
 ```bash
