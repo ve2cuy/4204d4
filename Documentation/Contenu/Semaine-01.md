@@ -103,7 +103,7 @@ echo -e "\nPour changer de thème: lp_theme nom-du-theme\n\n"
 
 ### Ajouter des alias dans le fichier ~/.bash_aliases
 
-👉 Voir les [copier/coller](/420-4d4/Documentation/CopierColler.md)
+👉 Voir les [copier/coller](https://ve2cuy.github.io/4204d4/Documentation/CopierColler.html)
 
 ---
 ### 12 - Installer LazyDocker
