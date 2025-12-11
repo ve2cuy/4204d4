@@ -105,7 +105,7 @@ docker run --name serveur01 --network lab01-docker-compose_default alpine
 docker run --name serveur02 --network lab01-docker-compose_default alpine
 docker run --name serveur03 --network lab01-docker-compose_default alpine
 ```
-
+<!--
 ### Action 1.2 – Vérification des conteneurs
 
 ```bash
@@ -277,6 +277,8 @@ services:
       - NGINX_PORT=80 # N'est pas utilisée dans cet exemple
 ```
 
+[Partie 2 de Docker-compose](Docker-compose-p2.md)
+
 ---
 
 ## Crédits
@@ -284,3 +286,4 @@ services:
 *Document rédigé par Alain Boudreault © 2021-2026*  
 *Version 2025.12.03.1*  
 *Site par ve2cuy*
+-->
