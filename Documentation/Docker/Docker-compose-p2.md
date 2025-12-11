@@ -191,7 +191,8 @@ ENV RESET="\[\033[0m]" \
     JAUNE="\[\033[0;33m]"
 # Sympathique petit (prompt) invite en couleur pour tous les utilisateurs
 
-# TODO: RUN echo 'export PS1="${VERT}\D{%H:%M:%S} - ${JAUNE}\u@docker${ROUGE}\nDossier: [\W]\n${RESET}\$ "' >> /etc/bash.bashrc
+# ATTENTION, placer le symbole % devant H, M et S!
+# TODO: RUN echo 'export PS1="${VERT}\D{H:M:S} - ${JAUNE}\u@docker${ROUGE}\nDossier: [\W]\n${RESET}\$ "' >> /etc/bash.bashrc
 RUN apt-get update
 RUN apt-get install git lynx -y
 # Lancer le fureteur au démarrage. Tester avec http://lite.cnn.com/en
