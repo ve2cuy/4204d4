@@ -429,7 +429,7 @@ docker container stop $(docker container ls -aq) ; docker system prune -af --vol
 
 Plusieurs images offrent des services via le protocol **TCP/IP**. Par défaut, le réseau du conteneur est isolé, mais il est possible d'établir un lien (**BIND**) entre le réseau du conteneur et l'ordinateur hôte.
 
-### 3.1 – Obtenir l'image du serveur web Nginx
+### 3.1 – Obtenir l'image du serveur web **nginx**  
 
 **Téléchargement de l'image :**
 
@@ -508,7 +508,7 @@ $ apt update $$ apt install nano -y
   
 -----
 
-### 3.7 – Afficher les statistiques d'utilisation matériel des conteneurs:
+### 3.7 – Afficher les statistiques d'utilisation matériel des conteneurs: `container stat`
 
 ```bash
 $ docker container stats
