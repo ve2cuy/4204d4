@@ -1,5 +1,5 @@
 # 🐳 Docker-compose – Introduction - Partie 1
-
+<!--
 *Date : 12 février 2021 - Révisé le 2025.12.04*
 
 <p align="center">
@@ -19,7 +19,7 @@ Pour adresser ce type de problème, Docker propose le module **`docker-compose`*
 En utilisant le langage de représentation des données **YAML**, il est possible de représenter tous les services et paramètres d'un système donné et de démarrer le tout en une **seule ligne de commande**.
 
 Voici un tableau présentant les analogies entre l'utilisation du CLI de Docker et de `docker-compose` :
-
+-->
 <!--
 <img src="../images/fusions/docker-run-vs-dockercompose-wordpress.png" alt="" width="800" />
 
