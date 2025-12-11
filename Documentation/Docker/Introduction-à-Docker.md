@@ -1,7 +1,6 @@
 # 🐳 Docker – Commandes de base
 
-*Source : [https://4204d4.ve2cuy.com/docker-introduction/](https://4204d4.ve2cuy.com/docker-introduction/)*
-*Date de révision originale : 23 Décembre 2020 (révision 2021-04.15.01)*
+Date de la version originale : 23 Décembre 2020 - révision 2025-12.10.01
 
 ---
 
