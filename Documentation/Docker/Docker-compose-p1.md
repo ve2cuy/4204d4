@@ -187,29 +187,29 @@ networks:
     driver: bridge
 ```
 
-> **Note :** Pour les variables d'environnement, il est possible d'utiliser les trois syntaxes suivantes :
->
-> 1.  \<span style="color:red"\>**Paires Clé:Valeur :**\</span\>
->
->     ```yaml
->     environment:
->       MYSQL_ROOT_PASSWORD: donttell
->       MYSQL_USER: Bob
->     ```
->
-> 2.  \<span style="color:blue"\>**Tableau de chaînes sans guillemets :**\</span\>
->
->     ```yaml
->     environment:
->       - MYSQL_ROOT_PASSWORD=donttell
->     ```
->
-> 3.  \<span style="color:green"\>**Tableau de chaînes avec guillemets :**\</span\>
->
->     ```yaml
->     environment:
->       - "MYSQL_ROOT_PASSWORD=donttell"
->     ```
+**Note :** Pour les variables d'environnement, il est possible d'utiliser les trois syntaxes suivantes :
+
+ 1. **Paires Clé:Valeur :**
+
+     ```yaml
+     environment:
+       MYSQL_ROOT_PASSWORD: donttell
+       MYSQL_USER: Bob
+     ```
+
+ 2.  **Tableau de chaînes sans guillemets :**
+
+     ```yaml
+     environment:
+       - MYSQL_ROOT_PASSWORD=donttell
+     ```
+
+ 3.  **Tableau de chaînes avec guillemets :**
+
+     ```yaml
+     environment:
+       - "MYSQL_ROOT_PASSWORD=donttell"
+     ```
 
 ### Action 2.3 – Relancer les services en arrière-plan (`-d`)
 
@@ -277,6 +277,10 @@ services:
       - NGINX_PORT=80 # N'est pas utilisée dans cet exemple
 ```
 
-*\[Image : `img-nginx-volumes-ports.png` - Schéma illustrant la structure des dossiers locaux (templates, contenuweb) liés aux volumes du conteneur Nginx et la liaison du port 8080:80.]*
+---
 
------
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Version 2025.12.03.1*  
+*Site par ve2cuy*
