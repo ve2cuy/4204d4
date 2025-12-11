@@ -167,7 +167,7 @@ Tester l'application WordPress de la CIE ABC et le service phpMyadmin.
 
 Dans un dossier vide, enregistrer le fichier **`Dockerfile`** :
 
-```dockerfile
+```
 # ###########################################################################
 # Fichier: Dockerfile
 # Auteur: Alain Boudreault
@@ -190,7 +190,8 @@ ENV RESET="\[\033[0m]" \
     BLEU="\[\033[01;34m]" \
     JAUNE="\[\033[0;33m]"
 # Sympathique petit (prompt) invite en couleur pour tous les utilisateurs
-# TOTO: RUN echo 'export PS1="${VERT}\D{%H:%M:%S} - ${JAUNE}\u@docker${ROUGE}\nDossier: [\W]\n${RESET}\$ "' >> /etc/bash.bashrc
+
+# TODO: RUN echo 'export PS1="${VERT}\D{%H:%M:%S} - ${JAUNE}\u@docker${ROUGE}\nDossier: [\W]\n${RESET}\$ "' >> /etc/bash.bashrc
 RUN apt-get update
 RUN apt-get install git lynx -y
 # Lancer le fureteur au démarrage. Tester avec http://lite.cnn.com/en
