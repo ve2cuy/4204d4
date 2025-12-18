@@ -1,5 +1,6 @@
 body {
-  padding-top: 5rem;
+  /* Reduced top padding to avoid excessive vertical gap that pushes dropdowns down */
+  padding-top: 1rem;
 }
 .starter-template {
   padding: 3rem 1.5rem;
