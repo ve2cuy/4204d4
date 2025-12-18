@@ -28,6 +28,7 @@
 
 
  * Remplacer le nom de l'auteur du pied de page dans **index.html** par votre nom.
+ * Remplacer la photo, en haut à droite du menu, par la votre.
  
   **NOTE**: Il faut utiliser la commande **'sed -i'**. Ne pas modifier le fichier avec un éditeur de texte. La modification doit-être faite dans le Dockerfile. Référence: Rechercher et remplacer une chaine de caractères sous Linux.
  
@@ -35,6 +36,12 @@
  * Inscrire en commentaire, dans le fichier, la commande à utiliser pour produire l'image.; `# docker build …`
  * Il faut publier l'image finale sur docker hub sous: **votrecompte/docker-lab version latest et 1.0**
  
+ ---
+
+ ## Résultat
+ 
+<img src="../images/superminou.png" alt="chat" width="750" />
+
  ----
 
  ## Défi supplémentaire pour les plus téméraires
