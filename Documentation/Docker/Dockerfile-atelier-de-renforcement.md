@@ -11,7 +11,7 @@
 
  ### Il faut bâtir une image Docker,  à partir d'un fichier Dockerfile nommé 'powercat' qui:
  
- * Utilise comme source de départ, **apache version 2.4**
+ * Utilise comme source de départ, **httpd (apache) version trixie**
  * Propose les applications suivantes:  **mc, curl, git, htop et mcedit**
  * Le site web doit proposer le contenu du répertoire **4204d4/module01/semaine02/exercice03** du dépôt GitHub **https://github.com/ve2cuy/4204d4.git** comme page d'accueil.
  
