@@ -549,7 +549,7 @@ $ docker container ls --filter "status=exited"
 
 $ docker run -d --name "toto" --label "app=web-service" --label "environment=production" nginx:latest
 $ docker container ls --filter "name=toto"
-$ docker container ls --filter "label=env=production"
+$ docker container ls --filter "label=environment=production"
 
 # Afficher les conteneurs d'image de type x
 $ docker ps -a --filter ancestor=nginx
