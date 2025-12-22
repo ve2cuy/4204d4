@@ -577,7 +577,7 @@ RUN sed -i 's/Listen 80/Listen 8080/' /usr/local/apache2/conf/httpd.conf
 
 ---
 
-## 👉 5.8.1 –Laboratoire – Durée 30 minutes
+## 👉 5.8.1 – Laboratoire – Durée 30 minutes
 
 <img src="../images/labo03.png" alt="" width="700" />
 
