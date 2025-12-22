@@ -354,6 +354,7 @@ RUN apt install -y mc
 ```
 
 -----
+
 <img src="../images/labo03.png" alt="" width="700" />
 
 ## 5.1.1 – Laboratoire – Durée 20 minutes
@@ -361,7 +362,7 @@ RUN apt install -y mc
 À partir de l'exemple précédent, contruire une image qui affiche le contenu des trois variables d'environnement au démarrage d'un conteneur.
 
 - 1 - Il faut utiliser l'image '**alpine:latest**' comme source
-- 2 - Sous alpine, la commande utilisée pour installer des applications (pakages) est '**apk**'. 
+- 2 - Sous alpine, la commande utilisée pour installer des applications (packages) est '**apk**'. 
 - - À vous de vérifier la syntaxe d'utilisation.
 
 Résultat obtenu:
@@ -384,7 +385,11 @@ Et le DNS est: 1.1.1.1
 
 ### 5.2 – Exemple d’utilisation d’une variable d’environnement lors du build
 
+Voici comment passer des informations, pour le build, à partir de la ligne de commande:
+
+
 ```dockerfile
+# NOTE: BUILD_DATE et BUILD_VERSION seront passés via la ligne de commande. 
 FROM alpine
 
 # Labels
@@ -409,6 +414,7 @@ CMD ["sh", "-c", "echo -e BUILD_DATE=$DATE_DU_BUILD"]
 Commande de construction :
 
 ```bash
+# NOTE: --no-cache indique de reconstruire toutes les couches de l'image
 docker build --no-cache=true \
 --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
 --build-arg BUILD_VERSION=1.0 \
@@ -438,13 +444,20 @@ $ docker inspect ID_CONTENEUR | grep -A5 Labels
 $ docker inspect --format='{{index .Config.Labels "org.label-schema.build-date"}}' ID_CONTENEUR
 # 'index' pointe sur la clé "Config": {"Labels": {"org.label-schema.build-date": ... }
 # Voir la structure json retounée par la directive 'inspect'.
+
+$ docker inspect --format='{{index .Config.Labels "org.label-schema.docker.cmd"}}' mes-outils
+
+  --> docker run --build-arg BUILD_DATE= --build-arg BUILD_VERSION=1.0  mes-outils
+
 ```
 
-**⚠️ Note importante** : Cet exemple utilise la syntaxe `org.label-schema` qui est maintenant **déprécié** (mais toujours largement utilisé). Voir le document [Dockerfile convention de nommage](Dockerfile-convention-de-nommage.md) pour des exemples avec le standard 'OCI Image Spec Annotations'.
+**⚠️ Note importante** : Cet exemple utilise la syntaxe `org.label-schema` qui est maintenant **dépréciée** (mais toujours largement utilisée). Voir le document [Dockerfile convention de nommage](Dockerfile-convention-de-nommage.md) pour des exemples avec le standard 'OCI Image Spec Annotations'.
 
 --- 
 
 ### 5.3 – Le fichier `.dockerignore`
+
+Si présent dans le répertoire du Dockerfile, le fichier `.dockerignore` permet d'exclure des fichiers lorsque les directives 'COPY' et 'ADD' sont utilisées.
 
 ```bash
 # Voici un exemple de contenu:
@@ -459,6 +472,8 @@ LICENSE
 .vscode
 ```
 
+---
+
 ### 5.4 – La directive WORKDIR, exemple d’utilisation:
 
 ```dockerfile
@@ -469,6 +484,8 @@ WORKDIR /usr/share/nginx/html
 COPY . ./
 ```
 
+---
+
 ### 5.5 – Différences entre les directives ADD et COPY
 
   * `COPY src dest`: copie des fichiers/dossiers d’une source locale vers une destination dans l’image.
@@ -478,6 +495,8 @@ COPY . ./
 
 Si les fonctions supplémentaires de `ADD` ne sont pas requises, il est recommandé d’utiliser la directive `COPY`.
 
+---
+
 ### 5.6 – Dockerfile de l’image Alpine
 
 ```dockerfile
@@ -486,7 +505,57 @@ ADD alpine-minirootfs-3.15.0-x86_64.tar.gz /
 CMD ["/bin/sh"]
 ```
 
-### 5.7 – Dockerfile de WordPress
+---
+
+### 5.7 – Exécuter un bloc d'instruction pour créer un fichier
+```dockerfile
+FROM alpine
+	{ \
+		echo 'opcache.memory_consumption=128'; \
+		echo 'opcache.interned_strings_buffer=8'; \
+		echo 'opcache.max_accelerated_files=4000'; \
+		echo 'opcache.revalidate_freq=2'; \
+		echo 'opcache.fast_shutdown=1'; \
+	} > /config.ini
+
+# Construire l'image et executer un shell interactif sur le conteneur
+# pour vérifier le contenu du ficher config.ini
+
+```
+---
+
+## 5.7.1 –Laboratoire – Durée 20 minutes
+
+<img src="../images/labo02.png" alt="" width="700" />
+
+<br>
+
+Contruire une image, à partir de 'alpine' qui crée le fichier d'alias suivant à partir d'un bloc 'echo vers ...'  Au besoin, revoir 5.7.
+
+```bash
+alias ll='ls -la'
+alias t='top'
+alias os='uname -a'
+alias c='clear'
+```
+- le fichier est localisé dans `/etc/profile.d/alias.sh`
+
+NOTE: Pour fonctionner, il faut que la variable d'environnement  `ENV` pointe sur  `/etc/profile`
+
+---
+
+Résultat:
+```bash
+$ docker run -it --hostname labo5-7-1 labo-5-7-1
+labo5-7-1:/# alias
+c='clear'
+os='uname -a'
+t='top'
+ll='ls -la'
+labo5-7-1:/#
+```
+
+### 5.8 – Exemple d'un Dockerfile complexe (WordPress)
 
 ```dockerfile
 FROM php:7.4-apache

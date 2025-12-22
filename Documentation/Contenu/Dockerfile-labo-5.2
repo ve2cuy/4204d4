@@ -1,16 +1,19 @@
 #!Dockerfile
 # Auteur:   Alain Boudreault
 # Date:     2025.12.21
-# -----------------------------------------------------------
+# Solution: Laboratoire 5.2 de Dockerfile-Introduction
+# -------------------------------------------------------------------------
 # $ docker build --no-cache=true \
 # --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
 # --build-arg BUILD_VERSION=1.0 \
 # -t mes-outils:latest \
 # -f Dockerfile-labo-5.2 .
-# -----------------------------------------------------------
+# -------------------------------------------------------------------------
 # NOTE: The docker build --no-cache option forces Docker 
 # to ignore all cached layers and rebuild the image entirely from scratch. 
-# -----------------------------------------------------------
+# -------------------------------------------------------------------------
+# NOTE: BUILD_DATE et BUILD_VERSION seront passés via la ligne de commande. 
+# -------------------------------------------------------------------------
 
 FROM alpine
 
@@ -29,4 +32,5 @@ ENV DATE_DU_BUILD=${BUILD_DATE}
 # WORKDIR /mnt
 # RUN tar zxvf /mnt/outils.tar.gz
 # CMD ["/mnt/outils/outils.sh"]
+
 CMD ["sh", "-c", "echo -e BUILD_DATE=$DATE_DU_BUILD"]
