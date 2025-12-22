@@ -1,0 +1,28 @@
+#!Dockerfile
+# $ docker build -f .\Dockerfile-labo-5.1.1 -t labo5.1.1.1 .
+# -----------------------------------------------------------------------------------
+# EXEMPLE AVEC UN TIME-ZONE et autres choses ...
+# Valeurs passées au conteneur par des variables d'environnement
+# docker build -t test:v1 .
+# -----------------------------------------------------------------------------------
+# NOTE: Le mot de passe est en clair dans le Dockerfile, ce qui n'est pas sécuritaire.
+# Cela devrait produire l'avertissement suivant:
+# 1 warning found (use docker --debug to expand):
+# - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "MOT_DE_PASSE_ULTRA_SECRET") (line 10)
+# En production, utiliser plutôt: docker run -e MOT_DE_PASSE_ULTRA_SECRET="monMotDePasse"
+# -----------------------------------------------------------------------------------
+
+FROM alpine:latest
+LABEL maintainer="alain.boudreault@me.com"
+
+# Ces variables d'environnement seront crées dans le conteneur. 
+ENV TZ="PoleNord/NoelVille"
+ENV MOT_DE_PASSE_ULTRA_SECRET="j3sU1um0TDEp2SSE"
+ENV ADRESSE_DNS=1.1.1.1
+
+# Installer un utilitaire et utiliser `printf` pour gérer proprement les sauts de ligne
+RUN apk add mc
+# sh -c est utilisé pour permettre l'expansion des variables d'environnement et les séquences d'échappement.
+# Utiliser `printf` est plus fiable que `echo -e` sur /bin/sh d'alpine.
+CMD ["sh", "-c", "printf '\nBienvenue dans le conteneur Docker!\n\nLe mot de passe ultra secret est: %s\nLe fuseau horaire est: %s\nEt le DNS est: %s\n' \"$MOT_DE_PASSE_ULTRA_SECRET\" \"$TZ\" \"$ADRESSE_DNS\""]
+# Fin du fichier Dockerfile

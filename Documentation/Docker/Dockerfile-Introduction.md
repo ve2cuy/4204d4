@@ -284,13 +284,13 @@ docker run alainboudreault/bonjour420
 > **Note**: Placez-vous dans un dossier de travail vide\!
 >
 > ```bash
-> git clone [https://github.com/ve2cuy/4204d4.git](https://github.com/ve2cuy/4204d4.git)
+> git clone https://github.com/ve2cuy/superminou-depart
 > ```
 
 ### 3.2 – Se déplacer vers le dossier de l'exercice
 
 ```bash
-cd 4204d4/module01/semaine02/exercice03
+cd superminou-depart/
 ```
 
 ### 3.3 – Construire une image nommée 'test'
@@ -313,7 +313,7 @@ docker run -d -p 99:80 test
 docker run -d -p 99:80 alainboudreault/420-4d4:exemple03
 ```
 
-<img src="../images/Dockerfile-labo03.png" alt="YAML" width="550" />
+<img src="../images/Dockerfile-labo04.png" alt="YAML" width="550" />
 
 -----
 <img src="../images/labo02.png" alt="" width="700" />
@@ -335,39 +335,107 @@ docker run -d -p 99:80 alainboudreault/420-4d4:exemple03
 
 ## 5.0 – Exemples supplémentaires
 
-### 5.1 – Installation qui requiert la définition d’une zone de temps (TIME\_ZONE)
+### 5.1 – Conteneur qui requiert la définition de variables d'environnement
 
 ```dockerfile
-# EXEMPLE AVEC UN TIME-ZONE
+# EXEMPLE AVEC UN TIME-ZONE et autres choses ...
+# Valeurs passées au conteneur par des variables d'environnement
 # docker build -t test:v1 .
-FROM ubuntu:20.04
+FROM busybox:unstable-uclibc
 LABEL maintainer="alain.boudreault@me.com"
 RUN apt-get update && apt-get install -yq tzdata
-ENV TZ="America/New_York"
+
+# Ces variables d'environnement seront crées dans le conteneur. 
+ENV TZ="PoleNord/NoelVille"
+ENV MOT_DE_PASSE_ULTRA_SECRET="j3sU1um0TDEp2SSE"
+ENV ADRESSE_DNS=1.1.1.1
+
 RUN apt install -y mc
 ```
+
+-----
+<img src="../images/labo03.png" alt="" width="700" />
+
+## 5.1.1 – Laboratoire – Durée 20 minutes
+
+À partir de l'exemple précédent, contruire une image qui affiche le contenu des trois variables d'environnement au démarrage d'un conteneur.
+
+- 1 - Il faut utiliser l'image '**alpine:latest**' comme source
+- 2 - Sous alpine, la commande utilisée pour installer des applications (pakages) est '**apk**'. 
+- - À vous de vérifier la syntaxe d'utilisation.
+
+Résultat obtenu:
+
+```bash
+$ docker run labo5.1.1.1
+
+Bienvenue dans le conteneur Docker!
+
+Le mot de passe ultra secret est: j3sU1um0TDEp2SSE
+Le fuseau horaire est: PoleNord/NoelVille
+Et le DNS est: 1.1.1.1
+```
+
+**NOTE: Vérifier que la commande 'mc' fonctionne.
+
+<img src="../images/Dockerfile-labo5.1.1.1.png" alt="" width="700" />
+
+---
 
 ### 5.2 – Exemple d’utilisation d’une variable d’environnement lors du build
 
 ```dockerfile
-FROM openjdk:jre-alpine
-LABEL maintainer="dev@someproject.org"
+FROM alpine
+
+# Labels
 ARG BUILD_DATE
-LABEL org.label-schema.build-date=$BUILD_DATE
-COPY tool.tar.gz /mnt
-WORKDIR /mnt
-RUN tar zxvf /mnt/tool.tar.gz
-CMD ["/mnt/tool/tool.sh"]
+ARG BUILD_VERSION
+LABEL org.label-schema.schema-version="1.0"
+LABEL org.label-schema.build-date=${BUILD_DATE}
+LABEL org.label-schema.version=${BUILD_VERSION:-1.0}
+LABEL maintainer="dev@unprojet.org"
+
+ENV DATE_DU_BUILD=${BUILD_DATE}
+
+# COPY outils.tar.gz /mnt
+# WORKDIR /mnt
+# RUN tar zxvf /mnt/outils.tar.gz
+# CMD ["/mnt/outils/outils.sh"]
+CMD ["sh", "-c", "echo -e BUILD_DATE=$DATE_DU_BUILD"]
 ```
 
 Commande de construction :
 
 ```bash
-docker build --no-cache=true --build-arg \
-BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \ -t mytool:latest .
+docker build --no-cache=true \
+--build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
+--build-arg BUILD_VERSION=1.0 \
+-f Dockerfile-labo-5.2 \
+-t mes-outils:latest .
 ```
 
-[Référence](https://medium.com/@chamilad/lets-make-your-docker-image-better-than-90-of-existing-ones-8b1e5de950d)
+Résultat:
+
+```
+$ docker run mes-outils:latest
+BUILD_DATE=2025-12-22T15:11:36Z
+```
+
+Inspecter la structure json du conteneur:
+
+```
+$ docker inspect ID_CONTENEUR | grep -A5 Labels
+    "Labels": {
+         "maintainer": "dev@unprojet.org",
+         "org.label-schema.build-date": "2025-12-22T15:21:48Z",
+         "org.label-schema.schema-version": "1.0",
+         "org.label-schema.version": "3.2"
+            },
+```
+
+**⚠️ Note importante** : Cet exemple utilise la syntaxe `org.label-schema` qui est maintenant **déprécié** (mais toujours largement utilisé). Voir le document [Dockerfile convention de nommage](Dockerfile-convention-de-nommage.md) pour des exemples avec le standard 'OCI Image Spec Annotations'.
+
+--- 
 
 ### 5.3 – Le fichier `.dockerignore`
 
@@ -578,10 +646,11 @@ ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["apache2-foreground"]
 ```
 
+
 ---
 
 ## Crédits
 
 *Document rédigé par Alain Boudreault © 2021-2026*  
-*Version 2025.12.03.1*  
+*Version 2025.12.22.1*  
 *Site par ve2cuy*

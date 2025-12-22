@@ -39,6 +39,7 @@
 * [06 - Yaml – Exemple d'un document Yaml](Documentation/Yaml/yaml-exemple-ibm.md)
 * [07 - hub.docker.com – Introduction](/Documentation/Docker/Docker-Hub.md)
 * [08 - Dockerfile – Introduction](Documentation/Docker/Dockerfile-Introduction.md)
+* [08b- Dockerfile – Convention de nommage des 'labels'](Documentation/Docker/Dockerfile-convention-de-nommage.md)
 * [09 - Dockerfile - Exemple avec une app node.js](Documentation/Docker/Dockerfile-Exemple-node.js.md)
 * [10 - Docker – Les réseaux](Documentation/Docker/Introduction-aux-réseaux.md)
 * [11 - Docker – Application multi-services](Documentation/Docker/Application-multi-services.md)
