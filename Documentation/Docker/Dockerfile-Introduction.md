@@ -555,7 +555,53 @@ ll='ls -la'
 labo5-7-1:/#
 ```
 
-### 5.8 – Exemple d'un Dockerfile complexe (WordPress)
+---
+
+## 5.8 - La directice 'EXPOSE'
+
+```Dockerfile
+# docker build -f Dockerfile-labo-5-8-1 -t mon-httpd:8080 .
+# docker run -d -p 8080:8080 --name web-server mon-httpd:8080
+
+FROM httpd:2.4
+
+# Exposer le port 8080 au lieu de 80
+EXPOSE 8080
+
+# Modifier la configuration pour écouter sur 8080
+RUN sed -i 's/Listen 80/Listen 8080/' /usr/local/apache2/conf/httpd.conf
+
+# Au besoin, copier votre contenu web
+# COPY ./html/ /usr/local/apache2/htdocs/
+```
+
+---
+
+## 👉 5.7.1 –Laboratoire – Durée 30 minutes
+
+<img src="../images/labo03.png" alt="" width="700" />
+
+<br>
+
+À partir de l'exemple 5.7, contruire une image qui:
+
+- Renseigne le port HTTP via la ligne de commande lors du build.
+- Renseigne le label `org.label-schema.docker.cmd` avec la commande à exécuter pour lancer le contenueur.
+- Remplace la page par défaut par la votre.
+- - Créer le fichier `index.html` dans le Dockerfile
+- Ajoute une configuration personnalisée pour un 404
+- - Créer le fichier `404.html` dans le Dockerfile.
+- Utilise l'image suivante dans la page 404:
+
+<img src="../images/Error-Page-Not-Found.jpg" alt="" width="700" />
+
+- Il faut publier l'image sur docker hub sous `votre-compte/labo-5-7-1:latest`
+- Copier la commande, pour lancer votre conteneur, dans la conversation TEAMS.
+
+
+---
+
+### 6 – Exemple d'un Dockerfile complexe (WordPress)
 
 ```dockerfile
 FROM php:7.4-apache

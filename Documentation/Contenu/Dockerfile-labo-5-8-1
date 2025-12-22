@@ -1,0 +1,14 @@
+#!Dockerfile
+# docker build -f Dockerfile-labo-5-8-1 -t mon-httpd:8080 .
+# docker run -d -p 8080:8080 --name web-server mon-httpd:8080
+
+FROM httpd:2.4
+
+# Exposer le port 8080 au lieu de 80
+EXPOSE 8080
+
+# Modifier la configuration pour écouter sur 8080
+RUN sed -i 's/Listen 80/Listen 8080/' /usr/local/apache2/conf/httpd.conf
+
+# Au besoin, copier votre contenu web
+# COPY ./html/ /usr/local/apache2/htdocs/
