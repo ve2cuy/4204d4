@@ -3,6 +3,9 @@
 
  19 février 2021 - Révision du 2025-12-05
 
+ **TODO:** Augmenter le niveau de difficulté!!
+
+
 <p align="center">
     <img src="../images/renforcement.png" alt="chat" width="400" />
 </p>
