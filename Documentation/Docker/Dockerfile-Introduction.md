@@ -393,6 +393,8 @@ ARG BUILD_VERSION
 LABEL org.label-schema.schema-version="1.0"
 LABEL org.label-schema.build-date=${BUILD_DATE}
 LABEL org.label-schema.version=${BUILD_VERSION:-1.0}
+LABEL org.label-schema.docker.cmd="docker run --build-arg BUILD_DATE="" --build-arg BUILD_VERSION=1.0  mes-outils"
+
 LABEL maintainer="dev@unprojet.org"
 
 ENV DATE_DU_BUILD=${BUILD_DATE}
@@ -431,6 +433,11 @@ $ docker inspect ID_CONTENEUR | grep -A5 Labels
          "org.label-schema.schema-version": "1.0",
          "org.label-schema.version": "3.2"
             },
+
+# Autre méthode,
+$ docker inspect --format='{{index .Config.Labels "org.label-schema.build-date"}}' ID_CONTENEUR
+# 'index' pointe sur la clé "Config": {"Labels": {"org.label-schema.build-date": ... }
+# Voir la structure json retounée par la directive 'inspect'.
 ```
 
 **⚠️ Note importante** : Cet exemple utilise la syntaxe `org.label-schema` qui est maintenant **déprécié** (mais toujours largement utilisé). Voir le document [Dockerfile convention de nommage](Dockerfile-convention-de-nommage.md) pour des exemples avec le standard 'OCI Image Spec Annotations'.
