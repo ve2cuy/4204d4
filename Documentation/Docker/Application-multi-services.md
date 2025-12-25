@@ -79,6 +79,8 @@ LOGIN-NAME=Coco Lafortune
 
 > **NOTE** : À défaut de l'option `--hostname`, sa valeur sera le ID du conteneur.
 
+---
+
 ### Étape 2 – Construire une image qui utilise une variable d'environnement:
 
 #### Action 2.1 – Dockerfile
@@ -90,7 +92,7 @@ Dans un dossier vide, renseigner le fichier `Dockerfile` suivant:
 FROM alpine
 
 # Optionnel
-LABEL Alain Boudreault <aboudrea@cstj.qc.ca>
+LABEL Auteur="Alain Boudreault <aboudrea@cstj.qc.ca>"
 
 ENV EXEMPLE=2.1
 # Exécuter des commandes dans l'image
@@ -155,6 +157,11 @@ Momo dit: Il fît de la sorte un assez long chemin
 EXEMPLE: 2.1
 ```
 
+---
+
+<img src="../images/labo02.png" alt="" width="700" />
+
+
 ### Laboratoire 2.6 (Durée 30 minutes) – Construire une image:
 
   * À partir d'une `alpine`, qui reçoit comme variables d'environnement; **USERNAME** et **PASSWORD**
@@ -179,8 +186,7 @@ EXEMPLE: 2.1
 > fi
 > echo "Bienvenue $1 chez nous!"
 > ```
->
-> [Référence bash](URL non fournie dans la source)
+
 
 -----
 
@@ -241,6 +247,10 @@ Dans un fureteur, inscrire l'adresse `localhost:8080`, ce qui devrait afficher l
 <p align="center">
     <img src="../images/mariabd-adminer02-1024x580.png" alt="" width="600" />
 </p>
+
+---
+
+<img src="../images/labo02.png" alt="" width="700" />
 
 ### Laboratoire 3.5 (durée 30 minutes) – Construire l'application multi-services suivante:
 

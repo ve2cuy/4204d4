@@ -174,7 +174,7 @@ round-trip min/avg/max = 0.133/0.195/0.234 ms
 ping: bad address 'serveur02'
 ```
 
-> **\<span style="color: \#ff0000;"\>SURPRISE:\</span\>** Cela ne semble pas fonctionner, pourquoi? Pour que docker active un service de noms de domaines, il faut **créer des réseaux privés**.
+> **SURPRISE:** Cela ne semble pas fonctionner, pourquoi? Pour que docker active un service de noms de domaines, il faut **créer des réseaux privés**.
 
 #### Action 1.6 – Créer un réseau docker
 
@@ -289,6 +289,20 @@ Par exemple:
 
 ```
 http://localhost
+
+# Au besoin. pour installer la commande ip sur Ubuntu:
+# apt install iproute2 -y 
+
+$ ip a
+ ens33: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 00:0c:29:7a:af:bc brd ff:ff:ff:ff:ff:ff
+    altname enp2s1
+    inet 192.168.2.32/24 brd 192.168.2.255 scope global dynamic noprefixroute ens33
+       valid_lft 7059896sec preferred_lft 7059896sec
+    inet6 fe80::20c:29ff:fe7a:afbc/64 scope link proto kernel_ll 
+       valid_lft forever preferred_lft forever
+
+NOTE: L'adresse IP du conteneur devrait être identique à l'adresse de l'hôte.
 ```
 
 > **NOTE**: Cette fonctionnalité n’est pas disponible sous **Windows** ou **MacOS**, seulement sur **Linux**.
@@ -304,10 +318,198 @@ Voir les réseaux disponibles sous Windows: [Windows 10 – place container dire
 
 ## 3 – Réseau de type MACVLan
 
+# Créer un réseau Macvlan sous Docker
+
+Le réseau **macvlan** permet à vos conteneurs Docker d'obtenir des adresses IP directement sur votre réseau physique, comme s'ils étaient des machines physiques distinctes.
+
+## Prérequis
+
+Avant de commencer, vous devez connaître :
+- L'interface réseau de votre hôte (ex: `eth0`, `enp0s3`)
+- La plage d'adresses IP de votre réseau local
+- La passerelle de votre réseau
+
+Pour trouver ces informations :
+
+```bash
+# Afficher les interfaces réseau
+ip addr show
+
+# Afficher la configuration réseau
+ip route
+```
+
+## Création d'un réseau Macvlan
+
+### Exemple de base
+
+```bash
+docker network create -d macvlan \
+  --subnet=192.168.1.0/24 \
+  --gateway=192.168.1.1 \
+  -o parent=eth0 \
+  macvlan_net
+```
+
+**Explication des paramètres :**
+- `-d macvlan` : spécifie le driver macvlan
+- `--subnet` : la plage d'adresses IP de votre réseau
+- `--gateway` : l'adresse IP de votre routeur/passerelle
+- `-o parent=eth0` : l'interface physique parent
+- `macvlan_net` : le nom du réseau
+
+### Avec plage IP réservée
+
+Il est recommandé de réserver une plage d'IP pour Docker afin d'éviter les conflits :
+
+```bash
+docker network create -d macvlan \
+  --subnet=192.168.1.0/24 \
+  --gateway=192.168.1.1 \
+  --ip-range=192.168.1.192/27 \
+  -o parent=eth0 \
+  macvlan_net
+```
+
+Ici, `--ip-range=192.168.1.192/27` réserve les adresses de 192.168.1.192 à 192.168.1.223 pour Docker.
+
+**NOTE** Cette étape est importante car les adresses attribuées vont entrer en conflit avec les appareils connectés au réseau local.
+
+## Utilisation avec des conteneurs
+
+### Lancer un conteneur avec une IP automatique
+
+```bash
+docker run -d --name nginx_macvlan \
+  --network macvlan_net \
+  nginx
+```
+
+### Lancer un conteneur avec une IP spécifique
+
+```bash
+docker run -d --name nginx_macvlan \
+  --network macvlan_net \
+  --ip=192.168.1.200 \
+  nginx
+```
+
+### Exemple avec plusieurs conteneurs
+
+```bash
+# Serveur web
+docker run -d --name web \
+  --network macvlan_net \
+  --ip=192.168.1.200 \
+  nginx
+
+# Base de données
+docker run -d --name db \
+  --network macvlan_net \
+  --ip=192.168.1.201 \
+  -e MYSQL_ROOT_PASSWORD=motdepasse \
+  mysql:8.0
+
+# Application
+docker run -d --name app \
+  --network macvlan_net \
+  --ip=192.168.1.202 \
+  monapp:latest
+```
+
+## Accéder aux conteneurs depuis l'hôte
+
+Par défaut, l'hôte Docker **ne peut pas** communiquer directement avec les conteneurs en macvlan. Pour résoudre ce problème, créez une interface macvlan sur l'hôte :
+
+```bash
+# Créer une interface macvlan sur l'hôte
+sudo ip link add macvlan_host link eth0 type macvlan mode bridge
+
+# Assigner une IP à cette interface
+sudo ip addr add 192.168.1.254/32 dev macvlan_host
+
+# Activer l'interface
+sudo ip link set macvlan_host up
+
+# Ajouter une route vers les conteneurs
+sudo ip route add 192.168.1.192/27 dev macvlan_host
+```
+
+## Vérification et diagnostic
+
+```bash
+# Lister les réseaux Docker
+docker network ls
+
+# Inspecter le réseau macvlan
+docker network inspect macvlan_net
+
+# Vérifier l'IP d'un conteneur
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' nginx_macvlan
+
+# Tester la connectivité depuis un autre appareil du réseau
+ping 192.168.1.200
+```
+
+## Exemple pratique complet
+
+Voici un exemple de configuration complète pour un environnement web :
+
+```bash
+# 1. Créer le réseau macvlan
+docker network create -d macvlan \
+  --subnet=192.168.1.0/24 \
+  --gateway=192.168.1.1 \
+  --ip-range=192.168.1.192/27 \
+  -o parent=eth0 \
+  prod_network
+
+# 2. Lancer les services
+docker run -d --name reverse_proxy \
+  --network prod_network \
+  --ip=192.168.1.200 \
+  -v /etc/nginx:/etc/nginx:ro \
+  nginx
+
+docker run -d --name webapp \
+  --network prod_network \
+  --ip=192.168.1.201 \
+  node:18-alpine
+
+docker run -d --name database \
+  --network prod_network \
+  --ip=192.168.1.202 \
+  -e POSTGRES_PASSWORD=secret \
+  postgres:15
+
+# 3. Vérifier que tout fonctionne
+docker ps
+docker network inspect prod_network
+```
+
+## Avantages et limitations
+
+**Avantages :**
+- Les conteneurs sont accessibles directement depuis le réseau local sans port mapping
+- Performance optimale (pas de NAT)
+- Idéal pour intégrer Docker dans une infrastructure existante
+
+**Limitations :**
+- L'hôte ne peut pas communiquer directement avec les conteneurs (nécessite une interface supplémentaire)
+- Nécessite le mode promiscuous sur certaines interfaces réseau
+- Ne fonctionne pas sur tous les environnements (notamment certains clouds publics)
+
+Le réseau macvlan est particulièrement utile lorsque vous voulez que vos conteneurs se comportent comme des machines physiques sur votre réseau local.
+
+---
+
 ```text
-# 1 - Créer le réseau
+# 1 - Exemple sous Windows
+
 docker network create -d macvlan --subnet 192.168.124.0/23 --gateway=192.168.124.1 -o parent="Ethernet 4"
+
 # Liste des interfaces réseau sous Windows:
+
 netsh interface show interface
 
 État admin    État          Type            Nom de l'interface
@@ -320,8 +522,6 @@ Activé         Connecté       Dédié            Ethernet 4  (192.168.124.0)
 Activé         Déconnecté     Dédié            Wi-Fi 2
 Activé         Connecté       Dédié            vEthernet (Default Switch)
 Activé         Connecté       Dédié            vEthernet (WSL)
-
-
 
 docker run -d --name srv_macvlan --rm --network macvlan --ip=192.168.125.100 nginx
 ```
