@@ -52,7 +52,6 @@ Créons le fichier **`docker-compose.yml`** :
 # Auteur: Alain Boudreault
 # Date: 2021.02.13
 # Description: Mise en place d'un système de 3 alpine
-version: "3.9"
 
 services:
   srv01:
@@ -156,7 +155,6 @@ CTRL+PQ
 Nous ajoutons des options interactives (`stdin_open`, `tty`), un réseau personnalisé (`reseauAlpine`) et des variables d'environnement.
 
 ```yaml
-version: "3.9"
 services:
   srv01:
     image: alpine
@@ -261,7 +259,6 @@ docker exec -it serveur99 /bin/sh
 Exemple de configuration utilisant les volumes (pour le fichier de configuration et le contenu Web) et les ports.
 
 ```yaml
-version: "3.9"
 services:
   serveurweb:
     image: nginx

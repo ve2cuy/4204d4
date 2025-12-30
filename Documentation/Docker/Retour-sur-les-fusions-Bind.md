@@ -29,7 +29,7 @@ mkdir mes-scripts-sh
 
 ### Action 1.2 – Ajouter le fichier `Momo-dit-v1.sh`
 
-Ajouter au dossier `mes-scripts-sh` le fichier `Momo-dit-v1.sh` :
+Ajouter au dossier `mes-scripts-sh` le fichier `momo-dit-v1.sh` :
 
 ```bash
 #!/bin/sh
