@@ -1,4 +1,4 @@
-# 🐳 Docker-compose – Introduction - Partie 1
+# 🐳 Docker compose – Introduction - Partie 1
 
 *Date : 12 février 2021 - Révisé le 2025.12.04*
 
@@ -14,11 +14,11 @@ Lors des laboratoires précédents, nous avons démarré des conteneurs en utili
 
 Dans le cas d'une application **multi-services** nécessitant un nombre élevé de micro-services, des réseaux personnalisés ou des volumes persistants, l'approche de démarrage manuel de chacun des services peut devenir une tâche **ardue et complexe**.
 
-Pour adresser ce type de problème, Docker propose le module **`docker-compose`**.
+Pour adresser ce type de problème, Docker propose le module **`docker compose`**.
 
 En utilisant le langage de représentation des données **YAML**, il est possible de représenter tous les services et paramètres d'un système donné et de démarrer le tout en une **seule ligne de commande**.
 
-Voici un tableau présentant les analogies entre l'utilisation du CLI de Docker et de `docker-compose` :
+Voici un tableau présentant les analogies entre l'utilisation du CLI de Docker et de `docker compose` :
 
 <img src="../images/fusions/docker-run-vs-dockercompose-wordpress.png" alt="" width="800" />
 
@@ -70,13 +70,13 @@ services:
 ### Action 1.1 – Démarrer les services
 
 ```bash
-docker-compose up
+docker compose up
 ```
 
 **Résultat :**
 
 ```
-Creating network "lab01-docker-compose_default" with the default driver
+Creating network "lab01-docker compose_default" with the default driver
 Pulling srv01 (alpine:)...
 ...
 Status: Downloaded newer image for alpine:latest
@@ -120,7 +120,7 @@ docker system prune -af --volumes
 ### Action 1.4 – Relancer les services en arrière-plan (`-d`)
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 > **NOTE** : Les conteneurs seront arrêtés quand même s'ils n'ont pas de commande persistante (comme un shell interactif ou un processus serveur).
@@ -240,7 +240,7 @@ services:
 ### Action 2.5.2 – Démarrer le système
 
 ```bash
-docker-compose -f docker-comp01.yml up -d
+docker compose -f docker-comp01.yml up -d
 ```
 
 ### Action 2.5.3 – Connexion au service Alpine

@@ -27,7 +27,6 @@ services:
       - maBD
 ```
 
-*\[Image : `img-adminer-mariadb-depends.png` - Diagramme montrant deux conteneurs (MariaDB et Adminer) connectés via le réseau par défaut créé par docker-compose, avec une dépendance de démarrage Adminer -\> MariaDB.]*
 
 ### Consolidation des exercices précédents (Exemple complet)
 
@@ -116,9 +115,9 @@ Démarrer, à partir d'un fichier `docker-compose`, le système de micro-service
 
 > **Note :** Si le fichier n'est pas nommé `docker-compose.yml`, alors il faut le nommer dans les commandes, par exemple :
 >
->   * `docker-compose -f docker-labo02.yml up -d`
->   * `docker-compose -f docker-labo02.yml ps`
->   * `docker-compose -f docker-labo02.yml exec cie_db bash`
+>   * `docker compose -f docker-labo02.yml up -d`
+>   * `docker compose -f docker-labo02.yml ps`
+>   * `docker compose -f docker-labo02.yml exec cie_db bash`
 
 -----
 
@@ -126,7 +125,7 @@ Démarrer, à partir d'un fichier `docker-compose`, le système de micro-service
 
 ## 5 – Laboratoire 2 (WordPress, MariaDB et phpMyAdmin)
 
-Mettre en place un site WordPress, en utilisant `docker-compose`, pour la **CIE\_ABC**, en respectant le devis suivant :
+Mettre en place un site WordPress, en utilisant `docker compose`, pour la **CIE\_ABC**, en respectant le devis suivant :
 
   * Un service **`mariadb` version 10.5**, nommé **`cie_db`** pour la base de données :
       * Port externe: `3333`
@@ -149,19 +148,19 @@ Tester l'application WordPress de la CIE ABC et le service phpMyadmin.
 
 | Commande | Description |
 | :--- | :--- |
-| `docker-compose config` | Valider le fichier `docker-compose.yml`. |
-| `docker-compose up` | Démarre les services et affiche les logs. |
-| `docker-compose up -d` | Démarre les services en arrière-plan (mode détaché). |
-| `docker-compose logs` | Affiche les logs de tous les services. |
-| `docker-compose ps` | Affiche l'état des services. |
-| `docker-compose stop` | Arrête les conteneurs (sans les supprimer). |
-| `docker-compose down` | Arrête et supprime les conteneurs, réseaux et volumes par défaut. |
+| `docker compose config` | Valider le fichier `docker-compose.yml`. |
+| `docker compose up` | Démarre les services et affiche les logs. |
+| `docker compose up -d` | Démarre les services en arrière-plan (mode détaché). |
+| `docker compose logs` | Affiche les logs de tous les services. |
+| `docker compose ps` | Affiche l'état des services. |
+| `docker compose stop` | Arrête les conteneurs (sans les supprimer). |
+| `docker compose down` | Arrête et supprime les conteneurs, réseaux et volumes par défaut. |
 
 -----
 
-## 7 – Exemple de `docker-compose` avec un `build`
+## 7 – Exemple de `docker compose` avec un `build`
 
-`Docker-compose` permet la mise en place d'images personnalisées pendant le processus de démarrage d'une application multi-services.
+`docker compose` permet la mise en place d'images personnalisées pendant le processus de démarrage d'une application multi-services.
 
 ### Action 7.1 – Enregistrer le fichier `Dockerfile`
 
@@ -205,7 +204,7 @@ RUN apt-get install git lynx -y
 docker build -t perso .
 ```
 
-> **Note :** Avec `docker-compose`, il n'est pas nécessaire de bâtir l'image au préalable.
+> **Note :** Avec `docker compose`, il n'est pas nécessaire de bâtir l'image au préalable.
 
 ### Action 7.2 – Afficher les informations de l'image
 
@@ -217,14 +216,14 @@ docker inspect perso
 
 ### Action 7.3 – Renseigner le fichier `docker-compose`
 
-Ce fichier utilise l'instruction `build: .` pour indiquer à `docker-compose` de construire l'image à partir du `Dockerfile` se trouvant dans le répertoire courant.
+Ce fichier utilise l'instruction `build: .` pour indiquer à `docker compose` de construire l'image à partir du `Dockerfile` se trouvant dans le répertoire courant.
 
 ```yaml
 version: '3.3'
-# docker-compose build
-# docker-compose up --build -d
+# docker compose build
+# docker compose up --build -d
 # OU
-# docker-compose up -d
+# docker compose up -d
 services:
   # Note: pas de caractères majuscules dans le nom du service
   mondebian:

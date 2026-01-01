@@ -170,7 +170,8 @@ docker run -p 99:3306 -e MYSQL_ROOT_PASSWORD=password --name maBD -v "$(pwd)/mys
 
 > **NOTE** : Le mot de passe pour root est **'password'** et le port de connexion est **'99'**.
 
-*\[Image : `img-mysql-bind-ports.png` - Schéma illustrant la liaison du port 99 de l'hôte au port 3306 du conteneur MySQL.]*
+---
+
 
 ### Action 3.3 – Connexion au SGBD MySQL
 
@@ -279,7 +280,7 @@ INSERT INTO tbl_amis (nom, email) VALUES ('Titi Binette', 'titi@me.com');
 -- FIN DU SCRIPT
 ```
 
-#### Action 4.2 – Créer le fichier `docker-comp-init-bd.yml`
+#### Action 4.2 – Créer le fichier `docker-comp-init-bd.yml`, dans le dossier de l'exercice.
 
 Ce fichier utilise le paramètre `command` avec l'option `--init-file` pour exécuter le script SQL au démarrage.
 
@@ -307,15 +308,13 @@ services:
     command: mysqld --init-file="/tmp/database/mabd-init.sql"
 ```
 
-*\[Image : `img-docker-compose-schema.png` - Schéma montrant la structure d'un docker-compose.yml avec les volumes BDInit et maBD pour MySQL.]*
-
 #### Action 4.3 – Démarrer le service
 
 ```bash
-docker-compose -f docker-comp-init-bd.yml up -d
+docker compose -f docker-comp-init-bd.yml up -d
 ```
 
-> **NOTE** : Nous utilisons **ICI** la commande `docker-compose`, qui permet de démarrer un système à multi-services. `docker-compose` est une alternative à la commande `docker run` suivi d'un nombre élevé d'options. **`docker-compose` sera couvert à la leçon suivante.**
+> **NOTE** : Nous utilisons **ICI** la commande `docker compose`, qui permet de démarrer un système à multi-services. `docker compose` est une alternative à la commande `docker run` suivi d'un nombre élevé d'options. **`docker compose` sera couvert à la leçon suivante.**
 
 #### Action 4.4 – Expérimenter avec la base de données
 

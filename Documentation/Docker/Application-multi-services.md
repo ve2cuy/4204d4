@@ -5,7 +5,7 @@
 
 ## Et pourquoi pas un défi de taille
 <p align="center">
-    <img src="../images/docker-network.png" alt="" width="550" />
+    <img src="../images/docker-multi-services.png" alt="" width="550" />
 </p>
 
 ### Docker - Application Multi-services

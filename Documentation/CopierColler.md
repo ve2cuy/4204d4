@@ -74,6 +74,7 @@ docker login -u dockerhub_user
 # -------------------------------------------------------
 alias d='docker'
 alias dr='docker run'
+alias dp='docker ps'
 alias dcl='docker container ls'
 alias dcla='docker container ls -a'
 alias dci='docker container inspect'
@@ -83,6 +84,8 @@ alias dil='docker image ls'
 alias dirm='docker image rm'
 # Voici un exemple d'exportation d'une image:
 alias diex='docker save nginx:latest -o nginx.tar'
+# Importer depuis un fichier
+alias diim='docker load -i mon_image.tar'
 alias ds='docker search'
 alias dnl='docker network ls'
 alias dnc='docker network create'
@@ -103,6 +106,7 @@ alias dinfo='docker system df -v'
 alias dsi='docker system info'
 alias droot='docker info | grep -i "Docker Root Dir"'
 alias w='winpty'
+alias lzd='lazydocker'
 
 # export KUBE_EDITOR='code --wait'
 
