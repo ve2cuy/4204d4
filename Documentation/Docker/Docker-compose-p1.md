@@ -225,7 +225,6 @@ networks:
 
 ```yaml
 # Fichier: docker-comp01.yml
-version: "3.9"
 services:
   srv99:
     image: alpine

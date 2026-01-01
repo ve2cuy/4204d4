@@ -13,7 +13,7 @@
 Cet exemple utilise `depends_on` pour s'assurer que la base de données (`maBD`) démarre avant l'interface de gestion (`gestionBDviaAppWeb`).
 
 ```yaml
-version: "3.9"
+
 services:
   maBD:
     image: mariadb
@@ -31,7 +31,7 @@ services:
 ### Consolidation des exercices précédents (Exemple complet)
 
 ```yaml
-version: "3.9"
+
 services:
   srv01:
     image: alpine
@@ -219,7 +219,6 @@ docker inspect perso
 Ce fichier utilise l'instruction `build: .` pour indiquer à `docker compose` de construire l'image à partir du `Dockerfile` se trouvant dans le répertoire courant.
 
 ```yaml
-version: '3.3'
 # docker compose build
 # docker compose up --build -d
 # OU
