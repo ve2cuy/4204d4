@@ -294,7 +294,6 @@ Ce fichier utilise le paramètre `command` avec l'option `--init-file` pour exé
 # Les répertoires: database et dbdata doivent exister dans le dossier courrant.
 # Le fichier d'initialisation SQL 'mabd-init.sql' doit-être présent dans le dossier database.
 
-version: '3'
 services:
   mysql:
     image: mysql:5.7
