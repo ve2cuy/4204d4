@@ -28,6 +28,12 @@
 * [Description de l'épreuve synthèse - À suivre]()
 
 ---
+## Évaluation H26
+* Projet de mi-session - TP01 : 30%
+* Épreuve synthèse volet A - Examen pratique : 30%
+* Épreuve synthèse volet B - TP02 : 40%
+
+---
 
 ### Concepts et Outils de Base (Docker)
 
@@ -52,6 +58,7 @@
 * [17 - Automatisation des builds – GitHub actions](/Documentation/Automatisation/github-action.md)
 * [18 - Automatisation des builds – GitHub actions V2](/Documentation/Automatisation/github-action-v2.md)
 * [Docker - Référence rapide](Documentation/Docker/Docker-Référence-rapide.md) 👍
+* [Projet de mi-session : 30%](https://github.com/ve2cuy/420-4D4.TP01.Depart)
 
 ### Kubernetes (K8s)
 
@@ -75,6 +82,8 @@
 * [29 - Helm charts]() 🧠
 * [30 - Automatisation des ‘builds’ d’images Docker/Github]() 🧠
 * [31 - Aide rapide]()
+* [32 - Épreuve synthèse Volet A : 30 %]
+* [33 - Épreuve synthèse Volet B : 40 %]
 * [kubectl - Référence rapide](Documentation/Kubernetes/Kubernetes-Reference-rapide.md) 👍
 
 ---
@@ -83,10 +92,11 @@
 
 * [Les copier/coller](Documentation/CopierColler.md) 👍
 * [LazyDocker](https://github.com/jesseduffield/lazydocker)
-* [K9s]()
-* [Portainer]()
-* [Rancher]()
-* [LongHorn]()
+* [K9s](https://k9scli.io/)
+* [Arcane](https://getarcane.app/)
+* [Portainer](https://www.portainer.io/)
+* [Rancher](https://www.rancher.com/quick-start)
+* [LongHorn](https://longhorn.io/)
 
 ### Évaluations et Automatisation
 
