@@ -200,10 +200,34 @@ $ docker compose up -d
 
  <img src="../images/vscode-docker-ssh.png" alt="YAML" width="550" />
 
+---
+
+
+### 15 -  Connexion au compte github via git
+
+* Sur la station de travail (Linux), générer une paire de clés SSH:
+
+```
+~/.ssh/ $ ssh-keygen -t ed25519 -C "email.utilisée@github.com"
+```
+
+* Sur github, ajouter la clé publique
+
+ <img src="../images/github-cle-ssh.png" alt="github ssh key" width="550" />
+
+* Définir les informations pour les commits et utiliser git
+
+```
+git config --global user.name "Votre nom"
+git config --global user.email "votre.courriel@example.com"
+
+git clone, push, pull, ...
+```
+
  ---
 
  ## Crédits
 
 *Document rédigé par Alain Boudreault © 2021-2026*  
-*Version 2025.12.08.1*  
+*Version 2026.01.03.1*  
 *Site par ve2cuy*
