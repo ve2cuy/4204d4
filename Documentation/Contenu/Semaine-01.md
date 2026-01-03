@@ -9,6 +9,7 @@
 ### 2 - Installation d'Ubuntu Desktop (version minimale) sur VMware PRO
 - VM nommée Ubuntu-Master
 - Network connection: Bridged
+- Disque de 40GO
 
 🤚 **NOTE**: Vérifier que la bonne carte réseau est renseignée dans les paramètres de VMware
 - Menu: edit -> Virtual Network Editor --> Change settings --> VMNet0 ...
@@ -18,7 +19,7 @@
 
 ```bash
 $ sudo apt update && sudo apt upgrade -y
-$ sudo install openssh-server firefox -y
+$ sudo apt install openssh-server firefox -y
 ```
 ### 4 - Du poste de travail, générer une paire de clés ssh
 ```bash
