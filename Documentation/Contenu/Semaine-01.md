@@ -70,7 +70,7 @@ ssh compte@1.2.3.4
 
 ### 10 - Installer Docker
 
-Voir le document : [Installation de Docker](/Installation/Docker/Installation-de-Docker.md)
+Voir le document : [Installation de Docker](/4204d4/Installation/Docker/Installation-de-Docker.md)
 
 ### 11 - Tester Docker
 ```bash
