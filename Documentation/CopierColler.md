@@ -81,6 +81,7 @@ alias dci='docker container inspect'
 alias dcrm='docker container rm'
 alias dcex='docker container export'
 alias dil='docker image ls'
+alias di='docker image ls'
 alias dirm='docker image rm'
 # Voici un exemple d'exportation d'une image:
 alias diex='docker save nginx:latest -o nginx.tar'
