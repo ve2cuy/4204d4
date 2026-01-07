@@ -1,7 +1,7 @@
 # Introduction à Homepage
 
 <p align="center">
-  <img src="../images/homepage-logo.png" alt="" width="800" />
+  <img src="../images/homepage-logo.png" alt="" width="500" />
 </p>
 
 ## Qu'est-ce que Homepage ?
@@ -13,13 +13,13 @@
 - Interface web responsive et personnalisable
 - Intégration avec plus de 100 services populaires
 - Affichage de widgets (météo, recherche, statistiques système)
-- Configuration simple via fichiers YAML
+- Configuration simple via des fichiers YAML
 - Support Docker natif avec détection automatique
 - Thèmes clairs et sombres
 
-## Installation
+---
 
-### Avec Docker, en cli:
+## Installation, avec Docker, en cli:
 
 ```bash
 $ mkdir ./homepage-config
@@ -216,6 +216,7 @@ favicon: https://votresite.com/favicon.ico
 ## 💡 5 - Voici un exemple complet, avec variables d'environnement et génération des fichiers de configuration par programmation.
 
 ```yaml
+# Fichier: docker-compose.yml
 ---
 services:
 
@@ -380,8 +381,17 @@ PIHOLE_HTTPS_PORT=443
 HOMEGAGE_PORT=80
 ```
 
+Lancer et tester le projet dans un fureteur.  ❗️ Note: Au besoin, ajuster la variable HOST_IP.
+
+```bash
+docker compose -f ... up
+```
+
+
 <img src="../images/homepage-demo.png" alt="" width="700" />
-<img src="../images/pihole-demo.png.png" alt="" width="700" />
+
+
+<img src="../images/pihole-demo.png" alt="" width="700" />
 
 
 ---
@@ -423,5 +433,5 @@ Homepage transforme une collection de services en un portail unifié et professi
 ## Crédits
 
 *Document préparé par Alain Boudreault © 2026*  
-*Version 2026.01.07.1*  
+*Version 2026.01.07.2*  
 *Site par ve2cuy*
