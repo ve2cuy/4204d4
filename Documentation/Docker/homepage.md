@@ -1,8 +1,12 @@
 # Introduction à Homepage
 
+<p align="center">
+  <img src="../images/homepage-logo.png" alt="" width="800" />
+</p>
+
 ## Qu'est-ce que Homepage ?
 
-**Homepage** est un tableau de bord personnalisable et moderne pour centraliser l'accès à tous vos services auto-hébergés, applications web et ressources réseau. Conçu pour les utilisateurs de homelab et les administrateurs système, Homepage offre une interface élégante qui regroupe vos services avec des informations en temps réel.
+**Homepage** est un tableau de bord personnalisable et moderne pour centraliser l'accès aux services auto-hébergés, applications web et ressources réseau. Conçu pour les utilisateurs de 'homelab' et les administrateurs système, Homepage offre une interface élégante qui regroupe les services avec des informations en temps réel.
 
 ### Caractéristiques principales
 
@@ -15,14 +19,14 @@
 
 ## Installation
 
-### Avec Docker (recommandé)
+### Avec Docker, en cli:
 
 ```bash
 $ mkdir ./homepage-config
 $ docker run -d \
   --name homepage \
   -p 3000:3000 \
-  -e HOMEPAGE_ALLOWED_HOSTS=* \
+  -e HOMEPAGE_ALLOWED_HOSTS="*" \
   -v ./homepage-config:/app/config \
   -v /var/run/docker.sock:/var/run/docker.sock:ro \
   ghcr.io/gethomepage/homepage:latest
@@ -42,7 +46,9 @@ drwxr-xr-x 2  4096 janv.  7 10:13 logs
 -rw-r--r-- 1   218 janv.  7 10:17 widgets.yaml
 ```
 
-Accédez ensuite à `http://localhost:3000`
+Accéder ensuite à `http://localhost:3000`
+
+<img src="../images/homepage-intro-01.png" alt="" width="700" />
 
 ---
 
@@ -58,7 +64,7 @@ Homepage utilise des fichiers YAML dans le dossier `config/`. Les trois fichiers
 
 ### Exemple 1 : Ajouter des services simples
 
-Créez ou modifiez `config/services.yaml` :
+Créer ou modifier `config/services.yaml` :
 
 ```bash
 $ nano ./homepage-config/services.yaml
@@ -69,10 +75,10 @@ Et y ajouter le contenu suivant:
 ```yaml
 ---
 - Média:
-    - Plex:
-        href: http://192.168.1.100:32400
-        description: Serveur multimédia
-        icon: plex.png
+    - 420-4D4:
+        href: https://ve2cuy.github.io/4204d4/
+        description: Cours d'intro à Docker et K8s
+        icon: docker.png
 
     - Jellyfin:
         href: http://192.168.1.101:8096
@@ -93,6 +99,10 @@ Et y ajouter le contenu suivant:
 
 💡NOTE: Les changements devraient être actualisés automatiquement sur la page webé
 
+
+<img src="../images/homepage-intro-02.png" alt="" width="700" />
+
+
 ---
 
 ### Exemple 2 : Ajouter des widgets informatifs
@@ -102,7 +112,7 @@ Et y ajouter le contenu suivant:
 ```yaml
 - search:
     provider: google
-    target: _blank
+    target: _blank  # Nouvel onglet
 
 - datetime:
     text_size: xl
@@ -117,6 +127,9 @@ Et y ajouter le contenu suivant:
     units: metric
     cache: 5
 ```
+
+<img src="../images/homepage-intro-03.png" alt="" width="700" />
+
 
 👉 NOTE: Nous ajusterons l'interface au français à une étape suivante.
 
@@ -178,12 +191,13 @@ my-docker:
 
 ### Exemple 4 : Personnalisation visuelle
 
-Configurez `homepage-config/settings.yaml` :
+Configurer `homepage-config/settings.yaml` :
 
 ```yaml
 title: Mon Homelab
 theme: dark
 color: slate
+language: fr
 
 layout:
   Média:
@@ -196,15 +210,191 @@ layout:
 favicon: https://votresite.com/favicon.ico
 ```
 
+---
+
+
+## 💡 5 - Voici un exemple complet, avec variables d'environnement et génération des fichiers de configuration par programmation.
+
+```yaml
+---
+services:
+
+  # ------------------------------------------------------------------
+  # Application Homepage qui attend que l'init soit terminé avant de démarrer
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    ports:
+      - "${HOMEGAGE_PORT}:3000"
+    volumes:
+      - ./homepage-config:/app/config
+      # Pour Windows
+      #- //var/run/docker.sock:/var/run/docker.sock
+      # Pour Linux
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - HOMEPAGE_ALLOWED_HOSTS=*
+    depends_on:
+      homepage-init:
+        condition: service_completed_successfully
+    restart: unless-stopped
+    networks:
+      - projet_network
+
+  # ------------------------------------------------------------------
+  # Ce service va créer les fichiers services.yaml et docker.yaml, requis par homepage.  Pour ce faire, il utilise le même volume que le service homepage.
+  homepage-init:
+    image: alpine:latest
+    container_name: homepage-init
+    environment:
+      - HOST_IP=${HOST_IP}
+
+    volumes:
+      - ./homepage-config:/data
+    command: |
+      sh -c "
+      echo 'Configuration du menu Homepage...' 
+      mkdir -p /data
+      # ###########################################################
+      # Fichier de configuration des services
+      # ###########################################################
+      cat > /data/services.yaml << 'EOF'
+      ---
+      - Démo utile pour le TP01 ;-) :
+
+          - Alpine:
+              icon: beef.png
+              description: Utilise pihole comme DNS pour tester les filtres de blocage
+
+          - Accès à PiHole:
+              icon: pi-hole.png
+              href: https://${HOST_IP}/admin
+              description: Interface d'administration PiHole
+              server: mon-docker
+              container: pihole
+              showStats: true 
+              target: _self 
+
+              widget:
+                type: pihole
+                # Voir la note dans le service
+                url: https://${DNS_IP:-0.0.0.0}
+                version: 6 # required if running v6 or higher, defaults to 5
+                key: password
+      EOF
+
+      # FIN DU FICHIER services.yaml
+      # ---------------------------------------------------------------------------
+
+      # ###########################################################
+      # Fichier de configuration du serveur Docker
+      # ###########################################################
+      # Requis pour le widget Docker
+      cat > /data/docker.yaml << 'EOF'
+      ---
+      mon-docker:
+        socket: /var/run/docker.sock
+      EOF
+      # FIN DU FICHIER docker.yaml
+      # ---------------------------------------------------------------------------
+
+      echo 'Configuration terminée avec succès!' 
+      "
+
+# ------------------------------------------------------------------
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    ports:
+      # Au besoin, pour utilisation à l'extérieur du réseau Docker
+      - "${PIHOLE_DNS_PORT}:53/tcp" 
+      - "${PIHOLE_DNS_PORT}:53/udp"
+      # Pour l'interface de gestion Web
+      - "${PIHOLE_HTTP_PORT}:80/tcp"
+      - "${PIHOLE_HTTPS_PORT}:443/tcp"
+    environment:
+      TZ: 'America/Montreal'
+      # Fixer un mot de passe, sinon un mdp aléatoire sera généré.
+      FTLCONF_webserver_api_password: 'password'
+      # Pour utiliser pihole comme DNS dans le réseau Bridge de Docker: 
+      FTLCONF_dns_listeningMode: 'ALL'
+
+    #volumes:
+    #  - '../volumes/etc-pihole:/etc/pihole'
+    restart: unless-stopped
+    networks:
+      projet_network:
+        ipv4_address: ${DNS_IP:-0.0.0.0}
+# -------------------------------------- FIN Pi-hole
+
+# Utilisation d'une Alpine pour faire des requêtes Web en utilisant 
+# le DNS de pihole.
+
+  alpine:
+    image: alpine
+    container_name: alpine
+    dns:
+      -  ${DNS_IP:-0.0.0.0}      
+    command: >
+      sh -c "
+      while true; do
+        # Lire un site autorisé via pihole
+        # Utilisation de wget car curl n'est pas installé dans l'image alpine.
+        echo 'Tester google.com via pihole...\';
+        wget -O index.html google.com && echo 'La Requête sur google.com a réussi ' || echo 'Requête échouée, étrange ...';
+        sleep 5;
+        # Lire un site bloqué via pihole
+        echo 'Tester doubleclick.net via pihole...';
+        wget doubleclick.net && echo 'La Requête a réussi (étrange - site bloqué!)' || echo 'La requête a échoué (site bloqué)'; 
+        sleep 5;    
+      done
+      "      
+    restart: unless-stopped
+    networks:
+      - projet_network
+
+
+# les réseaux du projet
+networks:
+  # ----------------------------------------------------------------------
+  # Ce réseau est utilisé par Pi-hole pour fixé une adresse IP statique
+  # C'est requis car la directive dns: dans le service Alpine a besoin de l'adresse IP
+  # Il n'est pas possible d'utiliser le nom du service pihole dans dns:
+  projet_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: "172.30.0.0/16"        
+  # =======================================================================
+```
+
+Le fichier .env
+
+```
+HOST_IP=localhost
+DNS_IP=172.30.0.53
+ARCANE_PORT=3552
+PIHOLE_DNS_PORT=553
+PIHOLE_HTTP_PORT=81
+PIHOLE_HTTPS_PORT=443
+HOMEGAGE_PORT=80
+```
+
+<img src="../images/homepage-demo.png" alt="" width="700" />
+<img src="../images/pihole-demo.png.png" alt="" width="700" />
+
+
+---
+
 ## Conseils d'utilisation
 
-**Organisation** : Regroupez vos services par catégorie logique (Média, Réseau, Administration, etc.)
+**Organisation** : Regrouper les services par catégorie logique (Média, Réseau, Administration, etc.)
 
-**Sécurité** : Si Homepage est exposé sur Internet, protégez-le derrière un reverse proxy avec authentification (Authelia, Authentik)
+**Sécurité** : Si Homepage est exposé sur Internet, il faudra le protéger derrière un reverse proxy avec authentification (Authelia, Authentik)
 
-**Performance** : Ajustez le paramètre `cache` des widgets pour réduire les appels API fréquents
+**Performance** : Ajuster le paramètre `cache` des widgets pour réduire les appels API fréquents
 
-**Docker** : Utilisez des labels Docker pour une configuration automatique plutôt que manuelle
+**Docker** : Utiliser des labels Docker pour une configuration automatique plutôt que manuelle.  Voir la documentation officielle.
 
 ---
 
@@ -218,10 +408,17 @@ favicon: https://votresite.com/favicon.ico
 
 ## Conclusion
 
-Homepage transforme votre collection de services en un portail unifié et professionnel, parfait pour gérer efficacement votre infrastructure personnelle ou professionnelle.
+Homepage transforme une collection de services en un portail unifié et professionnel, parfait pour gérer efficacement une infrastructure personnelle ou professionnelle.
 
 ---
 
+## 6 - Laboratoire: Durée 30 minutes
+
+<img src="../images/labo02.png" alt="" width="700" />
+
+À suivre ...
+
+---
 
 ## Crédits
 
