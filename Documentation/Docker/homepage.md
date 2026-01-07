@@ -18,29 +18,56 @@
 ### Avec Docker (recommandé)
 
 ```bash
-docker run -d \
+$ mkdir ./homepage-config
+$ docker run -d \
   --name homepage \
   -p 3000:3000 \
-  -v /chemin/vers/config:/app/config \
+  -e HOMEPAGE_ALLOWED_HOSTS=* \
+  -v ./homepage-config:/app/config \
   -v /var/run/docker.sock:/var/run/docker.sock:ro \
   ghcr.io/gethomepage/homepage:latest
+
+# Après le lancement du contenur, il devrait y avoir des fichiers de configuration dans le dossier ./homepage-config
+$ ls -l ./homepage-config
+
+-rw-r--r-- 1   354 janv.  7 10:17 bookmarks.yaml
+-rw-rw-r-- 1     0 déc.  10 11:47 custom.css
+-rw-rw-r-- 1     0 déc.  10 11:47 custom.js
+-rw-r--r-- 1   196 janv.  7 10:17 docker.yaml
+-rw-rw-r-- 1    31 janv.  7 10:13 kubernetes.yaml
+drwxr-xr-x 2  4096 janv.  7 10:13 logs
+-rw-r--r-- 1   104 janv.  7 10:17 proxmox.yaml
+-rw-r--r-- 1   506 janv.  7 10:27 services.yaml
+-rw-r--r-- 1   184 janv.  7 10:13 settings.yaml
+-rw-r--r-- 1   218 janv.  7 10:17 widgets.yaml
 ```
 
 Accédez ensuite à `http://localhost:3000`
+
+---
 
 ## Configuration de base
 
 Homepage utilise des fichiers YAML dans le dossier `config/`. Les trois fichiers principaux sont :
 
-- `services.yaml` : liste de vos services
+- `services.yaml` : liste des services (applications)
 - `widgets.yaml` : widgets du tableau de bord
 - `settings.yaml` : paramètres généraux
+
+---
 
 ### Exemple 1 : Ajouter des services simples
 
 Créez ou modifiez `config/services.yaml` :
 
+```bash
+$ nano ./homepage-config/services.yaml
+```
+
+Et y ajouter le contenu suivant:
+
 ```yaml
+---
 - Média:
     - Plex:
         href: http://192.168.1.100:32400
@@ -64,9 +91,13 @@ Créez ou modifiez `config/services.yaml` :
         icon: proxmox.png
 ```
 
+💡NOTE: Les changements devraient être actualisés automatiquement sur la page webé
+
+---
+
 ### Exemple 2 : Ajouter des widgets informatifs
 
-Éditez `config/widgets.yaml` :
+Éditez `homepage-config/widgets.yaml` :
 
 ```yaml
 - search:
@@ -86,6 +117,10 @@ Créez ou modifiez `config/services.yaml` :
     units: metric
     cache: 5
 ```
+
+👉 NOTE: Nous ajusterons l'interface au français à une étape suivante.
+
+---
 
 ### Exemple 3 : Intégrations avec API
 
@@ -108,13 +143,42 @@ Pour afficher des statistiques en temps réel, ajoutez des intégrations dans `s
         icon: pi-hole.png
         widget:
           type: pihole
-          url: http://192.168.1.10
+          url: http://192.168.1.10 
           key: votrecleapi123456
 ```
 
+### Exemple 3.5 : Intégrations avec API sous Docker
+
+Si les services roulent sous docker, alors voici la syntaxe à utiliser.
+
+3.5.1 - Éditer le fichier ./homepage-config/docker.yaml et ajouter les directives suivantes:
+
+```yaml
+# Le label suivant servira de lien entre le service et docker
+my-docker:
+  socket: /var/run/docker.sock
+```
+
+3.5.2 - Remplacer le service pihole (dans ./homepage-config/services.yaml) par,
+
+```yaml
+    - Accès à PiHole:
+        # https://gethomepage.dev/widgets/services/pihole/
+        icon: pi-hole.png
+        href: https://localhost/admin
+        description: Interface d'administration PiHole
+        server: my-docker # Le serveur docker, configuré dans docker.yaml
+        container: pihole # Le nom du conteneur. Le réseau docker sera utilisé pour la connexion.
+        showStats: true 
+        target: _self 
+```
+
+
+---
+
 ### Exemple 4 : Personnalisation visuelle
 
-Configurez `config/settings.yaml` :
+Configurez `homepage-config/settings.yaml` :
 
 ```yaml
 title: Mon Homelab
