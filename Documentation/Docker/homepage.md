@@ -1,12 +1,16 @@
 # Introduction à Homepage
 
 <p align="center">
-  <img src="../images/homepage-logo.png" alt="" width="500" />
+  <img src="../images/homepage-logo2.png" alt="" width="500" />
 </p>
 
 ## Qu'est-ce que Homepage ?
 
-**Homepage** est un tableau de bord personnalisable et moderne pour centraliser l'accès aux services auto-hébergés, applications web et ressources réseau. Conçu pour les utilisateurs de 'homelab' et les administrateurs système, Homepage offre une interface élégante qui regroupe les services avec des informations en temps réel.
+**Homepage** est un tableau de bord personnalisable pour centraliser l'accès aux services auto-hébergés, applications web et ressources réseau. 
+
+Conçu pour les utilisateurs de 'homelab' et les administrateurs système, Homepage offre une interface qui regroupe les services avec des informations en temps réel.
+
+---
 
 ### Caractéristiques principales
 
@@ -16,10 +20,11 @@
 - Configuration simple via des fichiers YAML
 - Support Docker natif avec détection automatique
 - Thèmes clairs et sombres
+- Localisation de la langue
 
 ---
 
-## Installation, avec Docker, en cli:
+## Installation avec Docker, en cli:
 
 ```bash
 $ mkdir ./homepage-config
@@ -31,7 +36,7 @@ $ docker run -d \
   -v /var/run/docker.sock:/var/run/docker.sock:ro \
   ghcr.io/gethomepage/homepage:latest
 
-# Après le lancement du contenur, il devrait y avoir des fichiers de configuration dans le dossier ./homepage-config
+# Après le lancement du conteneur, il devrait y avoir des fichiers de configuration dans le dossier ./homepage-config
 $ ls -l ./homepage-config
 
 -rw-r--r-- 1   354 janv.  7 10:17 bookmarks.yaml
@@ -97,7 +102,7 @@ Et y ajouter le contenu suivant:
         icon: proxmox.png
 ```
 
-💡NOTE: Les changements devraient être actualisés automatiquement sur la page webé
+💡NOTE: Les changements devraient être actualisés automatiquement sur la page web.
 
 
 <img src="../images/homepage-intro-02.png" alt="" width="700" />
@@ -107,7 +112,7 @@ Et y ajouter le contenu suivant:
 
 ### Exemple 2 : Ajouter des widgets informatifs
 
-Éditez `homepage-config/widgets.yaml` :
+Éditer `homepage-config/widgets.yaml` :
 
 ```yaml
 - search:
@@ -160,6 +165,8 @@ Pour afficher des statistiques en temps réel, ajoutez des intégrations dans `s
           key: votrecleapi123456
 ```
 
+---
+
 ### Exemple 3.5 : Intégrations avec API sous Docker
 
 Si les services roulent sous docker, alors voici la syntaxe à utiliser.
@@ -171,6 +178,8 @@ Si les services roulent sous docker, alors voici la syntaxe à utiliser.
 my-docker:
   socket: /var/run/docker.sock
 ```
+
+---
 
 3.5.2 - Remplacer le service pihole (dans ./homepage-config/services.yaml) par,
 
@@ -197,7 +206,7 @@ Configurer `homepage-config/settings.yaml` :
 title: Mon Homelab
 theme: dark
 color: slate
-language: fr
+language: fr # Poour afficher en français
 
 layout:
   Média:
@@ -214,6 +223,7 @@ favicon: https://votresite.com/favicon.ico
 
 
 ## 💡 5 - Voici un exemple complet, avec variables d'environnement et génération des fichiers de configuration par programmation.
+
 
 ```yaml
 # Fichier: docker-compose.yml
