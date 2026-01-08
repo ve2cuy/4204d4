@@ -1,7 +1,7 @@
 # Introduction à Homepage
 
 <p align="center">
-  <img src="../images/homepage-logo2.png" alt="" width="500" />
+  <img src="../images/homepage-logo2.png" alt="" width="400" />
 </p>
 
 ## Qu'est-ce que Homepage ?
@@ -10,7 +10,9 @@
 
 Conçu pour les utilisateurs de 'homelab' et les administrateurs système, Homepage offre une interface qui regroupe les services avec des informations en temps réel.
 
-<img src="https://gethomepage.dev/assets/homepage_demo_clip.webp" alt="" width="700" />
+<p align="center">
+  <img src="https://gethomepage.dev/assets/homepage_demo_clip.webp" alt="" width="800" />
+</p>
 ---
 
 ### Caractéristiques principales
