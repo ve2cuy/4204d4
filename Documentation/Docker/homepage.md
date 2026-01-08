@@ -352,11 +352,11 @@ services:
         # Lire un site autorisé via pihole
         # Utilisation de wget car curl n'est pas installé dans l'image alpine.
         echo 'Tester google.com via pihole...\';
-        wget -O index.html google.com && echo 'La Requête sur google.com a réussi ' || echo 'Requête échouée, étrange ...';
+        wget -O index.html google.com && echo '😀 La Requête sur google.com a réussi ' || echo 'Requête échouée, étrange ...';
         sleep 5;
         # Lire un site bloqué via pihole
         echo 'Tester doubleclick.net via pihole...';
-        wget doubleclick.net && echo 'La Requête a réussi (étrange - site bloqué!)' || echo 'La requête a échoué (site bloqué)'; 
+        wget doubleclick.net && echo 'La Requête a réussi (étrange - site bloqué!)' || echo '😡 La requête a échoué (site bloqué)'; 
         sleep 5;    
       done
       "      
