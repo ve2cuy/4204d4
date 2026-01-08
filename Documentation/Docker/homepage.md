@@ -10,6 +10,7 @@
 
 Conçu pour les utilisateurs de 'homelab' et les administrateurs système, Homepage offre une interface qui regroupe les services avec des informations en temps réel.
 
+<img src="https://gethomepage.dev/assets/homepage_demo_clip.webp" alt="" width="700" />
 ---
 
 ### Caractéristiques principales
