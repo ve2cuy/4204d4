@@ -118,3 +118,5 @@
 - Courriel: Aboudrea@cstj.qc.ca
 - Téléphone: x6516
 - Local: D125e
+
+[Disponibilités pour la session H26](Documentation/Disponibilites-enseignant-h26.md)
