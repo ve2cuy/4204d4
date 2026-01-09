@@ -99,11 +99,10 @@
 * [Rancher](https://www.rancher.com/quick-start)
 * [LongHorn](https://longhorn.io/)
 
-### Évaluations et Automatisation
+### Évaluations
 
 * [Énoncé du TP01 – Docker - Version 2023 (30%)](https://4204d4.ve2cuy.com/tp01-docker/)
 * [Énoncé du TP02 – K8s – Node-red+mosquitto+configmap+secret (20%)](https://4204d4.ve2cuy.com/tp02-k8s/)
-* [Automatisation des 'builds' d'images Docker/Github](https://4204d4.ve2cuy.com/docker-github-actions/)
 * [Énoncé de l'épreuve synthèse - version 2023 (50%)](https://4204d4.ve2cuy.com/epreuve-synthese-2023/)
 
 ---
