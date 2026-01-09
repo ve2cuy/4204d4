@@ -23,15 +23,15 @@
 ---
 ## Liste des documents de cours
 
-* [Plan de cours - À suivre]()
+* [Plan de cours - Hiver 2026](Documentation/420-4D4-JR_ab_pc_H26.pdf)
 * [Horaire et disponibilités H2026 - À suivre]()
 * [Description de l'épreuve synthèse - À suivre]()
 
 ---
 ## Évaluation H26
-* Projet de mi-session - TP01 : 30%
-* Épreuve synthèse volet A - Examen pratique : 30%
-* Épreuve synthèse volet B - TP02 : 40%
+* Projet de mi-session - TP01 sur Docker : **30%**
+* Épreuve synthèse volet A - TP02 sur K8s : **40%**
+* Épreuve synthèse volet B - Examen pratique - Semaine 15 : **30%**
 
 ---
 
@@ -83,8 +83,8 @@
 * [29 - Helm charts]() 🧠
 * [30 - Automatisation des ‘builds’ d’images Docker/Github]() 🧠
 * [31 - Aide rapide]()
-* [32 - Épreuve synthèse Volet A : 30 %]
-* [33 - Épreuve synthèse Volet B : 40 %]
+* [32 - Épreuve synthèse Volet A : 40 %]
+* [33 - Épreuve synthèse Volet B - Examen : 30 %]
 * [kubectl - Référence rapide](Documentation/Kubernetes/Kubernetes-Reference-rapide.md) 👍
 
 ---
