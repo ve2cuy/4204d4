@@ -61,6 +61,12 @@ pass init 'USER'
 # pass init alain
 
 docker login -u dockerhub_user
+
+#---------------------------------------------------------
+# Sur debian, installer ifconfig
+apt-get unpdate && apt install net-tools
+ifconfig
+
 ```
 
 ---
