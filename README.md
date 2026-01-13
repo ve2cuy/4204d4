@@ -74,10 +74,9 @@
 * [24 - Kubernetes – Installation d'un cluster; 1 Master, 2 Nodes](https://4204d4.ve2cuy.com/kubernetes-installation-dun-cluster-1-master-2-nodes/)
 * [25 - Kubernetes – Les volumes](Documentation/Kubernetes/Kubernetes-Les-volumes.md) 👍
 * [25a - Kubernetes - Services](Documentation/Kubernetes/Kubernetes-Services.md) 🧠
-* [26 - Kubernetes – LoadBalancer Externe et Ingress](Documentation/Kubernetes/Kubernetes-LoadBalancer-et-Ingress.md) 👍 [Docum officielle](https://kubernetes.io/docs/concepts/services-networking/ingress/)
-* [Ingress avec Traefik](Documentation/Kubernetes/Ingress-avec-traefik.md)
-* [Équilibreur de charge externe](Documentation/Kubernetes/Equilibreur-de-charge-externe-MetalLB.md) 
-* [Nouveaux services réseaux pour l'implémentation d'Ingress]() 🧠
+* [26 - LoadBalancer et ingress avec Traefik](Documentation/Kubernetes/MetalLB-Traefik.md)
+* [Kubernetes – LoadBalancer Externe et Ingress avec Nginx - Désuet](Documentation/Kubernetes/Kubernetes-LoadBalancer-et-Ingress.md) 👍
+* [Équilibreur de charge externe ML - Info supplémentaire](Documentation/Kubernetes/Equilibreur-de-charge-externe-MetalLB.md) 
 * [27 - Espaces de nom (namespaces)]() 🧠
 * [ServiceAccount]() 🧠
 * [28 - Utilisation d’un cluster sur Google Cloud]() 🧠
