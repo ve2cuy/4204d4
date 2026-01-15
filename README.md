@@ -68,6 +68,7 @@
 * [21 - Kubernetes – Introduction](Documentation/Kubernetes/Kubernetes-Introduction.md) 👍
 * [21a- Kubernetes – Manifestes expliqués - version courte](Documentation/Kubernetes/Kubernetes-Manifestes-Expliques-version-courte.md)
 * [21b- Kubernetes – Manifestes expliqués - version longue](Documentation/Kubernetes/Kubernetes-Manisfestes-Expliques-version-longue.md)
+* [21c- Kubernetes – Manifestes, Gestion des ressources](Documentation/Kubernetes/Kubernetes-Manifestes-Gestion-des-ressources.md)
 * [22 - Kubernetes – Partie 2](Documentation/Kubernetes/Kubernetes-partie-2.md) 👍
 * [22b- Kubernetes – Config Map et Secrets](Documentation/Kubernetes/Kubernetes-Config-map-et-secret.md) 👍
 * [23 - Préparation à l'atelier d'installation d'un 'cluster' K8s avec Vagrant](https://4204d4.ve2cuy.com/pre-requis-atelier-k8s-vagrant/)
@@ -75,12 +76,12 @@
 * [25 - Kubernetes – Les volumes](Documentation/Kubernetes/Kubernetes-Les-volumes.md) 👍
 * [25a - Kubernetes - Services](Documentation/Kubernetes/Kubernetes-Services.md) 🧠
 * [26 - LoadBalancer et ingress avec Traefik](Documentation/Kubernetes/MetalLB-Traefik.md)
-* [Kubernetes – LoadBalancer Externe et Ingress avec Nginx - Désuet](Documentation/Kubernetes/Kubernetes-LoadBalancer-et-Ingress.md) 👍
-* [Équilibreur de charge externe ML - Info supplémentaire](Documentation/Kubernetes/Equilibreur-de-charge-externe-MetalLB.md) 
+* 26a - [Kubernetes – LoadBalancer Externe et Ingress avec Nginx - Désuet](Documentation/Kubernetes/Kubernetes-LoadBalancer-et-Ingress.md) 👍
+* 26b - [Équilibreur de charge externe ML - Info supplémentaire](Documentation/Kubernetes/Equilibreur-de-charge-externe-MetalLB.md) 
 * [27 - Espaces de nom (namespaces)]() 🧠
 * [ServiceAccount]() 🧠
 * [28 - Utilisation d’un cluster sur Google Cloud]() 🧠
-* [29 - Helm charts]() 🧠
+* [29 - Helm - Introduction](Documentation/Kubernetes/Helm-introduction.md) 👍
 * [30 - Automatisation des ‘builds’ d’images Docker/Github]() 🧠
 * [31 - Aide rapide]()
 * [32 - Épreuve synthèse Volet A : 40 %]

@@ -113,9 +113,11 @@ kubectl apply -f Metallb-config.yaml
 
 ---
 
+
 ## 3 – Installation d'un Ingress (reverse proxy) Traefik sur K8S
 
 [Documentation officielle](https://doc.traefik.io/traefik/getting-started/quick-start-with-kubernetes/)
+
 
 ### 3.1 – Déploiement d'un service ingress de type Traefik via Helm
 
@@ -181,6 +183,10 @@ Il est maintenant possible d'avoir accès au réseau k8s via cette adresse IP:
 # Remplacer par l'adresse IP externe de votre 'load balancer'
 192.168.2.60    dashboard.labo420 whoami.labo420
 ```
+
+**NOTE**: Dans le cas d'un déploiement sans load balancer, utiliser un port-forward:
+
+kubectl port-forward -n traefik svc/traefik 80
 
 * Tester l'accès au Dashboard de Traefik
 

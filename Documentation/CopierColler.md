@@ -67,6 +67,10 @@ docker login -u dockerhub_user
 apt-get unpdate && apt install net-tools
 ifconfig
 
+# Port-forward vers un service avec kubectl: accès via localhost
+kubectl port-forward -n traefik svc/traefik 80
+kubectl svc/serveur-web 80
+
 ```
 
 ---
