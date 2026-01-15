@@ -336,6 +336,16 @@ sudo apt-mark hold kubeadm
 sudo kubeadm reset -f
 ```
 
+## 🛑 Réinstallation de Docker
+
+Il est possible que Docker ne fonctionne plus suite à l'installation de K8s.
+
+Pour réinstaller, exécuter la commande suivante:
+
+```bash
+sudo apt-get install docker.io
+```
+
 ---
 
 **NOTE**: Voir les alias K8s dans la section [copier/coller](https://4204d4.ve2cuy.com/docker-copier-coller/)

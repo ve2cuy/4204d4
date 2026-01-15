@@ -76,8 +76,8 @@
 * [25 - Kubernetes – Les volumes](Documentation/Kubernetes/Kubernetes-Les-volumes.md) 👍
 * [25a- Kubernetes - Services](Documentation/Kubernetes/Kubernetes-Services.md) 🧠
 * [26 - LoadBalancer et ingress avec Traefik](Documentation/Kubernetes/MetalLB-Traefik.md)
-* 26a- [Kubernetes – LoadBalancer Externe et Ingress avec Nginx - Désuet](Documentation/Kubernetes/Kubernetes-LoadBalancer-et-Ingress.md) 👍
-* 26b- [Équilibreur de charge externe ML - Info supplémentaire](Documentation/Kubernetes/Equilibreur-de-charge-externe-MetalLB.md) 
+* [26a- Kubernetes – LoadBalancer Externe et Ingress avec Nginx - Désuet](Documentation/Kubernetes/Kubernetes-LoadBalancer-et-Ingress.md) 👍
+* [26b- Équilibreur de charge externe ML - Info supplémentaire](Documentation/Kubernetes/Equilibreur-de-charge-externe-MetalLB.md) 
 * [27 - Espaces de nom (namespaces)]() 🧠
 * [ServiceAccount]() 🧠
 * [28 - Utilisation d’un cluster sur Google Cloud]() 🧠
