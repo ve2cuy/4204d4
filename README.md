@@ -25,7 +25,7 @@
 ## Liste des documents de cours
 
 * [Plan de cours - Hiver 2026](Documentation/420-4D4-JR_ab_pc_H26.pdf)
-* [Horaire et disponibilités H2026 - À suivre]()
+* [Horaire et disponibilités H2026 - À suivre](/Documentation/images/Horaire-H26.png)
 * [Description de l'épreuve synthèse - À suivre]()
 
 ---
@@ -119,4 +119,4 @@
 - Téléphone: x6516
 - Local: D125e
 
-[Disponibilités pour la session H26](Documentation/Disponibilites-enseignant-h26.md)
+[Disponibilités pour la session H26](/Documentation/images/Horaire-H26.png)
