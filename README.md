@@ -26,6 +26,7 @@
 
 * [Plan de cours - Hiver 2026](Documentation/420-4D4-JR_ab_pc_H26.pdf)
 * [Horaire et disponibilités H2026 - À suivre](/Documentation/images/Horaire-H26.png)
+* [Calendrier scolaire H26](/Documentation/Contenu/Calendriers_H26_CSTJ.pdf)
 * [Description de l'épreuve synthèse - À suivre]()
 
 ---
