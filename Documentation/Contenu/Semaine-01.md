@@ -262,12 +262,25 @@ Sous 'Clic sur l'avatar -> Settings -> SSH and PGP keys:
 
 * Sur la VM, définir les informations pour les commits et utiliser git
 
-```
+```bash
 git config --global user.name "Votre nom"
 git config --global user.email "votre.courriel@example.com"
 
 git clone, push, pull, ...
 ```
+
+---
+
+## 16 - Créer un compte sur Docker Hub et login avec la commande docker
+
+* Aller sur [Docker hub](https://hub.docker.com/) et suivre le lien 'Sign up'
+* Tester le login avec la commande suivante:
+
+```bash
+docker login -u compte_sur_docker_hub
+```
+
+**🛑NOTE**: En laboratoire, il est important de s'identifier avec la commande 'docker login' car les téléchargements sont limités à 100 par jour.  Tous les postes du D139 utilisent la même adresse IP externe.  Sans cette identification, nous atteindrons la limite très rapidement.  
 
 ---
 
@@ -278,5 +291,5 @@ git clone, push, pull, ...
  ## Crédits
 
 *Document rédigé par Alain Boudreault © 2021-2026*  
-*Version 2026.01.03.1*  
+*Version 2026.01.22.1*  
 *Site par ve2cuy*

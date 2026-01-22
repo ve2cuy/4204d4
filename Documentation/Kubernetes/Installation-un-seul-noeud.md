@@ -299,6 +299,7 @@ kubectl get nodes
 
 ## Installation d'un cluster à partir d'un dépôt GitHub
 
+
 ```bash
 # Installation d'un contrôleur K8s à partir d'un dépot GitHub
 curl https://raw.githubusercontent.com/ve2cuy/4204d4/refs/heads/main/Installation/Kubernetes/server.sh | bash
@@ -344,6 +345,23 @@ Pour réinstaller, exécuter la commande suivante:
 
 ```bash
 sudo apt-get install docker.io
+```
+
+---
+
+## Installation d'un 'worker Node'
+
+Pour installer un 'worker node' il faut réaliser les étapes 1 à 8 puis,
+
+```bash
+# Sur le controleur (control-plane), obtenir la commande pour joindre un noeud au cluster:
+sudo kubeadm token create --print-join-command
+
+# Ce qui produit une commande comme:
+sudo kubeadm join 192.168.139.50:6443 --token 64th0n.eknzv4kxm1mxwl4o --discovery-token-ca-cert-hash sha256:8ec95c7a7c230d4e1ac11e067ba5a9cd9a0c38c772f500858ac1488c00d065b9
+
+# Exécuter la commande sur le noeud à ajouter à l'amas (cluster)  
+
 ```
 
 ---

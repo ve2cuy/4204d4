@@ -32,8 +32,8 @@
 ---
 ## Évaluation H26
 * Projet de mi-session - TP01 sur Docker : **30%**
-* Épreuve synthèse volet A - TP02 sur K8s : **40%**
-* Épreuve synthèse volet B - Examen pratique - Semaine 15 : **30%**
+* Épreuve synthèse volet A - TP02 sur K8s : **35%**
+* Épreuve synthèse volet B - Examen pratique - Semaine 16 : **35%**
 
 ---
 
@@ -85,8 +85,8 @@
 * [29 - Helm - Introduction](Documentation/Kubernetes/Helm-introduction.md) 👍
 * [30 - Automatisation des ‘builds’ d’images Docker/Github]() 🧠
 * [31 - Aide rapide]()
-* [32 - Épreuve synthèse Volet A : 40 %]
-* [33 - Épreuve synthèse Volet B - Examen : 30 %]
+* [32 - Épreuve synthèse Volet A : 35 %]
+* [33 - Épreuve synthèse Volet B - Examen : 35 %]
 * [kubectl - Référence rapide](Documentation/Kubernetes/Kubernetes-Reference-rapide.md) 👍
 
 ---
