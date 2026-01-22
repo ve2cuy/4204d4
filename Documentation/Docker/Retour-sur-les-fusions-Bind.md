@@ -1,8 +1,6 @@
 
 # 💾 Docker – Retour sur les fusions (bind) Expérimentation avec MySQL
 
-*Date : 16 février 2021 - Actualisé 2025.12.04*
-
 Histoire de bien intégrer les notions acquises lors des ateliers précédents, nous allons revisiter :
 
 <p align="center">

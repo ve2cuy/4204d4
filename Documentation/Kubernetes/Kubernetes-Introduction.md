@@ -1,9 +1,5 @@
 # Kubernetes – Introduction
 
-*Date: 14 février 2021 - Révision du 2025.12.05*
-TODO: Valider le document
----
-
 <p align="center">
     <img src="../images/k8s.png" alt="" width="300" />
 </p>

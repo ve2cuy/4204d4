@@ -1,8 +1,5 @@
 # 🐳 Docker – Commandes de base
 
-Date de la version originale : 23 Décembre 2020 - révision 2025-12.10.01
-
----
 
 <p align="center">
     <img src="../images/pinkfloyd1969-300x213.jpg" alt="YAML" width="350" />

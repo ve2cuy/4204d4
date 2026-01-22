@@ -1,6 +1,5 @@
 # K8S – LoadBalancer externe + Traefik
 
-
 <p align="center">
     <img src="../images/load-balancer-icon-19.jpg.png" alt="Load Balancer Icon" width="300" />
 </p>

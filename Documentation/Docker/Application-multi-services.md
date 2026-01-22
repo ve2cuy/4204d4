@@ -1,7 +1,5 @@
 # 🐳 Applications – Multi-services
 
-*Source : [https://4204d4.ve2cuy.com/docker-application-multi-service/](https://4204d4.ve2cuy.com/docker-application-multi-service/)*
-*Date : 11 février 2021 - Actualisé 2025.12.04*
 
 ## Et pourquoi pas un défi de taille
 <p align="center">

@@ -1,7 +1,5 @@
 # ☁️ Docker Hub – Introduction
 
-*Date : 27 janvier 2021*
-
 ## Publier une IMAGE à partir d'un conteneur PERSONNALISÉ et Stockage PERSISTANT
 
 <p align="center">

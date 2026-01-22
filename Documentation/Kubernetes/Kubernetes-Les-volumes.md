@@ -1,7 +1,5 @@
 # Kubernetes – Les volumes
 
-*28 avril 2022 - Révision du 2025.12.05*
-
 <p align="center">
     <img src="../images/volumes.png" alt="YAML" width="600" />
 </p>

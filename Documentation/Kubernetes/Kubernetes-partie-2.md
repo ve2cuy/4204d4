@@ -1,7 +1,5 @@
 # Kubernetes – Partie 2
 
-4 avril 2023 - Révision du 2025.12.07
-
 <img src="../images/comvecteezy446657.jpg" alt="" width="" />
 
 ## K8s, déployer une application de complexité moyenne

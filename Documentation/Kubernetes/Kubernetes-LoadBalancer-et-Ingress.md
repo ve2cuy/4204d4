@@ -1,7 +1,5 @@
 # K8S – LoadBalancer externe + ingress
 
-*Date: 8 avril 2023 - Révision du 2025.12.05*
-
 <p align="center">
     <img src="../images/load-balancer-icon-19.jpg.png" alt="Load Balancer Icon" width="300" />
 </p>

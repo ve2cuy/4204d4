@@ -1,7 +1,5 @@
 # 🐳 Docker Network
 
-*Date : 10 février 2021 - Révision 2025.12.04*
-
 # Un peu de plaisir avec les réseaux Docker
 
 <p align="center">

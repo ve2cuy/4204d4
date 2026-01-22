@@ -1,8 +1,6 @@
 
 # Dockerfile – Atelier de renforcement
 
- 19 février 2021 - Révision du 2025-12-05
-
  **TODO:** Augmenter le niveau de difficulté!!
 
 

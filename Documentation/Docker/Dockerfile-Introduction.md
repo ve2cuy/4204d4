@@ -1,13 +1,6 @@
 
 # 🐳 Dockerfile – Introduction
 
-*Source : [https://4204d4.ve2cuy.com/docker-compose-introduction/](https://4204d4.ve2cuy.com/docker-compose-introduction/)*
-*Date : 29 janvier 2021*
-
-
-
----
-
 ## La Dockerfile – tout ce que vous avez toujours voulu savoir
 
 Motivé par nos apprentissages précédents, nous voilà enfin près – du moins, nous tenterons l’exercice – à bâtir une image **docker** personnalisée.

@@ -1,6 +1,5 @@
 # Docker – Référence rapide
 
-*2 Décembre 2025*
 
 | **Commande** | **Description** | **Exemple** |
 | :--- | :--- | :--- |

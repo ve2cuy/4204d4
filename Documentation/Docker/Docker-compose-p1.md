@@ -1,7 +1,5 @@
 # 🐳 Docker compose – Introduction - Partie 1
 
-*Date : 12 février 2021 - Révisé le 2025.12.04*
-
 <p align="center">
     <img src="../images/docker-compose2.png" alt="YAML" width="750" />
 </p>
