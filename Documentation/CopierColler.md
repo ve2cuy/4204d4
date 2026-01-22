@@ -175,6 +175,9 @@ alias kcgc='kubectl config get-contexts'
 alias kcuc='kubectl config use-context'
 # Exemple: $ kubectl config set-context --current --namespace=<namespace>
 alias kcsc='kubectl config set-context'
+
+# LazyDocker
+alias lzd='lazydocker'
 ```
 
 ---

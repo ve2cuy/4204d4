@@ -80,7 +80,7 @@ Un conteneur est une unité logicielle standardisée qui **regroupe le code d'un
 
 ### 3. Docker
 
-**Docker** est un l'outil populaire pour créer, déployer et gérer des conteneurs. Il fournit le format et les outils nécessaires pour l'empaquetage.  Note: d'autres solution sont aussi disponibles, par exemple, podman.
+**Docker** est un l'outil populaire pour créer, déployer et gérer des conteneurs. Il fournit le format et les outils nécessaires pour l'empaquetage.  **Note**: d'autres solutions sont aussi disponibles, par exemple, podman.
 
 ----
 

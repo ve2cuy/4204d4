@@ -6,28 +6,35 @@
 
 ---
 
-### 2 - Installation d'Ubuntu Desktop (version minimale) sur VMware PRO
+### 2 - Installation d'Ubuntu Desktop (Installation par défaut) sur VMware PRO
+
+**NOTE**: Renseigner dans Edit-Preference-Workspace, le dossier de création des VM sur le disque avec le maximum de stockage.
+
+- Easy Install
 - VM nommée Ubuntu-Master
 - Network connection: Bridged
-- Disque de 40GO
+- Disque de 100GO
 
 🤚 **NOTE**: Vérifier que la bonne carte réseau est renseignée dans les paramètres de VMware
 - Menu: edit -> Virtual Network Editor --> Change settings --> VMNet0 ...
 
-### 3 - Installation de openssh-server et de firefox
+### 3 - Installation de openssh-server
 💡- Terminal = Ctl+Alt+T
 
 ```bash
 $ sudo apt update && sudo apt upgrade -y
-$ sudo apt install openssh-server firefox -y
+$ sudo apt install openssh-server -y
 ```
 ### 4 - Du poste de travail, générer une paire de clés ssh
 ```bash
-$ ssh-keygen -C UserName
+$ ssh-keygen -C UserName -f labo420 (le compte créé à l'installation d'Ubuntu)
 ```
 #### 4.1 - Copier la clé publique vers la VM
 ```bash
-$ ssh-copy-id -i nom-du-fichier.pub userName@adresse-ip
+$ ssh-copy-id -i labo420.pub userName@adresse-ip
+
+# Tester
+$ 
 ```
 #### 4.2 Renseigner une référence dans le fichier ~/.ssh/config
 #### Avec l'adresse IP de la machine clonée (labo)
@@ -70,7 +77,7 @@ ssh compte@1.2.3.4
 
 ### 10 - Installer Docker
 
-Voir le document : [Installation de Docker](/4204d4/Installation/Docker/Installation-de-Docker.md)
+Voir le document : [Installation de Docker](https://ve2cuy.github.io/4204d4/Installation/Docker/Installation-de-Docker.html)
 
 ### 11 - Tester Docker
 ```bash
@@ -82,12 +89,12 @@ $ docker help
 https://liquidprompt.readthedocs.io/en/stable/overview.html
 
 ```bash
-$ git clone --branch stable https://github.com/liquidprompt/liquidprompt.git ~/liquidprompt
-$ source ~/liquidprompt/liquidprompt
-$ source ~/liquidprompt/themes/unfold/unfold.theme
-$ lp_theme unfold # lp_theme default
-$ source ~/liquidprompt/themes/powerline/powerline.theme
-$ lp_theme --list
+git clone --branch stable https://github.com/liquidprompt/liquidprompt.git ~/liquidprompt
+source ~/liquidprompt/liquidprompt
+source ~/liquidprompt/themes/unfold/unfold.theme
+lp_theme unfold # lp_theme default
+source ~/liquidprompt/themes/powerline/powerline.theme
+lp_theme --list
 ```
 --> Ajouter dans le fichier .bashrc :
 ```bash
@@ -104,7 +111,7 @@ echo -e "\nPour changer de thème: lp_theme nom-du-theme\n\n"
 
 ### Ajouter des alias dans le fichier ~/.bash_aliases
 
-👉 Voir les [copier/coller](/420-4d4/Documentation/CopierColler.md)
+👉 Voir les [copier/coller](https://ve2cuy.github.io/4204d4/Documentation/CopierColler.html)
 
 ---
 ### 12 - Installer LazyDocker
@@ -132,8 +139,38 @@ alias lzd='lazydocker'
 
 <img src="../images/lazydocker.png" alt="YAML" width="550" />
 
+
+### Installer DockHand
+
+- Dans la VM, Créer le fichier compose.yaml avec le contenu suivant:
+
+```yaml
+services:
+  dockhand:
+    image: fnsys/dockhand:latest
+    container_name: dockhand
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - dockhand_data:/app/data
+
+volumes:
+  dockhand_data:
+```
+
+```
+# Démarrer DockHand:
+$ docker compose up -d
+```
+
+* Tester dans un fureteur avec l'adresse http://IP_VM:3000
+
+<img src="../images/dockhand.png" alt="DockHand" width="800" />
+
 ---
-### 13 - Installer Arcane
+### Facultatif - Installer Arcane
 
 https://getarcane.app/
 
@@ -206,17 +243,24 @@ $ docker compose up -d
 
 ### 15 -  Connexion au compte github via git
 
-* Sur la station de travail (Linux), générer une paire de clés SSH:
+Pour pouvoir cloner des dépots privés, à partir de la VM, il faut créer une paires de clées et renseigner la clée public dans le compte Github.
+
+* À partir de la VM (Linux), générer une paire de clés SSH:
 
 ```
-~/.ssh/ $ ssh-keygen -t ed25519 -C "email.utilisée@github.com"
+cd ~/.ssh/
+ssh-keygen -t ed25519 -C "email.utilisée@github.com"
 ```
 
 * Sur github, ajouter la clé publique
 
+Sous 'Clic sur l'avatar -> Settings -> SSH and PGP keys:
+
  <img src="../images/github-cle-ssh.png" alt="github ssh key" width="550" />
 
-* Définir les informations pour les commits et utiliser git
+* Ajouter la clé publique et indiquer le type 'Authentification'
+
+* Sur la VM, définir les informations pour les commits et utiliser git
 
 ```
 git config --global user.name "Votre nom"
@@ -225,7 +269,11 @@ git config --global user.email "votre.courriel@example.com"
 git clone, push, pull, ...
 ```
 
- ---
+---
+
+### Voilà, notre environnement de travail est prêt pour l'exploration de Docker. 
+
+---
 
  ## Crédits
 
