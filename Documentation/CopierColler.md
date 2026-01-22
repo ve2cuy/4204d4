@@ -802,6 +802,25 @@ sudo docker run --privileged -d --restart=unless-stopped -p 80:80 -p 443:443 ran
 
 ---
 
+## 17 - Configuration réseau sous Ubuntu
+
+```yaml
+# /etc/netplan$ sudo nano 00-installer-config.yaml
+network:
+  ethernets:
+    ens160:
+      addresses:
+      - 192.168.139.50/23
+      gateway4: 192.168.138.1
+      nameservers:
+        addresses:
+        - 8.8.8.8
+        search: []
+  version: 2
+```
+
+---
+
 ## 50 – Scripts bash de création de Master/Worker sur Ubuntu 24.04
 
 **Note**: Si vous avez cloné des VM, ne pas oublier de mettre à jour les fichiers `/etc/hosts` et `/etc/hostname` avant de rouler les scripts suivants.

@@ -25,11 +25,12 @@
 ## Liste des documents de cours
 
 * [Plan de cours - Hiver 2026](Documentation/420-4D4-JR_ab_pc_H26.pdf)
-* [Horaire et disponibilités H2026 - À suivre](/Documentation/images/Horaire-H26.png)
+* [Horaire et disponibilités H2026](/Documentation/images/Horaire-H26.png)
 * [Calendrier scolaire H26](/Documentation/Contenu/Calendriers_H26_CSTJ.pdf)
 * [Description de l'épreuve synthèse - À suivre]()
 
 ---
+
 ## Évaluation H26
 * Projet de mi-session - TP01 sur Docker : **30%**
 * Épreuve synthèse volet A - TP02 sur K8s : **35%**
