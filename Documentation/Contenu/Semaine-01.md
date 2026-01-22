@@ -243,7 +243,7 @@ $ docker compose up -d
 
 ### 15 -  Connexion au compte github via git
 
-Pour pouvoir cloner des dépots privés, à partir de la VM, il faut créer une paires de clées et renseigner la clée public dans le compte Github.
+Pour pouvoir cloner des dépots privés, à partir de la VM, il faut créer une paires de clées et renseigner la clée publique dans le compte Github.
 
 * À partir de la VM (Linux), générer une paire de clés SSH:
 
