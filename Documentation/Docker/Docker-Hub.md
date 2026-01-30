@@ -192,7 +192,7 @@ h1 { <span style="color: #6f82bf;">color: #6f82bf;</span>
 Pour lancer le conteneur:<br/><br/>
 <strong> docker run -it -d -p 80:80 --name serveurweb VOTRECOMPTE/420-4d4:1.0</strong><br>
 <br/><a href="http://ve2cuy.com/420-4d4b/">Contenu du cours</a>.</p>
-<p><em>Ceci est la version 1.0 de l'application<br/><br/>(c) Votre prénom nom - 2023</em></p>
+<p><em>Ceci est la version 1.0 de l'application<br/><br/>(c) Votre prénom nom - 2023-2026</em></p>
 </body>
 </html>
 ```
@@ -253,9 +253,13 @@ docker push VOTRECOMPTE/420-4d4:1.0
 
 ## Étape 4 – Tester l'image qui se trouve sur `hub.docker.com`
 
+
 ### 4.1 – Obtenir et exécuter l'application en utilisant le port `88`
 
 ```bash
+# Effacer l'image locale:
+docker rmi VOTRECOMPTE/420-4d4:1.0
+
 docker run -d -p 88:80 --name web-test VOTRECOMPTE/420-4d4:1.0
 ```
 
@@ -276,7 +280,7 @@ Nous avons maintenant accès, à partir d'un dépôt **hub.docker**, à l'image 
 
 ## Étape 5 – Stockage persistant
 
-**\<span style="color: \#ff0000;"\>TRISTESSE\</span\>** – À chaque fois que nous recréons un conteneur à partir d'une image, nous retrouvons le système de fichiers dans son état de départ. Cela pose un problème non négligeable lors des mises à jour de l'image.
+**TRISTESSE** – À chaque fois que nous recréons un conteneur à partir d'une image, nous retrouvons le système de fichiers dans son état de départ. Cela pose un problème non négligeable lors des mises à jour de l'image.
 
 Pour contrer cet état de fait, docker propose les **stockages persistants**. Grâce à une série d'exemples, voyons comment cela fonctionne.
 
