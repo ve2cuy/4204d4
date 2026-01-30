@@ -559,6 +559,8 @@ $ docker ps -a --filter ancestor=nginx
 $ docker ps --filter ancestor=nginx --format 'table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}'
 ```
 
+<img src="../images/docker-format.png" alt="Docker format" width="750" />
+
 -----
 
 ## Outils pour Docker
