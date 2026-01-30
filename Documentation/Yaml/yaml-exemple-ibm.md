@@ -71,4 +71,94 @@ networks:
     
 ```
 
-    FIN du Document
+---
+
+## Conversion en JSON
+
+```json
+{
+  "version": "3.8",
+  "services": {
+    "web": {
+      "image": "nginx:alpine",
+      "container_name": "mon-serveur-web",
+      "ports": [
+        "8080:80"
+      ],
+      "volumes": [
+        "./html:/usr/share/nginx/html"
+      ],
+      "networks": [
+        "mon-reseau"
+      ],
+      "depends_on": [
+        "api"
+      ]
+    },
+    "api": {
+      "build": {
+        "context": "./api",
+        "dockerfile": "Dockerfile"
+      },
+      "container_name": "mon-api",
+      "ports": [
+        "3000:3000"
+      ],
+      "environment": [
+        "NODE_ENV=production",
+        "DATABASE_URL=postgresql://user:password@db:5432/mabase"
+      ],
+      "volumes": [
+        "./api:/app",
+        "/app/node_modules"
+      ],
+      "networks": [
+        "mon-reseau"
+      ],
+      "depends_on": [
+        "db"
+      ],
+      "restart": "unless-stopped"
+    },
+    "db": {
+      "image": "postgres:15-alpine",
+      "container_name": "ma-db",
+      "environment": [
+        "POSTGRES_USER=user",
+        "POSTGRES_PASSWORD=password",
+        "POSTGRES_DB=mabase"
+      ],
+      "volumes": [
+        "postgres-data:/var/lib/postgresql/data"
+      ],
+      "networks": [
+        "mon-reseau"
+      ],
+      "restart": "unless-stopped"
+    },
+    "redis": {
+      "image": "redis:alpine",
+      "container_name": "mon-redis",
+      "ports": [
+        "6379:6379"
+      ],
+      "networks": [
+        "mon-reseau"
+      ],
+      "restart": "unless-stopped"
+    }
+  },
+  "volumes": {
+    "postgres-data": null
+  },
+  "networks": {
+    "mon-reseau": {
+      "driver": "bridge"
+    }
+  }
+}
+```json
+
+---
+
+FIN du Document
