@@ -6,6 +6,14 @@
 
 # 🇾🇦 YAML — Références et exemples
 
+**Référence**: [YAML](https://yaml.org/spec/1.2/spec.html)
+
+**Validateur YAML en ligne**: [yamllint](http://www.yamllint.com)
+
+**Convertisseur YAML → JSON**: [onlineyamltools](https://onlineyamltools.com/convert-yaml-to-json)
+
+---
+
 ## 1. Qu'est-ce que YAML ?
 
 YAML signifie **"YAML Ain't Markup Language"**.  

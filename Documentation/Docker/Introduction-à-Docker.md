@@ -556,7 +556,7 @@ $ docker container ls --filter "label=environment=production"
 $ docker ps -a --filter ancestor=nginx
 
 #  Afficher avec un format personnalisé :
-$ docker ps --filter ancestor=nginx --format 'table \{{.ID}}\t\{{.Names}}\t\{{.Status}}\t\{{.Ports}}'
+$ docker ps --filter ancestor=nginx --format 'table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}'
 ```
 
 <img src="../images/docker-format.png" alt="Docker format" width="750" />
