@@ -505,7 +505,7 @@ $ apt update $$ apt install nano -y
   
 -----
 
-### 3.7 – Afficher les statistiques d'utilisation matériel des conteneurs: `docker ontainer stat`
+### 3.7 – Afficher les statistiques d'utilisation matériel des conteneurs: `docker container stats`
 
 ```bash
 $ docker container stats
@@ -525,6 +525,10 @@ $ docker logs monServeurWeb
 172.17.0.1 - - [25/Jan/2021:20:41:47 +0000] "GET / HTTP/1.1" 200 612 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/605.1.15 (...)" "-"
 ...
 ```
+
+💡 NOTE: Ajouter l'option '-f' pour un affichage en continu
+
+---
 
 ### 3.9 – Afficher le détail complet (json) d'un conteneur : `docker inspect ID|NAME`
 
@@ -552,7 +556,7 @@ $ docker container ls --filter "label=environment=production"
 $ docker ps -a --filter ancestor=nginx
 
 #  Afficher avec un format personnalisé :
-$ docker ps --filter ancestor=nginx --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}"
+$ docker ps --filter ancestor=nginx --format 'table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}'
 ```
 
 -----
