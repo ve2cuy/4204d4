@@ -278,6 +278,13 @@ git clone, push, pull, ...
 
 ```bash
 docker login -u compte_sur_docker_hub
+password:
+
+# Tester
+
+docker run -p 80:8080 -d nginxdemos/nginx-hello
+docker run -p 81:8080 -d nginxdemos/nginx-hello
+...
 ```
 
 **🛑NOTE**: En laboratoire, il est important de s'identifier avec la commande 'docker login' car les téléchargements sont limités à 100 par jour.  Tous les postes du D139 utilisent la même adresse IP externe.  Sans cette identification, nous atteindrons la limite très rapidement.  
