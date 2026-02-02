@@ -141,7 +141,7 @@ $ docker info
 # Note: mon.registre.info pointe sur 192.168.139.55 (valide au D139, D140)
 
 docker login -u admin mon.registre.info:8080
-docker login -u etudiant mon.registre.info:8080 // Le mot de passe est etudeH26 et donne accès en pull seulement au D139.
+docker login -u etudiant mon.registre.info:8080 // Le mot de passe est etudeH26 et donne accès en `pull` seulement aux images du serveur du D139.
 
 # NOTE: Si l'API du registre répond sur un autre port que 443 alors il faut inscrire le port dans le 'tag'
 docker tag hello-world:latest mon.registre.info:8080/library/hello-world:v1
