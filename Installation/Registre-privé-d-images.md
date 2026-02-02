@@ -16,12 +16,25 @@ Pré-requis: docker, // docker-compose et python3-setuptools doivent-être insta
 
  [https://github.com/goharbor/harbor/releases](https://github.com/goharbor/harbor/releases)
 
+
+```bash
+wget https://github.com/goharbor/harbor/releases/download/v2.14.2/harbor-offline-installer-v2.14.2.tgz 
+```
+
 ## 2 – Décompresser l’archive
+
+```bash
+tar -xvzf harbor-offline-installer-v2.14.2.tgz
+```
 
 ## 3- Copier harbor.yml.tmpl dans harbor.yml et éditer
 
 
 ```yaml
+cd harbor
+cp harbor.yml.tmpl harbor.yml
+nano harbor.yml
+# -------------------------------------------------------------------
 # The IP address or hostname to access admin UI and registry service.
 # DO NOT use localhost or 127.0.0.1, because Harbor needs to be accessed by external clients.
 hostname: mon.registre.info
@@ -46,11 +59,17 @@ http:
 ## 4 – Renseigner le fichier hosts du serveur:
 
 ```
-# ajouter à l'adresse IP de votre serveur
-192.168.2.100  months.registre.info
+# ajuster à l'adresse IP de votre serveur
+192.168.139.55  mon.registre.info
 ```
 
 ## 4 – Exécuter le script ./prepare
+
+En cas d'erreur de permission:
+
+```
+sudo chmod a+rw /home/user/harbor/ -R
+```
 
 ## 5 – Exécuter docker compose up
 
@@ -89,7 +108,7 @@ Soit, via le fichier de configuration de docker:
 $ sudo nano /etc/docker/daemon.json
 
 {
-  "insecure-registries": ["mon.registre.info:80"]
+  "insecure-registries": ["mon.registre.info:8080"]
 }
 
 $ sudo systemctl restart docker
@@ -108,6 +127,8 @@ $ docker info
 ## 7 – Tester le registre:
 
 #### 7.1 - Accès à la console de Harbor
+
+**admin:Harbor12345**
 
 <img src="Images/habor-login.png" alt="" width="550" />
 <img src="Images/harbor-console.png" alt="" width="550" />
@@ -128,6 +149,39 @@ docker pull mon.registre.info:8080/library/hello-world:v1
 
 docker tag alainboudreault/superminou mon.registre.info:8080/library/superminou:latest
 docker push mon.registre.info:8080/library/superminou:latest
+
+# Images utiles pour le TP01.H26
+# Note: mon.registre.info pointe sur 192.168.139.55 (valide au D139, D140)
+docker tag alainboudreault/superminou:latest      mon.registre.info:8080/4204d4/alainboudreault/superminou:latest                   
+docker tag alpine:latest                          mon.registre.info:8080/4204d4/alpine:latest                                       
+docker tag busybox:latest                         mon.registre.info:8080/4204d4/busybox:latest                                      
+docker tag darthnorse/dockmon:latest              mon.registre.info:8080/4204d4/darthnorse/dockmon:latest                           
+docker tag ghcr.io/getarcaneapp/arcane:latest     mon.registre.info:8080/4204d4/ghcr.io/getarcaneapp/arcane:latest                  
+docker tag ghcr.io/gethomepage/homepage:latest    mon.registre.info:8080/4204d4/ghcr.io/gethomepage/homepage:latest                 
+docker tag ghcr.io/hotio/radarr:latest            mon.registre.info:8080/4204d4/ghcr.io/hotio/radarr:latest                         
+docker tag louislam/uptime-kuma:latest            mon.registre.info:8080/4204d4/louislam/uptime-kuma:latest                         
+docker tag lscr.io/linuxserver/qbittorrent:latest mon.registre.info:8080/4204d4/lscr.io/linuxserver/qbittorrent:latest              
+docker tag mariadb:latest                         mon.registre.info:8080/4204d4/mariadb:latest                                      
+docker tag nginx:latest                           mon.registre.info:8080/4204d4/nginx:latest                                        
+docker tag phpmyadmin:latest                      mon.registre.info:8080/4204d4/phpmyadmin:latest                                   
+docker tag pihole/pihole:latest                   mon.registre.info:8080/4204d4/pihole/pihole:latest                                
+docker tag portainer/portainer-ce:latest          mon.registre.info:8080/4204d4/portainer/portainer-ce:latest    
+
+docker push mon.registre.info:8080/4204d4/alainboudreault/superminou:latest          
+docker push mon.registre.info:8080/4204d4/alpine:latest                              
+docker push mon.registre.info:8080/4204d4/busybox:latest                             
+docker push mon.registre.info:8080/4204d4/darthnorse/dockmon:latest                  
+docker push mon.registre.info:8080/4204d4/ghcr.io/getarcaneapp/arcane:latest         
+docker push mon.registre.info:8080/4204d4/ghcr.io/gethomepage/homepage:latest        
+docker push mon.registre.info:8080/4204d4/ghcr.io/hotio/radarr:latest                
+docker push mon.registre.info:8080/4204d4/louislam/uptime-kuma:latest                
+docker push mon.registre.info:8080/4204d4/lscr.io/linuxserver/qbittorrent:latest     
+docker push mon.registre.info:8080/4204d4/mariadb:latest                             
+docker push mon.registre.info:8080/4204d4/nginx:latest                               
+docker push mon.registre.info:8080/4204d4/phpmyadmin:latest                          
+docker push mon.registre.info:8080/4204d4/pihole/pihole:latest                       
+docker push mon.registre.info:8080/4204d4/portainer/portainer-ce:latest              
+
 ```
 
 -----
