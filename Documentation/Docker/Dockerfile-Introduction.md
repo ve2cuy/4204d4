@@ -597,10 +597,10 @@ RUN sed -i 's/Listen 80/Listen 8080/' /usr/local/apache2/conf/httpd.conf
 - Copier la commande, pour lancer votre conteneur, dans la conversation TEAMS.
 
 
-* Pour tester ma solution:
+* Pour tester ma solution (port exposé, 581):
 
 ```
-docker run -d -p 88:80 alainboudreault/labo:5.8.1
+docker run -d -p 88:581 alainboudreault/labo:5.8.1
 ```
 
 ---
