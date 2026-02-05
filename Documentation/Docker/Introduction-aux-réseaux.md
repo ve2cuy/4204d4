@@ -3,7 +3,7 @@
 # Un peu de plaisir avec les réseaux Docker
 
 <p align="center">
-    <img src="../images/docker-network.png" alt="" width="550" />
+    <img src="../images/reseaux-docker.png" alt="" width="350" />
 </p>
 
 -----
