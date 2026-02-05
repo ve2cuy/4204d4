@@ -6,7 +6,7 @@
 Motivé par nos apprentissages précédents, nous voilà enfin près – du moins, nous tenterons l’exercice – à bâtir une image **docker** personnalisée.
 
 <p align="center">
-    <img src="../images/docker-compose2.png" alt="YAML" width="750" />
+    <img src="../images/dockerfile2.png" alt="YAML" width="500" />
 </p>
 
 ---
@@ -322,10 +322,10 @@ docker run -d -p 99:80 alainboudreault/420-4d4:exemple03
   * Remplacer ‘Alain Boudreault’ par votre nom sur la page d’accueil du site Web
       * Indice: la commande '***sed***'.
       * **NOTE**: Ne pas éditer le fichier manuellement \!\!
-  * **Publier l’image** sous `votreCompteHub.docker.com/semaine02-lab4:latest`
+  * **Publier l’image** sous `votreCompteHub.docker.com/labo:4.0`
   * **Afficher le lien de l’image** dans la discussion de la séance pour que nous puissions la tester.
     ```bash
-    docker pull [votreCompteHub.docker.com/semaine02-lab4](https://votreCompteHub.docker.com/semaine02-lab4)
+    docker pull votreCompteHub.docker.com/labo:4.0
     ```
 
 -----
