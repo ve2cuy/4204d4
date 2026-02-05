@@ -1,14 +1,85 @@
 #!Dockerfile
-# docker build -f Dockerfile-labo-5-8-1 -t mon-httpd:8080 .
-# docker run -d -p 8080:8080 --name web-server mon-httpd:8080
+# Auteur:   Alain Boudreault
+# Date:     2026.02.05
+# Solution: Laboratoire 5.8.1 de Dockerfile-Introduction
+# -----------------------------------------------------------------------------------
+# $ docker build -f .\Dockerfile-labo-5.8.1 -t labo:5.8.1 --build-arg PORT=888 .
+# -----------------------------------------------------------------------------------
 
-FROM httpd:2.4
+# Utiliser l'image officielle Apache httpd
+FROM httpd:2.4-alpine
 
-# Exposer le port 8080 au lieu de 80
-EXPOSE 8080
+# Définir l'argument de build pour le port (valeur par défaut : 80)
+ARG PORT=80
 
-# Modifier la configuration pour écouter sur 8080
-RUN sed -i 's/Listen 80/Listen 8080/' /usr/local/apache2/conf/httpd.conf
+LABEL org.label-schema.docker.build.cmd="docker build -f labo5.8.1 -t labo:5.8 --build-arg PORT=888 ."
 
-# Au besoin, copier votre contenu web
-# COPY ./html/ /usr/local/apache2/htdocs/
+# Créer le fichier index.html personnalisé, avec l'aide de Claude.ai ;-)
+RUN echo '<!DOCTYPE html>' > /usr/local/apache2/htdocs/index.html && \
+    echo '<html lang="fr">' >> /usr/local/apache2/htdocs/index.html && \
+    echo '<head>' >> /usr/local/apache2/htdocs/index.html && \
+    echo '    <meta charset="UTF-8">' >> /usr/local/apache2/htdocs/index.html && \
+    echo '    <meta name="viewport" content="width=device-width, initial-scale=1.0">' >> /usr/local/apache2/htdocs/index.html && \
+    echo '    <title>Mon Site Web</title>' >> /usr/local/apache2/htdocs/index.html && \
+    echo '    <style>' >> /usr/local/apache2/htdocs/index.html && \
+    echo '        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }' >> /usr/local/apache2/htdocs/index.html && \
+    echo '        .container { max-width: 800px; margin: 100px auto; padding: 40px; background: white; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }' >> /usr/local/apache2/htdocs/index.html && \
+    echo '        h1 { color: #333; text-align: center; }' >> /usr/local/apache2/htdocs/index.html && \
+    echo '        p { color: #666; line-height: 1.6; text-align: center; }' >> /usr/local/apache2/htdocs/index.html && \
+    echo '        .info { background: #f0f0f0; padding: 20px; border-radius: 5px; margin-top: 20px; }' >> /usr/local/apache2/htdocs/index.html && \
+    echo '    </style>' >> /usr/local/apache2/htdocs/index.html && \
+    echo '</head>' >> /usr/local/apache2/htdocs/index.html && \
+    echo '<body>' >> /usr/local/apache2/htdocs/index.html && \
+    echo '    <div class="container">' >> /usr/local/apache2/htdocs/index.html && \
+    echo '        <h1>🚀 Bienvenue sur mon serveur Apache !</h1>' >> /usr/local/apache2/htdocs/index.html && \
+    echo '        <p>Ce site fonctionne dans un conteneur Docker avec httpd.</p>' >> /usr/local/apache2/htdocs/index.html && \
+    echo '        <p>Préparé par Alain Boudreault (c) 2026.</p>' >> /usr/local/apache2/htdocs/index.html && \
+    echo "        <div class=\"info\">" >> /usr/local/apache2/htdocs/index.html && \
+    echo "            <p><strong>Port exposé :</strong> ${PORT}</p>" >> /usr/local/apache2/htdocs/index.html && \
+    echo "            <p><strong>Serveur :</strong> Apache HTTP Server</p>" >> /usr/local/apache2/htdocs/index.html && \
+    echo "        </div>" >> /usr/local/apache2/htdocs/index.html && \
+    echo '    </div>' >> /usr/local/apache2/htdocs/index.html && \
+    echo '</body>' >> /usr/local/apache2/htdocs/index.html && \
+    echo '</html>' >> /usr/local/apache2/htdocs/index.html
+
+# Créer la page 404 personnalisée, , avec l'aide de Claude.ai ;-)
+RUN echo '<!DOCTYPE html>' > /usr/local/apache2/htdocs/404.html && \
+    echo '<html lang="fr">' >> /usr/local/apache2/htdocs/404.html && \
+    echo '<head>' >> /usr/local/apache2/htdocs/404.html && \
+    echo '    <meta charset="UTF-8">' >> /usr/local/apache2/htdocs/404.html && \
+    echo '    <meta name="viewport" content="width=device-width, initial-scale=1.0">' >> /usr/local/apache2/htdocs/404.html && \
+    echo '    <title>404 - Page non trouvée</title>' >> /usr/local/apache2/htdocs/404.html && \
+    echo '    <style>' >> /usr/local/apache2/htdocs/404.html && \
+    echo '        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }' >> /usr/local/apache2/htdocs/404.html && \
+    echo '        .container { max-width: 800px; margin: 100px auto; padding: 40px; background: white; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); text-align: center; }' >> /usr/local/apache2/htdocs/404.html && \
+    echo '        h1 { color: #f5576c; font-size: 72px; margin: 0; }' >> /usr/local/apache2/htdocs/404.html && \
+    echo '        h2 { color: #333; margin-top: 20px; }' >> /usr/local/apache2/htdocs/404.html && \
+    echo '        p { color: #666; line-height: 1.6; }' >> /usr/local/apache2/htdocs/404.html && \
+    echo '        a { display: inline-block; margin-top: 20px; padding: 12px 24px; background: #667eea; color: white; text-decoration: none; border-radius: 5px; transition: background 0.3s; }' >> /usr/local/apache2/htdocs/404.html && \
+    echo '        a:hover { background: #764ba2; }' >> /usr/local/apache2/htdocs/404.html && \
+    echo '        .emoji { font-size: 80px; margin: 20px 0; }' >> /usr/local/apache2/htdocs/404.html && \
+    echo '    </style>' >> /usr/local/apache2/htdocs/404.html && \
+    echo '</head>' >> /usr/local/apache2/htdocs/404.html && \
+    echo '<body>' >> /usr/local/apache2/htdocs/404.html && \
+    echo '    <div class="container">' >> /usr/local/apache2/htdocs/404.html && \
+    echo '        <img src="/404.jpg" alt="404" style="max-width: 600px; margin: 20px 0;" />' >> /usr/local/apache2/htdocs/404.html && \
+    echo '        <h2>Oups ! Page non trouvée</h2>' >> /usr/local/apache2/htdocs/404.html && \
+    echo '        <p>La page que vous recherchez n'"'"'existe pas ou a été déplacée.</p>' >> /usr/local/apache2/htdocs/404.html && \
+    echo '        <a href="/">Retour à l'"'"'accueil</a>' >> /usr/local/apache2/htdocs/404.html && \
+    echo '    </div>' >> /usr/local/apache2/htdocs/404.html && \
+    echo '</body>' >> /usr/local/apache2/htdocs/404.html && \
+    echo '</html>' >> /usr/local/apache2/htdocs/404.html
+
+# Configurer Apache pour utiliser la page 404 personnalisée
+RUN echo 'ErrorDocument 404 /404.html' >> /usr/local/apache2/conf/httpd.conf
+
+COPY 404.jpg /usr/local/apache2/htdocs/404.jpg
+
+# Configuration du port:
+RUN sed -i "s/Listen 80/Listen ${PORT}/g" /usr/local/apache2/conf/httpd.conf
+
+# Exposer le port défini par la variable d'environnement
+EXPOSE ${PORT}
+
+# Démarrer Apache en mode foreground
+CMD ["httpd-foreground"]

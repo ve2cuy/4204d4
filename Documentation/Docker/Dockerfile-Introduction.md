@@ -161,6 +161,10 @@ docker build -t exercice01:latest .
 $ docker run exercice01
 ```
 
+---
+
+<img src="../images/labo02.png" alt="" width="700" />
+
 #### 1.7 - Labo – Modifier pour la version 1.1
 
 Modifier le projet pour obtenir le résultat suivant au démarrage du conteneur version `1.1`:
@@ -272,7 +276,7 @@ docker run alainboudreault/bonjour420
 
 ### 3.1 – Obtenir les fichiers de départ
 
-À partir de **https://github.com/ve2cuy/4204d4.git**
+À partir de **https://github.com/ve2cuy**
 
 > **Note**: Placez-vous dans un dossier de travail vide\!
 >
@@ -503,7 +507,8 @@ CMD ["/bin/sh"]
 ### 5.7 – Exécuter un bloc d'instruction pour créer un fichier
 ```dockerfile
 FROM alpine
-	{ \
+
+RUN	{ \
 		echo 'opcache.memory_consumption=128'; \
 		echo 'opcache.interned_strings_buffer=8'; \
 		echo 'opcache.max_accelerated_files=4000'; \
@@ -576,10 +581,10 @@ RUN sed -i 's/Listen 80/Listen 8080/' /usr/local/apache2/conf/httpd.conf
 
 <br>
 
-À partir de l'exemple 5.7, contruire une image qui:
+À partir de l'exemple 5.8, contruire une image qui:
 
-- Renseigne le port HTTP via la ligne de commande lors du build.
-- Renseigne le label `org.label-schema.docker.cmd` avec la commande à exécuter pour lancer le contenueur.
+- Renseigne le port **HTTP à exposer** via la ligne de commande lors du build. Le port par défaut est 88.
+- Renseigne le label `org.label-schema.docker.build.cmd` avec la commande à exécuter pour construire l'image.
 - Remplace la page par défaut par la votre.
 - - Créer le fichier `index.html` dans le Dockerfile
 - Ajoute une configuration personnalisée pour un 404
