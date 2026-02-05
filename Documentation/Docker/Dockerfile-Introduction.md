@@ -593,9 +593,15 @@ RUN sed -i 's/Listen 80/Listen 8080/' /usr/local/apache2/conf/httpd.conf
 
 <img src="../images/Error-Page-Not-Found.jpg" alt="" width="700" />
 
-- Il faut publier l'image sur docker hub sous `votre-compte/labo-5-7-1:latest`
+- Il faut publier l'image sur docker hub sous `votre-compte/labo:5.8.1`
 - Copier la commande, pour lancer votre conteneur, dans la conversation TEAMS.
 
+
+* Pour tester ma solution:
+
+```
+docker run -d -p 88:80 alainboudreault/labo:5.8.1
+```
 
 ---
 
