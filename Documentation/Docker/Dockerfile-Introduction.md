@@ -50,7 +50,9 @@ Il propose la structure de **directives** suivante:
 
 **CMD** – Lors du démarrage du conteneur, exécuter la commande suivante: '/bin/bash'
 
-Référence: [Best practices](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/)
+Référence: [Best practices](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/) 💡 <--- IMPORTANT, consulter!
+
+---
 
 ### Testons,
 
@@ -64,11 +66,12 @@ FROM ubuntu
 
 # Optionnel
 MAINTAINER Alain Boudreault <aboudrea@cstj.qc.ca>
-LABEL Maintainer="Moi"
+LABEL Maintainer="Alain Boudreault <aboudrea@cstj.qc.ca>"
 LABEL Auteur="Moi Moi"
 
 # Exécuter des commandes dans l'image
-RUN apt-get update
+# Dans la documentation de Dockerfile, il est recommandé d'exécuter apt update et install sur la même ligne!
+RUN apt-get update && apt-get install nano -y
 RUN mkdir /toto
 
 # Commande à exécuter au démarrage d'un conteneur
