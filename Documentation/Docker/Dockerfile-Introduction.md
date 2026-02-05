@@ -6,7 +6,7 @@
 Motivé par nos apprentissages précédents, nous voilà enfin près – du moins, nous tenterons l’exercice – à bâtir une image **docker** personnalisée.
 
 <p align="center">
-    <img src="../images/dockerfile2.png" alt="YAML" width="500" />
+    <img src="../images/dockerfile2.png" alt="YAML" width="350" />
 </p>
 
 ---
