@@ -453,6 +453,64 @@ $ docker inspect --format='{{index .Config.Labels "org.label-schema.docker.cmd"}
 
 **⚠️ Note importante** : Cet exemple utilise la syntaxe `org.label-schema` qui est maintenant **dépréciée** (mais toujours largement utilisée). Voir le document [Dockerfile convention de nommage](Dockerfile-convention-de-nommage.md) pour des exemples avec le standard 'OCI Image Spec Annotations'.
 
+---
+
+### 5.2.2 --no-cache=true
+
+La commande `docker build --no-cache=true` force Docker à reconstruire l'image **sans utiliser le cache** des couches précédentes.
+
+## Comment fonctionne le cache Docker normalement ?
+
+Quand vous construisez une image Docker, chaque instruction du Dockerfile crée une **couche** (layer). Docker met en cache ces couches pour accélérer les builds futurs. Si rien n'a changé dans une instruction, Docker réutilise la couche en cache au lieu de la reconstruire.
+
+**Exemple sans `--no-cache` :**
+```dockerfile
+FROM ubuntu:22.04
+RUN apt-get update
+RUN apt-get install -y python3
+COPY app.py /app/
+```
+
+Lors du premier build : tout est construit.
+Lors du second build : si seul `app.py` a changé, Docker réutilise le cache pour les commandes `apt-get` (qui sont lentes) et reconstruit seulement à partir de `COPY`.
+
+## Pourquoi utiliser `--no-cache=true` ?
+
+**1. Obtenir les dernières mises à jour**
+```bash
+# Sans --no-cache : peut utiliser un ancien apt-get update
+RUN apt-get update && apt-get install -y python3
+
+# Avec --no-cache : récupère vraiment les derniers paquets
+docker build --no-cache=true -t mon-image .
+```
+
+**2. Résoudre des problèmes de build**
+Si votre build échoue de manière inexplicable, le cache peut être corrompu ou obsolète.
+
+**3. Télécharger de nouvelles versions**
+```dockerfile
+RUN pip install requests  # Peut utiliser une version en cache
+```
+Avec `--no-cache`, pip télécharge la dernière version disponible.
+
+**4. Éviter des comportements imprévisibles**
+Parfois Docker ne détecte pas tous les changements (fichiers externes, variables d'environnement, etc.).
+
+## Syntaxes équivalentes
+
+```bash
+docker build --no-cache=true -t mon-image .
+docker build --no-cache -t mon-image .        # Équivalent
+docker build --no-cache=false -t mon-image .  # Utilise le cache (défaut)
+```
+
+## Inconvénient
+
+Le build sera **beaucoup plus long** car Docker doit tout refaire depuis le début, y compris télécharger et installer les dépendances.
+
+**Conseil :** Utilisez `--no-cache` uniquement quand c'est nécessaire, pas systématiquement.
+
 --- 
 
 ### 5.3 – Le fichier `.dockerignore`
