@@ -341,7 +341,7 @@ docker run -d -p 99:80 alainboudreault/420-4d4:exemple03
 # EXEMPLE AVEC UN TIME-ZONE et autres choses ...
 # Valeurs passées au conteneur par des variables d'environnement
 # docker build -t test:v1 .
-FROM busybox:unstable-uclibc
+FROM ubuntu
 LABEL maintainer="alain.boudreault@me.com"
 RUN apt-get update && apt-get install -yq tzdata
 

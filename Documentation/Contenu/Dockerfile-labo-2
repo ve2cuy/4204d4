@@ -1,0 +1,15 @@
+# À partir d'une image
+FROM ubuntu
+
+# Optionel
+LABEL maintainer="alain.boudreault@me.com"
+
+# Exécuter des commandes dans l'image
+RUN apt-get update
+
+# Ajouter un fichier à l'image
+ADD hello.sh /
+RUN chmod a+x /hello.sh
+
+# Commande à éxécuter au démarrage d'un conteneur
+CMD ["/hello.sh"]
