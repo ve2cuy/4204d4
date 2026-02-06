@@ -608,6 +608,82 @@ docker run -d -p 88:581 alainboudreault/labo:5.8.1
 
 ---
 
+### 5.9 - Différence entre CMD et ENTRYPOINT dans Dockerfile
+
+Les deux instructions servent à définir ce qui s'exécute au démarrage d'un conteneur, mais elles fonctionnent différemment.
+
+#### CMD
+
+`CMD` définit la **commande par défaut** du conteneur. Elle peut être **complètement remplacée** lors du `docker run`.
+
+**Exemple :**
+```dockerfile
+FROM ubuntu
+CMD ["echo", "Hello World"]
+```
+
+```bash
+docker run mon-image
+# Affiche : Hello World
+
+docker run mon-image echo "Autre message"
+# Affiche : Autre message (le CMD est remplacé)
+```
+
+#### ENTRYPOINT
+
+`ENTRYPOINT` définit le **processus principal (PID 1)** du conteneur. Ce processus contrôle le cycle de vie du conteneur : quand il se termine, le conteneur s'arrête. Les arguments passés au `docker run` sont **ajoutés** à l'ENTRYPOINT, sans le remplacer.
+
+**Exemple :**
+```dockerfile
+FROM ubuntu
+ENTRYPOINT ["echo"]
+```
+
+```bash
+docker run mon-image "Hello World"
+# Affiche : Hello World
+
+docker run mon-image "Bonjour"
+# Affiche : Bonjour
+```
+
+### Importance du processus principal
+
+Le processus défini par `ENTRYPOINT` devient le **PID 1** du conteneur. Cela signifie :
+
+- **Le conteneur vit tant que ce processus est actif** : si le processus se termine, le conteneur s'arrête
+- **Gestion des signaux** : le PID 1 reçoit les signaux système (SIGTERM, SIGINT) lors d'un `docker stop`
+- **Processus zombie** : le PID 1 doit gérer correctement les processus enfants pour éviter les zombies
+
+**Exemple avec un serveur web :**
+```dockerfile
+FROM nginx
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
+```
+Le processus `nginx` devient le PID 1. Tant qu'il tourne, le conteneur reste actif. Un `docker stop` envoie SIGTERM à nginx pour un arrêt propre.
+
+### Combinaison ENTRYPOINT + CMD
+
+C'est l'usage le plus courant : `ENTRYPOINT` définit l'exécutable principal (PID 1), `CMD` fournit des arguments par défaut.
+
+**Exemple :**
+```dockerfile
+FROM ubuntu
+ENTRYPOINT ["curl"]
+CMD ["--help"]
+```
+
+```bash
+docker run mon-image
+# Exécute : curl --help (processus principal)
+
+docker run mon-image https://example.com
+# Exécute : curl https://example.com (processus principal avec nouveaux args)
+```
+
+---
+
 ### 6 – Exemple d'un Dockerfile complexe (WordPress)
 
 ```dockerfile
