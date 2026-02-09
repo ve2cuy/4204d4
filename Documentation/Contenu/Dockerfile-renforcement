@@ -1,0 +1,28 @@
+sudo apt update
+sudo apt install libapache2-mod-evasive
+sudo a2enmod evasive
+
+#----------------------------------------------------------
+# Éditer ou créer:  /etc/apache2/mods-available/evasive.conf:
+<IfModule mod_evasive20.c>
+    # How many requests for the same page per interval
+    DOSPageCount        5
+    # Interval in seconds for the page count
+    DOSPageInterval     1
+    # Total requests for any object per interval
+    DOSSiteCount        20
+    # Interval in seconds for the site count
+    DOSSiteInterval     1
+    # Time (in seconds) to block the client
+    DOSBlockingPeriod   60
+    # Directory for temporary ban logs
+    DOSEmailNotify      admin@example.com
+    DOSLogDir           "/var/log/mod_evasive"
+</IfModule>
+
+#------------------------------------------------------------
+sudo mkdir -p /var/log/mod_evasive
+sudo chown www-data:www-data /var/log/mod_evasive
+
+#------------------------------------------------------------
+# Tester avec : ab -n 50 -c 10 http://localhost/

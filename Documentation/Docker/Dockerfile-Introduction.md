@@ -202,7 +202,7 @@ docker run exercice01:1.1
 // Par Alain Boudreault
 // Fichier source compilé avec 'gcc' sous Ubuntu
 // Il est possible d'avoir à installer g++ et gcc: apt install g++ gcc
-#include <stdio.h>;
+#include <stdio.h>
 #define MAXITERATION 10
 
 /**
