@@ -2,6 +2,7 @@
 # Dockerfile – Atelier de renforcement, version H26
 
 ## NOTE: Cet atelier est un exercice formatif à l'épreuve synthèse volet B.
+## Il ne faut pas utiliser l'IA pour réaliser ce laboratoire. 
 
 ### À remettre sur LEA.
 ---
