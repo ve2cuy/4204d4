@@ -4,7 +4,7 @@
 ## NOTE: Cet atelier est un exercice formatif à l'épreuve synthèse volet B.
 ## Il ne faut pas utiliser l'IA pour réaliser ce laboratoire. 
 
-### À remettre sur LEA à la fin du cours.
+### À remettre sur LEA à la fin du cours.  Vous serez évalué en fonction de votre participation en classe.
 ---
 
 <p align="center">
