@@ -7,7 +7,6 @@
 ### À remettre sur LEA.
 ---
 
-
 <p align="center">
     <img src="../images/renforcement.png" alt="chat" width="400" />
 </p>
@@ -15,17 +14,16 @@
 ---
 
 ### Il faut bâtir une image Docker,  à partir d'un fichier Dockerfile nommé `powercat` qui:
- 
 
 1. Utilise comme source de départ, 👉`ubuntu:22.04` <<-- **IMPORTANT**
 2. 👉 Installe `apache2` <<-- **IMPORTANT**
 3. Propose les applications suivantes: `mc`, `curl`, `git`, `htop` et `mcedit`
-4. Installe un site web doit à partir du contenu du dépôt GitHub **https://github.com/ve2cuy/superminou-depart**.
+4. Installe un site web à partir du contenu du dépôt GitHub **https://github.com/ve2cuy/superminou-depart**.
  
-**IMPORTANT**, il ne faut pas cloner le dépôt sur votre poste de travail mais plutôt dans l'image du conteneur, dans le répertoire `/420`.
+**IMPORTANT**, il ne faut pas cloner le dépôt sur votre poste de travail mais plutôt dans l'image, dans le répertoire `/420`.
 
-4. Renseigne la configuration d'apache pour gérer un erreur 404. Copie le fichier `404.html` dans le dossier `error/`
-5. Renseigne la configuration d'apache pour gérer un erreur 403, de type `Too many requests`, via le module `mod_evasive`. Voir plus bas pour les détails. Copie le fichier `blocked.html` dans le dossier `error/`
+5. Renseigne la configuration d'apache pour gérer un erreur 404. Copie le fichier `404.html` dans le dossier `error/`
+6. Renseigne la configuration d'apache pour gérer un erreur 403, de type `Too many requests`, via le module `mod_evasive`. Voir plus bas pour les détails. Copie le fichier `blocked.html` dans le dossier `error/`
    1. Utilise un argument du build pour renseigner le `DOSPageCount`, `DOSPageInterval` et `DOSBlockingPeriod`
    2. Le module `mod-evasive` est requis et doit-être activé, `ref.: a2enmod`.
    3. `mod-evasive` gère les erreurs via 403.  Voici un exemple:
@@ -41,7 +39,13 @@
 </IfModule>
 ```
 
-6. Remplace l'image **docker-logo.jpg** par celle-ci: 
+👉 IMPORTANT: Les paramètres fonctionnels du module `evasice` doit-être renseignés lors du build.  Sinon, il faut fournir les valeurs par défaut mentionnées dans l'exemple précédant. 
+
+👉 👉 De plus, faut éditer (sed) le fichier `blocker.html` pour qu'il affiche les valeurs renseignées lors du build.
+
+---
+
+7. Remplace l'image **docker-logo.jpg** par celle-ci: 
 
 <p align="center">
     <img src="../images/chat.png" alt="chat" width="350" />
@@ -49,19 +53,21 @@
 
 ---
 
-7. Remplace le nom de l'auteur du pied de page dans **index.html** par votre nom.
-8. Remplace la photo, en haut à droite du menu, par la votre.
-9. Renseigne trois labels:
+8. Remplace le nom de l'auteur du pied de page dans **index.html** par votre nom.
+9. Remplace la photo, en haut à droite du menu, par la votre.
+10. Renseigne quatre (4) labels:
    1.  auteur (votre nom et matricule) # org.opencontainers.image.authors
    2.  Titre de l'application
    3.  Source # Par exemple, "https://github.com/user/repo"
+   4.  Date de création, à partir de l'argument `BUILD_DATE`
 
-👉 NOTE: Utiliser le standard OCI. Voir ce [Document](https://ve2cuy.github.io/4204d4/Documentation/Docker/Dockerfile-convention-de-nommage.html)
+👉 NOTE: Utiliser le standard OCI pour le nom des `LABEL`. Voir ce [Document](https://ve2cuy.github.io/4204d4/Documentation/Docker/Dockerfile-convention-de-nommage.html)
 
-10.  Utilise des arguments pour renseigner le **port** du serveur `HTTP_PORT` et le **hostname** de la config d'apache2 `HOSTNAME` lors du build.
+11. Utilise des arguments pour renseigner le **port** du serveur `HTTP_PORT` et le **ServerName** de la config d'apache2 `SERVER_NAME` lors du build. **Note**: Le port HTTP, sous apache2, n'est pas dans le fichier httpd.conf.
 
+12. Les logs d'erreurs d'apache2 doivent-être enregistrés dans `/meslogs/apache2.log`
 
-11.   Publier votre solution sur docker hub sous `identifiant/formatif:1.0`.
+13. Publier votre solution sur docker hub sous `identifiant/formatif:1.0`.
 
 ---
 

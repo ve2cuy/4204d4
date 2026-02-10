@@ -83,3 +83,10 @@ EXPOSE ${PORT}
 
 # Démarrer Apache en mode foreground
 CMD ["httpd-foreground"]
+
+
+#<Directory /var/www/>
+#        Options Indexes FollowSymLinks
+#        AllowOverride None
+#        Require all granted
+#</Directory>
