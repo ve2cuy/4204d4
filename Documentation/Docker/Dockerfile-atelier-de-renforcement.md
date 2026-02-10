@@ -15,16 +15,16 @@
 
 ### Il faut bâtir une image Docker,  à partir d'un fichier Dockerfile nommé `powercat` qui:
 
-1. Utilise comme source de départ, 👉`ubuntu:22.04` <<-- **IMPORTANT**
-2. 👉 Installe `apache2` <<-- **IMPORTANT**
-3. Propose les applications suivantes: `mc`, `curl`, `git`, `htop` et `mcedit`
-4. Installe un site web à partir du contenu du dépôt GitHub **https://github.com/ve2cuy/superminou-depart**.
+1- Utilise comme source de départ, 👉`ubuntu:22.04` <<-- **IMPORTANT**
+2- 👉 Installe `apache2` <<-- **IMPORTANT**
+3- Propose les applications suivantes: `mc`, `curl`, `git`, `htop` et `mcedit`
+4- Installe un site web à partir du contenu du dépôt GitHub **https://github.com/ve2cuy/superminou-depart**.
  
 👉 Il ne faut pas cloner le dépôt sur votre poste de travail mais plutôt sur l'image, dans le répertoire `/420` <<-- **IMPORTANT**.
 
-5. Renseigne la configuration d'apache pour gérer un erreur 404. 
+5- Renseigne la configuration d'apache pour gérer un erreur 404. 
    1. Copie le fichier `404.html` dans le dossier `error/`
-6. Renseigne la configuration d'apache pour gérer un erreur 403, de type `Too many requests`, via le module `mod_evasive`. Voir plus bas pour les détails. 
+6- Renseigne la configuration d'apache pour gérer un erreur 403, de type `Too many requests`, via le module `mod_evasive`. Voir plus bas pour les détails. 
    1. Copie le fichier `blocked.html` dans le dossier `error/`
    2. Utilise un argument du build pour renseigner le `DOSPageCount`, `DOSPageInterval` et `DOSBlockingPeriod`
    3. Le module `mod-evasive` est requis et doit-être activé, `ref.: a2enmod`.
@@ -47,7 +47,7 @@
 
 ---
 
-7. Remplace l'image **docker-logo.jpg** par celle-ci: 
+7- Remplace l'image **docker-logo.jpg** par celle-ci: 
 
 <p align="center">
     <img src="../images/chat.png" alt="chat" width="350" />
@@ -55,9 +55,9 @@
 
 ---
 
-8. Remplace le nom de l'auteur du pied de page dans **index.html** par votre nom.
-9. Remplace la photo, en haut à droite du menu, par la votre.
-10. Renseigne quatre (4) labels:
+8- Remplace le nom de l'auteur du pied de page dans **index.html** par votre nom.
+9- Remplace la photo, en haut à droite du menu, par la votre.
+10- Renseigne quatre (4) labels:
     1.  auteur (votre nom et matricule) # org.opencontainers.image.authors
     2.  Titre de l'application          # org.opencontainers.image.title
     3.  Description # Par exemple, "Image Docker avec Apache et mod-evasive ..."
@@ -80,11 +80,11 @@ Un `inspect` de l'image devrait afficher:
 
 ---
 
-11.  Utilise des arguments pour renseigner le **port** du serveur `HTTP_PORT` et le **ServerName** de la config d'apache2 `SERVER_NAME` lors du build. **Note**: Le port `HTTP`, sous apache2, n'est pas dans le fichier `httpd.conf`.
+11-  Utilise des arguments pour renseigner le **port** du serveur `HTTP_PORT` et le **ServerName** de la config d'apache2 `SERVER_NAME` lors du build. **Note**: Le port `HTTP`, sous apache2, n'est pas dans le fichier `httpd.conf`.
 
-12.  Les logs d'erreurs d'apache2 doivent-être enregistrés dans `/meslogs/apache2.log`
+12-  Les logs d'erreurs d'apache2 doivent-être enregistrés dans `/meslogs/apache2.log`
 
-13.  Publier votre solution sur docker hub sous `identifiant/formatif:1.0`.
+13-  Publier votre solution sur docker hub sous `identifiant/formatif:1.0`.
 
 ---
 
@@ -92,9 +92,9 @@ Un `inspect` de l'image devrait afficher:
 
 ---
 
-14. Le contenu de votre fichier `Dockerfile` doit être accessible à l'adresse: **http://localhost/info.txt**
-15. Inscrire en commentaire, dans le fichier, la commande à utiliser pour produire l'image.; `# docker build …`
-16. Il faut publier l'image finale sur docker hub sous: **votrecompte/docker-lab version latest et 1.0**
+14- Le contenu de votre fichier `Dockerfile` doit être accessible à l'adresse: **http://localhost/info.txt**
+15- Inscrire en commentaire, dans le fichier, la commande à utiliser pour produire l'image.; `# docker build …`
+16- Il faut publier l'image finale sur docker hub sous: **votrecompte/docker-lab version latest et 1.0**
 
 ---
 
