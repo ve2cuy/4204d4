@@ -56,14 +56,14 @@
 8. Remplace le nom de l'auteur du pied de page dans **index.html** par votre nom.
 9. Remplace la photo, en haut à droite du menu, par la votre.
 10. Renseigne quatre (4) labels:
-   1.  auteur (votre nom et matricule) # org.opencontainers.image.authors
-   2.  Titre de l'application
-   3.  Source # Par exemple, "https://github.com/user/repo"
-   4.  Date de création, à partir de l'argument `BUILD_DATE`
+    1.  auteur (votre nom et matricule) # org.opencontainers.image.authors
+    2.  Titre de l'application
+    3.  Source # Par exemple, "https://github.com/user/repo"
+    4.  Date de création, à partir de l'argument `BUILD_DATE`
 
 👉 NOTE: Utiliser le standard OCI pour le nom des `LABEL`. Voir ce [Document](https://ve2cuy.github.io/4204d4/Documentation/Docker/Dockerfile-convention-de-nommage.html)
 
-11. Utilise des arguments pour renseigner le **port** du serveur `HTTP_PORT` et le **ServerName** de la config d'apache2 `SERVER_NAME` lors du build. **Note**: Le port HTTP, sous apache2, n'est pas dans le fichier httpd.conf.
+11. Utilise des arguments pour renseigner le **port** du serveur `HTTP_PORT` et le **ServerName** de la config d'apache2 `SERVER_NAME` lors du build. **Note**: Le port `HTTP`, sous apache2, n'est pas dans le fichier `httpd.conf`.
 
 12. Les logs d'erreurs d'apache2 doivent-être enregistrés dans `/meslogs/apache2.log`
 
