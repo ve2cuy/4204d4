@@ -56,10 +56,12 @@
    2.  Titre de l'application
    3.  Source # Par exemple, "https://github.com/user/repo"
 
-NOTE: Utiliser le standard OCI. Voir ce [Document](https://ve2cuy.github.io/4204d4/Documentation/Docker/Dockerfile-convention-de-nommage.html)
+👉 NOTE: Utiliser le standard OCI. Voir ce [Document](https://ve2cuy.github.io/4204d4/Documentation/Docker/Dockerfile-convention-de-nommage.html)
+
+10.  Utilise des arguments pour renseigner le **port** du serveur `HTTP_PORT` et le **hostname** de la config d'apache2 `HOSTNAME` lors du build.
 
 
-10.  Publier votre solution sur docker hub sous `identifiant/formatif:1.0`.
+11.   Publier votre solution sur docker hub sous `identifiant/formatif:1.0`.
 
 ---
 
