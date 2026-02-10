@@ -18,13 +18,14 @@
  
 
 1. Utilise comme source de départ, 👉`ubuntu:22.04` <<-- **IMPORTANT**
-2. Propose les applications suivantes:  `mc`, `curl`, `git`, `htop` et `mcedit`
-3. Le site web doit proposer le contenu du dépôt GitHub **https://github.com/ve2cuy/superminou-depart** comme page d'accueil.
+2. 👉 Installer `apache2` <<-- **IMPORTANT**
+3. Propose les applications suivantes: `mc`, `curl`, `git`, `htop` et `mcedit`
+4. Installe un site web doit à partir du contenu du dépôt GitHub **https://github.com/ve2cuy/superminou-depart**.
  
 **IMPORTANT**, il ne faut pas cloner le dépôt sur votre poste de travail mais plutôt dans l'image du conteneur, dans le répertoire `/420`.
 
-4. Renseigner la configuration d'apache pour gérer un erreur 404. Copier le fichier `404.html` dans le dossier `error/`
-5. Renseigner la configuration d'apache pour gérer un erreur 403, de type `Too many requests`, via le module `mod_evasive`. Voir plus bas pour les détails. Copier le fichier `blocked.html` dans le dossier `error/`
+4. Renseigne la configuration d'apache pour gérer un erreur 404. Copier le fichier `404.html` dans le dossier `error/`
+5. Renseigne la configuration d'apache pour gérer un erreur 403, de type `Too many requests`, via le module `mod_evasive`. Voir plus bas pour les détails. Copier le fichier `blocked.html` dans le dossier `error/`
    1. Utiliser un argument du build pour renseigner le `DOSPageCount`, `DOSPageInterval` et `DOSBlockingPeriod`
    2. Le module `mod-evasive` est requis et doit-être activé, `a2enmod`, pour ce point.
    3. `mod-evasive` gère les erreurs via 403.  Voici un exemple:
@@ -40,7 +41,7 @@
 </IfModule>
 ```
 
-6. Remplacer l'image **docker-logo.jpg** par celle-ci: 
+6. Remplace l'image **docker-logo.jpg** par celle-ci: 
 
 <p align="center">
     <img src="../images/chat.png" alt="chat" width="350" />
@@ -48,9 +49,9 @@
 
 ---
 
-7. Remplacer le nom de l'auteur du pied de page dans **index.html** par votre nom.
-8. Remplacer la photo, en haut à droite du menu, par la votre.
-9. Renseigner trois labels:
+7. Remplace le nom de l'auteur du pied de page dans **index.html** par votre nom.
+8. Remplace la photo, en haut à droite du menu, par la votre.
+9. Renseigne trois labels:
    1.  auteur (votre nom et matricule) # org.opencontainers.image.authors
    2.  Titre de l'application
    3.  Source # Par exemple, "https://github.com/user/repo"
@@ -106,6 +107,14 @@ Une version fonctionnelle est disponible via
 ```bash 
 $ docker run -d -p 80:80 alainboudreault/labo:super-minou
 ```
+
+Formatif 01 de l'épreuve synthèse volet B
+
+À réaliser en classe et à remettre à la fin du cours.
+
+Voici le lien:
+
+Dockerfile – Atelier de renforcement, version H26 | 4204d4
 
 ---
 
