@@ -18,16 +18,16 @@
  
 
 1. Utilise comme source de départ, 👉`ubuntu:22.04` <<-- **IMPORTANT**
-2. 👉 Installer `apache2` <<-- **IMPORTANT**
+2. 👉 Installe `apache2` <<-- **IMPORTANT**
 3. Propose les applications suivantes: `mc`, `curl`, `git`, `htop` et `mcedit`
 4. Installe un site web doit à partir du contenu du dépôt GitHub **https://github.com/ve2cuy/superminou-depart**.
  
 **IMPORTANT**, il ne faut pas cloner le dépôt sur votre poste de travail mais plutôt dans l'image du conteneur, dans le répertoire `/420`.
 
-4. Renseigne la configuration d'apache pour gérer un erreur 404. Copier le fichier `404.html` dans le dossier `error/`
-5. Renseigne la configuration d'apache pour gérer un erreur 403, de type `Too many requests`, via le module `mod_evasive`. Voir plus bas pour les détails. Copier le fichier `blocked.html` dans le dossier `error/`
-   1. Utiliser un argument du build pour renseigner le `DOSPageCount`, `DOSPageInterval` et `DOSBlockingPeriod`
-   2. Le module `mod-evasive` est requis et doit-être activé, `a2enmod`, pour ce point.
+4. Renseigne la configuration d'apache pour gérer un erreur 404. Copie le fichier `404.html` dans le dossier `error/`
+5. Renseigne la configuration d'apache pour gérer un erreur 403, de type `Too many requests`, via le module `mod_evasive`. Voir plus bas pour les détails. Copie le fichier `blocked.html` dans le dossier `error/`
+   1. Utilise un argument du build pour renseigner le `DOSPageCount`, `DOSPageInterval` et `DOSBlockingPeriod`
+   2. Le module `mod-evasive` est requis et doit-être activé, `ref.: a2enmod`.
    3. `mod-evasive` gère les erreurs via 403.  Voici un exemple:
 
 ```bash 
@@ -59,7 +59,7 @@
 NOTE: Utiliser le standard OCI. Voir ce [Document](https://ve2cuy.github.io/4204d4/Documentation/Docker/Dockerfile-convention-de-nommage.html)
 
 
-10.  Publier votre solution sur github.
+10.  Publier votre solution sur docker hub sous `identifiant/formatif:1.0`.
 
 ---
 
@@ -70,7 +70,9 @@ NOTE: Utiliser le standard OCI. Voir ce [Document](https://ve2cuy.github.io/4204
 * Il faut publier l'image finale sur docker hub sous: **votrecompte/docker-lab version latest et 1.0**
 
 **💡Astuce** Utiliser, dans la Dockerfile, `ENV DEBIAN_FRONTEND=noninteractive` pour vous assurer qu'il n'y aura pas d'interactivité lors de l'installation des packages.
- 
+
+**💡Autre Astuce** Penser à démarrer le service `apache2` en arrière plan `CMD ["apache2ctl", "-D", "FOREGROUND"]` ou `ENTRYPOINT ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]`.
+
  ---
 
 ## Résultat
