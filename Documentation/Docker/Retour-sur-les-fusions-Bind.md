@@ -3,6 +3,8 @@
 
 Histoire de bien intégrer les notions acquises lors des ateliers précédents, nous allons revisiter :
 
+## 👉 NOTE: Si ce laboratoire est réalisé sous Windows, ne pas utiliser `git-bash` pour les exemples des volumes -v.  Utiliser plutôt `PowerShell`.
+
 <p align="center">
     <img src="../images/fusions/mysql_PNG9.png" alt="" width="250" />
 </p>
@@ -44,17 +46,21 @@ echo "-----------------------------------------------------"
 echo
 ```
 
+---
+
 ### Mise en situation (Liaison absolue avec `$(pwd)`)
 
 La prochaine étape consiste à démarrer une `alpine` et à **lier le dossier `mes-scripts-sh`** au nouveau conteneur.
 
-Il faut **TOUJOURS** utiliser l'**adressage absolu** lors de la liaison. Cela n'est pas très pratique, surtout si nous avons à travailler avec une structure profonde de dossiers. Heureusement, il est possible d'injecter le chemin du répertoire courant lors de la liaison (`-v`) de volumes.
+Avec le cli-docker, il faut **TOUJOURS** utiliser l'**adressage absolu** lors de la liaison. Cela n'est pas très pratique, surtout si nous avons à travailler avec une structure profonde de dossiers. Heureusement, il est possible d'injecter le chemin du répertoire courant lors de la liaison (`-v`) de volumes.
 
 ### Action 1.3 – Afficher le chemin absolu
 
 ```bash
 $ echo $(pwd)
 /Users/alain/420-4D4
+# Sous PowerShell, il faut utiliser la synthaxe suivante:
+echo $PWD
 
 $ echo "$(pwd)/mes-scripts-sh"
 /Users/alain/420-4D4/mes-scripts-sh
@@ -64,6 +70,8 @@ $ echo "$(pwd)/mes-scripts-sh"
 
 ```bash
 docker run --rm -it --name momo-dit -v "$(pwd)/mes-scripts-sh/:/mes-scripts-sh" alpine
+# Sous PowerShell, il faut utiliser la synthaxe suivante:
+docker run --rm -it --name momo-dit -v "$PWD/mes-scripts-sh/:/mes-scripts-sh" alpine
 ```
 
 Vérification dans le conteneur :
@@ -169,7 +177,6 @@ docker run -p 99:3306 -e MYSQL_ROOT_PASSWORD=password --name maBD -v "$(pwd)/mys
 > **NOTE** : Le mot de passe pour root est **'password'** et le port de connexion est **'99'**.
 
 ---
-
 
 ### Action 3.3 – Connexion au SGBD MySQL
 
@@ -352,6 +359,18 @@ docker run -d -v $(pwd)/db_data:/var/lib/mysql \
 -p 3306:3306 \
 --network monreseau \
 mysql:5.7
+
+# --> Sous PowerShell:
+docker run -d `
+  -v $PWD/db_data:/var/lib/mysql `
+  -e MYSQL_ROOT_PASSWORD=jteledispas `
+  -e MYSQL_DATABASE=wordpress `
+  -e MYSQL_USER=wp420 `
+  -e MYSQL_PASSWORD=wp420 `
+  --name baseDeDonneesPourWP `
+  -p 3306:3306 `
+  --network monreseau `
+  mysql:5.7
 ```
 
 > **Note :** L'utilisation des variables d'environnement (`MYSQL_DATABASE`, `MYSQL_USER`, `MYSQL_PASSWORD`) permet la création d'une base de données et d'un compte utilisateur lors de la première exécution du conteneur.
@@ -369,6 +388,18 @@ docker run --name worpress -d \
 -e WORDPRESS_DB_NAME=wordpress \
 --network monreseau \
 wordpress:latest
+
+# --> Sous PowerShell:
+docker run --name worpress -d `
+-p 8000:80 `
+-e WORDPRESS_DB_HOST=baseDeDonneesPourWP `
+-e WORDPRESS_DB_USER=wp420 `
+-e WORDPRESS_DB_PASSWORD=wp420 `
+-e WORDPRESS_DB_NAME=wordpress `
+--network monreseau `
+wordpress:latest
+
+
 ```
 
 ### Action 5.5 – Afficher les conteneurs en exécution
