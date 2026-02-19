@@ -6,7 +6,7 @@ Histoire de bien intégrer les notions acquises lors des ateliers précédents, 
 ## 👉 NOTE: Si ce laboratoire est réalisé sous Windows, ne pas utiliser `git-bash` pour les exemples des volumes -v.  Utiliser plutôt `PowerShell`.
 
 <p align="center">
-    <img src="../images/fusions/mysql_PNG9.png" alt="" width="250" />
+    <img src="../images/mariadb.png" alt="" width="350" />
 </p>
 
   * La notion de **liaison (bind) de volumes** : `docker run -v`
@@ -72,6 +72,13 @@ $ echo "$(pwd)/mes-scripts-sh"
 docker run --rm -it --name momo-dit -v "$(pwd)/mes-scripts-sh/:/mes-scripts-sh" alpine
 # Sous PowerShell, il faut utiliser la synthaxe suivante:
 docker run --rm -it --name momo-dit -v "$PWD/mes-scripts-sh/:/mes-scripts-sh" alpine
+
+# Cette syntaxe devrait fonctionner sous PS et shell Linux natif,
+# mais non recommandée: (à tester en lab). 
+# Ca ne devrait pas fonctionner sous git-bash
+# ---------------------------------------------------------------
+# Il est préférable d'utiliser l'adressage absolu. 
+docker run --rm -it --name momo-dit -v "./mes-scripts-sh/:/mes-scripts-sh" alpine
 ```
 
 Vérification dans le conteneur :
@@ -203,7 +210,9 @@ Utiliser l'application (ex: MySQL WorkBench) pour créer une nouvelle connexion 
 
 <img src="../images/labo02.png" alt="" width="700" />
 
-### Laboratoire 3.5
+---
+
+### Laboratoire 3.5 - 🛑 Facultatif
 
 1.  Créer une table `tbl_amis` (`nom varchar(30)`, `email varchar(30)`).
 2.  Ajouter deux enregistrements.
@@ -285,9 +294,40 @@ INSERT INTO tbl_amis (nom, email) VALUES ('Titi Binette', 'titi@me.com');
 -- FIN DU SCRIPT
 ```
 
-#### Action 4.2 – Créer le fichier `docker-comp-init-bd.yml`, dans le dossier de l'exercice.
+#### Action 4.2 - Démarrer le SGDB à partir de la ligne de commande
 
-Ce fichier utilise le paramètre `command` avec l'option `--init-file` pour exécuter le script SQL au démarrage.
+```bash
+# Étape 1
+docker run -dit \
+--name amis \
+-v ./BDInit:/tmp/database \
+-v ./maBD:/var/lib/mysql:rw \
+-e MYSQL_ROOT_PASSWORD=password \
+mysql:5.7 mysqld --init-file="/tmp/database/mabd-init.sql"
+
+# OU 
+docker run -dit `
+--name amis `
+-v ./BDInit:/tmp/database `
+-v ./maBD:/var/lib/mysql:rw `
+-e MYSQL_ROOT_PASSWORD=password `
+mysql:5.7 mysqld --init-file="/tmp/database/mabd-init.sql"
+
+# Étape 2 - Vérifier la présence de la tbl_amis:
+docker exec -it amis bash
+mysql -uroot -ppassword
+show databases;
+use mabd;
+select * from tbl_amis;
+``` 
+
+---
+
+#### Action 4.2.1 – Créer le fichier `docker-comp-init-bd.yml`, dans le dossier de l'exercice.
+
+Voici un exemple à partir de Docker Compose (prochain module):
+
+Ce fichier utilise le paramètre `command: mysqld` avec l'option `--init-file` pour exécuter le script SQL au démarrage.
 
 ```yaml
 # Fichier: docker-comp-init-bd.yml
@@ -472,11 +512,18 @@ Voilà, nous venons de terminer notre expérimentation avec un conteneur de type
 
 ```bash
 # Note: Syntaxe pour une station MacOs ou Linux:
-$ docker volume create portainer_data
-$ docker run -d -p 8000:8000 -p 9443:9443 --name portainer \
+docker volume create portainer_data
+docker run -d -p 8000:8000 -p 9443:9443 --name portainer \
 --restart=always \
 -v /var/run/docker.sock:/var/run/docker.sock \
 -v portainer_data:/data \
+portainer/portainer-ce:2.11.1
+
+# OU
+docker run -d -p 8000:8000 -p 9443:9443 --name portainer `
+--restart=always `
+-v /var/run/docker.sock:/var/run/docker.sock `
+-v portainer_data:/data `
 portainer/portainer-ce:2.11.1
 ```
 
