@@ -288,7 +288,38 @@ services:
 
 -----
 
-## 10 – Configuration avancée d'un Nginx (substitution d'environnement)
+## 10 - Serveur `httpd` avec port `http` via une variable d'environnement
+
+```yaml
+services:
+  httpd:
+    image: httpd:latest
+    environment:
+      - HTTPD_PORT=${HTTPD_PORT:-8080}
+    ports:
+      - "${HTTPD_PORT:-8080}:${HTTPD_PORT:-8080}"
+    entrypoint: >
+      sh -c "sed -i 's/^Listen 80/Listen '$$HTTPD_PORT'/' /usr/local/apache2/conf/httpd.conf && httpd-foreground"
+
+```
+
+💡NOTE: Le $$ est utilisé pour échapper le signe $ dans le contexte de Docker Compose.
+
+Docker Compose interprète $VARIABLE comme une variable de substitution Compose (comme ${HTTPD_PORT})
+Pour passer un vrai $ au shell du conteneur, il faut écrire $$.
+
+* Contenu du fichier .env
+
+```
+HTTPD_PORT=88
+```
+
+👉 NOTE: Tester en laboratoire
+
+----
+
+
+## 11 – Configuration avancée d'un Nginx (substitution d'environnement)
 
 Pour configurer dynamiquement Nginx à partir de variables d'environnement (`PORT=8080`), on utilise la substitution (`envsubst`).
 
@@ -324,5 +355,5 @@ web:
 ## Crédits
 
 *Document rédigé par Alain Boudreault © 2021-2026*  
-*Version 2025.12.03.1*  
+*Version 2026.02.19.1*  
 *Site par ve2cuy*
