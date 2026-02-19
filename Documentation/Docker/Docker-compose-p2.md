@@ -1,7 +1,7 @@
 # 🐳 Docker-compose – Introduction - Partie 2
 
 <p align="center">
-    <img src="../images/docker-compose2.png" alt="YAML" width="750" />
+    <img src="../images/docker-compose-transparent.png" alt="YAML" width="350" />
 </p>
 
 ## 3 – Mise en place d'une application multi-services (MariaDB + Adminer)

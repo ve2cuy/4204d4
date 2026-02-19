@@ -1,7 +1,7 @@
 # 🐳 Docker compose – Introduction - Partie 1
 
 <p align="center">
-    <img src="../images/docker-compose2.png" alt="YAML" width="750" />
+    <img src="../images/docker-compose-transparent.png" alt="YAML" width="350" />
 </p>
 
 ## 🚀 Démarrage des services
