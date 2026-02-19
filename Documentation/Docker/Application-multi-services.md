@@ -36,10 +36,10 @@ Ce transfert d'information sera effectué, généralement, par l'utilisation de 
 Par exemple, pour fixer le mot de passe de l'utilisateur '**root**', lors du démarrage d'un conteneur de type **mariaDB**, il faudra utiliser la syntaxe suivante:
 
 ```bash
-docker run --net reseau01 -it -d --name maBD -e MYSQL_ROOT_PASSWORD=password mariadb
+docker run --net reseau01 -it -d --name maBD -e MYSQL_ROOT_PASSWORD=password mysql
 ````
 
-> **NOTE** : —\> Tester l'accès à la BD en utilisant la commande 'mysql' dans le conteneur 'maBD'.
+> **NOTE** : —\> Tester l'accès à la BD en utilisant la commande 'mysql' dans le conteneur 'maBD' ou bien la commande `mariadb` pour le SGBD 'mariadb'.
 
 L'option **`-e`** permet de renseigner la variable d'environnement `MYSQL_ROOT_PASSWORD`.
 
@@ -212,7 +212,15 @@ docker run --net reseau-3.1 \
 --name maBD \
 -e MYSQL_ROOT_PASSWORD=password \
 -d mariadb
+
+# Sous Windows:
+docker run --net reseau-3.1 `
+--name maBD `
+-e MYSQL_ROOT_PASSWORD=password `
+-d mariadb
+
 ```
+💡 NOTE: Il est possible qu'éventuellement, les variables MYSQL_..., ne soient plus supportées.  Voir la documentation de MariaDB à https://hub.docker.com/_/mariadb
 
 ### Action 3.3 – Mise en place de l'application 'adminer'
 
@@ -253,7 +261,7 @@ Dans un fureteur, inscrire l'adresse `localhost:8080`, ce qui devrait afficher l
 ### Laboratoire 3.5 (durée 30 minutes) – Construire l'application multi-services suivante:
 
   * Un réseau privé nommé `net-labo3.5`
-  * Un conteneur roulant **mysql**
+  * Un conteneur roulant **mysql**, `avec un volume local`
   * Un conteneur roulant **phpmyadmin**
   * En utilisant un fureteur, connectez-vous à `phpmyadmin`, créer une bd '**mes\_amis**'
   * ajouter la table '**amis**' avec les champs:
@@ -261,7 +269,9 @@ Dans un fureteur, inscrire l'adresse `localhost:8080`, ce qui devrait afficher l
       * `email` (var char 30)
       * `telephone` (var char 14)
   * Ajouter deux amis à la table
-  * Lister la table amis
+  * 👉 Effacer le conteneur mysql
+  * Recréer le conteneur mysql
+  * Lister, via phpmyadmin, la table `amis`
   * Ajouter une capture de la page web dans la discussion Teams.
 
 <p align="center">
@@ -275,5 +285,5 @@ Dans un fureteur, inscrire l'adresse `localhost:8080`, ce qui devrait afficher l
 ## Crédits
 
 *Document rédigé par Alain Boudreault © 2021-2026*  
-*Version 2025.12.03.1*  
+*Version 2026.02.19.1*  
 *Site par ve2cuy*
