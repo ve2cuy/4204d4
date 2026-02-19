@@ -1,28 +1,28 @@
-name: Construire et publier une image sur Docker Hub
-on:
-  push:
-    branches:
-      - main
-    paths:
-      # - 'Code/superMinou/Dockerfile' # Seulement si vous voulez déclencher le workflow lors de la modification du Dockerfile
-      - 'Code/superMinou/' # Déclencher le workflow si des fichiers dans ce dossier changent
-      # - Autre projet ..
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-jobs:
-  publish_images:
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout
-        uses: actions/checkout@v4
-      - name: build image SuperMinou
-        run: |
-          docker build ./Code/superMinou -t alainboudreault/superminou:v2025.12.09
-          # docker build autre projet ...
-      - name: push image SuperMinou sur docker hub
-        run: |
-          docker login -u alainboudreault -p ${{ secrets.DOCKER_HUB_SECRET }}
-          docker push alainboudreault/superminou:v2025.12.09
-          # docker push autre projet
+#name: Construire et publier une image sur Docker Hub
+#on:
+#  push:
+#    branches:
+#      - main
+#    paths:
+#      # - 'Code/superMinou/Dockerfile' # Seulement si vous voulez déclencher le workflow lors de la modification du Dockerfile
+#      - 'Code/superMinou/' # Déclencher le workflow si des fichiers dans ce dossier changent
+#      # - Autre projet ..
+#
+#  # Allows you to run this workflow manually from the Actions tab
+#  workflow_dispatch:
+#
+#jobs:
+#  publish_images:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: checkout
+#        uses: actions/checkout@v4
+#      - name: build image SuperMinou
+#        run: |
+#          docker build ./Code/superMinou -t alainboudreault/superminou:v2025.12.09
+#          # docker build autre projet ...
+#      - name: push image SuperMinou sur docker hub
+#        run: |
+#          docker login -u alainboudreault -p ${{ secrets.DOCKER_HUB_SECRET }}
+#          docker push alainboudreault/superminou:v2025.12.09
+#          # docker push autre projet

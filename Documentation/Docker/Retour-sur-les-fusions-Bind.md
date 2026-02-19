@@ -412,7 +412,7 @@ ac7ea4103539   mysql:5.7            "docker-entrypoint.s…"   16 minutes ago  U
 
 ### Action 5.6 – Lancer WordPress dans un fureteur
 
-Tester l'accès : `http://localhost:8000`
+Tester l'accès : `http://localhost:8000` et compléter l'installation.
 
 > Voilà, nous avons l'application **WordPress** fonctionnant grâce à deux micro-services; 1) MySQL, 2) WordPress.
 
@@ -423,6 +423,11 @@ Tester l'accès : `http://localhost:8000`
 
 <img src="../images/fusions/Capture-decran-le-2021-02-26-a-09.23.24.png" alt="" width="550" />
 
+
+### Action 5.6.1 – Effacer le conteneur WordPress puis le recréer
+
+❓Question, faut-il refaire la configuration des informations nécessaires?  
+* Expliquer pourquoi?
 
 -----
 
@@ -445,14 +450,14 @@ Mettre en place un site WordPress, à partir de conteneurs, pour la **CIE\_ABC**
   * Réseau docker nommé **`cie_network`**
   * Un conteneur **`mariadb` version 10.5**, nommé **`cie_db`** pour la base de données
       * Port externe: **`3333`**
-      * base de données: **`cie_abc`**
-      * utilisateur: **`cieuser`**
-      * Mot de passe: **`ciepassword`**
+      * base de données pour wordpress: **`cie_abc`**
+      * utilisateur de la bd: **`cieuser`**
+      * Mot de passe de l'utilisateur: **`ciepassword`**
       * Mot de passe root: **`donttell`**
       * Réseau: **`cie_network`**
       * La base de données est stockée localement dans le dossier **`cie_data`**
-  * Tester, avec un client MySQL, la présence de la BD et du compte utilisateur.
-  * Un conteneur **WordPress version 5.6.2**
+  * Tester, avec le cli `mariadb`, la présence de la BD et du compte utilisateur.
+  * Un conteneur **WordPress version 6.9.1 avec php 8.2 et apache2**
       * Renseigner les paramètres assurant le bon fonctionnement du site WordPress de la CIE ABC
       * port IP local: **`80`**
   * Tester le site WordPress de la CIE ABC
