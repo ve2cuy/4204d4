@@ -301,12 +301,17 @@ La chaîne est : `db` → `init-db` → `php` → `httpd`.
 ```yaml
 services:
   init-site:
-    image: alpine/curl
-    command: sh -c "
-      curl -L https://example.com/site.tar.gz -o /tmp/site.tar.gz &&
-      tar -xzf /tmp/site.tar.gz -C /var/www/html --strip-components=1"
+    image: alpine
+    command: | 
+      sh -c "
+      apk add git &&
+      git clone https://github.com/ve2cuy/superminou-depart &&
+      cp -r superminou-depart/* /temp &&
+      sleep 10
+      "
+
     volumes:
-      - web-content:/var/www/html
+      - web-content:/temp
 
   httpd:
     image: httpd:2.4
