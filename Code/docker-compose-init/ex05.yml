@@ -1,0 +1,30 @@
+services:
+  init-db:
+    image: postgres:16
+    entrypoint: ["sh", "-c", "until pg_isready -h db; do sleep 1; done"]
+    depends_on:
+      - db
+
+  init-cache:
+    image: redis:7
+    entrypoint: ["sh", "-c", "until redis-cli -h cache ping; do sleep 1; done"]
+    depends_on:
+      - cache
+
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_PASSWORD: secret
+
+  cache:
+    image: redis:7
+
+  app:
+    image: nginx
+    ports:
+      - "80:80"
+    depends_on:
+      init-db:
+        condition: service_completed_successfully
+      init-cache:
+        condition: service_completed_successfully

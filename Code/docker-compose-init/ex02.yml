@@ -1,0 +1,24 @@
+services:
+  init-content:
+    image: busybox
+    command:  |  # Utilisation de "|" ou ">- = ramène le tout sur une seule ligne" pour écrire une commande multi-ligne plus lisible
+      sh -c "
+      echo '<h1>Hello depuis Docker 420!</h1>' > /var/www/html/index.html &&
+      echo 'Build: '$(date) >> /var/www/html/index.html
+      "
+    volumes:
+      - web-content:/var/www/html
+
+  httpd:
+    image: httpd:2.4
+    ports:
+      - "80:80"
+    volumes:
+      - web-content:/usr/local/apache2/htdocs
+    depends_on:
+      init-content:
+        condition: service_completed_successfully
+
+volumes:
+  web-content:
+    name: contenu-web

@@ -1,0 +1,47 @@
+services:
+  init-ssl:
+    image: alpine
+    command:
+      - sh
+      - -c
+      - |
+        apk add --no-cache openssl &&
+        openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+          -keyout /certs/server.key \
+          -out /certs/server.crt \
+          -subj '/CN=localhost/O=Dev/C=FR'
+    volumes:
+      - ssl-certs:/certs
+
+  init-config:
+    image: httpd:2.4
+    command:
+      - sh
+      - -c
+      - |
+        cp /usr/local/apache2/conf/httpd.conf /config/httpd.conf &&
+        sed -i 's/#LoadModule ssl_module/LoadModule ssl_module/' /config/httpd.conf &&
+        sed -i 's/#LoadModule socache_shmcb_module/LoadModule socache_shmcb_module/' /config/httpd.conf &&
+        sed -i 's/#Include conf\/extra\/httpd-ssl.conf/Include conf\/extra\/httpd-ssl.conf/' /config/httpd.conf &&
+        echo 'ServerName localhost' >> /config/httpd.conf
+    volumes:
+      - httpd-config:/config
+
+  httpd:
+    image: httpd:2.4
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ssl-certs:/usr/local/apache2/conf/ssl
+      - httpd-config:/usr/local/apache2/conf
+      - ./httpd-ssl.conf:/usr/local/apache2/conf/extra/httpd-ssl.conf
+    depends_on:
+      init-ssl:
+        condition: service_completed_successfully
+      init-config:
+        condition: service_completed_successfully
+
+volumes:
+  ssl-certs:
+  httpd-config:

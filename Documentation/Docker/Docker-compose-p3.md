@@ -6,7 +6,12 @@
 
 ---
 
-## 👉 Voici quelques exemples de `docker-compose.yml` avec des services d'initialisation, du plus simple au plus élaboré.
+## Exemples de `docker-compose.yml` avec des services d'initialisation.
+
+
+**NOTE**: Les exemples marqués de 💡 sont à tester en laboratoire.
+
+---
 
 
 ## 💡 1. Init container basique avec `depends_on`
@@ -93,32 +98,39 @@ L'approche la plus robuste est en général de combiner un **healthcheck** sur l
 
 ---
 
-## 💡 3. Init qui génère du contenu HTML avant le démarrage d'HTTPD
+## 💡 3. Init qui génère du contenu HTML avant le démarrage d'`httpd`
 
 ```yaml
 services:
   init-content:
     image: busybox
-    command:  |  # Utilisation de "| = \n" ou ">- = ramène le tout sur une seule ligne" pour écrire une commande multi-ligne plus lisible
+    command:  |  # Utilisation de "|" ou ">- = ramène le tout sur une seule ligne" pour écrire une commande multi-ligne plus lisible
       sh -c "
-      echo '<h1>Hello depuis Docker 420!</h1>' > /var/www/html/index.html &&
-      echo 'Build: '$(date) >> /var/www/html/index.html
+      echo '<h1>Hello depuis Docker 420!</h1>' > /dossier-commun/index.html &&
+      echo 'Build: '$(date) >> /dossier-commun/index.html &&
+      echo 'ServerName exemple.420' >> /config/httpd.conf
       "
     volumes:
-      - web-content:/var/www/html
+      - web-content:/dossier-commun
+      - web-config:/config
 
   httpd:
     image: httpd:2.4
     ports:
-      - "8080:80"
+      - "80:80"
     volumes:
       - web-content:/usr/local/apache2/htdocs
+      - web-config:/usr/local/apache2/conf
     depends_on:
       init-content:
         condition: service_completed_successfully
 
 volumes:
   web-content:
+    name: contenu-web   # Optionnel
+  web-config:
+    name: config-httpd  # Optionnel
+
 ```
 
 ---

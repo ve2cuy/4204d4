@@ -1,0 +1,19 @@
+services:
+  init:
+    image: busybox
+    command: sh -c "echo 'Initialisation terminée' && touch /data/ready"
+    volumes:
+      - shared-data:/data  # Partage du volume pour que le service "app" puisse accéder au fichier créé par "init"
+                           # Ceci est un volume docker, pas un volume de type "bind" qui serait lié à un répertoire de l'hôte.
+
+  app:
+    image: nginx
+    depends_on:
+      init:
+        condition: service_completed_successfully
+    volumes:
+      - shared-data:/data
+
+volumes:
+  shared-data:
+    name: un-volume

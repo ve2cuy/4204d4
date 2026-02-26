@@ -1,0 +1,39 @@
+services:
+  init-config:
+    image: busybox
+    environment:
+      SERVER_NAME: monsite.local
+      MAX_CLIENTS: 150
+    command:
+      - sh
+      - -c
+      - |
+        cat > /usr/local/apache2/conf/httpd.conf << 'EOF'
+        ServerName {{SERVER_NAME}}
+        MaxRequestWorkers {{MAX_CLIENTS}}
+        Listen 80
+
+        DocumentRoot "/usr/local/apache2/htdocs"
+        <Directory "/usr/local/apache2/htdocs">
+            Options Indexes FollowSymLinks
+            AllowOverride None
+            Require all granted
+        </Directory>
+        EOF
+        sed -i "s/{{SERVER_NAME}}/$SERVER_NAME/g" /usr/local/apache2/conf/httpd.conf &&
+        sed -i "s/{{MAX_CLIENTS}}/$MAX_CLIENTS/g" /usr/local/apache2/conf/httpd.conf
+    volumes:
+      - apache-config:/usr/local/apache2/conf 
+
+  httpd:
+    image: httpd:2.4
+    ports:
+      - "8080:80"
+    volumes:
+     - apache-config:/usr/local/apache2/conf/httpd.conf   # ← fichier uniquement
+    depends_on:
+      init-config:
+        condition: service_completed_successfully
+
+volumes:
+  apache-config:
