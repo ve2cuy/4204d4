@@ -9,7 +9,7 @@
 ## 👉 Voici quelques exemples de `docker-compose.yml` avec des services d'initialisation, du plus simple au plus élaboré.
 
 
-## 1. Init container basique avec `depends_on`
+## 💡 1. Init container basique avec `depends_on`
 
 ```yaml
 services:
@@ -93,7 +93,7 @@ L'approche la plus robuste est en général de combiner un **healthcheck** sur l
 
 ---
 
-## 3. Init qui génère du contenu HTML avant le démarrage d'HTTPD
+## 💡 3. Init qui génère du contenu HTML avant le démarrage d'HTTPD
 
 ```yaml
 services:
@@ -123,8 +123,7 @@ volumes:
 
 ---
 
-## 4. Init qui copie un contenu à patir de github
-
+## 💡 4. Init qui copie un contenu à patir de github
 
 ```yaml
 services:
@@ -155,8 +154,9 @@ volumes:
   web-content:
 ```
 
+---
 
-## 4. Init qui copie et personnalise la config Apache
+## 5. Init qui copie et personnalise la config Apache
 
 ```yaml
 services:
@@ -202,7 +202,7 @@ volumes:
 
 ---
 
-## 5. Stack complète : Init + HTTPD + PHP-FPM + MySQL
+## 6. Stack complète : Init + HTTPD + PHP-FPM + MySQL
 
 ```yaml
 services:
@@ -257,35 +257,7 @@ La chaîne est : `db` → `init-db` → `php` → `httpd`.
 
 ---
 
-## 4. Init qui télécharge un site statique (ex: documentation)
-
-```yaml
-services:
-  init-site:
-    image: alpine/curl
-    command: sh -c "
-      curl -L https://example.com/site.tar.gz -o /tmp/site.tar.gz &&
-      tar -xzf /tmp/site.tar.gz -C /var/www/html --strip-components=1"
-    volumes:
-      - web-content:/var/www/html
-
-  httpd:
-    image: httpd:2.4
-    ports:
-      - "8080:80"
-    volumes:
-      - web-content:/usr/local/apache2/htdocs
-    depends_on:
-      init-site:
-        condition: service_completed_successfully
-
-volumes:
-  web-content:
-```
-
----
-
-## 5. Init avec certificats SSL auto-signés pour HTTPS
+## 7. Init avec certificats SSL auto-signés pour HTTPS
 
 ```yaml
 services:
@@ -350,7 +322,7 @@ SSLCertificateKeyFile /usr/local/apache2/conf/ssl/server.key
 
 ---
 
-## Exemple Postgres avec healthcheck
+## 💡 8. Exemple Postgres avec healthcheck
 
 ```yaml
 # Note: db-1 -  FATAL:  role "postgres" does not exist
@@ -500,12 +472,8 @@ Pendant le `start_period`, les échecs ne sont pas comptabilisés dans les `retr
 
 ---
 
-## Récapitulatif des patterns utilisés
+## Crédits
 
-| Pattern | Cas d'usage |
-|---|---|
-| `busybox` + volume partagé | Générer du contenu statique |
-| `sed` sur un template de config | Personnaliser `httpd.conf` dynamiquement |
-| `alpine/curl` | Télécharger des assets au démarrage |
-| `alpine/openssl` | Générer des certificats SSL |
-| `mysql` init + healthcheck | Seeder une BDD avant de lancer l'app |
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Version 2026.02.26.1*  
+*Site par ve2cuy*
