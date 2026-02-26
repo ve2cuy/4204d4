@@ -18,12 +18,14 @@ services:
     command: sh -c "echo 'Initialisation terminée' && touch /data/ready"
 
     # Partage du volume pour que le service "app" puisse accéder au fichier créé par "init"
-    # Ceci est un volume docker, pas un volume de type "bind" qui serait lié à un répertoire de l
+    # Ceci est un volume docker, pas un volume de type "bind" qui serait lié à un répertoire de la station host.
     volumes:
       - shared-data:/data 
   
   app:
     image: nginx
+    ports:
+      - "80:80"
     depends_on:
       init:
         condition: service_completed_successfully
@@ -31,6 +33,7 @@ services:
       - shared-data:/data
         name: un-volume
 
+# Ceci est un volume interne à Docker
 volumes:
   shared-data:
 ```
@@ -39,78 +42,7 @@ Le service `app` ne démarre qu'une fois `init` terminé avec succès.
 
 ---
 
-## 2. Base de données avec init SQL
-
-```yaml
-services:
-  db:
-    image: postgres:16
-    environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: secret
-      POSTGRES_DB: myapp
-    volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-
-  app:
-    image: my-app
-    depends_on:
-      db:
-        condition: service_healthy
-    environment:
-      DATABASE_URL: postgres://admin:secret@db:5432/myapp
-```
-
-Postgres exécute automatiquement les fichiers `.sql` placés dans `/docker-entrypoint-initdb.d/`.
-
----
-
-## 3. Migration de base de données avant le démarrage de l'app
-
-```yaml
-services:
-  db:
-    image: postgres:16
-    environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: secret
-      POSTGRES_DB: myapp
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin"]
-      interval: 5s
-      retries: 5
-
-  migrate:
-    image: my-app
-    command: ["python", "manage.py", "migrate"]   # ou: alembic upgrade head
-    depends_on:
-      db:
-        condition: service_healthy
-    environment:
-      DATABASE_URL: postgres://admin:secret@db:5432/myapp
-
-  app:
-    image: my-app
-    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-    depends_on:
-      migrate:
-        condition: service_completed_successfully
-    environment:
-      DATABASE_URL: postgres://admin:secret@db:5432/myapp
-    ports:
-      - "8000:8000"
-```
-
-La chaîne de démarrage est : `db` → `migrate` → `app`.
-
----
-
-## 4. Plusieurs services d'init en parallèle
+## 2. Plusieurs services d'init en parallèle
 
 ```yaml
 services:
@@ -135,7 +67,9 @@ services:
     image: redis:7
 
   app:
-    image: my-app
+    image: nginx
+    ports:
+      - "80:80"    
     depends_on:
       init-db:
         condition: service_completed_successfully
@@ -159,13 +93,7 @@ L'approche la plus robuste est en général de combiner un **healthcheck** sur l
 
 ---
 
-# Exemples avec httpd
-
-Voici des exemples avec **Apache HTTPD** et des services d'initialisation.
-
----
-
-## 1. Init qui génère du contenu HTML avant le démarrage d'HTTPD
+## 3. Init qui génère du contenu HTML avant le démarrage d'HTTPD
 
 ```yaml
 services:
@@ -195,7 +123,40 @@ volumes:
 
 ---
 
-## 2. Init qui copie et personnalise la config Apache
+## 4. Init qui copie un contenu à patir de github
+
+
+```yaml
+services:
+  init-site:
+    image: alpine
+    command: | 
+      sh -c "
+      apk add git &&
+      git clone https://github.com/ve2cuy/superminou-depart &&
+      cp -r superminou-depart/* /temp &&
+      sleep 10
+      "
+
+    volumes:
+      - web-content:/temp
+
+  httpd:
+    image: httpd:2.4
+    ports:
+      - "8080:80"
+    volumes:
+      - web-content:/usr/local/apache2/htdocs
+    depends_on:
+      init-site:
+        condition: service_completed_successfully
+
+volumes:
+  web-content:
+```
+
+
+## 4. Init qui copie et personnalise la config Apache
 
 ```yaml
 services:
@@ -241,7 +202,7 @@ volumes:
 
 ---
 
-## 3. Stack complète : Init + HTTPD + PHP-FPM + MySQL
+## 5. Stack complète : Init + HTTPD + PHP-FPM + MySQL
 
 ```yaml
 services:
@@ -301,17 +262,12 @@ La chaîne est : `db` → `init-db` → `php` → `httpd`.
 ```yaml
 services:
   init-site:
-    image: alpine
-    command: | 
-      sh -c "
-      apk add git &&
-      git clone https://github.com/ve2cuy/superminou-depart &&
-      cp -r superminou-depart/* /temp &&
-      sleep 10
-      "
-
+    image: alpine/curl
+    command: sh -c "
+      curl -L https://example.com/site.tar.gz -o /tmp/site.tar.gz &&
+      tar -xzf /tmp/site.tar.gz -C /var/www/html --strip-components=1"
     volumes:
-      - web-content:/temp
+      - web-content:/var/www/html
 
   httpd:
     image: httpd:2.4
@@ -334,14 +290,32 @@ volumes:
 ```yaml
 services:
   init-ssl:
-    image: alpine/openssl
-    command: sh -c "
-      openssl req -x509 -nodes -days 365 -newkey rsa:2048
-        -keyout /certs/server.key
-        -out /certs/server.crt
-        -subj '/CN=localhost/O=Dev/C=FR'"
+    image: alpine
+    command:
+      - sh
+      - -c
+      - |
+        apk add --no-cache openssl &&
+        openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+          -keyout /certs/server.key \
+          -out /certs/server.crt \
+          -subj '/CN=localhost/O=Dev/C=FR'
     volumes:
       - ssl-certs:/certs
+
+  init-config:
+    image: httpd:2.4
+    command:
+      - sh
+      - -c
+      - |
+        cp /usr/local/apache2/conf/httpd.conf /config/httpd.conf &&
+        sed -i 's/#LoadModule ssl_module/LoadModule ssl_module/' /config/httpd.conf &&
+        sed -i 's/#LoadModule socache_shmcb_module/LoadModule socache_shmcb_module/' /config/httpd.conf &&
+        sed -i 's/#Include conf\/extra\/httpd-ssl.conf/Include conf\/extra\/httpd-ssl.conf/' /config/httpd.conf &&
+        echo 'ServerName localhost' >> /config/httpd.conf
+    volumes:
+      - httpd-config:/config
 
   httpd:
     image: httpd:2.4
@@ -350,13 +324,17 @@ services:
       - "443:443"
     volumes:
       - ssl-certs:/usr/local/apache2/conf/ssl
+      - httpd-config:/usr/local/apache2/conf
       - ./httpd-ssl.conf:/usr/local/apache2/conf/extra/httpd-ssl.conf
     depends_on:
       init-ssl:
         condition: service_completed_successfully
+      init-config:
+        condition: service_completed_successfully
 
 volumes:
   ssl-certs:
+  httpd-config:
 ```
 
 Avec le fichier `httpd-ssl.conf` minimal :
@@ -367,6 +345,158 @@ SSLEngine on
 SSLCertificateFile /usr/local/apache2/conf/ssl/server.crt
 SSLCertificateKeyFile /usr/local/apache2/conf/ssl/server.key
 ```
+
+
+
+---
+
+## Exemple Postgres avec healthcheck
+
+```yaml
+# Note: db-1 -  FATAL:  role "postgres" does not exist
+# Solution, effacer le volume précédent et recréer le conteneur
+# docker-compose down -v
+
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}       # admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD} # password
+    ports:
+      - "8080:80"
+    depends_on:
+      db:
+        condition: service_healthy
+
+#  adminer:
+#    image: adminer
+#    restart: always
+#    ports:
+#      - 88:8080
+#    depends_on:
+#      db:
+#        condition: service_healthy
+
+
+# Création d'un volume interne à Docker pour stocker les données de la base de données
+volumes:
+  db-data:
+```
+
+```
+# Fichier .env
+POSTGRES_USER=bob
+POSTGRES_PASSWORD=binette
+POSTGRES_DB=bob
+
+PGADMIN_EMAIL=admin@admin.com
+PGADMIN_PASSWORD=password
+```
+
+* Login et ajout (register) de la bd sous pgadmin:
+
+<img src="../images/pgadmin.png" alt="YAML" width="500" />
+
+
+## `healthcheck` — Explication détaillée
+
+Le healthcheck permet à Docker de **surveiller l'état de santé** d'un conteneur, au-delà du simple fait qu'il tourne. Un conteneur peut être démarré mais pas encore prêt à accepter des connexions.
+
+---
+
+### `test`
+
+```yaml
+test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+```
+
+Définit la commande à exécuter pour tester la santé du conteneur. Il existe deux formes :
+
+| Forme | Description |
+|---|---|
+| `CMD` | Exécute la commande directement, sans shell |
+| `CMD-SHELL` | Exécute la commande via `/bin/sh -c`, permet les variables et opérateurs shell |
+
+`pg_isready` est un utilitaire fourni avec PostgreSQL qui vérifie si le serveur accepte des connexions. Il retourne :
+- **exit code 0** → le serveur est prêt ✅
+- **exit code 1** → le serveur refuse les connexions ❌
+- **exit code 2** → aucune réponse ❌
+
+Docker considère le conteneur **healthy** uniquement si le code de retour est `0`.
+
+---
+
+### `interval`
+
+```yaml
+interval: 5s
+```
+
+Fréquence à laquelle Docker exécute le test. Ici toutes les **5 secondes**.
+
+---
+
+### `timeout`
+
+```yaml
+timeout: 5s
+```
+
+Durée maximale accordée à la commande de test pour s'exécuter. Si elle dépasse **5 secondes**, Docker considère le test comme échoué.
+
+---
+
+### `retries`
+
+```yaml
+retries: 5
+```
+
+Nombre d'échecs consécutifs avant de marquer le conteneur comme **unhealthy**. Ici Docker tolère **5 échecs** avant de déclarer le conteneur défaillant.
+
+---
+
+### Cycle de vie d'un conteneur avec healthcheck
+
+```
+démarrage → starting
+              ↓
+         test échoue (jusqu'à 5 fois)
+              ↓
+         test réussit → healthy   ← depends_on condition: service_healthy attend cet état
+              ↓
+         test échoue 5 fois de suite → unhealthy
+```
+
+---
+
+### Paramètre optionnel : `start_period`
+
+```yaml
+healthcheck:
+  test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+  interval: 5s
+  timeout: 5s
+  retries: 5
+  start_period: 10s   # ← délai de grâce au démarrage
+```
+
+Pendant le `start_period`, les échecs ne sont pas comptabilisés dans les `retries`. Utile pour les services qui mettent du temps à initialiser (ex: PostgreSQL qui restaure une grosse base).
 
 ---
 

@@ -123,6 +123,39 @@ volumes:
 
 ---
 
+## 4. Init qui copie un contenu à patir de github
+
+
+```yaml
+services:
+  init-site:
+    image: alpine
+    command: | 
+      sh -c "
+      apk add git &&
+      git clone https://github.com/ve2cuy/superminou-depart &&
+      cp -r superminou-depart/* /temp &&
+      sleep 10
+      "
+
+    volumes:
+      - web-content:/temp
+
+  httpd:
+    image: httpd:2.4
+    ports:
+      - "8080:80"
+    volumes:
+      - web-content:/usr/local/apache2/htdocs
+    depends_on:
+      init-site:
+        condition: service_completed_successfully
+
+volumes:
+  web-content:
+```
+
+
 ## 4. Init qui copie et personnalise la config Apache
 
 ```yaml
