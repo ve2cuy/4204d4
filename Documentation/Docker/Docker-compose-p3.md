@@ -7,12 +7,32 @@
 ---
 
 ## Exemples de `docker-compose.yml` avec des services d'initialisation.
-
-
 **NOTE**: Les exemples marqués de 💡 sont à tester en laboratoire.
 
 ---
 
+## Table des matières
+
+
+- [1. Init container basique avec `depends_on`](#-1-init-container-basique-avec-depends_on)
+- [2. Plusieurs services d'init en parallèle](#2-plusieurs-services-dinit-en-parallèle)
+  - [Résumé des conditions `depends_on`](#résumé-des-conditions-depends_on)
+- [3. Init qui génère du contenu HTML avant le démarrage d'`httpd`](#-3-init-qui-génère-du-contenu-html-avant-le-démarrage-dhttpd)
+- [4. Init qui copie un contenu web, pour httpd, à partir de github](#-4-init-qui-copie-un-contenu-web-pour-httpd-à-patir-de-github)
+- [5. Init qui copie et personnalise la config Apache](#5-init-qui-copie-et-personnalise-la-config-apache)
+- [6. Stack complète : Init + HTTPD + PHP-FPM + MySQL](#6-stack-complète--init--httpd--php-fpm--mysql)
+- [7. Init avec certificats SSL auto-signés pour HTTPS](#7-init-avec-certificats-ssl-auto-signés-pour-https)
+- [8. Exemple Postgres avec healthcheck](#-8-exemple-postgres-avec-healthcheck)
+- [9. `healthcheck`](#9-healthcheck--explication-détaillée)
+  - [`test`](#test)
+  - [`interval`](#interval)
+  - [`timeout`](#timeout)
+  - [`retries`](#retries)
+  - [Cycle de vie d'un conteneur avec healthcheck](#cycle-de-vie-dun-conteneur-avec-healthcheck)
+  - [Paramètre optionnel : `start_period`](#paramètre-optionnel--start_period)
+
+
+---
 
 ## 💡 1. Init container basique avec `depends_on`
 

@@ -6,10 +6,37 @@
 
 ---
 
-## 👉 Voici quelques exemples de `docker-compose.yml` avec des services d'initialisation, du plus simple au plus élaboré.
+## Table des matières
+
+- [1. Init container basique avec `depends_on`](#-1-init-container-basique-avec-depends_on)
+- [2. Plusieurs services d'init en parallèle](#2-plusieurs-services-dinit-en-parallèle)
+- [Résumé des conditions `depends_on`](#résumé-des-conditions-depends_on)
+- [3. Init qui génère du contenu HTML avant le démarrage d'`httpd`](#-3-init-qui-génère-du-contenu-html-avant-le-démarrage-dhttpd)
+- [4. Init qui copie un contenu web, pour httpd, à partir de github](#-4-init-qui-copie-un-contenu-web-pour-httpd-à-patir-de-github)
+- [5. Init qui copie et personnalise la config Apache](#5-init-qui-copie-et-personnalise-la-config-apache)
+- [6. Stack complète : Init + HTTPD + PHP-FPM + MySQL](#6-stack-complète--init--httpd--php-fpm--mysql)
+- [7. Init avec certificats SSL auto-signés pour HTTPS](#7-init-avec-certificats-ssl-auto-signés-pour-https)
+- [8. Exemple Postgres avec healthcheck](#-8-exemple-postgres-avec-healthcheck)
+- [9. `healthcheck` — Explication détaillée](#9-healthcheck--explication-détaillée)
+  - [`test`](#test)
+  - [`interval`](#interval)
+  - [`timeout`](#timeout)
+  - [`retries`](#retries)
+  - [Cycle de vie d'un conteneur avec healthcheck](#cycle-de-vie-dun-conteneur-avec-healthcheck)
+  - [Paramètre optionnel : `start_period`](#paramètre-optionnel--start_period)
+- [Crédits](#crédits)
+
+---
+
+## Exemples de `docker-compose.yml` avec des services d'initialisation.
 
 
-## 1. Init container basique avec `depends_on`
+**NOTE**: Les exemples marqués de 💡 sont à tester en laboratoire.
+
+---
+
+
+## 💡 1. Init container basique avec `depends_on`
 
 ```yaml
 services:
@@ -93,38 +120,44 @@ L'approche la plus robuste est en général de combiner un **healthcheck** sur l
 
 ---
 
-## 3. Init qui génère du contenu HTML avant le démarrage d'HTTPD
+## 💡 3. Init qui génère du contenu HTML avant le démarrage d'`httpd`
 
 ```yaml
 services:
   init-content:
     image: busybox
-    command:  |  # Utilisation de "| = \n" ou ">- = ramène le tout sur une seule ligne" pour écrire une commande multi-ligne plus lisible
+    command:  |  # Utilisation de "|" ou ">- = ramène le tout sur une seule ligne" pour écrire une commande multi-ligne plus lisible
       sh -c "
-      echo '<h1>Hello depuis Docker 420!</h1>' > /var/www/html/index.html &&
-      echo 'Build: '$(date) >> /var/www/html/index.html
+      echo '<h1>Hello depuis Docker 420!</h1>' > /dossier-commun/index.html &&
+      echo 'Build: '$(date) >> /dossier-commun/index.html &&
+      echo 'ServerName exemple.420' >> /config/httpd.conf
       "
     volumes:
-      - web-content:/var/www/html
+      - web-content:/dossier-commun
+      - web-config:/config
 
   httpd:
     image: httpd:2.4
     ports:
-      - "8080:80"
+      - "80:80"
     volumes:
       - web-content:/usr/local/apache2/htdocs
+      - web-config:/usr/local/apache2/conf
     depends_on:
       init-content:
         condition: service_completed_successfully
 
 volumes:
   web-content:
+    name: contenu-web   # Optionnel
+  web-config:
+    name: config-httpd  # Optionnel
+
 ```
 
 ---
 
-## 4. Init qui copie un contenu à patir de github
-
+## 💡 4. Init qui copie un contenu web, pour httpd, à patir de github
 
 ```yaml
 services:
@@ -155,8 +188,9 @@ volumes:
   web-content:
 ```
 
+---
 
-## 4. Init qui copie et personnalise la config Apache
+## 5. Init qui copie et personnalise la config Apache
 
 ```yaml
 services:
@@ -202,7 +236,7 @@ volumes:
 
 ---
 
-## 5. Stack complète : Init + HTTPD + PHP-FPM + MySQL
+## 6. Stack complète : Init + HTTPD + PHP-FPM + MySQL
 
 ```yaml
 services:
@@ -257,35 +291,7 @@ La chaîne est : `db` → `init-db` → `php` → `httpd`.
 
 ---
 
-## 4. Init qui télécharge un site statique (ex: documentation)
-
-```yaml
-services:
-  init-site:
-    image: alpine/curl
-    command: sh -c "
-      curl -L https://example.com/site.tar.gz -o /tmp/site.tar.gz &&
-      tar -xzf /tmp/site.tar.gz -C /var/www/html --strip-components=1"
-    volumes:
-      - web-content:/var/www/html
-
-  httpd:
-    image: httpd:2.4
-    ports:
-      - "8080:80"
-    volumes:
-      - web-content:/usr/local/apache2/htdocs
-    depends_on:
-      init-site:
-        condition: service_completed_successfully
-
-volumes:
-  web-content:
-```
-
----
-
-## 5. Init avec certificats SSL auto-signés pour HTTPS
+## 7. Init avec certificats SSL auto-signés pour HTTPS
 
 ```yaml
 services:
@@ -350,7 +356,7 @@ SSLCertificateKeyFile /usr/local/apache2/conf/ssl/server.key
 
 ---
 
-## Exemple Postgres avec healthcheck
+## 💡 8. Exemple Postgres avec healthcheck
 
 ```yaml
 # Note: db-1 -  FATAL:  role "postgres" does not exist
@@ -410,10 +416,21 @@ PGADMIN_PASSWORD=password
 
 * Login et ajout (register) de la bd sous pgadmin:
 
-<img src="../images/pgadmin.png" alt="YAML" width="500" />
+a) - Login
 
+<img src="../images/pg-admin01.png" alt="YAML" width="500" />
 
-## `healthcheck` — Explication détaillée
+b) - Ajouter un nouveau serveur 
+
+<img src="../images/pg-admin02.png" alt="YAML" width="500" />
+
+c) - Renseigner les paramètres de connexion
+
+<img src="../images/pg-admin03.png" alt="YAML" width="500" />
+
+---
+
+## 9. `healthcheck` — Explication détaillée
 
 Le healthcheck permet à Docker de **surveiller l'état de santé** d'un conteneur, au-delà du simple fait qu'il tourne. Un conteneur peut être démarré mais pas encore prêt à accepter des connexions.
 
@@ -432,7 +449,7 @@ Définit la commande à exécuter pour tester la santé du conteneur. Il existe 
 | `CMD` | Exécute la commande directement, sans shell |
 | `CMD-SHELL` | Exécute la commande via `/bin/sh -c`, permet les variables et opérateurs shell |
 
-`pg_isready` est un utilitaire fourni avec PostgreSQL qui vérifie si le serveur accepte des connexions. Il retourne :
+[pg_isready](https://www.postgresql.org/docs/current/app-pg-isready.html) est un utilitaire fourni avec PostgreSQL qui vérifie si le serveur accepte des connexions. Il retourne :
 - **exit code 0** → le serveur est prêt ✅
 - **exit code 1** → le serveur refuse les connexions ❌
 - **exit code 2** → aucune réponse ❌
@@ -500,12 +517,8 @@ Pendant le `start_period`, les échecs ne sont pas comptabilisés dans les `retr
 
 ---
 
-## Récapitulatif des patterns utilisés
+## Crédits
 
-| Pattern | Cas d'usage |
-|---|---|
-| `busybox` + volume partagé | Générer du contenu statique |
-| `sed` sur un template de config | Personnaliser `httpd.conf` dynamiquement |
-| `alpine/curl` | Télécharger des assets au démarrage |
-| `alpine/openssl` | Générer des certificats SSL |
-| `mysql` init + healthcheck | Seeder une BDD avant de lancer l'app |
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Version 2026.02.26.1*  
+*Site par ve2cuy*
