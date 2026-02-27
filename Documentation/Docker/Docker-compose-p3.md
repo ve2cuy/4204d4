@@ -135,7 +135,7 @@ volumes:
 
 ---
 
-## 💡 4. Init qui copie un contenu à patir de github
+## 💡 4. Init qui copie un contenu web, pour httpd, à patir de github
 
 ```yaml
 services:
@@ -394,10 +394,21 @@ PGADMIN_PASSWORD=password
 
 * Login et ajout (register) de la bd sous pgadmin:
 
-<img src="../images/pgadmin.png" alt="YAML" width="500" />
+a) - Login
 
+<img src="../images/pg-admin01.png" alt="YAML" width="500" />
 
-## `healthcheck` — Explication détaillée
+b) - Ajouter un nouveau serveur 
+
+<img src="../images/pg-admin02.png" alt="YAML" width="500" />
+
+c) - Renseigner les paramètres de connexion
+
+<img src="../images/pg-admin03.png" alt="YAML" width="500" />
+
+---
+
+## 9. `healthcheck` — Explication détaillée
 
 Le healthcheck permet à Docker de **surveiller l'état de santé** d'un conteneur, au-delà du simple fait qu'il tourne. Un conteneur peut être démarré mais pas encore prêt à accepter des connexions.
 
@@ -416,7 +427,7 @@ Définit la commande à exécuter pour tester la santé du conteneur. Il existe 
 | `CMD` | Exécute la commande directement, sans shell |
 | `CMD-SHELL` | Exécute la commande via `/bin/sh -c`, permet les variables et opérateurs shell |
 
-`pg_isready` est un utilitaire fourni avec PostgreSQL qui vérifie si le serveur accepte des connexions. Il retourne :
+[pg_isready](https://www.postgresql.org/docs/current/app-pg-isready.html) est un utilitaire fourni avec PostgreSQL qui vérifie si le serveur accepte des connexions. Il retourne :
 - **exit code 0** → le serveur est prêt ✅
 - **exit code 1** → le serveur refuse les connexions ❌
 - **exit code 2** → aucune réponse ❌
