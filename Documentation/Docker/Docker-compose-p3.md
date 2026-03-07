@@ -155,7 +155,7 @@ volumes:
 
 ---
 
-## 💡 4. Init qui copie un contenu web, pour httpd, à patir de github
+## 💡 4. Init qui copie un contenu web, pour httpd, à partir de github
 
 ```yaml
 services:
