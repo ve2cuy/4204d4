@@ -18,7 +18,7 @@
 - [2. Plusieurs services d'init en parallèle](#2-plusieurs-services-dinit-en-parallèle)
   - [Résumé des conditions `depends_on`](#résumé-des-conditions-depends_on)
 - [3. Init qui génère du contenu HTML avant le démarrage d'`httpd`](#-3-init-qui-génère-du-contenu-html-avant-le-démarrage-dhttpd)
-- [4. Init qui copie un contenu web, pour httpd, à partir de github](#-4-init-qui-copie-un-contenu-web-pour-httpd-à-patir-de-github)
+- [4. Init qui copie un contenu web, pour httpd, à partir de github](#-4-init-qui-copie-un-contenu-web-pour-httpd-à-partir-de-github)
 - [5. Init qui copie et personnalise la config Apache](#5-init-qui-copie-et-personnalise-la-config-apache)
 - [6. Stack complète : Init + HTTPD + PHP-FPM + MySQL](#6-stack-complète--init--httpd--php-fpm--mysql)
 - [7. Init avec certificats SSL auto-signés pour HTTPS](#7-init-avec-certificats-ssl-auto-signés-pour-https)
