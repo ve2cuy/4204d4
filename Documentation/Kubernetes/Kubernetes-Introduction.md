@@ -114,25 +114,24 @@ Voir <https://kind.sigs.k8s.io> ou Docker-desktop comme alternative.
 ### Action 2.1 – Démarrage de minikube
 
 ```bash
-minikube start
+$ minikube start
 
 # Résultat attendu:
-# minikube v1.16.0 sur Darwin 10.15.4
-# minikube 1.17.1 est disponible ! Téléchargez-le ici : https://github.com/kubernetes/minikube/releases/tag/v1.17.1
-# To disable this notice, run: 'minikube config set WantUpdateNotification false'
-#
-# Utilisation du pilote docker basé sur le profil existant
-# Démarrage du noeud de plan de contrôle minikube dans le cluster minikube
-# Pulling base image ...
-# docker "minikube" container est manquant, il va être recréé.
-# Creating docker container (CPUs=2, Memory=1988MB) ...
-# Préparation de Kubernetes v1.20.0 sur Docker 20.10.0...
-#    Generating certificates and keys ...
-#    Booting up control plane ...
-#    Configuring RBAC rules ...
-# Verifying Kubernetes components...
-# Enabled addons: storage-provisioner, default-storageclass
-# Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
+minikube v1.16.0 sur Darwin 10.15.4
+minikube 1.17.1 est disponible ! Téléchargez-le ici : https://github.com/kubernetes/minikube/releases/tag/v1.17.1
+To disable this notice, run: 'minikube config set WantUpdateNotification false'
+Utilisation du pilote docker basé sur le profil existant
+Démarrage du noeud de plan de contrôle minikube dans le cluster minikube
+Pulling base image ...
+docker "minikube" container est manquant, il va être recréé.
+Creating docker container (CPUs=2, Memory=1988MB) ...
+Préparation de Kubernetes v1.20.0 sur Docker 20.10.0...
+   Generating certificates and keys ...
+   Booting up control plane ...
+   Configuring RBAC rules ...
+Verifying Kubernetes components...
+Enabled addons: storage-provisioner, default-storageclass
+Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
 ```
 
 **Note**: Par défaut, le gestionnaire d'amas devrait démarrer en utilisant le pilote de VM de Docker.
@@ -140,16 +139,16 @@ minikube start
 ### Action 2.1.1 – Afficher l'état du service
 
 ```bash
-minikube status
+$ minikube status
 
 # Résultat:
-# minikube
-# type: Control Plane
-# host: Running
-# kubelet: Running
-# apiserver: Running
-# kubeconfig: Configured
-# timeToStop: Nonexistent
+minikube
+type: Control Plane
+host: Running
+kubelet: Running
+apiserver: Running
+kubeconfig: Configured
+timeToStop: Nonexistent
 ```
 
 ### Alternative de démarrage de minikube
@@ -247,15 +246,15 @@ minikube addons list
 # Ajouter le support 'kubernetes' dans Docker-Desktop (voir l'image suivante)
 
 # Au besoin, effacer ancienne VM Virtualbox
-minikube delete
+$ minikube delete
 
 # Démarrer avec pilote Docker
-minikube start --driver=docker
+$ minikube start --driver=docker
 
 # Pas besoin de renseigner la clé 'nodePort: 300xx' dans le service.
 
 # Activer un tunnel avec minikube pour l'accès aux services de type LoadBalancer
-minikube tunnel
+$ minikube tunnel
 
 # Tester dans le fureteur en utilisant l'adresse 'localhost:PortDuService'
 # Par exemple, http://localhost:8080
@@ -298,11 +297,11 @@ spec:
 La commande `kubectl`
 
 ```bash
-kubectl get nodes
+$ kubectl get nodes
 
 # Résultat:
-# NAME           STATUS   ROLES                  AGE    VERSION
-# monCluster     Ready    control-plane,master   106s   v1.20.0
+NAME           STATUS   ROLES                  AGE    VERSION
+monCluster     Ready    control-plane,master   106s   v1.20.0
 ```
 
 **NOTE:** Selon la configuration du cluster, il est possible qu'il n'y ait qu'un seul nœud, le `master/worker` (serveur maître/ouvrier) qui est le gestionnaire de l'orchestration et aussi le nœud ouvrier.
@@ -312,10 +311,10 @@ kubectl get nodes
 Le pod est une abstraction du conteneur.
 
 ```bash
-kubectl get pod
+$ kubectl get pod
 
 # Résultat:
-# No resources found in default namespace.
+No resources found in default namespace.
 ```
 
 **Note**: Vide, nous n'avons pas encore lancé de déploiement.
@@ -323,11 +322,11 @@ kubectl get pod
 ### Action 2.4 – Obtenir la liste des 'services'
 
 ```bash
-kubectl get services
+$ kubectl get services
 
 # Résultat:
-# NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
-# kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   7m15s
+NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   7m15s
 ```
 
 **Note:** Un seul service, par défaut, qui renseigne sur le réseau de l'amas.
@@ -337,30 +336,30 @@ kubectl get services
 ### Action 2.5 – Afficher l'aide de la commande create
 
 ```bash
-kubectl create -h
+$ kubectl create -h
 
 # Résultat:
-# Create a resource from a file or from stdin.
-# 
-# JSON and YAML formats are accepted.
-# 
-# Examples:
-#   # Create a pod using the data in pod.json.
-#   kubectl create -f ./pod.json
-#   
-#   # Create a pod based on the JSON passed into stdin.
-#   cat pod.json | kubectl create -f -
-#   
-#   # Edit the data in docker-registry.yaml in JSON then create the resource using the edited data.
-#   kubectl create -f docker-registry.yaml --edit -o json
-# 
-# Available Commands:
-#   clusterrole         Create a ClusterRole.
-#   clusterrolebinding  Create a ClusterRoleBinding for a particular ClusterRole
-#   configmap           Create a configmap from a local file, directory or literal value
-#   cronjob             Create a cronjob with the specified name.
-#   deployment          Create a deployment with the specified name.
-#   job                 Create a job with the specified name.
+Create a resource from a file or from stdin.
+
+JSON and YAML formats are accepted.
+
+Examples:
+  # Create a pod using the data in pod.json.
+  kubectl create -f ./pod.json
+  
+  # Create a pod based on the JSON passed into stdin.
+  cat pod.json | kubectl create -f -
+  
+  # Edit the data in docker-registry.yaml in JSON then create the resource using the edited data.
+  kubectl create -f docker-registry.yaml --edit -o json
+
+Available Commands:
+  clusterrole         Create a ClusterRole.
+  clusterrolebinding  Create a ClusterRoleBinding for a particular ClusterRole
+  configmap           Create a configmap from a local file, directory or literal value
+  cronjob             Create a cronjob with the specified name.
+  deployment          Create a deployment with the specified name.
+  job                 Create a job with the specified name.
 # ...
 ```
 
@@ -369,18 +368,20 @@ kubectl create -h
 ### Action 2.5.1a – Créer un pod
 
 ```bash
-kubectl run ma-alpine --image=alpine
+$ kubectl run ma-alpine --image=alpine
 
 # Résultat:
-# pod/ma-alpine created
+pod/ma-alpine created
 
-kubectl get pod
-# NAME        READY   STATUS              RESTARTS   AGE
-# ma-alpine   0/1     ContainerCreating   0          5s
+$ kubectl get pod
 
-kubectl get pod
-# NAME        READY   STATUS             RESTARTS   AGE
-# ma-alpine   0/1     CrashLoopBackOff   1          9s
+NAME        READY   STATUS              RESTARTS   AGE
+ma-alpine   0/1     ContainerCreating   0          5s
+
+$ kubectl get pod
+
+NAME        READY   STATUS             RESTARTS   AGE
+ma-alpine   0/1     CrashLoopBackOff   1          9s
 ```
 
 **Note**: Le Pod de type 'alpine' n'a rien à exécuter alors il est terminé puis, redémarré à l'infini.
@@ -388,52 +389,53 @@ kubectl get pod
 Nous allons l'effacer:
 
 ```bash
-kubectl delete pod ma-alpine
+$ kubectl delete pod ma-alpine
 
 # Résultat:
-# pod "ma-alpine" deleted
+pod "ma-alpine" deleted
 ```
 
 Alternative de création pour prévenir le 'CrashLoopBackOff':
 
 ```bash
-kubectl run ma-alpine --image=alpine --restart=Never
+$ kubectl run ma-alpine --image=alpine --restart=Never
 
-kubectl get pods
-# NAME        READY   STATUS      RESTARTS   AGE
-# ma-alpine   0/1     Completed   0          34s
+$ kubectl get pods
+
+NAME        READY   STATUS      RESTARTS   AGE
+ma-alpine   0/1     Completed   0          34s
 ```
 
 ### Action 2.5.1b – Générer un manifeste YAML à partir d'une commande en ligne
 
 ```bash
-kubectl run ma-alpine --image=alpine --restart=Never --dry-run=client -oyaml
+$ kubectl run ma-alpine --image=alpine --restart=Never --dry-run=client -oyaml
 
 # =========================================================================
 # Résultat à l'écran:
-# apiVersion: v1
-# kind: Pod
-# metadata:
-#   labels:
-#     run: ma-alpine
-#   name: ma-alpine
-# spec:
-#   containers:
-#   - image: alpine
-#     name: ma-alpine
-#     resources: {}
-#   dnsPolicy: ClusterFirst
-#   restartPolicy: Never
-# status: {}
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: ma-alpine
+  name: ma-alpine
+spec:
+  containers:
+  - image: alpine
+    name: ma-alpine
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
 # =========================================================================
 
 # Sauvegarder le résultat dans un fichier
-kubectl run ma-alpine --image=alpine --restart=Never --dry-run=client -oyaml > creer-pod-alpine.yaml
+$ kubectl run ma-alpine --image=alpine --restart=Never --dry-run=client -oyaml > creer-pod-alpine.yaml
 
 # NOTE: Nous utiliserons des manifestes un peu plus tard pour créer des ressources K8s
 # Par exemple
-kubectl delete pod ma-alpine
-kubectl apply -f creer-pod-alpine.yaml
+$ kubectl delete pod ma-alpine
+$ kubectl apply -f creer-pod-alpine.yaml
 ```
 
 ---
@@ -441,11 +443,11 @@ kubectl apply -f creer-pod-alpine.yaml
 ### Action 2.5.2 – Créer un pod 'interactif'
 
 ```bash
-kubectl run ma-alpine -it --image=alpine
+$ kubectl run ma-alpine -it --image=alpine
 # / # exit
 
 # Pour s'y reconnecter:
-kubectl attach ma-alpine -c ma-alpine -i -t
+$ kubectl attach ma-alpine -c ma-alpine -i -t
 ```
 
 **Tester** avec Ctrl+PQ
@@ -456,12 +458,12 @@ kubectl attach ma-alpine -c ma-alpine -i -t
 
 ```bash
 # Syntaxe:
-# kubectl create deployment NAME --image=image [--dry-run=client] [options]
+$ kubectl create deployment NAME --image=image [--dry-run=client] [options]
 
-kubectl create deployment serveur-web --image=nginx
+$ kubectl create deployment serveur-web --image=nginx
 
 # Résultat:
-# deployment.apps/serveur-web created
+deployment.apps/serveur-web created
 
 # NOTE: voici le regex du nom
 # [a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*')
@@ -472,22 +474,24 @@ kubectl create deployment serveur-web --image=nginx
 ### Action 2.7 – Afficher les déploiements et les pods
 
 ```bash
-kubectl get deployment
-# NAME          READY   UP-TO-DATE   AVAILABLE   AGE
-# serveur-web   1/1     1            1           91s
+$ kubectl get deployment
 
-kubectl get pod
-# NAME                           READY   STATUS    RESTARTS   AGE
-# serveur-web-54bf66d477-4gxtx   1/1     Running   0          3m33s
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+serveur-web   1/1     1            1           91s
+
+$ kubectl get pod
+
+NAME                           READY   STATUS    RESTARTS   AGE
+serveur-web-54bf66d477-4gxtx   1/1     Running   0          3m33s
 ```
 
 **NOTE:** Entre le déploiement et le pod, il y a une autre couche d'abstraction nommée `replicaset`.
 
 ```bash
-kubectl get replicaset
+$ kubectl get replicaset
 
-# NAME                     DESIRED   CURRENT   READY   AGE
-# serveur-web-54bf66d477   1         1         1       8m40s
+NAME                     DESIRED   CURRENT   READY   AGE
+serveur-web-54bf66d477   1         1         1       8m40s
 ```
 
 Le `replicaset` permet de gérer les répliques – le nombre d'instances – d'un `pod`.
@@ -497,35 +501,36 @@ Le `replicaset` permet de gérer les répliques – le nombre d'instances – d'
 ### Action 2.7.2 – Interagir avec un pod
 
 ```bash
-kubectl exec -it serveur-web-54bf66d477-8ctwr -- bash
+$ kubectl exec -it serveur-web-54bf66d477-8ctwr -- bash
 ```
 
 ### Action 2.7.3 – Exposer le port du serveur Web via le(s) pod(s)
 
 ```bash
-kubectl expose deployment serveur-web --port=80
+$ kubectl expose deployment serveur-web --port=80
 
-kubectl get svc -owide
-# NAME             TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE    SELECTOR
-# kubernetes       ClusterIP      10.96.0.1        <none>        443/TCP        156m   <none>
-# serveur-web      ClusterIP   -->10.111.198.207   <none>        80/TCP         21m    app=serveur-web
+$ kubectl get svc -owide
 
-curl 10.111.198.207
+NAME             TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE    SELECTOR
+kubernetes       ClusterIP      10.96.0.1        <none>        443/TCP        156m   <none>
+serveur-web      ClusterIP   -->10.111.198.207   <none>        80/TCP         21m    app=serveur-web
+
+$ curl 10.111.198.207
 
 # Résultat:
-# <!DOCTYPE html>
-# <html>
-# <head>
-# <title>Welcome to nginx!</title>
-# ...
-# <p><em>Thank you for using nginx.</em></p>
-# </body>
-# </html>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+...
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
 
 # Changer le nombre de réplicats:
-kubectl scale deploy serveur-web --replicas=5
+$ kubectl scale deploy serveur-web --replicas=5
 
-kubectl get pods -owide
+$ kubectl get pods -owide
 ```
 
 ---
@@ -564,40 +569,41 @@ Les informations des manifestes sont stockées sur le nœud maître dans la bibl
 
 ```bash
 kubectl edit deployment serveur-web
+```
 
-# ---
-# Please edit the object below. Lines beginning with a '#' will be ignored,
-# and an empty file will abort the edit. If an error occurs while saving this file will be
-# reopened with the relevant failures.
-#
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   annotations:
-#     deployment.kubernetes.io/revision: "1"
-#   creationTimestamp: "2021-02-14T20:43:58Z"
-#   generation: 1
-#   labels:
-#     app: serveur-web
-#   name: serveur-web
-#   namespace: default
-#   resourceVersion: "1827"
-#   uid: 6384e7aa-0e00-4313-b485-cc8d1212e720
-# spec:
-#   progressDeadlineSeconds: 600
-#   replicas: 1
-#   revisionHistoryLimit: 10
-#   selector:
-#     matchLabels:
-#       app: serveur-web
-#   strategy:
-#     rollingUpdate:
-#       maxSurge: 25%
-#       maxUnavailable: 25%
-#     type: RollingUpdate
-#   template:
-#     metadata:
-# ...
+```yaml
+---
+Please edit the object below. Lines beginning with a '#' will be ignored,
+and an empty file will abort the edit. If an error occurs while saving this file will be
+reopened with the relevant failures.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+  creationTimestamp: "2021-02-14T20:43:58Z"
+  generation: 1
+  labels:
+    app: serveur-web
+  name: serveur-web
+  namespace: default
+  resourceVersion: "1827"
+  uid: 6384e7aa-0e00-4313-b485-cc8d1212e720
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: serveur-web
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+...
 ```
 
 **NOTE:** Lors de la création du déploiement, `k8s` a généré un fichier de configuration avec des valeurs par défaut.
@@ -615,11 +621,11 @@ kubectl edit deployment serveur-web
 
 # Remplacer: - image: nginx par, - image: nginx:1.18-alpine-perl
 
-#     spec:
-#       containers:
-#       - image: nginx:1.18-alpine-perl
-#         imagePullPolicy: Always
-#         name: nginx
+     spec:
+       containers:
+       - image: nginx:1.18-alpine-perl
+         imagePullPolicy: Always
+         name: nginx
 ```
 
 **NOTE:** Dans l'éditeur 'vi'. Pour enregistrer et quitter: 'ESC:wq'.
@@ -627,19 +633,20 @@ kubectl edit deployment serveur-web
 Il est possible de renseigner un autre éditeur via la variable d'environnement "KUBE_EDITOR"
 
 ```bash
-export KUBE_EDITOR="code -w"
-export KUBE_EDITOR="nano"
+$ export KUBE_EDITOR="code -w"
+$ export KUBE_EDITOR="nano"
 
-kubectl edit deployment serveur-web
+$ kubectl edit deployment serveur-web
 # deployment.apps/serveur-web edited
 ```
 
 ### Action 2.10 – Afficher le résultat
 
 ```bash
-kubectl get pod
-# NAME                           READY   STATUS    RESTARTS   AGE
-# serveur-web-6589df7667-vzzq4   1/1     Running   0          101s
+$ kubectl get pod
+
+NAME                           READY   STATUS    RESTARTS   AGE
+serveur-web-6589df7667-vzzq4   1/1     Running   0          101s
 ```
 
 **NOTE:** Remarquez la modification du nom du 'pod'. De plus, suite à la modification, le déploiement a été automatique.
@@ -647,10 +654,11 @@ kubectl get pod
 ### Action 2.11 – Afficher l'historique des duplicatas
 
 ```bash
-kubectl get replicaset
-# NAME                     DESIRED   CURRENT   READY   AGE
-# serveur-web-54bf66d477   0         0         0       54m
-# serveur-web-6589df7667   1         1         1       4m56s
+$ kubectl get replicaset
+
+NAME                     DESIRED   CURRENT   READY   AGE
+serveur-web-54bf66d477   0         0         0       54m
+serveur-web-6589df7667   1         1         1       4m56s
 ```
 
 **NOTE:** Pas de 'pods' dans la version précédente: `serveur-web-54bf66d477 0 0 0 54m`
@@ -658,40 +666,40 @@ kubectl get replicaset
 ### Action 2.11.2 – Afficher le log d'un pod
 
 ```bash
-kubectl logs serveur-web-54bf66d477-8ctwr
+$ kubectl logs serveur-web-54bf66d477-8ctwr
 
 # Résultat:
-# /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
-# /docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/
-# /docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
-# 10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf
-# 10-listen-on-ipv6-by-default.sh: info: Enabled listen on IPv6 in /etc/nginx/conf.d/default.conf
-# /docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh
-# /docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
-# /docker-entrypoint.sh: Configuration complete; ready for start up
+/docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
+/docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
+10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf
+10-listen-on-ipv6-by-default.sh: info: Enabled listen on IPv6 in /etc/nginx/conf.d/default.conf
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
+/docker-entrypoint.sh: Configuration complete; ready for start up
 ```
 
 ### Action 2.11.3 – Obtenir une liste exhaustive d'informations sur un pod
 
 ```bash
-kubectl describe pod serveur-web-54bf66d477-8ctwr
+$ kubectl describe pod serveur-web-54bf66d477-8ctwr
 
 # Résultat:
-# Name:         serveur-web-54bf66d477-8ctwr
-# Namespace:    default
-# Priority:     0
-# Node:         minikube/192.168.99.100
-# Start Time:   Sat, 20 Mar 2021 17:47:22 -0400
-# Labels:       app=serveur-web
-#               pod-template-hash=54bf66d477
-# Annotations:  <none>
-# Status:       Running
-# IP:           172.17.0.2
-# IPs:
-#   IP:           172.17.0.2
-# Controlled By:  ReplicaSet/serveur-web-54bf66d477
-# Containers:
-#   nginx:
+Name:         serveur-web-54bf66d477-8ctwr
+Namespace:    default
+Priority:     0
+Node:         minikube/192.168.99.100
+Start Time:   Sat, 20 Mar 2021 17:47:22 -0400
+Labels:       app=serveur-web
+              pod-template-hash=54bf66d477
+Annotations:  <none>
+Status:       Running
+IP:           172.17.0.2
+IPs:
+  IP:           172.17.0.2
+Controlled By:  ReplicaSet/serveur-web-54bf66d477
+Containers:
+  nginx:
 # ...
 ```
 
@@ -704,11 +712,11 @@ Renseigner 3 duplicatas dans le schéma puis, afficher la liste des pods.
 ### Action 2.13 – Effacer un déploiement
 
 ```bash
-kubectl delete deployment serveur-web
+$ kubectl delete deployment serveur-web
 
-kubectl get deployment
-kubectl get replicaset
-kubectl get pod
+$ kubectl get deployment
+$ kubectl get replicaset
+$ kubectl get pod
 ```
 
 ---
@@ -773,12 +781,14 @@ spec:
 #### Action 3.0.2 – Déployer le système
 
 ```bash
-kubectl apply -f uneAlpine.yml
-# pod/meta-une-alpine created
+$ kubectl apply -f uneAlpine.yml
 
-kubectl get pod
-# NAME                           READY   STATUS      RESTARTS   AGE
-# meta-une-alpine                0/1     Completed   0          92s
+pod/meta-une-alpine created
+
+$ kubectl get pod
+
+NAME                           READY   STATUS      RESTARTS   AGE
+meta-une-alpine                0/1     Completed   0          92s
 ```
 
 **Note:** Remarquer le 'STATUS: Completed'
@@ -786,13 +796,13 @@ kubectl get pod
 #### Action 3.0.3 – Afficher les logs du déploiement précédent
 
 ```bash
-kubectl logs meta-une-alpine
+$ kubectl logs meta-une-alpine
 
 # Résultat:
-# KUBERNETES_PORT=tcp://10.96.0.1:443
-# NGINX_SERVICE_SERVICE_PORT=80
-# ENV01=YoDouloudou
-# ENV02=Coucou
+KUBERNETES_PORT=tcp://10.96.0.1:443
+NGINX_SERVICE_SERVICE_PORT=80
+ENV01=YoDouloudou
+ENV02=Coucou
 ```
 
 #### Action 3.0.3.1 – Faire un test
@@ -802,7 +812,7 @@ kind: Pod
 # Section 1 - Les Méta-données
 metadata:
   # Placer 'name' en commentaire et appliquer le manifeste
-  #name: meta-une-alpine
+  # name: meta-une-alpine
 ```
 
 Résultat?
@@ -810,7 +820,7 @@ Résultat?
 #### Action 3.0.3.2 – Effacer le résultat d'un manifeste
 
 ```bash
-kubectl delete -f nomDuManifeste.yml
+$ kubectl delete -f nomDuManifeste.yml
 ```
 
 #### Action 3.0.4 – Manifeste d'un Pod avec deux conteneurs
@@ -826,6 +836,7 @@ Fichier `alpine-v2.yml`:
 # Lister les conteneurs d'un Pod
 # $ k get pods alpine-v2 -o json > resultat.json
 # $ k describe po alpine-v2
+
  
 apiVersion: v1
 kind: Pod
@@ -1070,6 +1081,8 @@ Renseigner le fichier `3.1-deploiement-nginx.yml` suivant:
 # Auteur:  Alain Boudreault
 # Déploiement de deux pods nginx version 1.16
 # ---------------------------------------------------------
+# M-A-J: A.B.2026.03.10 - Ajout de la section resources:
+# ---------------------------------------------------------
 apiVersion: apps/v1
 kind: Deployment
 # Section 1 - Les Méta-données
@@ -1093,6 +1106,13 @@ spec:
         image: nginx:1.16
         ports:
         - containerPort: 80
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"        
 # Section 3 - État du déploiement - sera complétée par K8s
 ```
 
@@ -1136,39 +1156,43 @@ spec:
 Nous allons maintenant appliquer nos deux schémas: le déploiement et le service.
 
 ```bash
-kubectl apply -f 3.1-deploiement-nginx.yml
-# deployment.apps/nginx-deployment created
+$ kubectl apply -f 3.1-deploiement-nginx.yml
 
-kubectl apply -f 3.2-service-nginx.yml
-# service/nginx-service created
+deployment.apps/nginx-deployment created
 
-kubectl get deployment
-# NAME               READY   UP-TO-DATE   AVAILABLE   AGE
-# nginx-deployment   2/2     2            2           62s
+$ kubectl apply -f 3.2-service-nginx.yml
 
-kubectl get service
-# NAME            TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
-# kubernetes      ClusterIP   10.96.0.1       <none>        443/TCP   26d
-# nginx-service   ClusterIP   10.108.129.91   <none>        80/TCP    82s
+service/nginx-service created
+
+$ kubectl get deployment
+
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+nginx-deployment   2/2     2            2           62s
+
+$ kubectl get service
+
+NAME            TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+kubernetes      ClusterIP   10.96.0.1       <none>        443/TCP   26d
+nginx-service   ClusterIP   10.108.129.91   <none>        80/TCP    82s
 ```
 
 #### Action 3.4 – Vérifier que le service achemine bien les requêtes
 
 ```bash
-kubectl describe service nginx-service
+$ kubectl describe service nginx-service
 
-# Name:              nginx-service
-# Namespace:         default
-# Labels:            <none>
-# Annotations:       <none>
-# Selector:          app=nginx
-# Type:              ClusterIP
-# IP:                10.108.129.91
-# Port:              <unset>  80/TCP
-# TargetPort:        80/TCP
-# Endpoints:         172.17.0.2:80,172.17.0.5:80
-# Session Affinity:  None
-# Events:            <none>
+Name:              nginx-service
+Namespace:         default
+Labels:            <none>
+Annotations:       <none>
+Selector:          app=nginx
+Type:              ClusterIP
+IP:                10.108.129.91
+Port:              <unset>  80/TCP
+TargetPort:        80/TCP
+Endpoints:         172.17.0.2:80,172.17.0.5:80
+Session Affinity:  None
+Events:            <none>
 ```
 
 **Note:** Remarquer la ligne `Endpoints: 172.17.0.2:80,172.17.0.5:80`. Les requêtes seront envoyées vers deux pods sur leur port 80.
@@ -1176,11 +1200,11 @@ kubectl describe service nginx-service
 #### Action 3.5 – Vérifier l'adresse IP des deux pods
 
 ```bash
-kubectl get pod -o wide
+$ kubectl get pod -o wide
 
-# NAME                               READY   STATUS    RESTARTS   AGE   IP           NODE
-# nginx-deployment-f4b7bbcbc-qt8kd   1/1     Running   0          12m   172.17.0.5   minikube
-# nginx-deployment-f4b7bbcbc-tcr7l   1/1     Running   0          12m   172.17.0.2   minikube
+NAME                               READY   STATUS    RESTARTS   AGE   IP           NODE
+nginx-deployment-f4b7bbcbc-qt8kd   1/1     Running   0          12m   172.17.0.5   minikube
+nginx-deployment-f4b7bbcbc-tcr7l   1/1     Running   0          12m   172.17.0.2   minikube
 ```
 
 **Action:** Tester dans le fureteur disponible sur le serveur:
@@ -1195,7 +1219,7 @@ kubectl get pod -o wide
 Il est disponible dans le `etcd`:
 
 ```bash
-kubectl get deployment nginx-deployment -o yaml > nginx-dep-info.yml
+$ kubectl get deployment nginx-deployment -o yaml > nginx-dep-info.yml
 ```
 
 #### Action 3.7 – Exposer nginx au monde extérieur
@@ -1243,13 +1267,15 @@ spec:
 #### Action 3.8 – Appliquer le schéma modifié
 
 ```bash
-kubectl apply -f 3.7-service-nginx-LB.yml
-# service/nginx-service configured
+$ kubectl apply -f 3.7-service-nginx-LB.yml
 
-kubectl get service
-# NAME            TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
-# kubernetes      ClusterIP      10.96.0.1       <none>        443/TCP        26d
-# nginx-service   LoadBalancer   10.108.129.91   <pending>     80:30000/TCP   60m
+service/nginx-service configured
+
+$ kubectl get service
+
+NAME            TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+kubernetes      ClusterIP      10.96.0.1       <none>        443/TCP        26d
+nginx-service   LoadBalancer   10.108.129.91   <pending>     80:30000/TCP   60m
 ```
 
 **Note:** Remarquer que `nginx-service` est maintenant de type `LoadBalancer`. Remarquer aussi que 'EXTERNAL-IP' est `<pending>` car sous Minikube, la gestion des adresses externes est légèrement différente. Nous aurons une étape de plus à réaliser avant que le serveur Web soit disponible via notre poste de travail.
@@ -1321,6 +1347,13 @@ spec:
         image: nginx
         ports:
         - containerPort: 80
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"        
 ---
 apiVersion: v1
 kind: Service
@@ -1391,7 +1424,7 @@ Remplacer l'image nginx utilisée dans le fichier de labo 3.11 par `alainboudrea
 
 ```bash
 # NOTE: Il est possible d'obtenir cette liste à partir du CLI de K8S:
-kubectl api-resources
+$ kubectl api-resources
 ```
 
 ---
@@ -1412,5 +1445,5 @@ Prochain document: [K8s-partie2](/Documentation/Kubernetes/Kubernetes-partie-2.m
 ## Crédits
 
 *Document rédigé par Alain Boudreault © 2021-2026*  
-*Version 2025.12.03.1*  
+*Version 2026.03.10.1*  
 *Site par ve2cuy*

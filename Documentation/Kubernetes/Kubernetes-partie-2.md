@@ -40,6 +40,13 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 80
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
 ---
 apiVersion: v1
 kind: Service
@@ -105,6 +112,13 @@ spec:
           value: 4204d4
         - name: MONGO_INITDB_ROOT_PASSWORD
           value: secret
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"          
 
 ---
 
@@ -153,6 +167,13 @@ spec:
         - name: ME_CONFIG_MONGODB_SERVER
           # ATTENTION, il faut utiliser le service pour l'accès à la BD
           value: mongodb-service
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"          
 ---
 apiVersion: v1
 kind: Service

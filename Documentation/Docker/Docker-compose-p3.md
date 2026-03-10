@@ -56,11 +56,11 @@ services:
         condition: service_completed_successfully
     volumes:
       - shared-data:/data
-        name: un-volume
 
 # Ceci est un volume interne à Docker
 volumes:
   shared-data:
+    name: un-volume
 ```
 
 Le service `app` ne démarre qu'une fois `init` terminé avec succès.
