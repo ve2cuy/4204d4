@@ -217,7 +217,7 @@ kube-scheduler-k8stest            1/1     Running   0          114m
 ### À partir d'un manifeste disponible via le Web:
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/ve2cuy/superminou-depart/refs/heads/main/superminou.yml
+kubectl apply -f https://raw.githubusercontent.com/ve2cuy/4204d4/refs/heads/main/Documentation/Kubernetes/Demo-intro-superminou.yml
 ```
 
 ### À partir d'un manifeste local:
