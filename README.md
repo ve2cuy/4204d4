@@ -86,9 +86,9 @@
 * [28 - Utilisation d’un cluster sur Google Cloud]() 🧠
 * [29 - Helm - Introduction](Documentation/Kubernetes/Helm-introduction.md) 👍
 * [30 - Automatisation des ‘builds’ d’images Docker/Github]() 🧠
-* [31 - Aide rapide]()
-* [32 - Épreuve synthèse Volet A : 35 %]
-* [33 - Épreuve synthèse Volet B - Examen : 35 %]
+* [31 - Autoscalling](Documentation/Kubernetes/Kubernetes-autoscalling.md) 👍
+* [50 - Épreuve synthèse Volet A : 35 %]
+* [51 - Épreuve synthèse Volet B - Examen : 35 %]
 * [kubectl - Référence rapide](Documentation/Kubernetes/Kubernetes-Reference-rapide.md) 👍
 
 ---
