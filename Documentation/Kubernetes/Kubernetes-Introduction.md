@@ -47,7 +47,7 @@ Kubernetes s'est imposé comme le standard de facto pour l'orchestration de cont
      - Gestion de l'état du nœud
      - Démarrage, arrêt et maintenance des conteneurs (pods)
      - Optimisation de la performance en concordance avec le plan de déploiement
-   * Un conteneur `runtime`. Habituellement, *docker runtime*
+   * Un conteneur `runtime`. Habituellement, [containerd](https://containerd.io/)
 
 3. **Pod**, la plus petite unité sous K8s, une abstraction de conteneur, dans le but de ne pas être lié à une technologie (par exemple, Docker)
    * Règle générale, un service par Pod. Mais il peut y en avoir plus
@@ -64,15 +64,18 @@ Kubernetes s'est imposé comme le standard de facto pour l'orchestration de cont
      - Déploiement de services (accès réseaux)
 
 5. **Le ReplicaSet**
+   * S'assure que le nombre de pod requis est atteint. 
 
 6. **Le DaemonSet**
+   * Déploit un Pod donné sur chacun des noeuds. 
 
 7. **L'espace de nom (NameSpace)**
    * Pour regrouper (isoler) les Pods en sous-systèmes
 
 8. **Les étiquettes (Labels)**
+   * Sert de sélecteur dans les manifestes 
 
-9. **Les StatefulSets**
+9.  **Les StatefulSets**
    * Utilisés pour le déploiement de bases de données
 
 10. **Le CLI de K8s, kubectl**
