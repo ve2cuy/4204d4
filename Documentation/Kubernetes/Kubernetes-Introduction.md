@@ -666,6 +666,16 @@ serveur-web-6589df7667   1         1         1       4m56s
 
 **NOTE:** Pas de 'pods' dans la version précédente: `serveur-web-54bf66d477 0 0 0 54m`
 
+---
+
+### 💡2.11.1b - Exemples avec namespaces
+
+```bash
+kubectl get ns
+kubectl get all --all-namespaces
+kubectl get pod -n kube-system
+```
+
 ### Action 2.11.2 – Afficher le log d'un pod
 
 ```bash
