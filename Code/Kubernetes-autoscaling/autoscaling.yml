@@ -48,7 +48,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: php-apache
-spec:
+spec:  # Il n'y a pas d'erreur ici, c'est la syntaxe correcte pour un HPA v2
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
@@ -61,7 +61,7 @@ spec:
       name: cpu
       target:
         type: Utilization
-        averageUtilization: 50
+        averageUtilization: 50  # Moyenne d'utilisation du CPU à travers tous les pods de 50%
 ---
 # =========================================
 # Pod: load-generator

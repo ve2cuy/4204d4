@@ -50,7 +50,8 @@ I0324 17:14:24.000330       1 server.go:192] "Failed probe" probe="metric-storag
 E0324 17:14:33.686318       1 scraper.go:149] "Failed to scrape node" err="Get \"https://192.168.65.3:10250/metrics/resource\": tls: failed to verify certificate: x509: cannot validate certificate for 192.168.65.3 because it doesn't contain any IP SANs" node="docker-desktop"
 I0324 17:14:33.998735       1 server.go:192] "Failed probe" probe="metric-storage-ready" err="no metrics to serve"
 I0324 17:14:36.996841       1 server.go:192] "Failed probe" probe="metric-storage-ready" err="no metrics to serve"
-``` 
+```
+
 Le metrics-server ne peut pas valider le certificat TLS du nœud Docker Desktop car il ne contient pas de SAN IP. C'est un problème classique avec Docker Desktop.
 
 La solution est d'ajouter le flag --kubelet-insecure-tls au déploiement du metrics-server pour bypasser la vérification TLS.
@@ -61,12 +62,14 @@ kubectl patch deployment metrics-server -n kube-system \
   -p='[{"op":"add","path":"/spec/template/spec/containers/0/args/-","value":"--kubelet-insecure-tls"}]'
 ```
 
-Vérification :
+👉 Vérification :
 
-Attendez ~30 secondes, puis vérifiez que le pod est bien Running :
+Attendez ~30 secondes, puis vérifiez que le pod roule :
 
 ```bash
-kubectl get pods -n kube-system | grep metrics-server
+$ kubectl get pods -n kube-system | grep metrics-server
+NAME                                     READY   STATUS    RESTARTS   AGE
+metrics-server-5b57c547cb-6nmjv          1/1     Running   0          5m
 
 # Et testez que les métriques remontent :
 
@@ -90,7 +93,7 @@ kube-system   etcd-docker-desktop                      17m          58Mi
 
 ---
 
-## Horizontal Pod Autoscaler (HPA)
+## Horizontal Pod Autoscaler (HPA) - 💡 Section importante!
 
 Le HPA surveille les métriques d'un `Deployment` (ou `StatefulSet`, `ReplicaSet`) et ajuste le nombre de réplicas à la hausse ou à la baisse.
 
