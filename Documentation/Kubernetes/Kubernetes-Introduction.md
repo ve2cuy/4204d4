@@ -673,6 +673,7 @@ serveur-web-6589df7667   1         1         1       4m56s
 ```bash
 kubectl get ns
 kubectl get all --all-namespaces
+kubectl get pod -A
 kubectl get pod -n kube-system
 ```
 

@@ -1,5 +1,9 @@
 # Auto Scaling sous Kubernetes
 
+<p align="center">
+    <img src="../images/auto-scaling.png" alt="Load Balancer Icon" width="300" />
+</p>
+
 ## Table des matières
 
 1. [Introduction](#introduction)
@@ -26,14 +30,62 @@ L'auto scaling dans Kubernetes désigne la capacité du cluster à ajuster **aut
 ### Vérifier que metrics-server est actif
 
 ```bash
-kubectl top nodes
-kubectl top pods -A
+$ kubectl top nodes
+$ kubectl top pods -A
+
+error: Metrics API not available  # Indique que l'API n'est pas installé!
+
 ```
 
 Si la commande échoue, installez `metrics-server` :
 
 ```bash
 kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+```
+
+## Erreur possible sous docker-desktop
+
+```bash
+I0324 17:14:24.000330       1 server.go:192] "Failed probe" probe="metric-storage-ready" err="no metrics to serve"
+E0324 17:14:33.686318       1 scraper.go:149] "Failed to scrape node" err="Get \"https://192.168.65.3:10250/metrics/resource\": tls: failed to verify certificate: x509: cannot validate certificate for 192.168.65.3 because it doesn't contain any IP SANs" node="docker-desktop"
+I0324 17:14:33.998735       1 server.go:192] "Failed probe" probe="metric-storage-ready" err="no metrics to serve"
+I0324 17:14:36.996841       1 server.go:192] "Failed probe" probe="metric-storage-ready" err="no metrics to serve"
+``` 
+Le metrics-server ne peut pas valider le certificat TLS du nœud Docker Desktop car il ne contient pas de SAN IP. C'est un problème classique avec Docker Desktop.
+
+La solution est d'ajouter le flag --kubelet-insecure-tls au déploiement du metrics-server pour bypasser la vérification TLS.
+
+```bash
+kubectl patch deployment metrics-server -n kube-system \
+  --type='json' \
+  -p='[{"op":"add","path":"/spec/template/spec/containers/0/args/-","value":"--kubelet-insecure-tls"}]'
+```
+
+Vérification :
+
+Attendez ~30 secondes, puis vérifiez que le pod est bien Running :
+
+```bash
+kubectl get pods -n kube-system | grep metrics-server
+
+# Et testez que les métriques remontent :
+
+
+$ kubectl top nodes
+# Résultat:
+NAME             CPU(cores)   CPU(%)   MEMORY(bytes)   MEMORY(%)   
+docker-desktop   546m         2%       2112Mi          6%
+
+$ kubectl top pods -A
+# Résultat:
+NAMESPACE     NAME                                     CPU(cores)   MEMORY(bytes)   
+default       ma-alpine                                0m           0Mi
+default       serveur-web-645fdccc79-4p2nm             0m           18Mi
+default       serveur-web-645fdccc79-75ftg             0m           43Mi
+kube-system   coredns-66bc5c9577-7p44d                 2m           15Mi
+kube-system   coredns-66bc5c9577-cnlnk                 2m           15Mi
+kube-system   etcd-docker-desktop                      17m          58Mi
+...
 ```
 
 ---
@@ -74,7 +126,7 @@ kubectl set resources deployment php-apache \
 ```bash
 # Via kubectl autoscale (méthode rapide)
 kubectl autoscale deployment php-apache \
-  --cpu-percent=50 \
+  --cpu='50%' \
   --min=1 \
   --max=10
 ```
@@ -121,23 +173,157 @@ kubectl get hpa php-apache --watch
 kubectl run load-generator \
   --image=busybox:1.28 \
   --restart=Never \
-  -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://php-apache; done"
+  -- sh -c "while sleep 0.01; do wget -q -O- http://php-apache; done"
 ```
 
 Observez le scaling :
 
 ```bash
-kubectl get hpa php-apache --watch
-# Les REPLICAS vont augmenter progressivement
+$ kubectl get hpa php-apache --watch
+# Les REPLICAS vont augmenter progressivement - Il faut être patient ici ...
+NAME         REFERENCE               TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
+php-apache   Deployment/php-apache   cpu: 0%/50%   1         10        1          6m17s
+php-apache   Deployment/php-apache   cpu: 250%/50% 1         10        1          6m40s
+php-apache   Deployment/php-apache   cpu: 83%/50%  1         10        4          7m40s
+php-apache   Deployment/php-apache   cpu: 50%/50%  1         10        7          8m41s
+
+$ kubectl get pod
+NAME                        READY   STATUS    RESTARTS   AGE
+load-generator              1/1     Running   0          4m14s
+php-apache-c49f9fd4-55d8v   1/1     Running   0          2m17s
+php-apache-c49f9fd4-7nls5   1/1     Running   0          2m17s
+php-apache-c49f9fd4-hlqk7   1/1     Running   0          3m17s
+php-apache-c49f9fd4-jklzb   1/1     Running   0          12m
+php-apache-c49f9fd4-mqp7t   1/1     Running   0          3m17s
+php-apache-c49f9fd4-t9mzh   1/1     Running   0          2m17s
+php-apache-c49f9fd4-zv9fk   1/1     Running   0          3m17s
+
 ```
+
+---
+
+#### 5.1 - Directives regroupées dans un seul manifeste:
+
+```yaml
+# =========================================
+# Deployment: php-apache
+# =========================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php-apache
+spec:
+  selector:
+    matchLabels:
+      app: php-apache
+  template:
+    metadata:
+      labels:
+        app: php-apache
+    spec:
+      containers:
+      - name: php-apache
+        image: registry.k8s.io/hpa-example
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 200m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+---
+# =========================================
+# Service: php-apache
+# =========================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: php-apache
+spec:
+  selector:
+    app: php-apache
+  ports:
+  - port: 80
+    targetPort: 80
+---
+# =========================================
+# HorizontalPodAutoscaler: php-apache
+# =========================================
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: php-apache
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: php-apache
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50
+---
+# =========================================
+# Pod: Le générateur de charge
+# =========================================
+apiVersion: v1
+kind: Pod
+metadata:
+  name: load-generator
+spec:
+  restartPolicy: Never
+  containers:
+  - name: load-generator
+    image: busybox:1.28
+    command:
+    - sh
+    - -c
+    - "while sleep 0.01; do wget -q -O- http://php-apache; done"
+```
+
+```bash
+$ kubectl delete service php-apache
+$ kubectl apply -f manifeste.yaml
+```
+
+Pour surveiller le HPA en temps réel :
+```bash
+# Observer le scaling
+$ kubectl get hpa php-apache --watch
+
+# Voir les pods se multiplier
+$ kubectl get pods --watch
+```
+
+💡 Note : Le load-generator démarre immédiatement le stress test dès l'application du manifeste. Pour le contrôler, vous pouvez le commenter et l'appliquer séparément quand vous êtes prêt.
+
+---
+
 
 #### 6. Arrêter la charge et observer le scale-down
 
 ```bash
-kubectl delete pod load-generator
+$ kubectl delete pod load-generator
 
-# Le scale-down a un délai de stabilisation par défaut de 5 minutes
-kubectl get hpa php-apache --watch
+# Le scale-down a un délai de stabilisation par défaut de 5 minutes - patience ...
+$ kubectl get hpa php-apache --watch
+
+NAME         REFERENCE               TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
+php-apache   Deployment/php-apache   cpu: 0%/50%     1         10        1        6m17s
+php-apache   Deployment/php-apache   cpu: 250%/50%   1         10        1        6m40s
+php-apache   Deployment/php-apache   cpu: 83%/50%    1         10        4        7m40s
+php-apache   Deployment/php-apache   cpu: 50%/50%    1         10        7        8m41s
+php-apache   Deployment/php-apache   cpu: 49%/50%    1         10        7        9m41s
+php-apache   Deployment/php-apache   cpu: 0%/50%     1         10        7        11m
+php-apache   Deployment/php-apache   cpu: 0%/50%     1         10        1        16m
+
 ```
 
 #### 7. Nettoyer
@@ -500,6 +686,5 @@ kubectl get hpa,vpa,scaledobject -A
 ```
 
 ---
-
-**Document rédigé par Alain Boudreault © 2021-2026**  
-**Version 2026.02.26.1**
+ 
+**(c) VE2CUY - Version 2026.02.26.1**
