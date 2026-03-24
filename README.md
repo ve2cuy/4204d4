@@ -69,28 +69,28 @@
 
 * [20 - Kubernetes – Installation d'un nœud unique sous Linux](Documentation/Kubernetes/Installation-un-seul-noeud.md) 👍
 * [21 - Kubernetes – Introduction](Documentation/Kubernetes/Kubernetes-Introduction.md) 👍
-* [21a- Kubernetes – Manifestes expliqués - version courte](Documentation/Kubernetes/Kubernetes-Manifestes-Expliques-version-courte.md)
-* [21b- Kubernetes – Manifestes expliqués - version longue](Documentation/Kubernetes/Kubernetes-Manisfestes-Expliques-version-longue.md)
-* [21c- Kubernetes – Manifestes, Gestion des ressources](Documentation/Kubernetes/Kubernetes-Manifestes-Gestion-des-ressources.md)
-* [22 - Kubernetes – Partie 2](Documentation/Kubernetes/Kubernetes-partie-2.md) 👍
-* [22b- Kubernetes – Config Map et Secrets](Documentation/Kubernetes/Kubernetes-Config-map-et-secret.md) 👍
-* [22c- Kubernetes – Gestion des ressources](Documentation/Kubernetes/Kubernetes-Manifestes-Gestion-des-ressources.md) 👍
-* [23 - Préparation à l'atelier d'installation d'un 'cluster' K8s avec Vagrant](https://4204d4.ve2cuy.com/pre-requis-atelier-k8s-vagrant/)
-* [24 - Kubernetes – Installation d'un cluster; 1 Master, 2 Nodes](https://4204d4.ve2cuy.com/kubernetes-installation-dun-cluster-1-master-2-nodes/)
-* [25 - Kubernetes – Les volumes](Documentation/Kubernetes/Kubernetes-Les-volumes.md) 👍
-* [25a- Kubernetes - Services](Documentation/Kubernetes/Kubernetes-Services.md) 🧠
-* [26 - LoadBalancer et ingress avec Traefik](Documentation/Kubernetes/MetalLB-Traefik.md)
-* [26a- Kubernetes – LoadBalancer Externe et Ingress avec Nginx - Désuet](Documentation/Kubernetes/Kubernetes-LoadBalancer-et-Ingress.md) 👍
-* [26b- Équilibreur de charge externe ML - Info supplémentaire](Documentation/Kubernetes/Equilibreur-de-charge-externe-MetalLB.md) 
-* [27 - Espaces de nom (namespaces)]() 🧠
-* [ServiceAccount]() 🧠
-* [28 - Utilisation d’un cluster sur Google Cloud]() 🧠
-* [29 - Helm - Introduction](Documentation/Kubernetes/Helm-introduction.md) 👍
-* [30 - Automatisation des ‘builds’ d’images Docker/Github]() 🧠
-* [31 - Autoscalling](Documentation/Kubernetes/Kubernetes-autoscalling.md) 👍
+* [22 - Kubernetes – Manifestes expliqués - version courte](Documentation/Kubernetes/Kubernetes-Manifestes-Expliques-version-courte.md)
+* [23 - Kubernetes – Manifestes expliqués - version longue](Documentation/Kubernetes/Kubernetes-Manisfestes-Expliques-version-longue.md)
+* [24 - Kubernetes – Manifestes, Gestion des ressources](Documentation/Kubernetes/Kubernetes-Manifestes-Gestion-des-ressources.md)
+* [25 - Kubernetes – Partie 2](Documentation/Kubernetes/Kubernetes-partie-2.md) 👍
+* [26 - Kubernetes – Config Map et Secrets](Documentation/Kubernetes/Kubernetes-Config-map-et-secret.md) 👍
+* [27 - Kubernetes – Gestion des ressources](Documentation/Kubernetes/Kubernetes-Manifestes-Gestion-des-ressources.md) 👍
+* [28 - Préparation à l'atelier d'installation d'un 'cluster' K8s avec Vagrant](https://4204d4.ve2cuy.com/pre-requis-atelier-k8s-vagrant/)
+* [29 - Kubernetes – Installation d'un cluster; 1 Master, 2 Nodes](https://4204d4.ve2cuy.com/kubernetes-installation-dun-cluster-1-master-2-nodes/)
+* [30 - Kubernetes – Les volumes](Documentation/Kubernetes/Kubernetes-Les-volumes.md) 👍
+* [31 - Kubernetes - Services](Documentation/Kubernetes/Kubernetes-Services.md) 🧠
+* [32 - LoadBalancer et ingress avec Traefik](Documentation/Kubernetes/MetalLB-Traefik.md)
+* [33 - Kubernetes – LoadBalancer Externe et Ingress avec Nginx - Désuet](Documentation/Kubernetes/Kubernetes-LoadBalancer-et-Ingress.md) 👍
+* [34 - Équilibreur de charge externe ML - Info supplémentaire](Documentation/Kubernetes/Equilibreur-de-charge-externe-MetalLB.md) 
+* [35 - Espaces de nom (namespaces)]() 🧠
+* [36 - ServiceAccount]() 🧠
+* [37 - Utilisation d’un cluster sur Google Cloud]() 🧠
+* [38 - Helm - Introduction](Documentation/Kubernetes/Helm-introduction.md) 👍
+* [39 - Automatisation des ‘builds’ d’images Docker/Github]() 🧠
+* [40 - Autoscalling](Documentation/Kubernetes/Kubernetes-autoscalling.md) 👍
 * [50 - Épreuve synthèse Volet A : 35 %]
 * [51 - Épreuve synthèse Volet B - Examen : 35 %]
-* [kubectl - Référence rapide](Documentation/Kubernetes/Kubernetes-Reference-rapide.md) 👍
+* [99 - kubectl - Référence rapide](Documentation/Kubernetes/Kubernetes-Reference-rapide.md) 👍
 
 ---
 
