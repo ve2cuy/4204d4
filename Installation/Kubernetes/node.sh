@@ -58,6 +58,7 @@ sudo swapoff -a
 
 # 7 – Ajouter le dépôt Kubernetes à la commande ‘apt’:
 # Pré-requis, obtenir la liste de la dernière version stable disponible pour l'installation:
+sudo apt install curl -y
 curl -Ls "https://sbom.k8s.io/$(curl -Ls https://dl.k8s.io/release/stable.txt)/release" | grep "SPDXID: SPDXRef-Package-registry.k8s.io" |  grep -v sha256 | cut -d- -f3- | sed 's/-/\//' | sed 's/-v1/:v1/'
 
 # Utiliser la version entière pour la variable; 1.34.2 = 1.34

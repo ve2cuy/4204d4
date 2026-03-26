@@ -103,6 +103,8 @@
 * [Portainer](https://www.portainer.io/)
 * [Rancher](https://www.rancher.com/quick-start)
 * [LongHorn](https://longhorn.io/)
+* [Script d'installation d'un serveur K8s](/Installation/Kubernetes/server.sh)
+* [Script d'installation d'un noeud K8s](/Installation/Kubernetes/node.sh)
 
 ### Évaluations
 
