@@ -823,6 +823,67 @@ network:
 
 ---
 
+## 18 - Installation d'un fureteur web pour terminal
+
+```
+alias w="~/brow6el/build/run_brow6el.sh"
+
+# Installation de brow6el
+sudo apt-get update
+sudo apt-get install -y \
+    build-essential cmake git pkg-config curl \
+    libsixel-dev \
+    libx11-dev libxcomposite-dev libxdamage-dev libxext-dev libxfixes-dev \
+    libxrandr-dev libgbm-dev libxcb1-dev \
+    libpango1.0-dev libatk1.0-dev libcups2-dev libasound2-dev \
+    libnss3-dev libnspr4-dev libglib2.0-dev
+
+git clone https://codeberg.org/janantos/brow6el.git
+cd brow6el
+./download_cef.sh  # Downloads Chromium (~670MB, one-time)
+./build.sh   
+
+# Aide mémoire
+
+https://codeberg.org/janantos/brow6el?ref=itsfoss.com
+
+STANDARD Mode [S] - Default
+Vim-like navigation with single-key commands (no Ctrl required):
+
+Navigation:
+
+h/j/k/l or arrow keys - Navigate (left/down/up/right)
+t/g - Scroll up/down
+p/n - Back/forward in history
+Actions:
+
+r - Reload page
+u - Navigate to URL
+U - Copy current URL to clipboard (Shift+U)
+c - Toggle JavaScript console
+d - Add bookmark
+b - Open bookmarks
+f - Hint mode (keyboard link navigation)
+s - User scripts menu
+y - Toggle auto-inject user scripts
+z - Toggle tiled rendering (Sixel only, reduces flicker)
+Z - Force full redraw (Sixel: monolithic render, Kitty: full refresh)
+m - Open downloads manager
+x - Exit browser
+Zoom Controls:
+
++ or = - Zoom in
+- or _ - Zoom out
+0 - Reset zoom to 1.0x
+Mode Switch:
+
+i - Enter INSERT mode
+e - Enter MOUSE mode
+v - Enter VISUAL mode (text selection)
+```
+
+---
+
 ## 50 – Scripts bash de création de Master/Worker sur Ubuntu 24.04
 
 **Note**: Si vous avez cloné des VM, ne pas oublier de mettre à jour les fichiers `/etc/hosts` et `/etc/hostname` avant de rouler les scripts suivants.
