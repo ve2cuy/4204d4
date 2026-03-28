@@ -136,6 +136,7 @@ Tout comme pour Docker, il est possible de créer des ressources K8s en utilisan
 ### 9.1 - Création de Pods avec un manifeste de déploiement
 
 * Générer le manifeste du déploiement
+
 ```
 kubectl create deployment nginx-deployment \
   --image=nginx:latest \
@@ -144,7 +145,8 @@ kubectl create deployment nginx-deployment \
   --dry-run=client -o yaml > nginx-deployment.yml
 ```
 
-* Générer le manifeste du servcice
+* Générer le manifeste du service
+
 ```
 kubectl expose deployment nginx-deployment \
   --name=nginx-service \
@@ -206,6 +208,7 @@ status:             # Non requis!
 ```
 
 * Appliquer les manifestes:
+
 ```
 kubectl apply -f nginx-deployment.yml
 kubectl apply -f nginx-svc.yml
