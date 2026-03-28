@@ -1,4 +1,4 @@
-# Introduction aux commandes de base de `kubectl`
+# Retour sur les commandes de base de `kubectl`
 <p align="center">
     <img src="../images/k8s-nginx.png" alt="" width="350" />
 </p>

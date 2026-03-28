@@ -10,11 +10,11 @@ La section `resources` définit les **ressources CPU et mémoire** allouées à 
 
 ```yaml
 resources:
-  requests:      # Ressources garanties (minimum)
-    cpu: 100m
-    memory: 128Mi
-  limits:        # Ressources maximales (plafond)
-    cpu: 500m
+  requests:       # Ressources garanties (minimum)
+    cpu: 100m     # 10% d'un CPU
+    memory: 128Mi # 128Mg
+  limits:         # Ressources maximales (plafond)
+    cpu: 500m     # 50% d'un CPU
     memory: 512Mi
 ```
 
