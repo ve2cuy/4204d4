@@ -69,7 +69,7 @@
 
 * [20 - Kubernetes – Installation d'un nœud unique sous Linux](Documentation/Kubernetes/Installation-un-seul-noeud.md) 👍
 * [21 - Kubernetes – Introduction](Documentation/Kubernetes/Kubernetes-Introduction.md) 👍
-* [21b- Kubernetes - kubectl, introduction](Documentation/Kubernetes/Kubernetes-Introduction-kubectl.md)
+* [21b- Kubernetes - kubectl, renforcement](Documentation/Kubernetes/Kubernetes-Introduction-kubectl.md)
 * [22 - Kubernetes – Manifestes expliqués - version courte](Documentation/Kubernetes/Kubernetes-Manifestes-Expliques-version-courte.md)
 * [23 - Kubernetes – Manifestes expliqués - version longue](Documentation/Kubernetes/Kubernetes-Manisfestes-Expliques-version-longue.md)
 * [24 - Kubernetes – Manifestes, Gestion des ressources](Documentation/Kubernetes/Kubernetes-Manifestes-Gestion-des-ressources.md)
