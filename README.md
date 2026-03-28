@@ -85,7 +85,7 @@
 * [34 - Équilibreur de charge externe ML - Info supplémentaire](Documentation/Kubernetes/Equilibreur-de-charge-externe-MetalLB.md) 
 * [35 - Espaces de nom (namespaces)]() 🧠
 * [36 - ServiceAccount]() 🧠
-* [37 - Utilisation d’un cluster sur Google Cloud]() 🧠
+* [37 - Utilisation d’un cluster sur Google Cloud](Documentation/Kubernetes/Kubernetes-Google.cloud.md) 🧠
 * [38 - Helm - Introduction](Documentation/Kubernetes/Helm-introduction.md) 👍
 * [39 - Automatisation des ‘builds’ d’images Docker/Github]() 🧠
 * [40 - Autoscalling](Documentation/Kubernetes/Kubernetes-autoscalling.md) 👍
