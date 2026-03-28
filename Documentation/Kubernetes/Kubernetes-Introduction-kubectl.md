@@ -131,7 +131,7 @@ kubectl logs nginx-deployment-6d95bc85cf-8qsc7 -f  // En continu
 
 Tout comme pour Docker, il est possible de créer des ressources K8s en utilisant YAML.  Ces fichiers de directives sont nommés `Manifestes`.
 
-* Astuce, laisser à K8s le soins de créer la structure de départ du manifeste.  Par exemple, 
+* Astuce, laisser à K8s le soin de créer la structure de départ du manifeste.  Par exemple, 
 
 ### 9.1 - Création de Pods avec un manifeste de déploiement
 
