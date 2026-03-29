@@ -223,6 +223,242 @@ Si le dossier existe déjà, Kubernetes le monte simplement sans le modifier.
 
 ## Services de stockage
 
+### Amazon S3, un standard
+
+**S3** (Simple Storage Service) est un service de **stockage objet** créé par Amazon Web Services en 2006.
+
+---
+
+**Le concept de stockage objet**
+
+Contrairement à un système de fichiers classique, S3 ne stocke pas des fichiers dans des dossiers hiérarchiques, mais des **objets** dans des **buckets** :
+
+```
+Système de fichiers classique    vs    S3
+─────────────────────────────          ──────────────────────
+/home/                                 Bucket: mon-bucket
+  └── photos/                            ├── photo1.jpg
+        ├── photo1.jpg                   ├── photos/photo2.jpg
+        └── photo2.jpg                   └── docs/rapport.pdf
+```
+
+Tout est **à plat** — les `/` dans les noms donnent l'illusion de dossiers, mais ce sont juste des caractères dans la clé.
+
+---
+
+**Les 3 concepts fondamentaux**
+
+| Concept | Description | Analogie |
+|---|---|---|
+| **Bucket** | Conteneur principal | Disque dur |
+| **Object** | Fichier + métadonnées | Fichier |
+| **Key** | Identifiant unique de l'objet | Chemin du fichier |
+
+---
+
+**Ce qu'on peut stocker**
+- Images, vidéos, fichiers audio
+- Backups et archives
+- Logs applicatifs
+- Fichiers statiques (CSS, JS, HTML)
+- Datasets ML
+- N'importe quel fichier binaire
+
+---
+
+**L'API S3 est devenue un standard**
+
+C'est là où S3 est vraiment important — son **API HTTP est devenue le standard universel** du stockage objet. Tous ces outils sont compatibles S3 :
+
+```
+AWS S3          → l'original
+MinIO           → self-hosted
+Garage          → self-hosted distribué
+Cloudflare R2   → compatible S3
+Backblaze B2    → compatible S3
+Google GCS      → compatible S3
+Azure Blob      → partiellement compatible
+```
+
+Ce qui veut dire que le même code fonctionne partout :
+
+```python
+import boto3
+
+s3 = boto3.client("s3",
+    endpoint_url="http://localhost:9000",  # MinIO local
+    # endpoint_url="https://s3.amazonaws.com",  # AWS S3
+    aws_access_key_id="minioadmin",
+    aws_secret_access_key="minioadmin"
+)
+
+# Upload
+s3.upload_file("photo.jpg", "mon-bucket", "photos/photo.jpg")
+
+# Download
+s3.download_file("mon-bucket", "photos/photo.jpg", "local.jpg")
+
+# Lister
+response = s3.list_objects_v2(Bucket="mon-bucket")
+```
+
+---
+
+**Comparaison avec les autres types de stockage**
+
+| Type | Exemple | Accès | Idéal pour |
+|---|---|---|---|
+| **Objet (S3)** | AWS S3, MinIO | HTTP/API | Fichiers statiques, backups, médias |
+| **Bloc** | EBS, PVC K8S | Système de fichiers | Bases de données, OS |
+| **Fichier** | NFS, EFS | Système de fichiers | Partage entre serveurs |
+
+---
+
+**En résumé**
+- S3 = stocker et récupérer des fichiers **via HTTP**
+- Conçu pour être **scalable**, **durable** et **simple**
+- L'API est devenue un **standard universel** — c'est pourquoi MinIO et Garage l'implémentent, pour être compatibles avec tous les outils existants
+---
+
+Kubernetes et S3 sont **complémentaires** — ils résolvent des problèmes différents et s'utilisent souvent ensemble.
+
+---
+
+**Le problème fondamental**
+
+```
+K8S gère des Pods éphémères        S3 stocke des données persistantes
+──────────────────────────         ─────────────────────────────────
+Pod démarre  ┐                     Objet uploadé  ┐
+Pod travaille│                     Objet existe   │  forever...
+Pod meurt    ┘ ← données perdues!  Objet récupéré ┘
+```
+
+---
+
+**K8S ne résout pas tout le stockage**
+
+| Besoin | Solution K8S native | Problème |
+|---|---|---|
+| Stockage temporaire | `emptyDir` | Perdu à la mort du Pod |
+| Stockage sur le nœud | `hostPath` | Lié à un seul nœud |
+| Stockage persistant | `PVC` | Complexe, souvent bloqué sur un nœud |
+| **Stockage partagé entre tous les Pods** | ❌ Pas natif | → **C'est là que S3 entre en jeu** |
+
+---
+
+**Comment ils s'utilisent ensemble**
+
+```
+┌─────────────────────────────────────────┐
+│            Cluster Kubernetes           │
+│                                         │
+│  Pod A ──┐                              │
+│          ├──→ SDK S3 ──→ S3 / MinIO     │
+│  Pod B ──┘      (HTTP)   / Garage       │
+│                              │          │
+│  Pod C ──────────────────────┘          │
+└─────────────────────────────────────────┘
+         Tous les Pods partagent
+         le même stockage via HTTP
+```
+
+---
+
+**Les cas d'usage typiques**
+
+**1. Partage de fichiers entre Pods**
+```
+Pod upload (réplica 1)  ──→  S3  ←──  Pod download (réplica 2)
+```
+Impossible avec `hostPath` ou `emptyDir` !
+
+**2. Stockage de médias**
+```yaml
+# L'app uploade les images user vers S3
+env:
+  - name: STORAGE_BACKEND
+    value: "s3"
+  - name: S3_BUCKET
+    value: "user-uploads"
+```
+
+**3. Backups de base de données**
+```yaml
+# Un CronJob K8S qui sauvegarde PostgreSQL vers S3
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: postgres-backup
+spec:
+  schedule: "0 2 * * *"    # Chaque nuit à 2h
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: backup
+              image: postgres:15
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  pg_dump $DATABASE_URL | \
+                  aws s3 cp - s3://backups/$(date +%Y%m%d).sql
+```
+
+**4. Logs centralisés**
+```
+Pod A ──→ ┐
+Pod B ──→ ├──→ Fluentd/Vector ──→ S3 (logs archivés)
+Pod C ──→ ┘
+```
+
+**5. Assets statiques (CDN)**
+```
+Build CI/CD ──→ S3 ──→ CloudFront/CDN ──→ Utilisateurs
+                ↑
+         K8S Job d'upload
+```
+
+---
+
+**Vue d'ensemble**
+
+```
+                    KUBERNETES
+┌──────────────────────────────────────────┐
+│                                          │
+│  ┌──────────┐    ┌──────────┐           │
+│  │  Pod App │    │ CronJob  │           │
+│  │ (nginx)  │    │ (backup) │           │
+│  └────┬─────┘    └────┬─────┘           │
+│       │               │                 │
+│  ┌────▼───────────────▼─────┐           │
+│  │         S3 Service        │           │
+│  │   (MinIO / Garage)        │           │
+│  └────────────┬──────────────┘           │
+│               │                          │
+│  ┌────────────▼──────────────┐           │
+│  │  PVC  →  Stockage disque  │           │
+│  └───────────────────────────┘           │
+└──────────────────────────────────────────┘
+```
+
+---
+
+**En résumé**
+
+| | Kubernetes | S3 |
+|---|---|---|
+| **Rôle** | Orchestrer les apps | Stocker les données |
+| **Durée** | Éphémère (Pods) | Permanent |
+| **Accès** | Interne au cluster | HTTP depuis n'importe où |
+| **Scalabilité** | Horizontal (réplicas) | Illimitée |
+
+> K8S fait tourner tes applications, S3 garde leurs données — ils se **complètent** naturellement.
+
+---
 ### MinIO
 
 Voici un exemple de PVC avec un stockage S3 local via **MinIO** (l'implémentation S3 la plus courante en local sur K8S) :
