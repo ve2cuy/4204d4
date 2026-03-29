@@ -1,0 +1,227 @@
+# minio-namespace.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: storage
+---
+# minio-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minio
+  namespace: storage
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minio
+  template:
+    metadata:
+      labels:
+        app: minio
+    spec:
+      containers:
+        - name: minio
+          image: minio/minio:latest
+          args:
+            - server
+            - /data
+            - --console-address
+            - ":9001"
+          env:
+            - name: MINIO_ROOT_USER
+              value: "minioadmin"
+            - name: MINIO_ROOT_PASSWORD
+              value: "minioadmin"
+          ports:
+            - containerPort: 9000  # API S3
+            - containerPort: 9001  # Console web
+          volumeMounts:
+            - name: minio-storage
+              mountPath: /data
+      volumes:
+        - name: minio-storage
+          persistentVolumeClaim:
+            claimName: minio-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: minio
+  namespace: storage
+spec:
+  selector:
+    app: minio
+  ports:
+    - name: api
+      port: 9000
+      targetPort: 9000
+    - name: console
+      port: 9001
+      targetPort: 9001
+
+---
+
+# minio-pvc.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: minio-pv
+spec:
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /mnt/minio-data   # Chemin sur le nœud
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: minio-pvc
+  namespace: storage
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+
+---
+# app-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mon-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mon-app
+  template:
+    metadata:
+      labels:
+        app: mon-app
+    spec:
+      containers:
+        - name: mon-app
+          image: alainboudreault/superminou:latest
+          env:
+            - name: S3_ENDPOINT
+              value: "http://minio.storage.svc.cluster.local:9000"
+            - name: S3_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-secret
+                  key: access-key
+            - name: S3_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-secret
+                  key: secret-key
+            - name: S3_BUCKET
+              value: "mon-bucket"
+---
+
+# minio-secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: minio-secret
+type: Opaque
+stringData:
+  access-key: minioadmin
+  secret-key: minioadmin
+
+# http://192.168.2.49:9001/browser/yo.test.420/index.html  
+# csi-s3-secret  # Nom du secret attendu par le CSI S3 de Yandex
+
+# --------------------------------------------------------------------------
+# --------------------------------------------------------------------------
+# --------------------------------------------------------------------------
+
+
+# Installation de helm (si pas déjà fait) :
+
+# sudo apt-get install curl gpg apt-transport-https --yes
+# curl -fsSL https://packages.buildkite.com/helm-linux/helm-debian/gpgkey | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+# echo "deb [signed-by=/usr/share/keyrings/helm.gpg] https://packages.buildkite.com/helm-linux/helm-debian/any/ any main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+# sudo apt-get update
+# sudo apt-get install helm
+
+# Installation du CSI S3 de Yandex (compatible avec MinIO) :
+# helm repo add yandex-s3 https://yandex-cloud.github.io/k8s-csi-s3/charts
+# helm install csi-s3 yandex-s3/csi-s3 --namespace kube-system
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: csi-s3-secret  # Nom du secret attendu par le CSI S3 de Yandex
+  namespace: default
+type: Opaque
+stringData:
+  accessKeyID: "minioadmin"
+  secretAccessKey: "minioadmin"
+  # svc = minio, ns = storage, cluster.local = suffixe DNS interne de Kubernetes, port = 9000
+  endpoint: "http://minio.storage.svc.cluster.local:9000"  # ← DNS interne
+  region: "us-east-1"
+
+--- 
+# ATTENTION, va être créer par helm
+# apiVersion: storage.k8s.io/v1
+# kind: StorageClass
+# metadata:
+#   name: csi-s3
+# provisioner: ru.yandex.s3.csi
+# parameters:
+#   mounter: geesefs
+#   options: "--memory-limit 1000 --dir-mode 0777 --file-mode 0666"
+#   bucket: "yo.test.420"       # Ton bucket MinIO
+#   csi.storage.k8s.io/node-publish-secret-name: minio-s3-secret
+#   csi.storage.k8s.io/node-publish-secret-namespace: default
+#   csi.storage.k8s.io/provisioner-secret-name: minio-s3-secret
+#   csi.storage.k8s.io/provisioner-secret-namespace: default
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: minio-pvc
+  annotations:
+    csi.storage.k8s.io/bucket: "yo.test.420"  # ← utilise le bucket existant
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: csi-s3
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.25
+          volumeMounts:
+            - name: s3-volume
+              mountPath: /usr/share/nginx/html  # ← bucket monté ici
+      volumes:
+        - name: s3-volume
+          persistentVolumeClaim:
+            claimName: minio-pvc

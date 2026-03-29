@@ -173,7 +173,7 @@ Pod A (vivant)          Pod A (mort)         Pod A (redémarré)
 
 ---
 
-**Non, pas besoin de créer manuellement** → avec `DirectoryOrCreate` ou `FileOrCreate`
+**Non, pas besoin de le créer manuellement** → avec `DirectoryOrCreate` ou `FileOrCreate`
 ```yaml
 volumes:
   - name: mon-volume
@@ -318,7 +318,10 @@ response = s3.list_objects_v2(Bucket="mon-bucket")
 - S3 = stocker et récupérer des fichiers **via HTTP**
 - Conçu pour être **scalable**, **durable** et **simple**
 - L'API est devenue un **standard universel** — c'est pourquoi MinIO et Garage l'implémentent, pour être compatibles avec tous les outils existants
+
 ---
+
+## Kubernetes et S3
 
 Kubernetes et S3 sont **complémentaires** — ils résolvent des problèmes différents et s'utilisent souvent ensemble.
 
@@ -459,12 +462,21 @@ Build CI/CD ──→ S3 ──→ CloudFront/CDN ──→ Utilisateurs
 > K8S fait tourner tes applications, S3 garde leurs données — ils se **complètent** naturellement.
 
 ---
+
+## Voici maintenant des exemples pratique avec MinIO et Garage
+
 ### MinIO
 
 Voici un exemple de PVC avec un stockage S3 local via **MinIO** (l'implémentation S3 la plus courante en local sur K8S) :
 
 **1. Déployer MinIO**
 ```yaml
+# minio-namespace.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: storage
+
 # minio-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
