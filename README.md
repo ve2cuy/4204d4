@@ -79,7 +79,7 @@
 * [28 - Préparation à l'atelier d'installation d'un 'cluster' K8s avec Vagrant](https://4204d4.ve2cuy.com/pre-requis-atelier-k8s-vagrant/)
 * [29 - Kubernetes – Installation d'un cluster; 1 Master, 2 Nodes](https://4204d4.ve2cuy.com/kubernetes-installation-dun-cluster-1-master-2-nodes/)
 * [30 - Kubernetes – Les volumes](Documentation/Kubernetes/Kubernetes-Les-volumes.md) 👍
-* [30b- Kubernetes – Les volumes P2](Documentation/Kubernetes/Kubernetes-Volumes-p2.md) 🧠  
+* [30b-Kubernetes – Les volumes P2](Documentation/Kubernetes/Kubernetes-Volumes-p2.md) 🧠  
 * [31 - Kubernetes - Services](Documentation/Kubernetes/Kubernetes-Services.md) 🧠
 * [32 - LoadBalancer et ingress avec Traefik](Documentation/Kubernetes/MetalLB-Traefik.md)
 * [33 - Kubernetes – LoadBalancer Externe et Ingress avec Nginx - Désuet](Documentation/Kubernetes/Kubernetes-LoadBalancer-et-Ingress.md) 👍

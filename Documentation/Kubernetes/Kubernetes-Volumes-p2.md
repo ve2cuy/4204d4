@@ -1,5 +1,3 @@
----
-
 ## Volume hostPath
 
 Un volume `hostPath` monte un **fichier ou répertoire du nœud hôte** directement dans le Pod.
@@ -76,7 +74,7 @@ Node 1            Node 2
 /mnt/data  ≠     /mnt/data
 (Pod A)          (Pod B)
 ```
-Si ton Deployment a plusieurs réplicas sur des nœuds différents, chaque Pod voit **son propre** `/mnt/data` local.
+Si le Deployment a plusieurs réplicas sur des nœuds différents, chaque Pod voit **son propre** `/mnt/data` local.
 
 **Risques de sécurité**
 - Un Pod malveillant pourrait accéder à **tout le système de fichiers** du nœud
@@ -113,7 +111,7 @@ Pod démarre  →  emptyDir créé (vide)
 Pod s'arrête →  emptyDir détruit ✗
 ```
 - Kubernetes gère l'emplacement automatiquement
-- Tu ne sais pas (et n'as pas besoin de savoir) où c'est sur le nœud
+- Nous ne savons pas ou le dossier sera créé sur le nœud
 - Sert à **partager des fichiers entre conteneurs du même Pod**
 
 ---
@@ -135,7 +133,7 @@ Pod redémarre → retrouve les mêmes fichiers ✓
 | | emptyDir | hostPath |
 |---|---|---|
 | 🏨 Analogie | Tableau blanc dans une salle de réunion — **effacé après la réunion** | Clé USB branchée sur l'ordi — **les fichiers restent** après le meeting |
-| Créé par | Kubernetes automatiquement | Toi, sur le nœud |
+| Créé par | Kubernetes automatiquement | L'opérateur, sur le nœud |
 | Survit au Pod ? | ❌ Non | ✅ Oui |
 | Chemin connu ? | ❌ Non | ✅ Oui (`/mon/chemin`) |
 
@@ -211,7 +209,7 @@ volumes:
 
 **Recommandation**
 
-En pratique, utilise presque toujours `DirectoryOrCreate` pour éviter les erreurs de démarrage du Pod :
+En pratique, on utilise presque toujours `DirectoryOrCreate` pour éviter les erreurs de démarrage du Pod :
 
 ```yaml
 hostPath:
