@@ -16,7 +16,41 @@
 
 ## 1 – Volume hébergé dans un Pod – `emptyDir`
 
-Un volume '**emptyDir**' existe seulement à l'**intérieur d'un Pod** et peut être utilisé par les conteneurs du Pod. Voici un exemple de trois conteneurs utilisant le même volume:
+
+Un `emptyDir` dans Kubernetes est créé sur le nœud (node) qui exécute le Pod, à un emplacement géré automatiquement par Kubelet :
+/var/lib/kubelet/pods/<pod-uid>/volumes/kubernetes.io~empty-dir/<nom-du-volume>/
+
+👉 Caractéristiques importantes :
+
+* Il est créé au démarrage du Pod et détruit à sa suppression
+* Il est partagé entre tous les conteneurs du même Pod
+* Il survit aux redémarrages de conteneurs (crash, liveness probe), mais pas à la suppression du Pod
+* Sa capacité est limitée par l'espace disque (ou RAM) du nœud
+
+Dans le cas d'un déploiement sur plusieurs noeuds, chaque Pod aura son propre emptyDir isolé et indépendant.
+
+```
+Node 1                          Node 2
+┌─────────────────────┐        ┌─────────────────────┐
+│  Pod A              │        │  Pod B              │
+│  /var/lib/kubelet/  │        │  /var/lib/kubelet/  │
+│  pods/uid-A/...     │        │  pods/uid-B/...     │
+│  emptyDir ← propre  │        │  emptyDir ← propre  │
+└─────────────────────┘        └─────────────────────┘
+         ▲                              ▲
+             Aucun partage entre eux
+```
+
+👉 Ce que ça implique concrètement :
+
+* Si Pod A écrit un fichier dans son emptyDir, Pod B ne le verra jamais
+Chaque réplica part avec un volume vide et indépendant.
+
+* Si un Pod est reschedulé sur un autre nœud, son emptyDir repart de zéro.
+
+---
+
+### Voici un exemple de trois conteneurs utilisant le même volume:
 
 **Action 1.1 –** Renseigner et appliquer le manifeste suivant:
 
@@ -37,35 +71,35 @@ spec:
   containers:
   - name: nginx
     image: nginx
-    volumeMounts:
+    volumeMounts:  # Dans le conteneur
     - mountPath: /usr/share/nginx/html  # Ceci est le dossier web de nginx
       name: volume-web
 
   - name: une-debian
     image: debian
     command: ["sleep", "1000"]
-    volumeMounts:
+    volumeMounts:  # Dans le conteneur
     - mountPath: /petit-coquin
       name: volume-web
 
   - name: une-alpine
     image: alpine
     command: ['sh', '-c', 'echo "Je suis 420-4D4 ;)-" > /misere/index.html']
-    volumeMounts:
+    volumeMounts:  # Dans le conteneur
     - mountPath: /misere
       name: volume-web
   # restartPolicy: Never  
 
-
 # Définition des volumes
-  volumes:
+  volumes: # Dans le Pod
   - name: volume-web
-    emptyDir: {}
+    emptyDir: {}  # {} = valeurs pas défauts; medium: "" -> stockage sur disque (défaut), sizeLimit: null -> pas de limite
 ```
 
 ```bash
 kubectl apply -f exemple1.1.yml
 kubectl get pods
+# Voici une liste sur mesure:
 kubectl get pods -o=jsonpath="{range .items[*]}{\"\n\"}{.metadata.name}{\":\t\"}{range .spec.containers[*]}{.name}{\", \"}{end}{end}"
 ```
 
@@ -93,7 +127,7 @@ root@example1-1:/# curl localhost
 Je suis 420-4D4 ;)-
 ```
 
-Il est possible de monter les volumes '**emptyDir**' en **mémoire vive**:
+💡 Il est possible de monter les volumes '**emptyDir**' en **mémoire vive**:
 
 ```yaml
   - name: volume-web
@@ -101,7 +135,9 @@ Il est possible de monter les volumes '**emptyDir**' en **mémoire vive**:
       medium: Memory
 ```
 
-**Note**: Sous Minikube, les Pods sont stockés dans la VM de minikube dans le dossier `'cd /var/lib/kubelet/pods/'`. Pour avoir accès à la VM de minikube il suffit de taper la commande: `'minikube ssh'`.
+**Note 1**: Sous Minikube, les Pods sont stockés dans la VM de minikube dans le dossier `'cd /var/lib/kubelet/pods/'`. Pour avoir accès à la VM de minikube il suffit de taper la commande: `'minikube ssh'`.
+
+**Note 2**: Sous Docker-Desktop, les Pods sont stockés dans la VM Ubuntu-K8s. Pour avoir accès à la VM, il suffit de taper la commande: `kubectl debug node/docker-desktop -it --image=ubuntu`.
 
 -----
 

@@ -823,7 +823,7 @@ network:
 
 ---
 
-## 18 - Installation d'un fureteur web pour terminal
+## 18 - Installation d'un fureteur web pour terminal (Brow6el)
 
 ```
 alias w="~/brow6el/build/run_brow6el.sh"
