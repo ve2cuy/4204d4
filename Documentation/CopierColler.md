@@ -238,6 +238,24 @@ kdlc=kubectl delete configmaps
 ked=kubectl edit deployment
 ```
 
+## 2.1 Auto-completion
+
+```
+sudo apt-get install bash-completion # Debian/Ubuntu
+sudo yum install bash-completion # CentOS/RHEL
+
+source <(kubectl completion bash) # Pour la session en cours
+echo "source <(kubectl completion bash)" >> ~/.bashrc  # Pour toutes les sessions
+
+# Avec alias
+
+echo "alias k=kubectl" >> ~/.bashrc # Au besoin
+echo "complete -o default -F __start_kubectl k" >> ~/.bashrc
+
+source ~/.bashrc  # recharger la session
+
+```
+
 ---
 
 ## 3 – Augmenter la taille de la police sous Visual Code
