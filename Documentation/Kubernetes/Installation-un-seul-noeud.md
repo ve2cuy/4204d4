@@ -188,6 +188,9 @@ kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/
 **13 – Vérifier le fonctionnement de l'amas (cluster K8s):**
 
 ```bash
+kubectl cluster-info
+kubectl config get-contexts
+
 kubectl get nodes
 kubectl get pods -n kube-system
 ```
@@ -195,6 +198,14 @@ kubectl get pods -n kube-system
 **Exemple de sortie:**
 
 ```
+$ kubectl cluster-info
+Kubernetes control plane is running at https://192.168.124.167:6443
+CoreDNS is running at https://192.168.124.167:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+$ kubectl config get-contexts
+CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
+*         kubernetes-admin@kubernetes   kubernetes   kubernetes-admin
+
 $ kubectl get nodes
 NAME      STATUS   ROLES           AGE    VERSION
 k8stest   Ready    control-plane   114m   v1.29.15

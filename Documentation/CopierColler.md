@@ -884,6 +884,22 @@ v - Enter VISUAL mode (text selection)
 
 ---
 
+## 19 - Désactiver Wayland
+
+NOTE: A partir d'Ubuntu 24, le sreenSaver rend la connexion impossible via le GUI.
+
+```
+# 1 - Désactiver le screenSaver
+
+# 2 - Ou, désactiver Wayland (utiliser X11): 
+sudo nano /etc/gdm3/custom.conf
+--> WatlanEnable=false
+--
+sudo systemctl restart gdm3
+```
+
+---
+
 ## 50 – Scripts bash de création de Master/Worker sur Ubuntu 24.04
 
 **Note**: Si vous avez cloné des VM, ne pas oublier de mettre à jour les fichiers `/etc/hosts` et `/etc/hostname` avant de rouler les scripts suivants.
