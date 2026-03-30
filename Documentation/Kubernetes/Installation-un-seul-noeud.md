@@ -202,6 +202,7 @@ $ kubectl cluster-info
 Kubernetes control plane is running at https://192.168.124.167:6443
 CoreDNS is running at https://192.168.124.167:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
 
+
 $ kubectl config get-contexts
 CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
 *         kubernetes-admin@kubernetes   kubernetes   kubernetes-admin
@@ -220,6 +221,8 @@ kube-controller-manager-k8stest   1/1     Running   0          114m
 kube-proxy-j6zbq                  1/1     Running   0          114m
 kube-scheduler-k8stest            1/1     Running   0          114m
 ```
+
+💡 NOTE: Le cluster courant est définit par le fichier ~/.kube/config
 
 ---
 
