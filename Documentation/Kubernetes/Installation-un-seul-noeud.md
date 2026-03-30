@@ -232,6 +232,20 @@ kube-scheduler-k8stest            1/1     Running   0          114m
 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/ve2cuy/4204d4/refs/heads/main/Documentation/Kubernetes/Demo-intro-superminou.yml
+
+kubectl get all
+
+#--> Détail du service: 
+#    service/svc-superminou   LoadBalancer   10.105.214.22   <pending>     80:30707/TCP   9m17s   super=minou
+
+# De votre poste de travail: 
+# http://192.168.124.167:30707
+
+# Ou, 
+kubectl port-forward --address 192.168.124.167,localhost svc/svc-superminou 8080:80
+
+# NOTE: Il faut utiliser l'adresse du serveur K8s.
+
 ```
 
 ### À partir d'un manifeste local:
