@@ -392,6 +392,17 @@ sudo kubeadm join 192.168.139.50:6443 --token 64th0n.eknzv4kxm1mxwl4o --discover
 
 ```
 
+## Retirer un noeud du cluster
+
+```
+# Sur le master
+kubectl drain nom-du-noeud --ignore-daemonsets --delete-emptydir-data
+
+# Sur le noeud, pour repartir à zéro
+kubeadm reset
+
+```
+
 ---
 
 **NOTE**: Voir les alias K8s dans la section [copier/coller](https://4204d4.ve2cuy.com/docker-copier-coller/)
