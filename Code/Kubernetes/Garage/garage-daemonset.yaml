@@ -1,0 +1,405 @@
+# =============================================================================
+# Garage — Déploiement complet via DaemonSet sur Kubernetes
+#
+# Ce fichier déploie Garage (stockage S3 compatible) directement dans K8s
+# via un DaemonSet : un pod Garage tourne sur chaque nœud labellisé
+# "garage-node=true", avec stockage local hostPath.
+#
+# Ordre d'application :
+#   kubectl apply -f garage-daemonset.yaml
+#   # puis initialiser le cluster (voir README.md)
+# =============================================================================
+
+---
+# ─── Namespace ────────────────────────────────────────────────────────────────
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: garage
+  labels:
+    app.kubernetes.io/name: garage
+
+---
+# ─── ConfigMap : garage.toml ──────────────────────────────────────────────────
+# La clé RPC doit être identique sur tous les nœuds.
+# Générez-en une avec : openssl rand -hex 32
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: garage-config
+  namespace: garage
+data:
+  garage.toml: |
+    # Répertoires de données — montés depuis le nœud via hostPath
+    metadata_dir = "/var/lib/garage/meta"
+    data_dir     = "/var/lib/garage/data"
+
+    # !! Remplacez par : openssl rand -hex 32
+    rpc_secret = "CHANGEME_openssl_rand_hex_32"
+
+    # Garage écoute sur toutes les interfaces du pod (réseau host)
+    rpc_bind_addr   = "[::]:3901"
+    # rpc_public_addr est injecté dynamiquement via l'env NODE_IP (voir pod spec)
+
+    db_engine = "lmdb"
+
+    [s3_api]
+    s3_region   = "garage"
+    api_bind_addr = "[::]:3900"
+    root_domain = ".s3.garage.local"
+
+    [s3_web]
+    bind_addr   = "[::]:3902"
+    root_domain = ".web.garage.local"
+
+    [admin]
+    api_bind_addr = "[::]:3903"
+
+---
+# ─── Secret : clé RPC (alternative sécurisée au ConfigMap) ───────────────────
+# Créez ce secret AVANT d'appliquer le DaemonSet :
+#   RPC_SECRET=$(openssl rand -hex 32)
+#   kubectl create secret generic garage-rpc-secret \
+#     --namespace=garage \
+#     --from-literal=rpc-secret=$RPC_SECRET
+#
+# Le Secret est référencé en tant que variable d'env dans le pod.
+# (Laisser ce bloc commenté si vous gérez le secret manuellement)
+#
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: garage-rpc-secret
+#   namespace: garage
+# type: Opaque
+# stringData:
+#   rpc-secret: "CHANGEME_openssl_rand_hex_32"
+
+---
+# ─── ServiceAccount ───────────────────────────────────────────────────────────
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: garage
+  namespace: garage
+
+---
+# ─── ClusterRole : lecture des nœuds (pour récupérer l'IP publique) ──────────
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: garage-node-reader
+rules:
+  - apiGroups: [""]
+    resources: ["nodes"]
+    verbs: ["get", "list", "watch"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: garage-node-reader
+subjects:
+  - kind: ServiceAccount
+    name: garage
+    namespace: garage
+roleRef:
+  kind: ClusterRole
+  name: garage-node-reader
+  apiGroup: rbac.authorization.k8s.io
+
+---
+# ─── DaemonSet : Garage ───────────────────────────────────────────────────────
+# Un pod par nœud labelisé "garage-node=true".
+# Labelliser un nœud : kubectl label node <nom-nœud> garage-node=true
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: garage
+  namespace: garage
+  labels:
+    app: garage
+spec:
+  selector:
+    matchLabels:
+      app: garage
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1               # Mise à jour nœud par nœud
+  template:
+    metadata:
+      labels:
+        app: garage
+      annotations:
+        # Force le redémarrage si la ConfigMap change
+        checksum/config: "v1"
+    spec:
+      serviceAccountName: garage
+
+      # Sélectionner uniquement les nœuds labelisés pour Garage
+      nodeSelector:
+        garage-node: "true"
+
+      # Tolérations pour nœuds taintés (optionnel)
+      tolerations:
+        - key: "garage-node"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
+
+      # Réseau hôte : Garage communique directement via l'IP du nœud
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+
+      # Priorité : Garage ne doit pas être évincé sous pression mémoire
+      priorityClassName: system-node-critical
+
+      initContainers:
+        # Init : crée les répertoires de données sur l'hôte
+        - name: init-dirs
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              mkdir -p /var/lib/garage/meta /var/lib/garage/data
+              chmod 750 /var/lib/garage/meta /var/lib/garage/data
+              echo "Répertoires prêts."
+          volumeMounts:
+            - name: garage-data
+              mountPath: /var/lib/garage
+          securityContext:
+            runAsUser: 0
+
+      containers:
+        - name: garage
+          # Image officielle Garage
+          image: dxflrs/garage:v1.0.1
+          imagePullPolicy: IfNotPresent
+
+          command:
+            - /garage
+            - -c
+            - /etc/garage/garage.toml
+            - server
+
+          ports:
+            - name: s3-api
+              containerPort: 3900
+              hostPort: 3900
+              protocol: TCP
+            - name: rpc
+              containerPort: 3901
+              hostPort: 3901
+              protocol: TCP
+            - name: web
+              containerPort: 3902
+              hostPort: 3902
+              protocol: TCP
+            - name: admin
+              containerPort: 3903
+              hostPort: 3903
+              protocol: TCP
+
+          env:
+            # IP du nœud injectée automatiquement — utilisée comme rpc_public_addr
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: GARAGE_RPC_PUBLIC_ADDR
+              value: "$(NODE_IP):3901"
+            # Surcharge la clé RPC depuis un Secret (recommandé en production)
+            # Décommentez si vous créez le Secret garage-rpc-secret :
+            # - name: GARAGE_RPC_SECRET
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: garage-rpc-secret
+            #       key: rpc-secret
+
+          volumeMounts:
+            - name: garage-config
+              mountPath: /etc/garage
+              readOnly: true
+            - name: garage-data
+              mountPath: /var/lib/garage
+
+          # Probe de santé via l'API admin
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3903
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3903
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 3
+
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
+            limits:
+              cpu: "2"
+              memory: "2Gi"
+
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+
+      volumes:
+        # Configuration depuis la ConfigMap
+        - name: garage-config
+          configMap:
+            name: garage-config
+
+        # Stockage des données directement sur le nœud (hostPath)
+        - name: garage-data
+          hostPath:
+            path: /var/lib/garage
+            type: DirectoryOrCreate
+
+      terminationGracePeriodSeconds: 60
+
+---
+# ─── Service headless : découverte des pods Garage entre eux ─────────────────
+# Permet aux nœuds Garage de se résoudre par DNS interne K8s
+apiVersion: v1
+kind: Service
+metadata:
+  name: garage-headless
+  namespace: garage
+  labels:
+    app: garage
+spec:
+  clusterIP: None                     # Headless = pas de VIP, DNS par pod
+  selector:
+    app: garage
+  ports:
+    - name: rpc
+      port: 3901
+      targetPort: 3901
+
+---
+# ─── Service : API S3 (accès interne au cluster) ──────────────────────────────
+apiVersion: v1
+kind: Service
+metadata:
+  name: garage-s3
+  namespace: garage
+  labels:
+    app: garage
+spec:
+  type: ClusterIP
+  selector:
+    app: garage
+  ports:
+    - name: s3-api
+      port: 3900
+      targetPort: 3900
+      protocol: TCP
+
+---
+# ─── Service : API Admin (interne seulement) ──────────────────────────────────
+apiVersion: v1
+kind: Service
+metadata:
+  name: garage-admin
+  namespace: garage
+  labels:
+    app: garage
+spec:
+  type: ClusterIP
+  selector:
+    app: garage
+  ports:
+    - name: admin
+      port: 3903
+      targetPort: 3903
+      protocol: TCP
+
+---
+# ─── Job : initialisation du layout Garage (nœud unique) ─────────────────────
+# À appliquer APRÈS que le DaemonSet soit Ready.
+# Supprime automatiquement le Job après 120 secondes.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: garage-init-layout
+  namespace: garage
+  annotations:
+    # Appliquer manuellement après le DaemonSet :
+    # kubectl apply -f garage-daemonset.yaml
+    # kubectl wait --for=condition=ready pod -l app=garage -n garage --timeout=120s
+    # kubectl apply -f garage-daemonset.yaml  (relance le Job)
+spec:
+  ttlSecondsAfterFinished: 120
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: garage-init
+          image: dxflrs/garage:v1.0.1
+          command:
+            - sh
+            - -c
+            - |
+              set -e
+              echo ">>> Attente de Garage..."
+              until garage -c /etc/garage/garage.toml status 2>/dev/null; do
+                echo "    En attente..."; sleep 3
+              done
+
+              echo ">>> Récupération de l'ID du nœud..."
+              NODE_ID=$(garage -c /etc/garage/garage.toml node id 2>/dev/null \
+                        | grep -oE '^[a-f0-9]+' | head -1)
+              echo "    Nœud: ${NODE_ID}"
+
+              echo ">>> Application du layout (zone=dc1, capacité=100G)..."
+              garage -c /etc/garage/garage.toml layout assign \
+                --zone dc1 \
+                --capacity 100G \
+                "${NODE_ID}"
+
+              garage -c /etc/garage/garage.toml layout apply --version 1
+              echo ">>> Layout appliqué !"
+
+              echo ">>> Création du bucket nginx-web..."
+              garage -c /etc/garage/garage.toml bucket create nginx-web || true
+
+              garage -c /etc/garage/garage.toml bucket website \
+                --allow \
+                --index-document index.html \
+                --error-document error.html \
+                nginx-web
+
+              echo ">>> Création de la clé S3..."
+              garage -c /etc/garage/garage.toml key create nginx-s3-key || true
+              garage -c /etc/garage/garage.toml bucket allow \
+                --read --write --owner \
+                --key nginx-s3-key \
+                nginx-web
+
+              echo ""
+              echo "✅ Initialisation terminée !"
+              echo ""
+              garage -c /etc/garage/garage.toml key info nginx-s3-key
+          volumeMounts:
+            - name: garage-config
+              mountPath: /etc/garage
+              readOnly: true
+          env:
+            - name: GARAGE_RPC_HOST
+              value: "garage-headless.garage.svc.cluster.local:3901"
+      volumes:
+        - name: garage-config
+          configMap:
+            name: garage-config

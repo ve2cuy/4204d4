@@ -1,0 +1,6 @@
+* [Installation sous forme de service](https://jan.wildeboer.net/2026/01/1-Local-S3-With-Garage/)
+* [Garage Operator](https://github.com/rajsinghtech/garage-operator)
+* [Installation via Docker](https://www.glukhov.org/data-infrastructure/object-storage/garage-quickstart/)
+* [Helm chart](https://github.com/datahub-local/garage-helm)
+* [Web UI](https://unixhost.pro/blog/2025/11/webui-for-garage-s3-server/)
+* [Autre exemple avec Docker++](https://portalzine.de/day-38-garage-object-storage-the-self-hosted-s3-alternative-7-days-of-docker/)

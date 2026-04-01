@@ -1,0 +1,324 @@
+# =============================================================================
+# Déploiement Nginx — 2 réplicas avec stockage S3 via Garage (DaemonSet)
+# Prérequis : garage-daemonset.yaml appliqué et Job d'init terminé
+#             driver CSI S3 installé (voir install-csi-s3.sh)
+# L'endpoint S3 est le Service ClusterIP : garage-s3.garage.svc.cluster.local:3900
+# =============================================================================
+
+---
+# ─── Namespace dédié ─────────────────────────────────────────────────────────
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nginx-garage
+  labels:
+    app.kubernetes.io/managed-by: kubectl
+
+---
+# ─── Secret : credentials Garage S3 ──────────────────────────────────────────
+# IMPORTANT : Remplacez les valeurs par les vraies clés générées par setup-bucket.sh
+# Valeurs encodées en base64 : echo -n "valeur" | base64
+apiVersion: v1
+kind: Secret
+metadata:
+  name: garage-s3-credentials
+  namespace: nginx-garage
+type: Opaque
+data:
+  # Remplacer par : echo -n "VOTRE_ACCESS_KEY" | base64
+  access-key: VOTRE_ACCESS_KEY_EN_BASE64
+  # Remplacer par : echo -n "VOTRE_SECRET_KEY" | base64
+  secret-key: VOTRE_SECRET_KEY_EN_BASE64
+
+---
+# ─── StorageClass : CSI S3 pointant vers Garage ───────────────────────────────
+# Utilise le driver github.com/yandex-cloud/k8s-csi-s3
+# Installation du driver CSI : voir install-csi-s3.sh
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: garage-s3-storage
+provisioner: ru.yandex.s3.csi          # nom du driver CSI S3
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
+parameters:
+  mounter: geesefs                      # geesefs = montage FUSE haute perf
+  options: "--memory-limit 1000 --dir-mode 0755 --file-mode 0644"
+  csi.storage.k8s.io/provisioner-secret-name: garage-s3-credentials
+  csi.storage.k8s.io/provisioner-secret-namespace: nginx-garage
+  csi.storage.k8s.io/node-stage-secret-name: garage-s3-credentials
+  csi.storage.k8s.io/node-stage-secret-namespace: nginx-garage
+
+---
+# ─── PersistentVolume : bucket nginx-web dans Garage ─────────────────────────
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: garage-nginx-pv
+  labels:
+    app: nginx-garage
+    storage: garage-s3
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadOnlyMany                      # Partagé entre les 2 réplicas en lecture
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: garage-s3-storage
+  mountOptions:
+    - allow_other                       # Nécessaire pour FUSE multi-pod
+  csi:
+    driver: ru.yandex.s3.csi
+    volumeHandle: nginx-web             # Nom du bucket Garage
+    volumeAttributes:
+      capacity: 10Gi
+      mounter: geesefs
+      options: "--memory-limit 1000 --dir-mode 0755 --file-mode 0644"
+    # Endpoint de l'API S3 Garage — adapter l'IP/hostname
+    nodeStageSecretRef:
+      name: garage-s3-credentials
+      namespace: nginx-garage
+  # Variables d'environnement injectées depuis le Secret pour le CSI driver
+  # Le driver CSI S3 lit S3_ENDPOINT, ACCESS_KEY_ID, SECRET_ACCESS_KEY
+  # via le Secret référencé dans nodeStageSecretRef
+
+---
+# ─── PersistentVolumeClaim ────────────────────────────────────────────────────
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: garage-nginx-pvc
+  namespace: nginx-garage
+  labels:
+    app: nginx-garage
+spec:
+  accessModes:
+    - ReadOnlyMany
+  storageClassName: garage-s3-storage
+  resources:
+    requests:
+      storage: 10Gi
+  selector:
+    matchLabels:
+      app: nginx-garage
+      storage: garage-s3
+
+---
+# ─── ConfigMap : configuration nginx ─────────────────────────────────────────
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+  namespace: nginx-garage
+data:
+  nginx.conf: |
+    user  nginx;
+    worker_processes  auto;
+    error_log  /var/log/nginx/error.log warn;
+    pid        /var/run/nginx.pid;
+
+    events {
+        worker_connections  1024;
+    }
+
+    http {
+        include       /etc/nginx/mime.types;
+        default_type  application/octet-stream;
+
+        log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                          '$status $body_bytes_sent "$http_referer" '
+                          '"$http_user_agent"';
+
+        access_log  /var/log/nginx/access.log  main;
+
+        sendfile        on;
+        keepalive_timeout  65;
+        gzip  on;
+
+        server {
+            listen       80;
+            server_name  _;
+
+            # Racine web = point de montage du bucket S3
+            root   /usr/share/nginx/html;
+            index  index.html index.htm;
+
+            location / {
+                try_files $uri $uri/ /index.html;
+            }
+
+            # Headers de sécurité
+            add_header X-Content-Type-Options "nosniff" always;
+            add_header X-Frame-Options "SAMEORIGIN" always;
+            add_header X-XSS-Protection "1; mode=block" always;
+
+            # Page d'erreur personnalisée
+            error_page 404 /error.html;
+            location = /error.html {
+                internal;
+            }
+
+            # Health check endpoint pour le LoadBalancer
+            location /healthz {
+                access_log off;
+                return 200 "OK\n";
+                add_header Content-Type text/plain;
+            }
+        }
+    }
+
+---
+# ─── Deployment : 2 réplicas nginx ───────────────────────────────────────────
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-garage
+  namespace: nginx-garage
+  labels:
+    app: nginx-garage
+    version: "1.0"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx-garage
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0               # Zéro downtime lors des mises à jour
+  template:
+    metadata:
+      labels:
+        app: nginx-garage
+        version: "1.0"
+      annotations:
+        prometheus.io/scrape: "false"
+    spec:
+      # Répartir les pods sur des nœuds différents pour la HA
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - nginx-garage
+                topologyKey: kubernetes.io/hostname
+
+      containers:
+        - name: nginx
+          image: nginx:1.27-alpine
+          ports:
+            - containerPort: 80
+              protocol: TCP
+              name: http
+
+          # Montage du bucket S3 Garage comme racine web
+          volumeMounts:
+            - name: web-content
+              mountPath: /usr/share/nginx/html
+              readOnly: true
+            - name: nginx-config
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+              readOnly: true
+
+          # Probes de santé
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 15
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "64Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false  # nginx écrit dans /var/cache/nginx
+            runAsNonRoot: false            # nginx nécessite root pour bind :80
+            capabilities:
+              drop:
+                - ALL
+              add:
+                - NET_BIND_SERVICE
+
+      volumes:
+        # Volume monté depuis le bucket Garage S3 via CSI
+        - name: web-content
+          persistentVolumeClaim:
+            claimName: garage-nginx-pvc
+        # Configuration nginx depuis ConfigMap
+        - name: nginx-config
+          configMap:
+            name: nginx-config
+
+      terminationGracePeriodSeconds: 30
+
+---
+# ─── Service : LoadBalancer ───────────────────────────────────────────────────
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-garage-lb
+  namespace: nginx-garage
+  labels:
+    app: nginx-garage
+  annotations:
+    # Pour cloud providers — décommenter selon l'environnement :
+    # AWS : service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    # GCP : cloud.google.com/load-balancer-type: "External"
+    # Azure : service.beta.kubernetes.io/azure-load-balancer-sku: standard
+    # MetalLB (bare-metal) : metallb.universe.tf/address-pool: default
+spec:
+  type: LoadBalancer
+  selector:
+    app: nginx-garage
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+  # sessionAffinity: None = distribution round-robin entre les 2 réplicas
+  sessionAffinity: None
+
+---
+# ─── HorizontalPodAutoscaler (optionnel) ────────────────────────────────────
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: nginx-garage-hpa
+  namespace: nginx-garage
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: nginx-garage
+  minReplicas: 2
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70

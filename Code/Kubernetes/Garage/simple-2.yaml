@@ -1,0 +1,398 @@
+# =============================================================================
+# Exemple MINIMAL : Garage S3 + Nginx sur Kubernetes (nœud unique)
+#
+# Fonctionnement :
+#   1. StatefulSet "garage"   → démarre Garage, init layout + bucket + clé
+#   2. Job "garage-seed"      → crée index.html et pousse les credentials
+#                               dans un Secret K8s
+#   3. Deployment "nginx"     → 2 réplicas, initContainer télécharge le
+#                               contenu S3 dans un emptyDir au démarrage
+#
+# Une seule commande :
+#   kubectl apply -f simple.yaml
+#
+# Accès :
+#   kubectl get svc nginx -n web   →  EXTERNAL-IP
+# =============================================================================
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: web
+
+---
+# ─── PersistentVolumeClaim : données Garage ───────────────────────────────────
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: garage-data
+  namespace: web
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+# ─── StatefulSet Garage ───────────────────────────────────────────────────────
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: garage
+  namespace: web
+spec:
+  serviceName: garage
+  replicas: 1
+  selector:
+    matchLabels:
+      app: garage
+  template:
+    metadata:
+      labels:
+        app: garage
+    spec:
+      serviceAccountName: garage-sa
+
+      initContainers:
+        - name: init
+          image: dxflrs/garage:v1.0.1
+          command: [sh, -c]
+          args:
+            - |
+              set -e
+              mkdir -p /data/meta /data/store
+
+              # Créer garage.toml avec une clé RPC aléatoire
+              RPC_SECRET=$(cat /dev/urandom | tr -dc 'a-f0-9' | head -c 64)
+              cat > /data/garage.toml <<EOF
+              metadata_dir  = "/data/meta"
+              data_dir      = "/data/store"
+              rpc_secret    = "$RPC_SECRET"
+              rpc_bind_addr = "[::]:3901"
+              db_engine     = "lmdb"
+              [s3_api]
+              s3_region     = "garage"
+              api_bind_addr = "[::]:3900"
+              [admin]
+              api_bind_addr = "[::]:3903"
+              EOF
+              echo "Config écrite."
+          volumeMounts:
+            - name: data
+              mountPath: /data
+
+      containers:
+        - name: garage
+          image: dxflrs/garage:v1.0.1
+          args: [-c, /data/garage.toml, server]
+          ports:
+            - containerPort: 3900
+              name: s3
+            - containerPort: 3903
+              name: admin
+          readinessProbe:
+            httpGet: { path: /health, port: 3903 }
+            initialDelaySeconds: 3
+            periodSeconds: 3
+          resources:
+            requests: { cpu: 100m, memory: 128Mi }
+            limits:   { cpu: 1,    memory: 512Mi }
+          volumeMounts:
+            - name: data
+              mountPath: /data
+
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: garage-data
+
+---
+# ─── Service Garage ───────────────────────────────────────────────────────────
+apiVersion: v1
+kind: Service
+metadata:
+  name: garage
+  namespace: web
+spec:
+  selector:
+    app: garage
+  ports:
+    - name: s3
+      port: 3900
+    - name: admin
+      port: 3903
+
+---
+# ─── ServiceAccount + RBAC pour le Job de seed ───────────────────────────────
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: garage-sa
+  namespace: web
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: secret-writer
+  namespace: web
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: [get, list, create, update, patch]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: garage-secret-writer
+  namespace: web
+subjects:
+  - kind: ServiceAccount
+    name: garage-sa
+    namespace: web
+roleRef:
+  kind: Role
+  name: secret-writer
+  apiGroup: rbac.authorization.k8s.io
+
+---
+# ─── Job : initialise Garage et crée le Secret avec les credentials ───────────
+# S'exécute une fois. Le Secret "garage-s3-creds" est créé automatiquement.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: garage-seed
+  namespace: web
+spec:
+  ttlSecondsAfterFinished: 300
+  template:
+    spec:
+      serviceAccountName: garage-sa
+      restartPolicy: OnFailure
+      containers:
+        - name: seed
+          image: dxflrs/garage:v1.0.1
+          command: [sh, -c]
+          args:
+            - |
+              set -e
+              GARAGE="garage -c /data/garage.toml"
+
+              echo ">>> Attente de Garage..."
+              until $GARAGE status 2>/dev/null; do sleep 2; done
+
+              echo ">>> Layout..."
+              NODE=$($GARAGE node id | grep -oE '^[a-f0-9]+' | head -1)
+              $GARAGE layout assign --zone dc1 --capacity 1G "$NODE" 2>/dev/null || true
+              $GARAGE layout apply --version 1 2>/dev/null || true
+
+              echo ">>> Bucket..."
+              $GARAGE bucket create web 2>/dev/null || true
+              $GARAGE bucket website --allow --index-document index.html web 2>/dev/null || true
+
+              echo ">>> Clé S3..."
+              $GARAGE key create webkey 2>/dev/null || true
+              $GARAGE bucket allow --read --write --key webkey web 2>/dev/null || true
+
+              ACCESS=$($GARAGE key info webkey | grep "Key ID"     | awk '{print $3}')
+              SECRET=$($GARAGE key info webkey | grep "Secret key" | awk '{print $3}')
+              echo "ACCESS=$ACCESS  SECRET=${SECRET:0:8}..."
+
+              echo ">>> Sauvegarde des credentials dans un Secret K8s..."
+              # kubectl est disponible via le ServiceAccount monté automatiquement
+              kubectl create secret generic garage-s3-creds \
+                --namespace=web \
+                --from-literal=access-key="$ACCESS" \
+                --from-literal=secret-key="$SECRET" \
+                --dry-run=client -o yaml | kubectl apply -f -
+
+              echo ">>> Upload de index.html..."
+              cat > /tmp/index.html <<'HTML'
+              <!DOCTYPE html>
+              <html lang="fr">
+              <head>
+                <meta charset="UTF-8">
+                <title>Nginx + Garage S3</title>
+                <style>
+                  * { margin:0; padding:0; box-sizing:border-box }
+                  body {
+                    font-family: system-ui, sans-serif;
+                    background: #0f172a; color: #e2e8f0;
+                    min-height: 100vh;
+                    display: flex; align-items: center; justify-content: center;
+                  }
+                  .card {
+                    text-align: center; padding: 3rem 4rem;
+                    background: rgba(255,255,255,.06);
+                    border: 1px solid rgba(255,255,255,.12);
+                    border-radius: 1rem;
+                  }
+                  .icon { font-size: 3.5rem; margin-bottom: 1rem; }
+                  h1   { font-size: 2rem; margin-bottom: .5rem; }
+                  p    { color: #94a3b8; margin-bottom: 1.5rem; }
+                  .tag {
+                    display: inline-block; margin: .2rem;
+                    padding: .3rem .9rem; border-radius: 999px;
+                    background: #1d4ed8; font-size: .8rem; font-weight: 700;
+                  }
+                </style>
+              </head>
+              <body>
+                <div class="card">
+                  <div class="icon">🚀</div>
+                  <h1>Ça fonctionne !</h1>
+                  <p>Contenu servi depuis le bucket Garage S3</p>
+                  <span class="tag">nginx</span>
+                  <span class="tag">Garage S3</span>
+                  <span class="tag">Kubernetes</span>
+                </div>
+              </body>
+              </html>
+              HTML
+
+              export AWS_ACCESS_KEY_ID="$ACCESS"
+              export AWS_SECRET_ACCESS_KEY="$SECRET"
+              export AWS_DEFAULT_REGION="garage"
+
+              # aws-cli n'est pas dans l'image Garage — utiliser curl + API S3
+              # Upload via PUT S3 signé avec curl et HMAC-SHA256
+              FILE=/tmp/index.html
+              BUCKET=web
+              KEY=index.html
+              HOST=garage.web.svc.cluster.local
+              PORT=3900
+              DATE=$(date -u +%Y%m%dT%H%M%SZ)
+              DATESHORT=$(date -u +%Y%m%d)
+              CONTENT_TYPE="text/html; charset=utf-8"
+              CONTENT=$(cat $FILE | wc -c)
+
+              # Calcul signature AWS Sig V4
+              HASH=$(sha256sum $FILE | awk '{print $1}')
+              CANONICAL="PUT\n/$KEY\n\ncontent-type:$CONTENT_TYPE\nhost:$HOST:$PORT\nx-amz-content-sha256:$HASH\nx-amz-date:$DATE\n\ncontent-type;host;x-amz-content-sha256;x-amz-date\n$HASH"
+              STRING_TO_SIGN="AWS4-HMAC-SHA256\n$DATE\n$DATESHORT/garage/s3/aws4_request\n$(printf "$CANONICAL" | sha256sum | awk '{print $1}')"
+
+              SIGNING_KEY=$(printf "aws4_request" | openssl dgst -sha256 -mac HMAC -macopt "key:$(printf "s3" | openssl dgst -sha256 -mac HMAC -macopt "key:$(printf "garage" | openssl dgst -sha256 -mac HMAC -macopt "key:$(printf "$DATESHORT" | openssl dgst -sha256 -mac HMAC -macopt "key:AWS4$SECRET" -binary)" -binary)" -binary)" -binary)" -binary | xxd -p -c 256)
+              SIG=$(printf "$STRING_TO_SIGN" | openssl dgst -sha256 -mac HMAC -macopt "hexkey:$SIGNING_KEY" | awk '{print $2}')
+              AUTH="AWS4-HMAC-SHA256 Credential=$ACCESS/$DATESHORT/garage/s3/aws4_request, SignedHeaders=content-type;host;x-amz-content-sha256;x-amz-date, Signature=$SIG"
+
+              HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+                -X PUT "http://$HOST:$PORT/$BUCKET/$KEY" \
+                -H "Host: $HOST:$PORT" \
+                -H "Content-Type: $CONTENT_TYPE" \
+                -H "x-amz-date: $DATE" \
+                -H "x-amz-content-sha256: $HASH" \
+                -H "Authorization: $AUTH" \
+                --data-binary @$FILE)
+
+              echo "Upload HTTP status: $HTTP_STATUS"
+              [ "$HTTP_STATUS" = "200" ] && echo "✅ index.html uploadé !" || echo "⚠️  Upload retourné $HTTP_STATUS (vérifier les logs)"
+
+              echo "✅ Seed terminé."
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: garage-data
+
+---
+# ─── Deployment nginx : 2 réplicas ───────────────────────────────────────────
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  namespace: web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      serviceAccountName: garage-sa
+      initContainers:
+
+        # 1. Attend que le Secret garage-s3-creds existe (créé par le Job)
+        - name: wait-for-secret
+          image: bitnami/kubectl:latest
+          command: [sh, -c]
+          args:
+            - |
+              echo "Attente du Secret garage-s3-creds..."
+              until kubectl get secret garage-s3-creds -n web 2>/dev/null; do
+                echo "  pas encore prêt, retry dans 5s..."
+                sleep 5
+              done
+              echo "Secret trouvé !"
+              # Copier les credentials dans /creds pour l'étape suivante
+              kubectl get secret garage-s3-creds -n web \
+                -o jsonpath='{.data.access-key}' | base64 -d > /creds/access-key
+              kubectl get secret garage-s3-creds -n web \
+                -o jsonpath='{.data.secret-key}' | base64 -d > /creds/secret-key
+          volumeMounts:
+            - name: creds
+              mountPath: /creds
+
+        # 2. Télécharge le contenu S3 dans /html
+        - name: sync-s3
+          image: amazon/aws-cli:latest
+          command: [sh, -c]
+          args:
+            - |
+              set -e
+              export AWS_ACCESS_KEY_ID=$(cat /creds/access-key)
+              export AWS_SECRET_ACCESS_KEY=$(cat /creds/secret-key)
+              export AWS_DEFAULT_REGION=garage
+              echo "Sync depuis s3://web..."
+              aws --endpoint-url http://garage.web.svc.cluster.local:3900 \
+                  s3 sync s3://web/ /html/
+              echo "Contenu synchronisé :"
+              ls -la /html/
+          volumeMounts:
+            - name: html
+              mountPath: /html
+            - name: creds
+              mountPath: /creds
+
+      containers:
+        - name: nginx
+          image: nginx:1.27-alpine
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: html
+              mountPath: /usr/share/nginx/html
+              readOnly: true
+          readinessProbe:
+            httpGet: { path: /, port: 80 }
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          resources:
+            requests: { cpu: 50m,  memory: 32Mi }
+            limits:   { cpu: 200m, memory: 128Mi }
+
+      volumes:
+        - name: html
+          emptyDir: {}
+        - name: creds
+          emptyDir:
+            medium: Memory   # credentials uniquement en RAM
+
+---
+# ─── Service nginx : LoadBalancer ─────────────────────────────────────────────
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  namespace: web
+spec:
+  type: LoadBalancer
+  selector:
+    app: nginx
+  ports:
+    - port: 80
+      targetPort: 80
