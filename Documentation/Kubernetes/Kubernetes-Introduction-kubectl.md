@@ -16,8 +16,10 @@ kubectl describe pod nginx-pod
 
 #1.3 - Port-forward pour tester localement (localhost)
 kubectl port-forward pod/nginx-pod 8080:80
+
 # ou en précisant l'adresse IP: 
-kubectl port-forward --address 192.168.2.49,localhost svc/nginx-service 8080:80
+kubectl port-forward --address 192.168.2.49,localhost pod/nginx-pod 8080:80
+
 # 0.0.0.0 expose le port sur toutes les interfaces réseau de la machine
 
 # ATTENTION -> Dans un autre terminal

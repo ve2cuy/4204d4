@@ -887,3 +887,10 @@ La méthode recommandée par l'équipe Garage est d'utiliser leur chart Helm off
 helm install --create-namespace --namespace garage \
   garage ./garage -f values.override.yaml
 ```
+
+---
+
+## Références
+
+* https://github.com/HurbaLurba/garage-k8s-deployment/tree/main
+* https://medium.com/@kryukz/garage-standalone-your-lightweight-s3-compatible-object-storage-journey-5073bd51b566
