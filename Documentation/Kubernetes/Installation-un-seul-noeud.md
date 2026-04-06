@@ -423,11 +423,30 @@ networking:
 ```
 
 ```bash
-kind create cluster --name mon-multinode-cluster --config mon-cluster.yaml
+$ kind create cluster --name mon-multinode-cluster --config mon-cluster.yaml
+
+# Résultat:
+Creating cluster "mon-multinode-cluster" ...
+ ✓ Ensuring node image (kindest/node:v1.35.0) 🖼
+ ✓ Preparing nodes 📦 📦 📦
+ ✓ Writing configuration 📜
+ ✓ Starting control-plane 🕹️
+ ✓ Installing CNI 🔌
+ ✓ Installing StorageClass 💾
+ ✓ Joining worker nodes 🚜
+Set kubectl context to "kind-mon-multinode-cluster"
+
+You can now use your cluster with:
+
+kubectl cluster-info --context kind-mon-multinode-cluster
+
+Have a nice day! 👋
 
 # Pour effacer,
 kind delete cluster --name mon-multinode-cluster
 ```
+
+[Référence]()
 
 ---
 

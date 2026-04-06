@@ -63,7 +63,12 @@ spec:
 ```
 
 ```
-kubectl apply -f https://raw.githubusercontent.com/ve2cuy/4204d4/refs/heads/main/module01/superminou.yml
+$ kubectl apply -f filename.yaml
+
+$ kubectl port-forward --address 192.168.2.49,localhost svc/svc-superminou 8088:80
+
+
+$ kubectl apply -f https://raw.githubusercontent.com/ve2cuy/4204d4/refs/heads/main/module01/superminou.yml
 ```
 
 ---
@@ -112,13 +117,8 @@ spec:
           value: 4204d4
         - name: MONGO_INITDB_ROOT_PASSWORD
           value: secret
-        resources:
-          requests:
-            memory: "64Mi"
-            cpu: "250m"
-          limits:
-            memory: "128Mi"
-            cpu: "500m"          
+        # Attention aux ressources ici, l'app ne fonctionnera pas avec 128Mi  
+        resources: {}
 
 ---
 
@@ -167,13 +167,19 @@ spec:
         - name: ME_CONFIG_MONGODB_SERVER
           # ATTENTION, il faut utiliser le service pour l'accès à la BD
           value: mongodb-service
-        resources:
-          requests:
-            memory: "64Mi"
-            cpu: "250m"
-          limits:
-            memory: "128Mi"
-            cpu: "500m"          
+        # Variables pour l'authentification de mongo-express GUI
+        - name: ME_CONFIG_BASICAUTH_USERNAME
+          value: admin
+        - name: ME_CONFIG_BASICAUTH_PASSWORD
+          value: password          
+
+        resources: {}
+#          requests:
+#            memory: "64Mi"
+#            cpu: "250m"
+#          limits:
+#            memory: "128Mi"
+#            cpu: "500m"          
 ---
 apiVersion: v1
 kind: Service
@@ -310,6 +316,11 @@ Events:
 **Action 1.7 –** Exposer le service 'mongo-express' au monde extérieur:
 
 ```
+# Sur un cluster local:
+$ kubectl port-forward --address 192.168.2.49,localhost svc/mongo-express-service 9000:8081
+
+
+# Sur minikube:
 $ minikube service mongo-express-service
 ```
 
@@ -333,7 +344,8 @@ Il faut mettre en place, grace à deux manifestes, un déploiement **WordPress**
 * utilisateur de la BD WP = labo01
 * mot de passe de l'utilisateur de la BD WP = yodouloudou
 * Port TCP externe: 88  
-  Appliquer le manifeste et vérifier que l'application fonctionne.
+* Appliquer le manifeste et vérifier que l'application fonctionne:
+  * `kubectl port-forward` ...
 
 **Action Labo01.1**
 
@@ -389,6 +401,6 @@ Prochain document: [K8s-Configmap et Secrets](Kubernetes-Config-map-et-secret.md
 
 ---
 
-###### Document rédigé par Alain Boudreault (c) 2021-2026 – version 2025.12.05.01
+###### Document rédigé par Alain Boudreault (c) 2021-2026 – version 2026.04.06.01
 
 site par ve2cuy</parameter>
