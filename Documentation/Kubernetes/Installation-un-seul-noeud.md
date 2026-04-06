@@ -405,6 +405,32 @@ kubeadm reset
 
 ---
 
+## Installation d'un cluster avec `kind`
+
+```yaml
+# Kind cluster configuration for multiple nodes
+# fichier: mon-cluster.yaml
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+- role: control-plane
+- role: worker
+- role: worker
+
+networking:
+  apiServerAddress: "127.0.0.1"
+  apiServerPort: 6443
+```
+
+```bash
+kind create cluster --name mon-multinode-cluster --config mon-cluster.yaml
+
+# Pour effacer,
+kind delete cluster --name mon-multinode-cluster
+```
+
+---
+
 **NOTE**: Voir les alias K8s dans la section [copier/coller](https://4204d4.ve2cuy.com/docker-copier-coller/)
 
 ---
