@@ -40,7 +40,7 @@ Voici un exemple:
 # Fichier: unConfigMap.yml
 # Auteur: Alain Boudreault
 # Projet: 420-4D4-Semaine 09
-# Date: 2021.03.31-2023.04.04
+# Date: 2021.03.31-2026.04.04
 # ------------------------------------------------------------------------------
 # Description:  Exemple d'un configMap K8s
 # ------------------------------------------------------------------------------
@@ -70,7 +70,7 @@ Voici comment utiliser ce configMap:
 # Fichier: busybox.yml
 # Auteur: Alain Boudreault
 # Projet: 420-4D4-Semaine 09
-# Date: 2021.03.31-2023.04.04
+# Date: 2021.03.31-2026.04.04
 # ------------------------------------------------------------
 # Exemple d'un manifeste pour un Pod avec des variables d'env,
 # renseignées par un configMap
@@ -126,7 +126,7 @@ Voici un exemple d'utilisation 'MySQL' de variables individuelles d'environnemen
 ```
 # Fichier: mysqlConfigMap.yml
 # Projet: 420-4D4-Semaine 09
-# Date: 2021.03.31-2023.04.04
+# Date: 2021.03.31-2026.04.04
 # ------------------------------------------------------------------------------
 # Description:  Exemple d'un configMap pour un Pod MySQL
 # ------------------------------------------------------------------------------
@@ -148,7 +148,7 @@ data:
 # Fichier: mysql.yml
 # Auteur: Alain Boudreault
 # Projet: 420-4D4-Semaine 09
-# Date: 2021.04.01-2023.04.04
+# Date: 2021.04.01-2026.04.04
 # -------------------------------------------------------------------------
 # Exemple d'un manifeste pour un Pod mysql avec des variables d'env,
 # renseignées par un configMap
@@ -203,7 +203,7 @@ Kubectl apply -f mysql.yml
 **Action 3.5 –** Valider la création de la BD 'wordpress'
 
 ```
-kubectl exec -it meta-mysql -- bash
+$ kubectl exec -it  pod/meta-mysql -- mysql -uwp -pwp
 ```
 
 ```
@@ -263,7 +263,7 @@ La directive '*envFrom*' permet l'importation des toutes les variables d'un '*co
 # Fichier: mysql-v2.yml
 # Auteur: Alain Boudreault
 # Projet: 420-4D4-Semaine 09
-# Date: 2021.04.01-2023.04.04
+# Date: 2021.04.01-2026.04.04
 # ------------------------------------------------------------------
 # Exemple d'un manifeste pour un Pod mysql avec des variables d'env,
 # renseignées par un configMap complet, la directive 'envFrom'
@@ -290,20 +290,20 @@ spec:
 **Action 3.6.2 –** Appliquer le manifeste et vérifier que le SGBD fonctionne selon les directives des variables d'environnement.
 
 ```
-kubectl apply -f mysql-v2.yml
+$ kubectl apply -f mysql-v2.yml
 
-Kubectl exec -it meta-mysql-v2 -- bash
+$ Kubectl exec -it  pod/meta-mysql-v2 -- mysql -uwp -pwp
 ```
 
 ---
 
 <img src="../images/labo03.png" alt="" width="700" />
 
-### Laboratoire 4
+### Laboratoire 4 - 👉 IMPORTANT
 
-Reprendre le **Laboratoire 1** en utilisant la directive **envFrom** pour les variables d'environnement du SGDB et de WordPress.
+Reprendre le **Laboratoire 1, Section 2 de ce [--> document](/Documentation/Kubernetes/Kubernetes-partie-2.md)** en utilisant la directive **`envFrom`** pour les variables d'environnement du SGDB et de WordPress.
 
-**Note**:  Il faut utiliser deux 'configMap'.
+**Note**:  Il faut utiliser deux `configMap`.
 
 ---
 
@@ -315,14 +315,14 @@ Reprendre le **Laboratoire 1** en utilisant la directive **envFrom** pour les va
 
 ---
 
-## Voici l'exemple d'un volume K8S monté localement.
+## Voici l'exemple d'un volume K8S monté localement sur un noeud.
 
 **Note**: Ceci n'est pas une pratique recommandée.
 
 **Action 4.1 –** Créer un dossier et un fichier index.html, pour la liaison avec un pod de type nginx:
 
 ```
-# 1 - créer un dossier
+# 1 - créer un dossier sur un des noeuds du cluster
 mkdir web-data
 
 # 2 - Obtenir le chemin absolu du dossier pour référence dans l'étape suivante:
@@ -339,12 +339,14 @@ echo 'Ceci est la page index.html du serveur web.' > web-data/index.html
 
 **Action 4.2 –** Renseigner le manifeste suivant:
 
+NOTE: 💡 Il faut remarquer et renseigner correctement la clé `nodeName:`
+
 ```
 # -------------------------------------------------------------
 # Fichier: nginx_volume.yml
 # Auteur: Alain Boudreault
 # Projet: 420-4D4-Semaine 09
-# Date: 2021.04.03-2023.04.04
+# Date: 2021.04.03-2026.04.04
 # -------------------------------------------------------------
 # Exemple d'un manifeste pour un Pod nginx avec un volume local
 # https://kubernetes.io/fr/docs/concepts/storage/volumes/
@@ -355,6 +357,7 @@ kind: Pod
 metadata:
   name: serveur-web
 spec:
+  nodeName: k8ssrv   # nom exact du nœud sur lequel vous avez créé le dossier!
   containers:
   - name: nginx
     image: nginx
@@ -403,8 +406,7 @@ Référence Kubernetes sur les [volumes](https://kubernetes.io/docs/tasks/config
 
 ---
 
-### NOTE: Volume hostPath Minikube sur Linux
-
+### NOTE: Volume hostPath sur Minikube
 La version **Minikube** de **Linux** n'**expose pas automatiquement** le système de fichiers du host aux Pods.
 
 Il faut monter manuellement  les volumes de la façon suivante:
@@ -413,7 +415,9 @@ Il faut monter manuellement  les volumes de la façon suivante:
 minikube mount /home/alain/420-4d4/web-data:/usr/share/nginx/html
 ```
 
-Une autre alternative et d'utiliser la directive '***DirectoryOrCreate***'
+---
+
+💡 Une autre alternative et d'utiliser la directive '***DirectoryOrCreate***'
 
 ```
   volumes:
@@ -423,7 +427,7 @@ Une autre alternative et d'utiliser la directive '***DirectoryOrCreate***'
      type: DirectoryOrCreate
 ```
 
-Cette directive va créer le dossier à l'intérieur de la VM de Minikube.
+Cette directive va créer le dossier automatiquement sur le noeud où roulera le pod.
 
 En s'y connectant, il sera possible de valider la présence du dossier:
 
@@ -453,7 +457,7 @@ Dans l'exemple suivant, nous allons renseigner le contenu d'un fichier lié à u
 # Fichier: configMapNginx.yml
 # Auteur: Alain Boudreault
 # Projet: 420-4D4-Semaine 09
-# Date: 2021.04.03-2023.04.04
+# Date: 2021.04.03-2026.04.04
 # ------------------------------------------------------------------------------
 # Description:  Exemple d'un volume (fichier) à partir d'un configMap
 # ------------------------------------------------------------------------------
@@ -479,7 +483,7 @@ data:
 # Fichier: nginx+volumeVer2.yml
 # Auteur: Alain Boudreault
 # Projet: 420-4D4-Semaine 09
-# Date: 2021.04.03-2023.04.04
+# Date: 2021.04.03-2026.04.04
 # -------------------------------------------------------------
 # Exemple d'un manifeste pour un Pod nginx avec un volume local
 #   défini via un configMap.
@@ -540,9 +544,11 @@ spec:
 **Action 4.4.3 –** Appliquer les manifestes et tester l'application
 
 ```
-kubectl apply -f configMapNginx.yml
-kubectl apply -f nginx+volumeVer2.yml
-minikube service nginx-service
+$ kubectl apply -f configMapNginx.yml
+$ kubectl apply -f nginx+volumeVer2.yml
+$ kubectl port-forward --address 192.168.2.49,localhost svc/nginx-service 8080:80
+
+# minikube service nginx-service
 ```
 
 **Note:** Le manifeste pour nginx est identique à celui que nous avons vu [ici à l'action 3.10](http://ve2cuy.com/420-4d4b/index.php/kubernetes-introduction/).  *Seules les directives au volume ont été ajoutées.*
@@ -594,7 +600,7 @@ Events:  <none>
 # Fichier: nginx+volumeVer3.yml
 # Auteur: Alain Boudreault
 # Projet: 420-4D4-Semaine 09
-# Date: 2021.04.03-2023.04.04
+# Date: 2021.04.03-2026.04.04
 # ------------------------------------------------------
 # Exemple d'un manifeste pour un Pod nginx avec un 
 #   dossier local défini via un configMap.
@@ -770,7 +776,7 @@ $ kubectl edit secrets mysql-password
 # Fichier: mysql+secret.yml
 # Auteur: Alain Boudreault
 # Projet: 420-4D4-Semaine 09
-# Date: 2021.04.03-2023.04.04
+# Date: 2021.04.03-2026.04.04
 # -------------------------------------------------------------------------
 # Exemple d'un manifeste pour un Pod mysql avec le mot de passe 'root'
 #   dans un 'secret'.
@@ -834,7 +840,7 @@ data:
 # Fichier: mysql+secretV2.yml
 # Auteur: Alain Boudreault
 # Projet: 420-4D4-Semaine 09
-# Date: 2021.04.03-2023.04.04
+# Date: 2021.04.03-2026.04.04
 # -------------------------------------------------------------------------
 # Exemple d'un manifeste pour un Pod mysql avec toutes les informations
 #   de création du conteneur, dans un 'secret'.
@@ -889,7 +895,7 @@ mysql> show DATABASES;
 
 ### Laboratoire 6
 
-Reprendre le **Laboratoire 3** en utilisant une ressource 'secret' pour le mot de passe et un configMap pour les autres informations.
+Reprendre le **Laboratoire 3 de ce --> [document](/Documentation/Kubernetes/Kubernetes-partie-2.md) ** en utilisant une ressource 'secret' pour le mot de passe et un configMap pour les autres informations.
 
 ---
 
@@ -903,6 +909,6 @@ Référence: [K8s-secret](https://kubernetes.io/fr/docs/concepts/configuration/s
 
 ---
 
-###### Document rédigé par Alain Boudreault (c) 2021-2026 – version 2025.12.05.01
+###### Document rédigé par Alain Boudreault (c) 2021-2026 – version 2026.04.06.01
 
 site par ve2cuy

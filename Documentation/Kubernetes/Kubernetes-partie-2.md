@@ -403,4 +403,4 @@ Prochain document: [K8s-Configmap et Secrets](Kubernetes-Config-map-et-secret.md
 
 ###### Document rédigé par Alain Boudreault (c) 2021-2026 – version 2026.04.06.01
 
-site par ve2cuy</parameter>
+site par ve2cuy
