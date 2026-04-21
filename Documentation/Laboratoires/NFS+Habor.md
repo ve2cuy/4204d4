@@ -52,7 +52,18 @@ En utilisant votre projet `Google Cloud` du Cégep, il faut:
   * Avec PowerShell Admin-> code C:\WINDOWS\system32\drivers\etc\hosts
   * adresseIP_VM mon-domaine.duckdns.org
 * Tester l'accès NFS à partir d'un poste local sous Linux
-* Tester l'accès à Habor
+* Tester l'accès à Harbor
+
+
+---
+
+## 💡Défi supplémentaire (demandé lors de l'épreuve synthèse)
+
+* Générer les certificats pour une connexion https
+  * sudo apt install certbot
+  * sudo certbot certonly --standalone -d ...
+  * nano harbor.yml ...
+  * ...
 
 ---
 
