@@ -12,9 +12,9 @@
     * **IMPORTANT:** 👉 Ajuster à la version actuelle de `Harbor`
     * 💡 `docker` doit être disponible pour installer `harbor` 
 * Ajouter une référence au DNS local (windows) pour:
-  * **harbor**
-  * **mon.registre.info**
-
+  * Avec PowerShell Admin-> code C:\WINDOWS\system32\drivers\etc\hosts
+    * **harbor**  
+    * **mon.registre.info**
 ---
 
 <img src="../images/labo03.png" alt="" width="700" />
@@ -30,8 +30,10 @@ En utilisant votre projet `Google Cloud` du Cégep, il faut:
   * Disque de 15go
   * Port HTTP ouvert
 * Installer un service `NFS` avec un partage sur le dossier `/esh26`
+  * Un document de référence est disponible --> [ici](https://ve2cuy.com/420-3c3/?page_id=2511)
   * ATTENTION: Ne pas créer le dossier dans votre dossier de travail mais bien dans `\`
   * Renseigner le `firewall` du projet pour exposer les ports requis pour `NFS`
+    * 👉 Voir le document de référence
 * Créer un fichier `/esh26/index.html` avec le texte de votre choix
 * Utiliser un service DNS gratuit - [duckdns](https://www.duckdns.org/) - pour pointer vers votre serveur
   * Créer un domaine sur `duckdns`
