@@ -94,6 +94,10 @@
 * [51 - Épreuve synthèse Volet B - Examen : 35 %]
 * [99 - kubectl - Référence rapide](Documentation/Kubernetes/Kubernetes-Reference-rapide.md) 👍
 
+
+### Formatifs et Laboratoires
+
+* [60 - Google.Cloud NFS et Harbor]()
 ---
 
 ### Outils
