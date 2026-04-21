@@ -18,6 +18,7 @@ En utilisant votre projet Google Cloud du Cégep, il faut:
 * Créer un fichier /esh26/index.html avec le texte de votre choix
 * Installer Habor, voir le [document](https://ve2cuy.github.io/4204d4/Installation/Registre-priv%C3%A9-d-images.html)
 * Renseigner le firewall du projet pour exposer les ports requis pour NFS et Habor
+* Utiliser un service DNS gratuit - [duckdns](https://www.duckdns.org/) - pour pointer vers votre serveur
 * Tester l'accès NFS à partir d'un poste local sous Linux
 * Tester l'accès à Habor
 * 
