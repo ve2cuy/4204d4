@@ -86,6 +86,14 @@ spec:
     image: busybox
     command: ["/bin/sh", "-c",  "env"]
 
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "250m"
+      limits:
+        memory: "128Mi"
+        cpu: "500m"    
+
 # Lors des exemples précédents, nous avons renseigné la Var ENV comme suit:
 #   env:
 #   - name: ENV01
@@ -160,6 +168,13 @@ metadata:
 spec:
   containers:
   - name: mysql
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "250m"
+      limits:
+        memory: "512Mi"
+        cpu: "500m"  
     image: mysql
     env:
     - name: MYSQL_ROOT_PASSWORD
@@ -275,6 +290,14 @@ metadata:
 spec:
   containers:
   - name: mysql-v2
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "250m"
+      limits:
+        memory: "512Mi"
+        cpu: "500m"
+          
     image: mysql
 
     # Noter que la directive est 'envFrom:' 
@@ -301,7 +324,7 @@ $ Kubectl exec -it  pod/meta-mysql-v2 -- mysql -uwp -pwp
 
 ### Laboratoire 4 - 👉 IMPORTANT
 
-Reprendre le **Laboratoire 1, Section 2 de ce [--> document](/Documentation/Kubernetes/Kubernetes-partie-2.md)** en utilisant la directive **`envFrom`** pour les variables d'environnement du SGDB et de WordPress.
+Reprendre le **Laboratoire 1, Section 2 de ce [--> document](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-partie-2.html)** en utilisant la directive **`envFrom`** pour les variables d'environnement du SGDB et de WordPress.
 
 **Note**:  Il faut utiliser deux `configMap`.
 
@@ -895,7 +918,7 @@ mysql> show DATABASES;
 
 ### Laboratoire 6
 
-Reprendre le **Laboratoire 3 de ce --> [document](/Documentation/Kubernetes/Kubernetes-partie-2.md) ** en utilisant une ressource 'secret' pour le mot de passe et un configMap pour les autres informations.
+Reprendre le **Laboratoire 3 de ce --> [document](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-partie-2.html) ** en utilisant une ressource 'secret' pour le mot de passe et un configMap pour les autres informations.
 
 ---
 

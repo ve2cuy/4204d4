@@ -1,0 +1,78 @@
+# ------------------------------------------------------------------------------
+# Fichier: unConfigMap.yml
+# Auteur: Alain Boudreault
+# Projet: 420-4D4-Semaine 09
+# Date: 2021.03.31-2026.04.04
+# ------------------------------------------------------------------------------
+# Description:  Exemple d'un configMap K8s
+# ------------------------------------------------------------------------------
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: kekun
+data:
+  # Voici des variables définies à la pièce:
+  nom: Bob
+  prenom: Binette
+
+  # Voici des variables définies en bloc:
+  unBlocDeClef: |
+
+    age.bloc=33
+    email.bloc=binette@brrr.poff
+    cell.bloc=123.456.7890
+
+---
+# ------------------------------------------------------------
+# Fichier: busybox.yml
+# Auteur: Alain Boudreault
+# Projet: 420-4D4-Semaine 09
+# Date: 2021.03.31-2026.04.04
+# ------------------------------------------------------------
+# Exemple d'un manifeste pour un Pod avec des variables d'env,
+# renseignées par un configMap
+# https://cloud.google.com/kubernetes-engine/docs/concepts/configmap?hl=fr
+# ------------------------------------------------------------
+apiVersion: v1
+kind: Pod
+metadata:
+  name: meta-busybox
+spec:
+  containers:
+  - name: ma-busybox
+    image: busybox
+    command: ["/bin/sh", "-c",  "env"]
+
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "250m"
+      limits:
+        memory: "128Mi"
+        cpu: "500m"    
+
+# Lors des exemples précédents, nous avons renseigné la Var ENV comme suit:
+#   env:
+#   - name: ENV01
+#     value: YoDouloudou
+# Remarquez qu'avec un configMap, la syntaxe est un peu différente!
+    env:
+    # Voici des exemples d'utilisation de variables définies à la pièce:
+    - name: NOM
+      valueFrom: 
+        configMapKeyRef:
+          name: kekun  # kekun est le nom de la configMap
+          key: nom
+
+    - name: PRENOM
+      valueFrom: 
+        configMapKeyRef:
+          name: kekun
+          key: prenom
+
+    # Voici un exemple d'utilisation de variables définies en bloc:
+    - name: LEBLOC
+      valueFrom: 
+        configMapKeyRef:
+          name: kekun
+          key: unBlocDeClef

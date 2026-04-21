@@ -1,0 +1,67 @@
+# Fichier: mysqlConfigMap.yml
+# Projet: 420-4D4-Semaine 09
+# Date: 2021.03.31-2026.04.04
+# ------------------------------------------------------------------------------
+# Description:  Exemple d'un configMap pour un Pod MySQL
+# ------------------------------------------------------------------------------
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: mysql-env
+data:
+  MYSQL_ROOT_PASSWORD: yo
+  MYSQL_DATABASE: wordpress
+  MYSQL_USER: wp
+  MYSQL_PASSWORD: wp
+
+---
+
+# ------------------------------------------------------------
+# Fichier: mysql.yml
+# Auteur: Alain Boudreault
+# Projet: 420-4D4-Semaine 09
+# Date: 2021.04.01-2026.04.04
+# -------------------------------------------------------------------------
+# Exemple d'un manifeste pour un Pod mysql avec des variables d'env,
+# renseignées par un configMap
+# -------------------------------------------------------------------------
+apiVersion: v1
+kind: Pod
+metadata:
+  name: meta-mysql
+spec:
+  containers:
+  - name: mysql
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "250m"
+      limits:
+        memory: "512Mi"
+        cpu: "500m"
+
+    image: mysql
+    env:
+    - name: MYSQL_ROOT_PASSWORD
+      valueFrom: 
+        configMapKeyRef:
+          name: mysql-env  # mysql-env est le nom de la configMap
+          key: MYSQL_ROOT_PASSWORD # MYSQL_ROOT_PASSWORD est le nom de la var dans le configMap
+
+    - name: MYSQL_DATABASE
+      valueFrom: 
+        configMapKeyRef:
+          name: mysql-env
+          key: MYSQL_DATABASE
+
+    - name: MYSQL_USER
+      valueFrom: 
+        configMapKeyRef:
+          name: mysql-env
+          key: MYSQL_USER
+
+    - name: MYSQL_PASSWORD
+      valueFrom: 
+        configMapKeyRef:
+          name: mysql-env
+          key: MYSQL_PASSWORD
