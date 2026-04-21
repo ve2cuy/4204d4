@@ -5,7 +5,7 @@
 
 ---
 
-## 👉 Partie 1
+# 👉 Partie 1
 
 * À partir d'un clone de la VM principale (`labo420`), nommé `Harbor`
 * Réaliser le laboratoire [Harbor](https://ve2cuy.github.io/4204d4/Installation/Registre-priv%C3%A9-d-images.html)
@@ -14,15 +14,15 @@
 * Ajouter une référence au DNS local (windows) pour:
   * **harbor**
   * **mon.registre.info**
+
 ---
 
 <img src="../images/labo03.png" alt="" width="700" />
 
-## 👉 Partie 2
-
-
+# 👉 Partie 2
 
 ---
+
 
 En utilisant votre projet `Google Cloud` du Cégep, il faut:
 
