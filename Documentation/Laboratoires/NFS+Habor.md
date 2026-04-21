@@ -4,7 +4,7 @@
 
 ### Partie 1
 
-* À partir d'un clone de la VM principale, nommé Habor
+* À partir d'un clone de la VM principale, nommé `Harbor`
 * Réaliser le laboratoire [Harbor](https://ve2cuy.github.io/4204d4/Installation/Registre-priv%C3%A9-d-images.html)
     * NOTE: Ajuster à la version actuelle de Harbor
 
