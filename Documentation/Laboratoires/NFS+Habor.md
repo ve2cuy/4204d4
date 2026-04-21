@@ -1,25 +1,65 @@
-## Laboratoire NFS+Harbor
+# Laboratoire NFS+Harbor
+
 
 <img src="../images/labo02.png" alt="" width="700" />
 
-### Partie 1
+---
 
-* À partir d'un clone de la VM principale, nommé `Harbor`
+## 👉 Partie 1
+
+* À partir d'un clone de la VM principale (`labo420`), nommé `Harbor`
 * Réaliser le laboratoire [Harbor](https://ve2cuy.github.io/4204d4/Installation/Registre-priv%C3%A9-d-images.html)
-    * NOTE: Ajuster à la version actuelle de Harbor
+    * **IMPORTANT:** 👉 Ajuster à la version actuelle de `Harbor`
+    * 💡 `docker` doit être disponible pour installer `harbor` 
+* Ajouter une référence au DNS local (windows) pour:
+  * **harbor**
+  * **mon.registre.info**
+---
+
+<img src="../images/labo03.png" alt="" width="700" />
+
+## 👉 Partie 2
+
+
 
 ---
 
-### Partie 2
+En utilisant votre projet `Google Cloud` du Cégep, il faut:
 
-En utilisant votre projet Google Cloud du Cégep, il faut:
-
-* Créer une VM Ubuntu 24.04LTS sur us-central1, de type e2-small
-* Installer un service NFS avec un partage sur le dossier /esh26
-* Créer un fichier /esh26/index.html avec le texte de votre choix
-* Installer Harbor, voir le [document](https://ve2cuy.github.io/4204d4/Installation/Registre-priv%C3%A9-d-images.html)
-* Renseigner le firewall du projet pour exposer les ports requis pour NFS et Harbor
+* Créer une VM `Ubuntu 24.04LTS` sur `us-central1`, de type 👉 `e2-small`
+  * Disque de 15go
+  * Port HTTP ouvert
+* Installer un service `NFS` avec un partage sur le dossier `/esh26`
+  * ATTENTION: Ne pas créer le dossier dans votre dossier de travail mais bien dans `\`
+  * Renseigner le `firewall` du projet pour exposer les ports requis pour `NFS`
+* Créer un fichier `/esh26/index.html` avec le texte de votre choix
 * Utiliser un service DNS gratuit - [duckdns](https://www.duckdns.org/) - pour pointer vers votre serveur
+  * Créer un domaine sur `duckdns`
+  * Utiliser l'adresse `IP externe` de la VM
+* Installer `Harbor`, voir le [document](https://ve2cuy.github.io/4204d4/Installation/Registre-priv%C3%A9-d-images.html)
+  * NOTE: 💡 `docker` doit être disponible pour installer `harbor` 
+  * 🛑 ATTENTION: Pensez à changer le mot de passe dans `harbor.yml`
+    * `harbor_admin_password:`
+  * Utiliser le nom de domaine de `duckdns` comme `hostname`
+    * Par exemple, `hostname: 4204d4.duckdns.org` 
+  * Utiliser le port 80
+    * http:
+      * port: 80
+  * 🤚 Mettre en commentaire la section HTTPS
+* Ajouter une référence au DNS local (windows)  pour le domaine `duckdns`
+  * Avec PowerShell Admin-> code C:\WINDOWS\system32\drivers\etc\hosts
+  * adresseIP_VM mon-domaine.duckdns.org
 * Tester l'accès NFS à partir d'un poste local sous Linux
 * Tester l'accès à Habor
-* 
+
+---
+
+NOTE: 😉 Ce laboratoire est un pré-requis à l'épreuve synthèse du cours
+
+---
+
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Version 2026.04.21.2*  
+*Site par [ve2cuy](https://ve2cuy.com)*
