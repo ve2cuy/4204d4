@@ -1,0 +1,84 @@
+# ------------------------------------------------------------------------------
+# Fichier: configMapNginx.yml
+# Auteur: Alain Boudreault
+# Projet: 420-4D4-Semaine 09
+# Date: 2021.04.03-2026.04.04
+# ------------------------------------------------------------------------------
+# Description:  Exemple d'un volume (fichier) à partir d'un configMap
+# ------------------------------------------------------------------------------
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: nginx-config-map
+data:
+ # Voici le contenu, défini en bloc:
+  contenu: |
+    <head>
+      <meta charset="UTF-8">
+    </head>
+    Il fît de la sorte,<br/>
+    un assez long chemin.<br/>
+    <bold>;-)</bold>
+
+---
+# -------------------------------------------------------------
+# Fichier: nginx+volumeVer2.yml
+# Auteur: Alain Boudreault
+# Projet: 420-4D4-Semaine 09
+# Date: 2021.04.03-2026.04.04
+# -------------------------------------------------------------
+# Exemple d'un manifeste pour un Pod nginx avec un volume local
+#   défini via un configMap.
+# -------------------------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+# Section 1 - Les Méta-données
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+# Section 2 - Les spécifications
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.16
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html
+          name: volume-web
+    # Définition des volumes
+      volumes:
+      - name: volume-web
+        configMap:
+          name: nginx-config-map # tel que nommé dans le configMap
+          items:
+            - key: contenu       # tel que nommé
+              path: index.html
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      # Port à exposer au reseau local K8s
+      port: 80
+      # Port du conteneur - containerPort
+      targetPort: 80
+      nodePort: 30003
+          

@@ -1,0 +1,57 @@
+# ------------------------------------------------------
+# Fichier: nginx+volumeVer3.yml
+# Auteur: Alain Boudreault
+# Projet: 420-4D4-Semaine 09
+# Date: 2021.04.03-2026.04.04
+# ------------------------------------------------------
+# Exemple d'un manifeste pour un Pod nginx avec un 
+#   dossier local défini via un configMap.
+# ------------------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+# Section 1 - Les Méta-données
+metadata:
+  name: nginx-deployment-v3
+  labels:
+    app: nginx
+# Section 2 - Les spécifications
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.16
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html
+          name: contenu-web
+
+    # Définition des volumes
+      volumes:
+      - name: contenu-web
+        configMap:
+          name: un-dir
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      # Port à exposer au reseau local K8s
+      port: 85
+      # Port du conteneur - containerPort
+      targetPort: 80
+      nodePort: 30003
