@@ -13,12 +13,13 @@ Voir --> [ici pour l'application](https://docs.cloud.google.com/sdk/docs/install
 
 ---
 
-### Connexion au context du cluster sur Google
+### Connexion au contexte du cluster sur Google
 
 Voici comment ajouter les informations de connexion du cluster Google au fichier local `.kube/config`:
 
 * 1 - Obtenir la commande de connexion via le console GCloud
 
+<img src="../images/gcloud-04.png" alt="" width="700" />
 <img src="../images/gcloud-03.png" alt="" width="500" />
 
 ```
@@ -98,7 +99,6 @@ replicaset.apps/nginx-deployment-6c4bc789b6   4         4         4       3m53s
 
 ## Consulter l'état du déploiment via la console GCloud
 
-<img src="../images/gcloud-04.png" alt="" width="700" />
 <img src="../images/gcloud-05.png" alt="" width="700" />
 
 ---
