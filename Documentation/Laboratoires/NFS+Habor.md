@@ -48,9 +48,6 @@ En utilisant votre projet `Google Cloud` du Cégep, il faut:
     * http:
       * port: 80
   * 🤚 Mettre en commentaire la section HTTPS
-* Ajouter une référence au DNS local (windows)  pour le domaine `duckdns`
-  * Avec PowerShell Admin-> code C:\WINDOWS\system32\drivers\etc\hosts
-  * adresseIP_VM mon-domaine.duckdns.org
 * Tester l'accès NFS à partir d'un poste local sous Linux
 * Tester l'accès à Harbor
 
