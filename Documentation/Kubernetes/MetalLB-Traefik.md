@@ -153,7 +153,7 @@ gateway:
         from: All
 ```
 
-## Version plus récente:
+## 👉 Version plus récente:
 ```yaml
 ingressRoute:
   dashboard:
