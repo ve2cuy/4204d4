@@ -37,7 +37,12 @@ kubectl get nodes
 # ---------------------------------------------------------
 # Installer metallb (LoadBalancer externe)
 # NOTE: Ajuster le numéro de version. Référence: https://metallb.io/installation/
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.9/config/manifests/metallb-native.yaml
+
+# Vérifier la version disponible à
+# https://github.com/kubernetes/ingress-nginx/releases
+# NOTE: Ce projet est en mode 'STOP' depuis 2026.03.24
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.15.1/deploy/static/provider/cloud/deploy.yaml
+
 
 # Résultat:
 # namespace/metallb-system created
@@ -391,6 +396,132 @@ kubectl describe ingress ingress-demo01
 <https://traefik.io/traefik/>
 
 ---
+
+# 💡Exemple complet adapté à GCloud et duckdns
+
+```
+# Tester un reverse proxy avec Nginx Ingress Controller, version pour GCloud
+# Tester avec http://superpitou.es-12345678.gleeze.com/
+# Tester avec http://superminou.es-12345678.gleeze.com/
+# Pré-requis: un cluster Kubernetes avec un Ingress Controller de type Nginx installé et configuré pour gérer les hôtes superminou.es-12345678.gleeze.com et es-12345678.gleeze.com pointant vers l'IP de votre cluster.
+# kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.15.1/deploy/static/provider/cloud/deploy.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: superminou
+  labels:
+    app: un-superminou
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      mon-app: un-superminou
+  template:
+    metadata:
+      labels:
+        mon-app: un-superminou
+    spec:
+      containers:
+      - name: nginx
+        resource: 
+        image: alainboudreault/superminou:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: superminou-service
+spec:
+  selector:
+    mon-app: un-superminou
+  # type: par defaut = ClusterIP, ce qui est requis pour le service ingress
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    mon-app: un-superpitou
+  name: super-pitou
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      mon-app: un-superpitou
+  template:
+    metadata:
+      labels:
+        mon-app: un-superpitou
+    spec:
+      volumes:
+      - name: webdata
+        emptyDir: {}
+      initContainers:
+      - name: web-content
+        image: busybox
+        volumeMounts:
+        - name: webdata
+          mountPath: "/webdata"
+        command: ["/bin/sh", "-c", 'echo "<h1>Je suis un super <font color=blue>PITOU</font></h1><hr/><h2>Servi par: <?php echo gethostname(); ?></h2>" > /webdata/index.php']
+      containers:
+      - image: php:8.0.3-apache-buster
+        name: php-apache
+        volumeMounts:
+        - name: webdata
+          mountPath: "/var/www/html"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: superpitou-service
+spec:
+  selector:
+    mon-app: un-superpitou
+  # type: par defaut = ClusterIP, ce qui est requis pour le service ingress
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80      
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-demo01
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: superminou.4204d4.duckdns.org
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: superminou-service
+            port: 
+              number: 80
+  - host: superpitou.4204d4.duckdns.org
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: superpitou-service
+            port: 
+              number: 80
+```
+
 
 ## Crédits
 
