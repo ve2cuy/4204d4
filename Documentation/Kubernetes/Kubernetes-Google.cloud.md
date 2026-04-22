@@ -4,10 +4,11 @@
 
 <img src="../images/gcloud-06.png" alt="" width="400" />
 
+---
 
+## Gérer le cluster en mode local, via un terminal
 
-
-## Installation de gcloud
+### Installation de gcloud
 
 **gcloud** est l'outil en ligne de commande (CLI) officiel de Google Cloud Platform (GCP).
 Il permet de gérer et d'interagir avec les services Google Cloud directement depuis un terminal : créer et configurer des ressources (machines virtuelles, bases de données, clusters Kubernetes, etc.), déployer des applications, gérer les accès et authentifications, et automatiser des tâches via des scripts.
