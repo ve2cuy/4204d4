@@ -1,5 +1,12 @@
 <img src="../images/gcloud.png" alt="" width="400" />
 
+À partir de la console Google-Cloud, créer un cluster Kubernetes
+
+<img src="../images/gcloud-06.png" alt="" width="400" />
+
+
+
+
 ## Installation de gcloud
 
 **gcloud** est l'outil en ligne de commande (CLI) officiel de Google Cloud Platform (GCP).
@@ -19,7 +26,9 @@ Voici comment ajouter les informations de connexion du cluster Google au fichier
 
 * 1 - Obtenir la commande de connexion via le console GCloud
 
-<img src="../images/gcloud-04.png" alt="" width="700" />
+
+<img src="../images/gcloud-04.png" alt="" width="500" />
+
 <img src="../images/gcloud-03.png" alt="" width="500" />
 
 ```
