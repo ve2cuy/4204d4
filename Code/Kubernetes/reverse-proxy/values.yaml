@@ -1,0 +1,22 @@
+# values.yaml
+# Sans autres directives, les rêgles suivantes seront en fonction:
+# Les ports 80 et 443 en points d'entrée
+# Le Dashboard sera disponible via 'matchrule'
+# Les routes seront disponibles dans tous le namespace.
+# Activera le 'Kubernetes Gateway API provider'
+ingressRoute:
+  dashboard:
+    enabled: true
+    matchRule: Host(`dashboard.4204d4.duckdns.org`)
+    entryPoints:
+      - web
+
+providers:
+  kubernetesGateway:
+    enabled: true
+
+gateway:
+  listeners:
+    web:
+      namespacePolicy:
+        from: All
