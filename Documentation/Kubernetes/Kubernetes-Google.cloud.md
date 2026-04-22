@@ -11,6 +11,7 @@
 ### Installation de gcloud
 
 **gcloud** est l'outil en ligne de commande (CLI) officiel de Google Cloud Platform (GCP).
+
 Il permet de gérer et d'interagir avec les services Google Cloud directement depuis un terminal : créer et configurer des ressources (machines virtuelles, bases de données, clusters Kubernetes, etc.), déployer des applications, gérer les accès et authentifications, et automatiser des tâches via des scripts.
 
 Voir --> [ici pour l'application](https://docs.cloud.google.com/sdk/docs/install-sdk?hl=fr)
