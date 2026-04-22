@@ -118,6 +118,8 @@ kubectl apply -f Metallb-config.yaml
 [Documentation officielle](https://doc.traefik.io/traefik/getting-started/quick-start-with-kubernetes/)
 
 
+NOTE: 👉 La solution la plus simple est d'installer via `helm`.  Voir [ici pour l'installation de helm](https://github.com/helm/helm/releases) 
+
 ### 3.1 – Déploiement d'un service ingress de type Traefik via Helm
 
 * Ajouter le dépot Helm de Traefik
@@ -151,9 +153,30 @@ gateway:
         from: All
 ```
 
+## Version plus récente:
+```yaml
+ingressRoute:
+  dashboard:
+    enabled: true
+    matchRule: Host(`dashboard.4204d4.duckdns.org`)
+    entryPoints:
+      - web
+
+providers:
+  kubernetesGateway:
+    enabled: true
+
+gateway:
+  listeners:
+    web:
+      namespacePolicy:
+        from: All
+```
+
 * Installer traefik
 
 ```bash
+kubectl create namespace traefik
 helm install traefik traefik/traefik -f values.yaml --wait --namespace traefik
 
 # Suite à des modifications au fichier values.yaml:
@@ -424,6 +447,156 @@ Events:      <none>
 <img src="../images/Capture-decran-le-2023-04-09-a-13.33.26.png" alt="SuperPitou Demo" width="500" />
 
 ---
+
+
+# 💡 Exemple complet version Google-Cloud et DuckDNS
+
+## Fichier values.yaml
+```yaml
+# values.yaml
+# Sans autres directives, les rêgles suivantes seront en fonction:
+# Les ports 80 et 443 en points d'entrée
+# Le Dashboard sera disponible via 'matchrule'
+# Les routes seront disponibles dans tous le namespace.
+# Activera le 'Kubernetes Gateway API provider'
+ingressRoute:
+  dashboard:
+    enabled: true
+    matchRule: Host(`dashboard.4204d4.duckdns.org`)
+    entryPoints:
+      - web
+
+providers:
+  kubernetesGateway:
+    enabled: true
+
+gateway:
+  listeners:
+    web:
+      namespacePolicy:
+        from: All
+```
+
+```bash
+kubectl create namespace traefik
+./helm install traefik traefik/traefik -f values.yaml --wait --namespace traefik
+```
+
+## Le fichier déploiement
+
+```yaml
+# Tester un reverse proxy avec Traefik Ingress Controller, version pour GCloud
+# Tester avec http://superpitou.4204d4.duckdns.org/
+# Tester avec http://superminou.4204d4.duckdns.org/
+# Pré-requis: un cluster Kubernetes avec un Ingress Controller de type Traefik installé et configuré pour gérer les hôtes vers 4204d4.duckdns.org.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: superminou
+  labels:
+    app: un-superminou
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      mon-app: un-superminou
+  template:
+    metadata:
+      labels:
+        mon-app: un-superminou
+    spec:
+      containers:
+      - name: nginx
+        resource: 
+        image: alainboudreault/superminou:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: superminou-service
+spec:
+  selector:
+    mon-app: un-superminou
+  # type: par defaut = ClusterIP, ce qui est requis pour le service ingress
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    mon-app: un-superpitou
+  name: super-pitou
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      mon-app: un-superpitou
+  template:
+    metadata:
+      labels:
+        mon-app: un-superpitou
+    spec:
+      volumes:
+      - name: webdata
+        emptyDir: {}
+      initContainers:
+      - name: web-content
+        image: busybox
+        volumeMounts:
+        - name: webdata
+          mountPath: "/webdata"
+        command: ["/bin/sh", "-c", 'echo "<h1>Je suis un super <font color=blue>PITOU</font></h1><hr/><h2>Servi par: <?php echo gethostname(); ?></h2>" > /webdata/index.php']
+      containers:
+      - image: php:8.0.3-apache-buster
+        name: php-apache
+        volumeMounts:
+        - name: webdata
+          mountPath: "/var/www/html"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: superpitou-service
+spec:
+  selector:
+    mon-app: un-superpitou
+  # type: par defaut = ClusterIP, ce qui est requis pour le service ingress
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80      
+
+---
+
+# whoami-ingressroute.yaml
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: super
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`superminou.4204d4.duckdns.org`)
+      kind: Rule
+      services:
+        - name: superminou-service
+          port: 80
+    - match: Host(`superpitou.4204d4.duckdns.org`)
+      kind: Rule
+      services:
+        - name: superpitou-service
+          port: 80
+```
 
 Certificats TLS - À compléter
 
