@@ -35,7 +35,7 @@ En utilisant votre projet `Google Cloud` du Cégep, il faut:
   * Renseigner le `firewall` du projet pour exposer les ports requis pour `NFS`
     * 👉 Voir le document de référence
 * Créer un fichier `/esh26/index.html` avec le texte de votre choix
-* Utiliser un service DNS gratuit - [duckdns](https://www.duckdns.org/) - pour pointer vers votre serveur
+* Utiliser un service DNS gratuit - [duckdns](https://www.duckdns.org/) ou [dynu](https://www.dynu.com/) - pour pointer vers votre serveur, 
   * Créer un domaine sur `duckdns`
   * Utiliser l'adresse `IP externe` de la VM
 * Installer `Harbor`, voir le [document](https://ve2cuy.github.io/4204d4/Installation/Registre-priv%C3%A9-d-images.html)

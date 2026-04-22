@@ -1,4 +1,4 @@
-<img src="../images/gcloud.png" alt="" width="700" />
+<img src="../images/gcloud.png" alt="" width="400" />
 
 ## Installation de gcloud
 
@@ -9,7 +9,7 @@ Voir --> [ici pour l'application](https://docs.cloud.google.com/sdk/docs/install
 
 * Téléchager et installer l'application gcloud
 
-<img src="../images/gcloud-01.png" alt="" width="700" />
+<img src="../images/gcloud-01.png" alt="" width="400" />
 
 ---
 
@@ -19,7 +19,7 @@ Voici comment ajouter les informations de connexion du cluster Google au fichier
 
 * 1 - Obtenir la commande de connexion via le console GCloud
 
-<img src="../images/gcloud-03.png" alt="" width="700" />
+<img src="../images/gcloud-03.png" alt="" width="500" />
 
 ```
 C:\Users\Etudiant\AppData\Local\Google\Cloud SDK>gcloud container clusters get-credentials cluster-ve2cuy --region us-central1 --project info420
@@ -31,6 +31,7 @@ kubeconfig entry generated for cluster-ve2cuy.
 
 * Au besoin, installer le plugin `gke-gcloud-auth-plugin`
 
+
 <img src="../images/gcloud-02.png" alt="" width="700" />
 
 
@@ -40,9 +41,9 @@ gcloud components install gke-gcloud-auth-plugin
 ```
 
 * Au besoin, relancer la commande de connexion
+
 ```
 $ gcloud container clusters get-credentials cluster-ve2cuy --region us-central1 --project info420
-
 ```
 
 * Vérifier les contextes disponibles (via le fichier .kube/config):
@@ -69,7 +70,6 @@ kubectl expose deployment nginx-deployment \
   --type=LoadBalancer \
   --port=80 \
   --target-port=80
-
 ```
 
 ## Résultat
