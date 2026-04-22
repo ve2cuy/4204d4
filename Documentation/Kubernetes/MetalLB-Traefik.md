@@ -130,35 +130,12 @@ helm repo update
 ```
 
 * Renseigner le manifeste values.yaml suivant:
+
 ```yaml
-# values.yaml
-# Sans autres directives, les rêgles suivantes seront en fonction:
-# Les ports 80 et 443 en points d'entrée
-# Le Dashboard sera disponible via 'matchrule'
-# Les routes seront disponibles dans tous le namespace.
-# Activera le 'Kubernetes Gateway API provider'
 ingressRoute:
   dashboard:
     enabled: true
     matchRule: Host(`dashboard.labo420`)
-    entryPoints:
-      - web
-providers:
-  kubernetesGateway:
-    enabled: true
-gateway:
-  listeners:
-    web:
-      namespacePolicy:
-        from: All
-```
-
-## 👉 Version plus récente:
-```yaml
-ingressRoute:
-  dashboard:
-    enabled: true
-    matchRule: Host(`dashboard.4204d4.duckdns.org`)
     entryPoints:
       - web
 
@@ -446,10 +423,14 @@ Events:      <none>
 
 <img src="../images/Capture-decran-le-2023-04-09-a-13.33.26.png" alt="SuperPitou Demo" width="500" />
 
+
 ---
 
+---
 
 # 💡 Exemple complet version Google-Cloud et DuckDNS
+
+**NOTE**: Le loadbalancer (par exemple MetalLB) sera géré par le Cloud provider. 
 
 ## Fichier values.yaml
 ```yaml
