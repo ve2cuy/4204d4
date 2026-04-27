@@ -86,7 +86,7 @@ nano metallb-config.yaml
 
 **NOTE**: Pour la plage d'adresses, il faut utiliser les IP disponibles dans le laboratoire.
 
-<img src="../images/TableauConfiguration-1.png" alt="Plage IP - D139" 
+<img src="../images/TableauConfiguration-1.png" alt="Plage IP - D139">
 
 ---
 
