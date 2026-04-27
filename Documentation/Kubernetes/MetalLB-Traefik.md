@@ -121,6 +121,30 @@ kubectl apply -f Metallb-config.yaml
 
 ---
 
+## 2.5 Tester le loadbalancer de type métal
+
+```bash
+kubectl expose deployment nginx-deployment \
+  --name=nginx-service \
+  --type=LoadBalancer \
+  --port=80 \
+  --target-port=80
+
+kubectl expose deployment nginx-deployment \
+  --name=nginx-service \
+  --type=LoadBalancer \
+  --port=80 \
+  --target-port=80
+
+kubectl get services
+NAME            TYPE           CLUSTER-IP     EXTERNAL-IP      PORT(S)        AGE
+kubernetes      ClusterIP      10.96.0.1      <none>           443/TCP        28m
+nginx-service   LoadBalancer   10.109.182.2   192.168.139.91   80:31429/TCP   3s 
+
+## --­> Remarquer EXTERNAL-IP = 192.168.139.91
+```
+
+---
 
 ## 3 – Installation d'un Ingress (reverse proxy) Traefik sur K8S
 
@@ -144,6 +168,8 @@ helm repo update
 ```
 
 * Renseigner le manifeste values.yaml suivant:
+
+💡 NOTE: le fichier `values.yaml' contient des informations qui vont être utilisées par `helm` pour créer le manifeste de l'application.
 
 ```yaml
 ingressRoute:
@@ -172,6 +198,10 @@ helm install traefik traefik/traefik -f values.yaml --wait --namespace traefik
 
 # Suite à des modifications au fichier values.yaml:
 helm upgrade traefik traefik/traefik -n traefik -f values.yaml
+
+# Pour désinstaller une application installée avec Helm
+helm uninstall traefik --namespace traefik
+kubectl delete namespace traefik 
 ```
 
 NOTE: Le 'namespace' est facultatif, sinon sera installé dans 'default'
@@ -191,10 +221,10 @@ Il est maintenant possible d'avoir accès au réseau k8s via cette adresse IP:
 
 **Note**: Nous obtenons une erreur 404 car il n'y a pas encore de routes de définies. Par contre, cette réponse nous indique qu'il y a un service HTTP à l'entrée, sauf pour le 'Dashboard' via le nom de DNS dashboard.labo420.
 
-* Ajouter l'entrée suivante au fichier hosts du poste de travail:
+* 👉 Ajouter l'entrée suivante au fichier hosts du poste de travail:
 ```
 # Remplacer par l'adresse IP externe de votre 'load balancer'
-192.168.2.60    dashboard.labo420 whoami.labo420
+192.168.139.92    dashboard.labo420 whoami.labo420 superminou.labo40 superpitou.labo420
 ```
 
 **NOTE**: Dans le cas d'un déploiement sans load balancer, utiliser un port-forward:
