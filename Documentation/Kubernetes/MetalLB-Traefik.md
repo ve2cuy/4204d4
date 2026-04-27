@@ -129,6 +129,11 @@ kubectl apply -f Metallb-config.yaml
 
 NOTE: 👉 La solution la plus simple est d'installer via `helm`.  Voir [ici pour l'installation de helm](https://github.com/helm/helm/releases) 
 
+* Installation de `helm` sous Linux-Ubuntu:
+```bash
+$ sudo snap install helm --classic
+```
+
 ### 3.1 – Déploiement d'un service ingress de type Traefik via Helm
 
 * Ajouter le dépot Helm de Traefik
