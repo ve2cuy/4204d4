@@ -86,6 +86,14 @@ nano metallb-config.yaml
 
 **NOTE**: Pour la plage d'adresses, il faut utiliser les IP disponibles dans le laboratoire.
 
+<img src="../images/TableauConfiguration-1.png" alt="Plage IP - D139" 
+
+---
+
+🛑 NOTE IMPORTANTE: Les adresses IP disponibles au D139 pour réaliser ce laboratoire sont situées entre 192.168.139.100 et 192.168.139.254.  L'enseignant va attribuer deux (2) adresses IP par station de travail.
+
+---
+
 ```yaml
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
@@ -94,7 +102,8 @@ metadata:
   namespace: metallb-system
 spec:
   addresses:
-  - 192.168.2.60-192.168.2.69
+    # Attention, utiliser la plage fournie en laboratoire!!  
+  - 192.168.139.90-192.168.139.99
 
 ---
 apiVersion: metallb.io/v1beta1
