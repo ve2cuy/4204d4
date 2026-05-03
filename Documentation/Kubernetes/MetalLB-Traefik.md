@@ -98,20 +98,37 @@ nano metallb-config.yaml
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
-  name: first-pool
+  name: mon-premier-groupe-adresses-d139
   namespace: metallb-system
 spec:
   addresses:
     # Attention, utiliser la plage fournie en laboratoire!!  
   - 192.168.139.90-192.168.139.99
+  autoAssign: true        # défaut: true, mais explicite c'est mieux
+  avoidBuggyIPs: true     # évite .0 et .255  
 
 ---
 apiVersion: metallb.io/v1beta1
 kind: L2Advertisement
 metadata:
-  name: example
+  name: first-pool-l2adv
   namespace: metallb-system
+  labels:
+    env: lab
+spec:
+  ipAddressPools:
+    - mon-premier-groupe-adresses-d139  
 ```
+
+### 💡 Le rôle de `L2Advertisement`
+
+Indique à MetalLB quels pools d'IPs annoncer et sur quelles interfaces/nœuds. Sans quoi, MetalLB ne sait pas qu'il doit annoncer les adresses d'IPAddressPool, même si celles-ci sont bien configurées.
+
+### 💡Comportement sans L2Advertisement
+
+Sans cette ressource, aucune IP ne sera annoncée en ARP/NDP → les LoadBalancers auront une IP assignée, mais elle sera injoignable depuis le réseau.
+
+---
 
 ### 2.2.2 – Appliquer le manifeste
 
@@ -153,10 +170,14 @@ nginx-service   LoadBalancer   10.109.182.2   192.168.139.91   80:31429/TCP   3s
 
 NOTE: 👉 La solution la plus simple est d'installer via `helm`.  Voir [ici pour l'installation de helm](https://github.com/helm/helm/releases) 
 
-* Installation de `helm` sous Linux-Ubuntu:
+---
+
+### Installation de `helm` sous Linux-Ubuntu:
 ```bash
 $ sudo snap install helm --classic
 ```
+
+---
 
 ### 3.1 – Déploiement d'un service ingress de type Traefik via Helm
 

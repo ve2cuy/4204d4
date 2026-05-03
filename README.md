@@ -90,7 +90,7 @@
 * [38 - Helm - Introduction](Documentation/Kubernetes/Helm-introduction.md) 👍
 * [39 - Automatisation des ‘builds’ d’images Docker/Github]() 🧠
 * [40 - Autoscalling](Documentation/Kubernetes/Kubernetes-autoscalling.md) 👍
-* [50 - Épreuve synthèse Volet A : 35 %]
+* [50 - Épreuve synthèse Volet A : 35 %](Documentation/Projet-Session/README.md)
 * [51 - Épreuve synthèse Volet B - Examen : 35 %]
 * [99 - kubectl - Référence rapide](Documentation/Kubernetes/Kubernetes-Reference-rapide.md) 👍
 
