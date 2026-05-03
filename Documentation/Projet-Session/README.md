@@ -23,9 +23,9 @@ Ce projet comporte deux étapes de réalisation.
 
 ---
 
-# Étape 1 - Déploiyer des applications en mode local
+## Étape 1 - Déploiyer des applications en mode local
 
 
 ---
 
-# Étape 2 - Déploiyer des applications via Google.cloud
+## Étape 2 - Déploiyer des applications via Google.cloud
