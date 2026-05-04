@@ -4,26 +4,27 @@
 ---
 
 <p align="center">
-    <img src="superminou.02.png" alt="" width="300" />
+    <img src="images/superminou.02.png" alt="" width="300" />
 </p>
 
 ---
 
-Ce projet comporte deux étapes de réalisation.
+## Ce projet comporte deux étapes de réalisation.
 
-* 1 - Déploiyer, avec K8s, des applications en mode local et les exposer via HomePage
+* 1️⃣ - Déployer, avec K8s, des applications en mode local et les exposer via HomePage
   * Toutes les images sont sur un dépot via Harbor
   * Certains contenus sont de type NFS -> via un serveur NFS sur cloud.google
   * Le DNS local = esh26.4204d4
   * Le DNS, pour l'accès aux images = depot.matricule.duckdns.org
   * REMISE: 16 mai, fin de journée
-* 2 - Déploiyer, avec K8s, des applications en mode `cloud` et les ajouter à HomePage
+
+* 2️⃣ - Déployer, avec K8s, des applications en mode `cloud` et les ajouter à HomePage
   * Le DNS = esh26.matricule.duckdns.org
   * REMISE: 25 mai, fin de journée
 
 ---
 
-## Étape 1 - Déployer des applications en mode local (remise 16 mai)
+## Étape 1 - Déployer des applications en mode local - `remise le 16 mai`
 
 * À partir d'une VM cloud.google
     * Nommée `es-4204d4-h26`
@@ -69,15 +70,52 @@ Ce projet comporte deux étapes de réalisation.
 
 ---
 
-## 💡 Astuces
+## Quelques captures d'écrans du projet
 
-### Certificats pous Harbor
+<p align="center">
+    <img src="images/superminou.04.png" alt="" width="300" />
+</p>
+
+---
+
+## Homepage
+
+<img src="images/homepage.png" alt="" width="800" />
+
+## Thèmes Wordpress
+
+<img src="images/themes-wp.png" alt="" width="800" />
+
+## Contenu NFS des thèmes Wordpress
+
+<img src="images/themes-wp-ls.png" alt="" width="800" />
+
+## Node-red
+
+<img src="images/node-red.png" alt="" width="800" />
+
+## Contenu NFS de Node-red
+
+<img src="images/node-red-ls.png" alt="" width="800" />
+
+
+
+---
+
+## 💡 Voici des astuces d'aide à la réalisation du projet
+
+<p align="center">
+    <img src="images/superminou.03.png" alt="" width="300" />
+</p>
+
+
+### Certificats pour Harbor
 
 ```
 # Générer le certificat
 sudo certbot certonly --standalone -d 4204d4.duckdns.org
 
-# Renseigner harbor
+# Renseigner le fichier `harbor.yml`
 nano harbor.yml
 https:
   # https port for harbor, default is 443
@@ -90,7 +128,7 @@ https:
 
 ---
 
-### PV, PVC à partir d'un volume NFS
+###  Exemples de PV, PVC à partir d'un volume NFS
 
 ```yaml
 apiVersion: v1
@@ -138,7 +176,34 @@ data:
 
 ---
 
-## Étape 2 - Déployer des applications en nuage (remise 25 mai)
+### Exemple d'utilisation du dépôt harbor
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homepage
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: homepage
+  template:
+    metadata:
+      labels:
+        app: homepage
+    spec:
+      containers:
+      - name: homepage
+        image: harbor.matricule.duckdns.org/esh26/homepage:esh26
+```
+
+
+---
+
+
+
+## Étape 2 - Déployer des applications en nuage - `remise le 25 mai`
 
 👉 À suivre ...
 
