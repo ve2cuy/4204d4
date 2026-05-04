@@ -67,7 +67,74 @@ Ce projet comporte deux étapes de réalisation.
             * http://mattermost.esh26/
             * https://harbor.matricule.duckdns.org
 
+---
 
+## 💡 Astuces
+
+### Certificats pous Harbor
+
+```
+# Générer le certificat
+sudo certbot certonly --standalone -d 4204d4.duckdns.org
+
+# Renseigner harbor
+nano harbor.yml
+https:
+  # https port for harbor, default is 443
+  port: 443
+  # The path of cert and key files for nginx
+  certificate: /etc/letsencrypt/live/4204d4.duckdns.org/fullchain.pem
+  private_key: /etc/letsencrypt/live/4204d4.duckdns.org/privkey.pem
+
+```
+
+---
+
+### PV, PVC à partir d'un volume NFS
+
+```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-nfs-node-red
+spec:
+  ...
+  storageClassName: nfs-node-red
+  nfs:
+    server: esh26-mon-matricule.duckdns.org
+    path: /esh26/node-red
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-nfs-node-red
+spec:
+  storageClassName: nfs-node-red
+  ...
+
+```
+
+---
+
+### Renseigner un fichier à partir d'un configMap
+
+```yaml
+# ============================================================
+# ConfigMap — config.yaml de Homepage
+# ============================================================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homepage-config
+data:
+  config.yaml: |
+    title: Homepage
+    theme: dark
+    color: slate
+  
+    allowedHosts: homepage.esh26
+```
 
 ---
 
