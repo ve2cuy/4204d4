@@ -54,7 +54,7 @@
 * À partir d'un déploiment `k8s` local (soit via VMs ou Docker-Desktop)
     * Installer `metallb`
     * Installer  `traefik` (http://dashbord.esh26)
-        * Note: Sous `docker-desktop` il faut utiliser `127.0.0.1 dashboard.esh26 wordpress.esh26 ...` dans `hosts`, sinon, il faut utiliser l'adress IP publique du service `trafik`.
+        * Note: Sous `docker-desktop` il faut utiliser `127.0.0.1 dashboard.esh26 wordpress.esh26 ...` dans `hosts`, sinon, il faut utiliser l'adress IP publique du service `traefik`.
     * Déployer `homepage` 
         * Utiliser l'image du dépot harbor
             * Exemple: `image: 4204d4.duckdns.org/esh26/homepage:esh26`
@@ -97,8 +97,8 @@
 * Des thèmes supplémentaires proviennent du volune `NFS`  `/esh26/wordpress/themes` voir [ici](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-Les-volumes.html)
 * Ils doivent-être copiés localement par un conteneur d'initialisation.
 * Les thèmes sont disponibles ici (à suivre ...)
-* MaraiBD
-  * Le volume de `MariaDb` est de type `local-path` voir [ici](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-Config-map-et-secret.html)
+* Mariadb
+  * Le volume de `Mariadb` est de type `local-path` voir [ici](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-Config-map-et-secret.html)
   * Les informations de connexions doivent-être dans un `secret` voir [ici](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-Config-map-et-secret.html)
   
 <img src="images/themes-wp.png" alt="" width="800" />
@@ -111,13 +111,13 @@
 
 ## Node-red
 
+* Le dossier /data de node-red est monté sur le volume `NFS` `/esh26/node-red`
+
 <img src="images/node-red.png" alt="" width="800" />
 
 ---
 
 ## Contenu NFS de Node-red
-
-* Le dossier /data de node-red est monté sur le volume `NFS` `/esh26/node-red`
 
 <img src="images/node-red-ls.png" alt="" width="800" />
 
