@@ -23,7 +23,7 @@ Ce projet comporte deux étapes de réalisation.
 
 ---
 
-## Étape 1 - Déploiyer des applications en mode local (remise 16 mai)
+## Étape 1 - Déployer des applications en mode local (remise 16 mai)
 
 * À partir d'une VM cloud.google
     * Nommée `es-4204d4-h26`
@@ -37,6 +37,8 @@ Ce projet comporte deux étapes de réalisation.
     * Sous `Harbor`, créer un dépot (projet) nommé `esh26`
         * Placer les images suivantes dans le dépot
             * homepage:esh26 (à partir de ghcr.io/gethomepage/homepage:latest)
+                * Exemple: docker tag ghcr.io/gethomepage/homepage:latest  4204d4.duckdns.org/esh26/homepage:esh26
+                * docker push 4204d4.duckdns.org/esh26/homepage:esh26
             * Wordpress:esh26 (à partir de wordpress:latest)
             * mariadb:esh26 (à partir de mariadb:latest)
             * jenkins:esh26 (à partir de jenkins/jenkins:lts)    
@@ -50,6 +52,8 @@ Ce projet comporte deux étapes de réalisation.
     * Installer  `traefik` (http://dashbord.esh26)
         * Note: Sous `docker-desktop` il faut utiliser `127.0.0.1 dashboard.esh26 wordpress.esh26 ...` dans `hosts`, sinon, il faut utiliser l'adress IP publique du service Trafik.
     * Déployer `homepage` 
+        * Utiliser l'image du dépot harbor
+            * Exemple: `image: 4204d4.duckdns.org/esh26/homepage:esh26`
         * Utiliser des `configMap` (voir les notes de cours) pour les fichiers:
             * config.yaml
             * services.yaml
@@ -67,7 +71,7 @@ Ce projet comporte deux étapes de réalisation.
 
 ---
 
-## Étape 2 - Déploiyer des applications en nuage (remise 25 mai)
+## Étape 2 - Déployer des applications en nuage (remise 25 mai)
 
 👉 À suivre ...
 
