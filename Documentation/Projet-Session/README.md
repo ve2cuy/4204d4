@@ -132,7 +132,7 @@ sudo docker-compose up -d
 * Des thèmes supplémentaires proviennent du volune `NFS`  `/esh26/wordpress/themes` voir [ici](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-Les-volumes.html)
 * Ils doivent-être copiés localement par un conteneur d'initialisation.
   * Ou bien, le dossier NFS peut-être monté localement, à vous de choisir.
-* Les thèmes sont disponibles ici (à suivre ...)
+* Les thèmes sont disponibles -->  [ici](https://github.com/ve2cuy/4204d4/tree/main/Documentation/Projet-Session/themes-wp) 
 * Mariadb
   * Le volume de `Mariadb` est de type `local-path` voir [ici](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-Config-map-et-secret.html)
   * Les informations de connexions doivent-être dans un `secret` voir [ici](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-Config-map-et-secret.html)
