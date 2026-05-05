@@ -18,7 +18,7 @@
   * Toutes les images sont sur un (votre) dépot `Harbor`
   * Certains contenus sont de type `NFS` -> via un service `NFS` sur `cloud.google`
   * Le DNS local est `esh26`
-  * Le DNS, pour l'accès aux images est `harbor.matricule.duckdns.org`
+  * Le DNS, pour l'accès aux images est `harbor-matricule.duckdns.org`
   * **REMISE**: `16 mai, 👉 fin de journée`
 
 * 2️⃣ - Déployer, avec `K8s`, des applications en mode `cloud` et les ajouter à `HomePage`
@@ -37,7 +37,7 @@
     * Installer `Harbor` avec certificats `TLS`
         * 👉 Attention au mot de passe
         * 🛑 Ne pas activer le port 80
-    * Renseigner un `DNS` sur `DuckDNS` -> `harbor.matricule.duckdns.org`
+    * Renseigner un `DNS` sur `DuckDNS` -> `harbor-matricule.duckdns.org`
     * Sous `Harbor`, créer un dépot (projet) nommé `esh26`
         * Placer les images suivantes dans le dépot
             * `homepage:esh26` (à partir de ghcr.io/gethomepage/homepage:latest)
@@ -249,8 +249,22 @@ spec:
         image: harbor.matricule.duckdns.org/esh26/homepage:esh26
 ```
 
-
 ---
+
+```YAML
+### Lancer une application multi-fichiers YAML
+
+# kustomization.yaml
+# kubectl apply -k ./
+resources:
+  - esh26.yaml
+  - traefik-ns.yaml
+  - jenkins.yaml
+  - node-red.yaml
+  - wordpress.yaml
+```
+
+
 ---
 
 ## Étape 2 - Déployer des applications en nuage - `remise le 25 mai`
