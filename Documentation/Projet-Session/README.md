@@ -306,7 +306,7 @@ resources:
 
 Dans les notes de cours, il est indiqué qu'un `PVC` est toujours dépendant d'un `PV`.
 
-Par contre, pour un volume local il est possible d'utiliser la classe `storageClassName: local-path` si le service local-path à été installé.
+Par contre, pour un volume local il est possible d'utiliser la classe `storageClassName: local-path` si le service `local-path` à été installé.
 
 ```bash
 # Installation d'un `local-path-storage`
