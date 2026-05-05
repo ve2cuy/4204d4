@@ -27,9 +27,9 @@
 
 * 💡 Détails pour la remise:
   * Un dépot github privé ( 💡inviter `ve2cuy`)
-    * 👉 Avec un README.md comme journal de bord
+    * 👉 Avec un README.md comme journal de bord pour y documenter, 
       * Les étapes d'installation (VM, harbor, certificats, nfs, ftp, metallb sur k8s, ...)
-      * Les commandes à exécuter pour lancer les pré-requis (traefik, ...)
+      * Les commandes à exécuter pour lancer les pré-requis (metallb, traefik, ...)
       * Les commandes à éxécuter pour lancer les applications; locales et cloud, ...
 
 ---
@@ -68,7 +68,7 @@
     * Déployer `homepage` 
         * Utiliser l'image du dépot harbor
             * Exemple: `image: 4204d4.duckdns.org/esh26/homepage:esh26`
-        * Utiliser des `configMap` (voir les notes de cours) pour les fichiers:
+        * Utiliser des `configMap` [voir les notes de cours](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-Config-map-et-secret.html) pour les fichiers:
             * `config.yaml`
             * `services.yaml`
             * `widgets.yaml`
@@ -309,8 +309,15 @@ resources:
     <img src="images/superminou.05.png" alt="" width="300" />
 </p>
 
+### Dans un cluster `k8s` de type `auto-pilote`, sur google, nommé `tu-parles-dun-projet` 
 
-👉 À suivre bientôt ...
+* Déploiyer `traefik`
+  * Renseigner des routes vers
+    * Toutes les applications de la partie 02 - 😉 À suivre bientôt ...
+      * app01
+      * app02
+      * app3
+
 
 ---
 
