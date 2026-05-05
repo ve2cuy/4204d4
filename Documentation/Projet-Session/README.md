@@ -313,6 +313,45 @@ Par contre, pour un volume local il est possible d'utiliser la classe `storageCl
 kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/v0.0.32/deploy/local-path-storage.yaml
 ```
 
+---
+
+### Liste des ressources du projet - partie 01
+
+```bash
+$ kga
+NAME                              READY   STATUS    RESTARTS   AGE
+pod/homepage-76fb784c47-gqspg     1/1     Running   0          24h
+pod/jenkins-55b96dfc79-t9h4n      1/1     Running   0          23h
+pod/mariadb-8544495789-4s4sv      1/1     Running   0          24h
+pod/mattermost-69f568bcf9-rtk76   1/1     Running   0          24h
+pod/node-red-68b55c5bfb-xhz65     1/1     Running   0          24h
+pod/wordpress-5d9548759d-v7dh5    1/1     Running   0          24h
+
+NAME                         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)            AGE
+service/homepage             ClusterIP   10.109.226.194   <none>        80/TCP             24h
+service/kubernetes           ClusterIP   10.96.0.1        <none>        443/TCP            24h
+service/mariadb-service      ClusterIP   10.100.209.86    <none>        3306/TCP           24h
+service/service-jenkins      ClusterIP   10.103.139.150   <none>        80/TCP,50000/TCP   23h
+service/service-mattermost   ClusterIP   10.107.102.101   <none>        8065/TCP           24h
+service/service-node-red     ClusterIP   10.100.73.1      <none>        80/TCP             24h
+service/wordpress-service    ClusterIP   10.104.185.125   <none>        80/TCP             24h
+
+NAME                         READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/homepage     1/1     1            1           24h
+deployment.apps/jenkins      1/1     1            1           23h
+deployment.apps/mariadb      1/1     1            1           24h
+deployment.apps/mattermost   1/1     1            1           24h
+deployment.apps/node-red     1/1     1            1           24h
+deployment.apps/wordpress    1/1     1            1           24h
+
+NAME                                    DESIRED   CURRENT   READY   AGE
+replicaset.apps/homepage-76fb784c47     1         1         1       24h
+replicaset.apps/jenkins-55b96dfc79      1         1         1       23h
+replicaset.apps/mariadb-8544495789      1         1         1       24h
+replicaset.apps/mattermost-69f568bcf9   1         1         1       24h
+replicaset.apps/node-red-68b55c5bfb     1         1         1       24h
+replicaset.apps/wordpress-5d9548759d    1         1         1       24h
+```
 
 ---
 
