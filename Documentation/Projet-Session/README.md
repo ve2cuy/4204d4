@@ -2,7 +2,7 @@
 
 ## 💡 Acte d'énoncer, d'exprimer en termes nets.
 
-## 🛑 Version 0.1b - Il y aura des modifications au courant de la semaine!
+## 🛑 Version 0.2b - Il y aura des modifications au courant de la semaine!
 
 ---
 
@@ -14,7 +14,7 @@
 
 ## Ce projet comporte deux étapes de réalisation.
 
-* 1️⃣ - Déployer, avec `K8s`, des applications en mode local et les exposer via `HomePage`
+* 1️⃣ - Déployer, avec `K8s`, des applications en mode local et les présenter via `HomePage`
   * Toutes les images sont sur un (votre) dépot `Harbor`
   * Certains contenus sont de type `NFS` -> via un service `NFS` sur `cloud.google`
   * Le DNS local est `esh26`
@@ -25,6 +25,12 @@
   * Le DNS est `esh26.matricule.duckdns.org`
   * REMISE: `25 mai, 👉 fin de journée`
 
+* 💡 Détails pour la remise:
+  * Un dépot github privé ( 💡inviter `ve2cuy`)
+    * 👉 Avec un README.md comme journal de bord
+      * Les étapes d'installation (VM, harbor, certificats, nfs, ftp, ...)
+      * Les commandes à exécuter pour lancer les pré-requis (traefik, ...)
+      * Les commandes à éxécuter pour lancer les applications
 ---
 
 ## Étape 1 - Déployer des applications en mode local - `👉 remise le 16 mai`
@@ -34,9 +40,12 @@
         * e2-small (2 vCPUs, 2 GB Memory) Us-central-1f
         * Disque de 12 GO
         * Sous ubuntu-minimal-2604-resolute-amd64
+        * NOTE: 😉 Il est recommandé d'utiliser des [clés ssh](https://ve2cuy.com/420-3c3/?page_id=1492) pour la connexion à la VM.
+          * 💡 Si la commande `sudo` ne reconnait plus le mot de passe, redémarrer la session ssh.
     * Installer `Harbor` avec certificats `TLS`
         * 👉 Attention au mot de passe
         * 🛑 Ne pas activer le port 80
+        * 💡 Harbor ne doit pas rouler lors de la génération des certificats.
     * Renseigner un `DNS` sur `DuckDNS` -> `harbor-matricule.duckdns.org`
     * Sous `Harbor`, créer un dépot (projet) nommé `esh26`
         * Placer les images suivantes dans le dépot
@@ -70,6 +79,7 @@
             * http://wordpress.esh26/
             * http://mattermost.esh26/
             * https://harbor.matricule.duckdns.org  👉 Accès seulement en `https`!
+        * 👉 Le lien pour la page `homepage` est http://tp02.esh26  
 
 ---
 
@@ -78,6 +88,20 @@
 <p align="center">
     <img src="images/superminou.04.png" alt="" width="300" />
 </p>
+
+---
+
+## Harbor
+
+<img src="images/harbor-01.png" alt="" width="800" />
+
+* 👉 La connexion est sécurisée (service disponible sur 443 en https)
+
+---
+
+<img src="images/harbor-02.png" alt="" width="800" />
+
+* 👉 Les images sont disponibles dans le projet esh26
 
 ---
 
@@ -90,12 +114,23 @@
 * Les fichiers de configuaration sont disponibles via des `configmap` voir [ici](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-Config-map-et-secret.html)
 * L'image provient du dépôt `harbor` via `harbor.matricule.duckdns.org/esh26/harbor:esh26` 
 
+NOTE: 🛑 Si `harbor` a été démarré avec le mot de passe par défaut, il faudra effacer la base de données et recommencer la configuration:
+
+```
+sudo docker-compose down -v
+rm -r /data/database
+rm -r /data/registry
+sudo ./prepare
+sudo docker-compose up -d
+```
+
 ---
 
 ## Wordpress
 
 * Des thèmes supplémentaires proviennent du volune `NFS`  `/esh26/wordpress/themes` voir [ici](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-Les-volumes.html)
 * Ils doivent-être copiés localement par un conteneur d'initialisation.
+  * Ou bien, le dossier NFS peut-être monté localement, à vous de choisir.
 * Les thèmes sont disponibles ici (à suivre ...)
 * Mariadb
   * Le volume de `Mariadb` est de type `local-path` voir [ici](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-Config-map-et-secret.html)
@@ -277,3 +312,38 @@ resources:
 👉 À suivre bientôt ...
 
 ---
+
+## Liste des dépots harbor et des applications dans le nuage
+
+
+| Matricule | Nom | Prénom | Liens |
+|-----------|-----|--------|-------|
+| 1146373 | Charbonneau | Félix | [harbor](https://harbor-1146373.duckdns.org)<br>[app-cloud](http://esh26-1146373.duckdns.org) |
+| 1929205 | Moussette | David | [harbor](https://harbor-1929205.duckdns.org)<br>[app-cloud](http://esh26-1929205.duckdns.org) |
+| 2133738 | Boudreault | Charles | [harbor](https://harbor-2133738.duckdns.org)<br>[app-cloud](http://esh26-2133738.duckdns.org) |
+| 2135251 | Latreille | Léa | [harbor](https://harbor-2135251.duckdns.org)<br>[app-cloud](http://esh26-2135251.duckdns.org) |
+| 2176750 | Lamonde | Louis | [harbor](https://harbor-2176750.duckdns.org)<br>[app-cloud](http://esh26-2176750.duckdns.org) |
+| 2236171 | Papineau | Émy | [harbor](https://harbor-2236171.duckdns.org)<br>[app-cloud](http://esh26-2236171.duckdns.org) |
+| 2248071 | Bilodeau | Lilianne | [harbor](https://harbor-2248071.duckdns.org)<br>[app-cloud](http://esh26-2248071.duckdns.org) |
+| 2251141 | Bouchareb | Saad | [harbor](https://harbor-2251141.duckdns.org)<br>[app-cloud](http://esh26-2251141.duckdns.org) |
+| 2464026 | Ezzahiri | Adam | [harbor](https://harbor-2464026.duckdns.org)<br>[app-cloud](http://esh26-2464026.duckdns.org) |
+| 2467525 | Guertin | Ubert | [harbor](https://harbor-2467525.duckdns.org)<br>[app-cloud](http://esh26-2467525.duckdns.org) |
+| 2482651 | Korotkov | Maxim | [harbor](https://harbor-2482651.duckdns.org)<br>[app-cloud](http://esh26-2482651.duckdns.org) |
+| 2487266 | Goudreau | Gabriel | [harbor](https://harbor-2487266.duckdns.org)<br>[app-cloud](http://esh26-2487266.duckdns.org) |
+| 6226374 | Gosselin-Beaudoin | Xavier | [harbor](https://harbor-6226374.duckdns.org)<br>[app-cloud](http://esh26-6226374.duckdns.org) |
+| 6294775 | Paradis | Laury-Ann | [harbor](https://harbor-6294775.duckdns.org)<br>[app-cloud](http://esh26-6294775.duckdns.org) |
+| 6313976 | Lamirande | Xavier | [harbor](https://harbor-6313976.duckdns.org)<br>[app-cloud](http://esh26-6313976.duckdns.org) |
+| 1191869 | Bebnowski-Lavoie | Guillaume | [harbor](https://harbor-1191869.duckdns.org)<br>[app-cloud](http://esh26-1191869.duckdns.org) |
+| 1970541 | Asfaw | Marcus | [harbor](https://harbor-1970541.duckdns.org)<br>[app-cloud](http://esh26-1970541.duckdns.org) |
+| 2156548 | Mechmachi | Achraf | [harbor](https://harbor-2156548.duckdns.org)<br>[app-cloud](http://esh26-2156548.duckdns.org) |
+| 2241079 | Légaré | Christopher | [harbor](https://harbor-2241079.duckdns.org)<br>[app-cloud](http://esh26-2241079.duckdns.org) |
+| 2257181 | Rivet | Olivier | [harbor](https://harbor-2257181.duckdns.org)<br>[app-cloud](http://esh26-2257181.duckdns.org) |
+| 2357057 | Rimpel Morel | Chelsey | [harbor](https://harbor-2357057.duckdns.org)<br>[app-cloud](http://esh26-2357057.duckdns.org) |
+| 2383950 | Lalonde | Félix | [harbor](https://harbor-2383950.duckdns.org)<br>[app-cloud](http://esh26-2383950.duckdns.org) |
+| 2384502 | Guay | Raphaël | [harbor](https://harbor-2384502.duckdns.org)<br>[app-cloud](http://esh26-2384502.duckdns.org) |
+| 2482798 | Archambault | Derek | [harbor](https://harbor-2482798.duckdns.org)<br>[app-cloud](http://esh26-2482798.duckdns.org) |
+| 6220854 | Paradis | Louam | [harbor](https://harbor-6220854.duckdns.org)<br>[app-cloud](http://esh26-6220854.duckdns.org) |
+| 6235015 | Diallo | Abdoulaye | [harbor](https://harbor-6235015.duckdns.org)<br>[app-cloud](http://esh26-6235015.duckdns.org) |
+| 6289173 | Dubois | Zachary | [harbor](https://harbor-6289173.duckdns.org)<br>[app-cloud](http://esh26-6289173.duckdns.org) |
+| 6297476 | Forget | Antoine | [harbor](https://harbor-6297476.duckdns.org)<br>[app-cloud](http://esh26-6297476.duckdns.org) |
+| 6313680 | Nibimenya | Maëlys | [harbor](https://harbor-6313680.duckdns.org)<br>[app-cloud](http://esh26-6313680.duckdns.org) |
