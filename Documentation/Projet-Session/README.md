@@ -28,9 +28,10 @@
 * 💡 Détails pour la remise:
   * Un dépot github privé ( 💡inviter `ve2cuy`)
     * 👉 Avec un README.md comme journal de bord
-      * Les étapes d'installation (VM, harbor, certificats, nfs, ftp, ...)
+      * Les étapes d'installation (VM, harbor, certificats, nfs, ftp, metallb sur k8s, ...)
       * Les commandes à exécuter pour lancer les pré-requis (traefik, ...)
-      * Les commandes à éxécuter pour lancer les applications
+      * Les commandes à éxécuter pour lancer les applications; locales et cloud, ...
+
 ---
 
 ## Étape 1 - Déployer des applications en mode local - `👉 remise le 16 mai`
@@ -323,13 +324,13 @@ resources:
 | 2133738 | Boudreault | Charles | [harbor](https://harbor-2133738.duckdns.org)<br>[app-cloud](http://esh26-2133738.duckdns.org) |
 | 2135251 | Latreille | Léa | [harbor](https://harbor-2135251.duckdns.org)<br>[app-cloud](http://esh26-2135251.duckdns.org) |
 | 2176750 | Lamonde | Louis | [harbor](https://harbor-2176750.duckdns.org)<br>[app-cloud](http://esh26-2176750.duckdns.org) |
-| 2236171 | Papineau | Émy | [harbor](https://harbor-2236171.duckdns.org)<br>[app-cloud](http://esh26-2236171.duckdns.org) |
+| 2236171 | Papineau | Émy | [👍 harbor](https://harbor-2236171.duckdns.org)<br>[app-cloud](http://esh26-2236171.duckdns.org) |
 | 2248071 | Bilodeau | Lilianne | [harbor](https://harbor-2248071.duckdns.org)<br>[app-cloud](http://esh26-2248071.duckdns.org) |
 | 2251141 | Bouchareb | Saad | [harbor](https://harbor-2251141.duckdns.org)<br>[app-cloud](http://esh26-2251141.duckdns.org) |
 | 2464026 | Ezzahiri | Adam | [harbor](https://harbor-2464026.duckdns.org)<br>[app-cloud](http://esh26-2464026.duckdns.org) |
 | 2467525 | Guertin | Ubert | [harbor](https://harbor-2467525.duckdns.org)<br>[app-cloud](http://esh26-2467525.duckdns.org) |
 | 2482651 | Korotkov | Maxim | [harbor](https://harbor-2482651.duckdns.org)<br>[app-cloud](http://esh26-2482651.duckdns.org) |
-| 2487266 | Goudreau | Gabriel | [harbor](https://harbor-2487266.duckdns.org)<br>[app-cloud](http://esh26-2487266.duckdns.org) |
+| 2487266 | Goudreau | Gabriel | [👍 harbor](https://harbor-2487266.duckdns.org)<br>[app-cloud](http://esh26-2487266.duckdns.org) |
 | 6226374 | Gosselin-Beaudoin | Xavier | [harbor](https://harbor-6226374.duckdns.org)<br>[app-cloud](http://esh26-6226374.duckdns.org) |
 | 6294775 | Paradis | Laury-Ann | [harbor](https://harbor-6294775.duckdns.org)<br>[app-cloud](http://esh26-6294775.duckdns.org) |
 | 6313976 | Lamirande | Xavier | [harbor](https://harbor-6313976.duckdns.org)<br>[app-cloud](http://esh26-6313976.duckdns.org) |
