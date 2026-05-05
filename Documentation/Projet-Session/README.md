@@ -68,7 +68,7 @@
     * Déployer `homepage` 
         * Utiliser l'image du dépot harbor
             * Exemple: `image: 4204d4.duckdns.org/esh26/homepage:esh26`
-        * Utiliser des `configMap` [voir les notes de cours](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-Config-map-et-secret.html) pour les fichiers:
+        * Utiliser des `configMap`, [voir les notes de cours](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-Config-map-et-secret.html), pour les fichiers:
             * `config.yaml`
             * `services.yaml`
             * `widgets.yaml`
@@ -131,7 +131,7 @@ sudo docker-compose up -d
 
 * Des thèmes supplémentaires proviennent du volune `NFS`  `/esh26/wordpress/themes` voir [ici](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-Les-volumes.html)
 * Ils doivent-être copiés localement par un conteneur d'initialisation.
-  * Ou bien, le dossier NFS peut-être monté localement, à vous de choisir.
+  * Ou bien le dossier NFS peut-être monté localement, à vous de choisir.
 * Les thèmes sont disponibles -->  [ici](https://github.com/ve2cuy/4204d4/tree/main/Documentation/Projet-Session/themes-wp) 
 * Mariadb
   * Le volume de `Mariadb` est de type `local-path` voir [ici](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-Config-map-et-secret.html)
@@ -298,6 +298,19 @@ resources:
   - jenkins.yaml
   - node-red.yaml
   - wordpress.yaml
+```
+
+---
+
+### PV et PVC
+
+Dans les notes de cours, il est indiqué qu'un `PVC` est toujours dépendant d'un `PV`.
+
+Par contre, pour un volume local il est possible d'utiliser la classe `storageClassName: local-path` si le service local-path à été installé.
+
+```bash
+# Installation d'un `local-path-storage`
+kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/v0.0.32/deploy/local-path-storage.yaml
 ```
 
 
