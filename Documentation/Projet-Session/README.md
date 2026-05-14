@@ -39,7 +39,7 @@
 * À partir d'une VM `cloud.google`
     * Nommée `es-4204d4-h26`
         * e2-small (2 vCPUs, 2 GB Memory) Us-central-1f
-        * Disque de 12 GO
+        * --->>>> Disque de 22 GO  <<<---
         * Sous ubuntu-minimal-2604-resolute-amd64
         * NOTE: 😉 Il est recommandé d'utiliser des [clés ssh](https://ve2cuy.com/420-3c3/?page_id=1492) pour la connexion à la VM.
           * 💡 Si la commande `sudo` ne reconnait plus le mot de passe, redémarrer la session ssh.
