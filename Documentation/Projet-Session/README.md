@@ -363,14 +363,15 @@ replicaset.apps/wordpress-5d9548759d    1         1         1       24h
 
 ### Dans un cluster `k8s` de type `auto-pilote`, sur google, nommé `tu-parles-dun-projet` 
 
-* Déploiyer `traefik`
+* Déployer `traefik`
   * Renseigner des routes vers
-    * Toutes les applications de la partie 02 - 😉 À suivre bientôt ...
-      * app01
-      * app02
-      * app3
+    * Toutes les applications de la partie 02
+      * Le dashboard de Traefik, protégé par un mot de passe
+      * Démonstration d'un auto-scaling (manifeste fourni)
+      * Immich avec données stockées sur un volume NFS
+    * Les images n'ont pas à être installées sur votre dépôt  
 
-
+    <img src="images/esh26.partie.02.png" alt="" width="600" />
 ---
 
 ## Liste des dépots harbor et des applications dans le nuage
