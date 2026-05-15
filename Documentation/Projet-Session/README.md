@@ -439,14 +439,20 @@ helm upgrade traefik traefik/traefik -n traefik -f values.yaml
 
 ## 2.3 - Démo d'un auto-scaling sur K8s
 
+À partir du manifeste disponible --> [ICI](https://raw.githubusercontent.com/ve2cuy/4204d4/refs/heads/main/Documentation/Projet-Session/auto-scaling.yaml), déployer l'application de démonstration de la fonction K8s d'auto-scaling.
+
+<br>
+
 <img src="images/auto-scaling-low.png" alt="" width="600" />
 
+<br>
 
-À partir du manifeste disponible --> [ICI](https://raw.githubusercontent.com/ve2cuy/4204d4/refs/heads/main/Documentation/Projet-Session/auto-scaling.yaml), le déployer l'application de démonstration de la fonction K8s d'auto-scaling.
+Ce projet permet d'expérimenter avec le scaling des `pods` en fonction de la demande. Le bouton `Démarrer la charge` va lancer un pod qui va saturer le site web.  Par conséquent, le `réplicatset` va augmenter le nombre de pods pour maintenir le pression `cpu` sous 50%.
 
-Ce projet permet d'expérimenter avec le scaling des `pods` en fonction de la demande.
+---
 
-😉 Il ne manque que la route `ingress`.
+
+😉 Dans ce manifeste, il ne manque que la route `ingress`.
 
 NOTE: 🛑 Les ressources de ce manifeste ne seront pas créées dans le `namespace default`.  Par défaut, `traefik` ne voit pas les services qui sont dans un autre `espace de nom` que `default`.
 
@@ -457,16 +463,19 @@ NOTE: 🛑 Les ressources de ce manifeste ne seront pas créées dans le `namesp
     allowCrossNamespace: true   # ← ajouter ceci
 ```
 
+<br>
+
 <img src="images/auto-scaling-high.png" alt="" width="600" />
 
 ---
 
 ## 2.4 - Immich : Librairie de photos
 
-<img src="images/gcloud-immich-03.png" alt="" width="600" />
+Il faut déployer le gestionnaire de photos `Immich` en utilisant un volume `NFS` pour le contenu.
 
 <br/>
-Il faut déployer le gestionnaire de photos `Immich` en utilisant un volume `NFS` pour le contenu.
+
+<img src="images/gcloud-immich-03.png" alt="" width="600" />
 
 <br/>
 
@@ -490,32 +499,32 @@ NOTE: 🛑 Les ressources de ce manifeste ne seront pas créées dans le `namesp
 
 | Matricule | Nom | Prénom | Liens |
 |-----------|-----|--------|-------|
-| 1146373 | Charbonneau | Félix | [harbor](https://harbor-1146373.duckdns.org)<br>[app-cloud](http://esh26-1146373.duckdns.org)<br>[scaling](http://scaling.etape-02-1146373.duckdns.org/) |
-| 1929205 | Moussette | David | [harbor](https://harbor-1929205.duckdns.org)<br>[app-cloud](http://esh26-1929205.duckdns.org)<br>[scaling](http://scaling.etape-02-1929205.duckdns.org/) |
-| 2133738 | Boudreault | Charles | [harbor](https://harbor-2133738.duckdns.org)<br>[app-cloud](http://esh26-2133738.duckdns.org)<br>[scaling](http://scaling.etape-02-2133738.duckdns.org/) |
-| 2135251 | Latreille | Léa | [👍 harbor](https://harbor-2135251.duckdns.org)<br>[app-cloud](http://esh26-2135251.duckdns.org)<br>[scaling](http://scaling.etape-02-2135251.duckdns.org/) |
-| 2176750 | Lamonde | Louis | [harbor](https://harbor-2176750.duckdns.org)<br>[app-cloud](http://esh26-2176750.duckdns.org)<br>[scaling](http://scaling.etape-02-2176750.duckdns.org/) |
-| 2236171 | Papineau | Émy | [👍 harbor](https://harbor-2236171.duckdns.org)<br>[app-cloud](http://esh26-2236171.duckdns.org)<br>[scaling](http://scaling.etape-02-2236171.duckdns.org/) |
-| 2248071 | Bilodeau | Lilianne | [👍 harbor](https://harbor-2248071.duckdns.org)<br>[app-cloud](http://esh26-2248071.duckdns.org)<br>[scaling](http://scaling.etape-02-2248071.duckdns.org/) |
-| 2251141 | Bouchareb | Saad | [👍 harbor](https://harbor-2251141.duckdns.org)<br>[app-cloud](http://esh26-2251141.duckdns.org)<br>[scaling](http://scaling.etape-02-2251141.duckdns.org/) |
-| 2464026 | Ezzahiri | Adam | [👍 harbor](https://harbor-2464026.duckdns.org)<br>[app-cloud](http://esh26-2464026.duckdns.org)<br>[scaling](http://scaling.etape-02-2464026.duckdns.org/) |
-| 2467525 | Guertin | Ubert | [harbor](https://harbor-2467525.duckdns.org)<br>[app-cloud](http://esh26-2467525.duckdns.org)<br>[scaling](http://scaling.etape-02-2467525.duckdns.org/) |
-| 2482651 | Korotkov | Maxim | [harbor](https://harbor-2482651.duckdns.org)<br>[app-cloud](http://esh26-2482651.duckdns.org)<br>[scaling](http://scaling.etape-02-2482651.duckdns.org/) |
-| 2487266 | Goudreau | Gabriel | [👍 harbor](https://harbor-2487266.duckdns.org)<br>[app-cloud](http://esh26-2487266.duckdns.org)<br>[scaling](http://scaling.etape-02-2487266.duckdns.org/) |
-| 6226374 | Gosselin-Beaudoin | Xavier | [harbor](https://harbor-6226374.duckdns.org)<br>[app-cloud](http://esh26-6226374.duckdns.org)<br>[scaling](http://scaling.etape-02-6226374.duckdns.org/) |
-| 6294775 | Paradis | Laury-Ann | [👍 harbor](https://harbor-6294775.duckdns.org)<br>[app-cloud](http://esh26-6294775.duckdns.org)<br>[scaling](http://scaling.etape-02-6294775.duckdns.org/) |
-| 6313976 | Lamirande | Xavier | [harbor](https://harbor-6313976.duckdns.org)<br>[app-cloud](http://esh26-6313976.duckdns.org)<br>[scaling](http://scaling.etape-02-6313976.duckdns.org/) |
-| 1191869 | Bebnowski-Lavoie | Guillaume | [👍 harbor](https://harbor-1191869.duckdns.org)<br>[app-cloud](http://esh26-1191869.duckdns.org)<br>[scaling](http://scaling.etape-02-1191869.duckdns.org/) |
-| 1970541 | Asfaw | Marcus | [harbor](https://harbor-1970541.duckdns.org)<br>[app-cloud](http://esh26-1970541.duckdns.org)<br>[scaling](http://scaling.etape-02-1970541.duckdns.org/) |
-| 2156548 | Mechmachi | Achraf | [harbor](https://harbor-2156548.duckdns.org)<br>[app-cloud](http://esh26-2156548.duckdns.org)<br>[scaling](http://scaling.etape-02-2156548.duckdns.org/) |
-| 2241079 | Légaré | Christopher | [👍 harbor](https://harbor-2241079.duckdns.org)<br>[app-cloud](http://esh26-2241079.duckdns.org)<br>[scaling](http://scaling.etape-02-2241079.duckdns.org/) |
-| 2257181 | Rivet | Olivier | [harbor](https://harbor-2257181.duckdns.org)<br>[app-cloud](http://esh26-2257181.duckdns.org)<br>[scaling](http://scaling.etape-02-2257181.duckdns.org/) |
-| 2357057 | Rimpel Morel | Chelsey | [harbor](https://harbor-2357057.duckdns.org)<br>[app-cloud](http://esh26-2357057.duckdns.org)<br>[scaling](http://scaling.etape-02-2357057.duckdns.org/) |
-| 2383950 | Lalonde | Félix | [harbor](https://harbor-2383950.duckdns.org)<br>[app-cloud](http://esh26-2383950.duckdns.org)<br>[scaling](http://scaling.etape-02-2383950.duckdns.org/) |
-| 2384502 | Guay | Raphaël | [harbor](https://harbor-2384502.duckdns.org)<br>[app-cloud](http://esh26-2384502.duckdns.org)<br>[scaling](http://scaling.etape-02-2384502.duckdns.org/) |
-| 2482798 | Archambault | Derek | [harbor](https://harbor-2482798.duckdns.org)<br>[app-cloud](http://esh26-2482798.duckdns.org)<br>[scaling](http://scaling.etape-02-2482798.duckdns.org/) |
-| 6220854 | Paradis | Louam | [👍 harbor](https://harbor-6220854.duckdns.org)<br>[app-cloud](http://esh26-6220854.duckdns.org)<br>[scaling](http://scaling.etape-02-6220854.duckdns.org/) |
-| 6235015 | Diallo | Abdoulaye | [👍 harbor](https://harbor-6235015.duckdns.org)<br>[app-cloud](http://esh26-6235015.duckdns.org)<br>[scaling](http://scaling.etape-02-6235015.duckdns.org/) |
-| 6289173 | Dubois | Zachary | [harbor](https://harbor-6289173.duckdns.org)<br>[app-cloud](http://esh26-6289173.duckdns.org)<br>[scaling](http://scaling.etape-02-6289173.duckdns.org/) |
-| 6297476 | Forget | Antoine | [harbor](https://harbor-6297476.duckdns.org)<br>[app-cloud](http://esh26-6297476.duckdns.org)<br>[scaling](http://scaling.etape-02-6297476.duckdns.org/) |
-| 6313680 | Nibimenya | Maëlys | [harbor](https://harbor-6313680.duckdns.org)<br>[app-cloud](http://esh26-6313680.duckdns.org)<br>[scaling](http://scaling.etape-02-6313680.duckdns.org/) |
+| 1146373 | Charbonneau | Félix | [harbor](https://harbor-1146373.duckdns.org)<br>[Traefik](http://dashboard.etape-02-1146373.duckdns.org/)<br>[scaling](http://scaling.etape-02-1146373.duckdns.org/) |
+| 1929205 | Moussette | David | [harbor](https://harbor-1929205.duckdns.org)<br>[Traefik](http://dashboard.etape-02-1929205.duckdns.org/)<br>[scaling](http://scaling.etape-02-1929205.duckdns.org/) |
+| 2133738 | Boudreault | Charles | [harbor](https://harbor-2133738.duckdns.org)<br>[Traefik](http://dashboard.etape-02-2133738.duckdns.org/)<br>[scaling](http://scaling.etape-02-2133738.duckdns.org/) |
+| 2135251 | Latreille | Léa | [👍 harbor](https://harbor-2135251.duckdns.org)<br>[Traefik](http://dashboard.etape-02-2135251.duckdns.org/)<br>[scaling](http://scaling.etape-02-2135251.duckdns.org/) |
+| 2176750 | Lamonde | Louis | [harbor](https://harbor-2176750.duckdns.org)<br>[Traefik](http://dashboard.etape-02-2176750.duckdns.org/)<br>[scaling](http://scaling.etape-02-2176750.duckdns.org/) |
+| 2236171 | Papineau | Émy | [👍 harbor](https://harbor-2236171.duckdns.org)<br>[Traefik](http://dashboard.etape-02-2236171.duckdns.org/)<br>[scaling](http://scaling.etape-02-2236171.duckdns.org/) |
+| 2248071 | Bilodeau | Lilianne | [👍 harbor](https://harbor-2248071.duckdns.org)<br>[Traefik](http://dashboard.etape-02-2248071.duckdns.org/)<br>[scaling](http://scaling.etape-02-2248071.duckdns.org/) |
+| 2251141 | Bouchareb | Saad | [👍 harbor](https://harbor-2251141.duckdns.org)<br>[Traefik](http://dashboard.etape-02-2251141.duckdns.org/)<br>[scaling](http://scaling.etape-02-2251141.duckdns.org/) |
+| 2464026 | Ezzahiri | Adam | [👍 harbor](https://harbor-2464026.duckdns.org)<br>[Traefik](http://dashboard.etape-02-2464026.duckdns.org/)<br>[scaling](http://scaling.etape-02-2464026.duckdns.org/) |
+| 2467525 | Guertin | Ubert | [harbor](https://harbor-2467525.duckdns.org)<br>[Traefik](http://dashboard.etape-02-2467525.duckdns.org/)<br>[scaling](http://scaling.etape-02-2467525.duckdns.org/) |
+| 2482651 | Korotkov | Maxim | [harbor](https://harbor-2482651.duckdns.org)<br>[Traefik](http://dashboard.etape-02-2482651.duckdns.org/)<br>[scaling](http://scaling.etape-02-2482651.duckdns.org/) |
+| 2487266 | Goudreau | Gabriel | [👍 harbor](https://harbor-2487266.duckdns.org)<br>[Traefik](http://dashboard.etape-02-2487266.duckdns.org/)<br>[scaling](http://scaling.etape-02-2487266.duckdns.org/) |
+| 6226374 | Gosselin-Beaudoin | Xavier | [harbor](https://harbor-6226374.duckdns.org)<br>[Traefik](http://dashboard.etape-02-6226374.duckdns.org/)<br>[scaling](http://scaling.etape-02-6226374.duckdns.org/) |
+| 6294775 | Paradis | Laury-Ann | [👍 harbor](https://harbor-6294775.duckdns.org)<br>[Traefik](http://dashboard.etape-02-6294775.duckdns.org/)<br>[scaling](http://scaling.etape-02-6294775.duckdns.org/) |
+| 6313976 | Lamirande | Xavier | [harbor](https://harbor-6313976.duckdns.org)<br>[Traefik](http://dashboard.etape-02-6313976.duckdns.org/)<br>[scaling](http://scaling.etape-02-6313976.duckdns.org/) |
+| 1191869 | Bebnowski-Lavoie | Guillaume | [👍 harbor](https://harbor-1191869.duckdns.org)<br>[Traefik](http://dashboard.etape-02-1191869.duckdns.org/)<br>[scaling](http://scaling.etape-02-1191869.duckdns.org/) |
+| 1970541 | Asfaw | Marcus | [harbor](https://harbor-1970541.duckdns.org)<br>[Traefik](http://dashboard.etape-02-1970541.duckdns.org/)<br>[scaling](http://scaling.etape-02-1970541.duckdns.org/) |
+| 2156548 | Mechmachi | Achraf | [harbor](https://harbor-2156548.duckdns.org)<br>[Traefik](http://dashboard.etape-02-2156548.duckdns.org/)<br>[scaling](http://scaling.etape-02-2156548.duckdns.org/) |
+| 2241079 | Légaré | Christopher | [👍 harbor](https://harbor-2241079.duckdns.org)<br>[Traefik](http://dashboard.etape-02-2241079.duckdns.org/)<br>[scaling](http://scaling.etape-02-2241079.duckdns.org/) |
+| 2257181 | Rivet | Olivier | [harbor](https://harbor-2257181.duckdns.org)<br>[Traefik](http://dashboard.etape-02-2257181.duckdns.org/)<br>[scaling](http://scaling.etape-02-2257181.duckdns.org/) |
+| 2357057 | Rimpel Morel | Chelsey | [harbor](https://harbor-2357057.duckdns.org)<br>[Traefik](http://dashboard.etape-02-2357057.duckdns.org/)<br>[scaling](http://scaling.etape-02-2357057.duckdns.org/) |
+| 2383950 | Lalonde | Félix | [harbor](https://harbor-2383950.duckdns.org)<br>[Traefik](http://dashboard.etape-02-2383950.duckdns.org/)<br>[scaling](http://scaling.etape-02-2383950.duckdns.org/) |
+| 2384502 | Guay | Raphaël | [harbor](https://harbor-2384502.duckdns.org)<br>[Traefik](http://dashboard.etape-02-2384502.duckdns.org/)<br>[scaling](http://scaling.etape-02-2384502.duckdns.org/) |
+| 2482798 | Archambault | Derek | [harbor](https://harbor-2482798.duckdns.org)<br>[Traefik](http://dashboard.etape-02-2482798.duckdns.org/)<br>[scaling](http://scaling.etape-02-2482798.duckdns.org/) |
+| 6220854 | Paradis | Louam | [👍 harbor](https://harbor-6220854.duckdns.org)<br>[Traefik](http://dashboard.etape-02-6220854.duckdns.org/)<br>[scaling](http://scaling.etape-02-6220854.duckdns.org/) |
+| 6235015 | Diallo | Abdoulaye | [👍 harbor](https://harbor-6235015.duckdns.org)<br>[Traefik](http://dashboard.etape-02-6235015.duckdns.org/)<br>[scaling](http://scaling.etape-02-6235015.duckdns.org/) |
+| 6289173 | Dubois | Zachary | [harbor](https://harbor-6289173.duckdns.org)<br>[Traefik](http://dashboard.etape-02-6289173.duckdns.org/)<br>[scaling](http://scaling.etape-02-6289173.duckdns.org/) |
+| 6297476 | Forget | Antoine | [harbor](https://harbor-6297476.duckdns.org)<br>[Traefik](http://dashboard.etape-02-6297476.duckdns.org/)<br>[scaling](http://scaling.etape-02-6297476.duckdns.org/) |
+| 6313680 | Nibimenya | Maëlys | [harbor](https://harbor-6313680.duckdns.org)<br>[Traefik](http://dashboard.etape-02-6313680.duckdns.org/)<br>[scaling](http://scaling.etape-02-6313680.duckdns.org/) |
