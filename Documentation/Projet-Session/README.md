@@ -442,7 +442,7 @@ helm upgrade traefik traefik/traefik -n traefik -f values.yaml
 <img src="images/auto-scaling-low.png" alt="" width="600" />
 
 
-À partir du manifeste disponible --> ICI, le déployer l'application de démonstration de la fonction K8s d'auto-scaling.
+À partir du manifeste disponible --> [ICI](https://raw.githubusercontent.com/ve2cuy/4204d4/refs/heads/main/Documentation/Projet-Session/auto-scaling.yaml), le déployer l'application de démonstration de la fonction K8s d'auto-scaling.
 
 Ce projet permet d'expérimenter avec le scaling des `pods` en fonction de la demande.
 
