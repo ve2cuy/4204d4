@@ -1,0 +1,759 @@
+# 1 - Installer le serveur de metrics (metrics-server)
+#     Voir: https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-autoscalling.html
+#     kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+# 2 - Patcher le déploiement pour ajouter --kubelet-insecure-tls (si pas de TLS sur les kubelets)
+#     kubectl patch deployment metrics-server -n kube-system --type='json' -p='[{"op":"add","path":"/spec/template/spec/containers/0/args/-","value":"--kubelet-insecure-tls"}]' 
+# 3 - Appliquer ce fichier : kubectl apply -f auto-scaling.yaml
+
+---
+# ============================================================
+# Namespace
+# ============================================================
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hpa-demo
+
+---
+# ============================================================
+# ServiceAccount + RBAC — permet au pod UI de lire/écrire
+# les Deployments et de lire le HPA dans hpa-demo
+# ============================================================
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: hpa-ui-sa
+  namespace: hpa-demo
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: hpa-ui-role
+  namespace: hpa-demo
+rules:
+- apiGroups: ["apps"]
+  resources: ["deployments", "deployments/scale"]
+  verbs: ["get", "patch"]
+- apiGroups: ["autoscaling"]
+  resources: ["horizontalpodautoscalers"]
+  verbs: ["get"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: hpa-ui-rb
+  namespace: hpa-demo
+subjects:
+- kind: ServiceAccount
+  name: hpa-ui-sa
+  namespace: hpa-demo
+roleRef:
+  kind: Role
+  name: hpa-ui-role
+  apiGroup: rbac.authorization.k8s.io
+
+---
+# ============================================================
+# ConfigMap — script Python (API proxy)
+# Écoute :5000, parle à l'API K8s via le token du ServiceAccount
+# ============================================================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hpa-api-proxy
+  namespace: hpa-demo
+data:
+  server.py: |
+    #!/usr/bin/env python3
+    """
+    Proxy léger entre la page web et l'API Kubernetes.
+    Endpoints :
+      GET  /api/status          -> état HPA + load-generator replicas
+      POST /api/load/start      -> scale load-generator à 1
+      POST /api/load/stop       -> scale load-generator à 0
+    """
+    import json, ssl, urllib.request, urllib.error
+    from http.server import BaseHTTPRequestHandler, HTTPServer
+
+    SA_DIR   = "/var/run/secrets/kubernetes.io/serviceaccount"
+    K8S_HOST = "https://kubernetes.default.svc"
+    NS       = "hpa-demo"
+
+    def k8s_token():
+        with open(f"{SA_DIR}/token") as f:
+            return f.read().strip()
+
+    def k8s_ca():
+        return f"{SA_DIR}/ca.crt"
+
+    def k8s_request(method, path, body=None):
+        url = f"{K8S_HOST}{path}"
+        data = json.dumps(body).encode() if body else None
+        ct = "application/strategic-merge-patch+json" if method == "PATCH" else "application/json"
+        headers = {
+            "Authorization": f"Bearer {k8s_token()}",
+            "Content-Type":  ct,
+            "Accept":        "application/json",
+        }
+        ctx = ssl.create_default_context(cafile=k8s_ca())
+        req = urllib.request.Request(url, data=data, headers=headers, method=method)
+        try:
+            with urllib.request.urlopen(req, context=ctx, timeout=5) as resp:
+                return json.loads(resp.read())
+        except urllib.error.HTTPError as e:
+            return {"error": e.reason, "code": e.code}
+        except Exception as e:
+            return {"error": str(e)}
+
+    def get_hpa():
+        return k8s_request("GET",
+            f"/apis/autoscaling/v2/namespaces/{NS}/horizontalpodautoscalers/php-apache")
+
+    def get_deploy(name):
+        return k8s_request("GET",
+            f"/apis/apps/v1/namespaces/{NS}/deployments/{name}")
+
+    def scale_deploy(name, replicas):
+        return k8s_request("PATCH",
+            f"/apis/apps/v1/namespaces/{NS}/deployments/{name}",
+            {"spec": {"replicas": replicas}})
+
+    class Handler(BaseHTTPRequestHandler):
+        def log_message(self, fmt, *args):
+            pass  # silence access log
+
+        def send_json(self, code, obj):
+            body = json.dumps(obj).encode()
+            self.send_response(code)
+            self.send_header("Content-Type",   "application/json")
+            self.send_header("Content-Length", len(body))
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.end_headers()
+            self.wfile.write(body)
+
+        def do_OPTIONS(self):
+            self.send_response(204)
+            self.send_header("Access-Control-Allow-Origin",  "*")
+            self.send_header("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
+            self.send_header("Access-Control-Allow-Headers", "Content-Type")
+            self.end_headers()
+
+        def do_GET(self):
+            if self.path != "/api/status":
+                self.send_json(404, {"error": "not found"}); return
+            hpa  = get_hpa()
+            load = get_deploy("load-generator")
+            cpu_cur = "<unknown>"
+            cpu_tgt = "50"
+            hpa_rep = 1
+            if "status" in hpa:
+                st = hpa["status"]
+                hpa_rep = st.get("currentReplicas", 1)
+                for m in st.get("currentMetrics", []):
+                    if m.get("type") == "Resource" and m["resource"]["name"] == "cpu":
+                        cpu_cur = str(m["resource"]["current"].get("averageUtilization", 0))
+            for m in hpa.get("spec", {}).get("metrics", []):
+                if m.get("type") == "Resource" and m["resource"]["name"] == "cpu":
+                    cpu_tgt = str(m["resource"]["target"].get("averageUtilization", 50))
+            lg_rep = 0
+            if "spec" in load:
+                lg_rep = load["spec"].get("replicas", 0)
+            self.send_json(200, {
+                "hpa": {
+                    "currentReplicas": hpa_rep,
+                    "cpuCurrent":      cpu_cur,
+                    "cpuTarget":       cpu_tgt,
+                    "minReplicas":     hpa.get("spec", {}).get("minReplicas", 1),
+                    "maxReplicas":     hpa.get("spec", {}).get("maxReplicas", 10),
+                },
+                "loadGenerator": {"replicas": lg_rep},
+            })
+
+        def do_POST(self):
+            if self.path == "/api/load/start":
+                result = scale_deploy("load-generator", 1)
+            elif self.path == "/api/load/stop":
+                result = scale_deploy("load-generator", 0)
+            else:
+                self.send_json(404, {"error": "not found"}); return
+            if "error" in result:
+                self.send_json(500, result)
+            else:
+                self.send_json(200, {"ok": True})
+
+    if __name__ == "__main__":
+        server = HTTPServer(("0.0.0.0", 5000), Handler)
+        print("API proxy listening on :5000")
+        server.serve_forever()
+
+---
+# ============================================================
+# ConfigMap — nginx.conf avec proxy_pass vers Flask sidecar
+# ============================================================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hpa-nginx-conf
+  namespace: hpa-demo
+data:
+  default.conf: |
+    server {
+        listen 80;
+        root /usr/share/nginx/html;
+        index index.html;
+
+        location /api/ {
+            proxy_pass         http://127.0.0.1:5000;
+            proxy_http_version 1.1;
+            proxy_set_header   Host $host;
+        }
+
+        location / {
+            try_files $uri $uri/ /index.html;
+        }
+    }
+
+---
+# ============================================================
+# ConfigMap — page web (index.html)
+# Cette page Web est disponible via un ConfigMap
+# Version: 1.0 - (c) 2026 Alain Boudreault
+# ============================================================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hpa-ui-config
+  namespace: hpa-demo
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html lang="fr">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>HPA Demo — Kubernetes Auto Scaling</title>
+      <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+          font-family: 'Courier New', monospace;
+          background: #0d1117;
+          color: #c9d1d9;
+          min-height: 100vh;
+          padding: 24px;
+        }
+        h1 { font-size: 1.4rem; color: #58a6ff; margin-bottom: 4px; }
+        .subtitle { font-size: 0.8rem; color: #8b949e; margin-bottom: 28px; }
+        .card {
+          background: #161b22;
+          border: 1px solid #30363d;
+          border-radius: 8px;
+          padding: 20px;
+          margin-bottom: 20px;
+        }
+        .card h2 {
+          font-size: 0.85rem; color: #8b949e;
+          text-transform: uppercase; letter-spacing: .08em;
+          margin-bottom: 16px;
+        }
+        .btn-row { display: flex; gap: 12px; flex-wrap: wrap; }
+        .btn {
+          padding: 10px 22px; border: none; border-radius: 6px;
+          font-family: inherit; font-size: 0.9rem; cursor: pointer;
+          font-weight: 600; transition: opacity .15s, transform .1s;
+          display: flex; align-items: center; gap: 8px;
+        }
+        .btn:active  { transform: scale(.97); }
+        .btn:disabled { opacity: .4; cursor: default; }
+        .btn-start { background: #238636; color: #fff; }
+        .btn-stop  { background: #da3633; color: #fff; }
+        .spinner {
+          width: 14px; height: 14px;
+          border: 2px solid rgba(255,255,255,.3);
+          border-top-color: #fff; border-radius: 50%;
+          animation: spin .6s linear infinite; display: none;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .status-row { display: flex; align-items: center; gap: 10px; margin-top: 14px; font-size: 0.85rem; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; background: #8b949e; flex-shrink: 0; transition: background .3s; }
+        .dot.green  { background: #3fb950; box-shadow: 0 0 6px #3fb95099; }
+        .dot.red    { background: #f85149; }
+        .dot.yellow { background: #d29922; }
+        .gauge-row  { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
+        .gauge-bar  { flex: 1; height: 12px; background: #21262d; border-radius: 6px; overflow: hidden; }
+        .gauge-fill { height: 100%; background: #3fb950; border-radius: 6px; transition: width .8s ease, background .4s; width: 0%; }
+        .gauge-fill.warn { background: #d29922; }
+        .gauge-fill.crit { background: #f85149; }
+        .gauge-label { font-size: 0.8rem; min-width: 48px; text-align: right; }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+        .info-box  { background: #21262d; border-radius: 6px; padding: 10px 14px; }
+        .info-box .label { font-size: 0.7rem; color: #8b949e; }
+        .info-box .value { font-size: 1.3rem; color: #c9d1d9; font-weight: bold; margin-top: 2px; }
+        .info-box .value.blue { color: #58a6ff; }
+        .pods-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+        .pod {
+          width: 28px; height: 28px; border-radius: 50%;
+          border: 2px solid #30363d; background: #21262d;
+          display: flex; align-items: center; justify-content: center;
+          font-size: 0.65rem; color: #8b949e; transition: all .5s;
+        }
+        .pod.active { background: #1f6feb; border-color: #58a6ff; color: #fff; }
+        .terminal {
+          background: #010409; border: 1px solid #30363d; border-radius: 6px;
+          padding: 14px 16px; font-size: 0.78rem; line-height: 1.7;
+          overflow-x: auto; min-height: 160px; max-height: 340px; overflow-y: auto;
+        }
+        .terminal .cmd  { color: #58a6ff; }
+        .terminal .head { color: #8b949e; }
+        .terminal .row.warn .cpu      { color: #f85149; font-weight: bold; }
+        .terminal .row.ok   .cpu      { color: #3fb950; }
+        .terminal .row.hi   .replicas { color: #3fb950; font-weight: bold; }
+        .cursor {
+          display: inline-block; width: 8px; height: 14px;
+          background: #58a6ff; animation: blink .9s step-end infinite;
+          vertical-align: middle; margin-left: 2px;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+        .alert {
+          font-size: 0.78rem; padding: 8px 12px;
+          border-radius: 6px; margin-top: 12px; display: none;
+        }
+        .alert.err { background: #3d1c1c; color: #f85149; border: 1px solid #5a2020; display: block; }
+        .alert.ok  { background: #1c3d25; color: #3fb950; border: 1px solid #205a2e; display: block; }
+        footer { font-size: 0.72rem; color: #484f58; text-align: center; margin-top: 24px; }
+      </style>
+    </head>
+    <body>
+      <center><h2>&#9096; Kubernetes - Démonstration HPA</h2></center><hr/>
+      <center><h3>420-4D4-ESH26 - Exemple d'un AutoScaler sur GCloud &mdash; Cible CPU &nbsp;: 50&nbsp;%</h3></center><hr/><br/>
+
+      <div class="card">
+        <h2>G&eacute;n&eacute;rateur de charge</h2>
+        <div class="btn-row">
+          <button class="btn btn-start" id="btn-start" onclick="controlLoad('start')">
+            <span class="spinner" id="sp-start"></span>
+            &#x1F680; D&eacute;marrer la charge
+          </button>
+          <button class="btn btn-stop" id="btn-stop" onclick="controlLoad('stop')">
+            <span class="spinner" id="sp-stop"></span>
+            &#x23F9; Arr&ecirc;ter la charge
+          </button>
+        </div>
+        <div class="status-row">
+          <div class="dot" id="load-dot"></div>
+          <span id="load-label">V&eacute;rification&hellip;</span>
+        </div>
+        <div class="alert" id="alert-msg"></div>
+      </div>
+
+      <div class="card">
+        <h2>M&eacute;triques HPA &mdash; temps r&eacute;el</h2>
+        <div class="gauge-row">
+          <span style="font-size:.8rem;color:#8b949e;min-width:90px">CPU actuel</span>
+          <div class="gauge-bar"><div class="gauge-fill" id="cpu-bar"></div></div>
+          <span class="gauge-label" id="cpu-label">&mdash;</span>
+        </div>
+        <div class="gauge-row" style="margin-top:6px">
+          <span style="font-size:.8rem;color:#8b949e;min-width:90px">Cible HPA</span>
+          <div class="gauge-bar"><div class="gauge-fill" style="width:50%;background:#9e6a03"></div></div>
+          <span class="gauge-label" style="color:#d29922">50&nbsp;%</span>
+        </div>
+        <div class="info-grid">
+          <div class="info-box">
+            <div class="label">Replicas actifs</div>
+            <div class="value blue" id="replicas-count">&mdash;</div>
+          </div>
+          <div class="info-box">
+            <div class="label">Phase HPA</div>
+            <div class="value" id="hpa-phase" style="font-size:.95rem;color:#8b949e">En attente&hellip;</div>
+          </div>
+        </div>
+        <div class="pods-row" id="pods-row"></div>
+      </div>
+
+      <div class="card">
+        <h2>kubectl get hpa php-apache --watch</h2>
+        <div class="terminal" id="terminal">
+          <div><span class="cmd">$ kubectl get hpa php-apache --watch</span></div>
+          <div class="head">NAME         REFERENCE               TARGETS        MINPODS   MAXPODS   REPLICAS   AGE</div>
+        </div>
+      </div>
+
+      <footer>
+        Namespace&nbsp;: hpa-demo &middot; Min&nbsp;: 1 pod &middot; Max&nbsp;: 10 pods<br>
+        La mont&eacute;e en charge des replicas prend ~60&ndash;90&nbsp;s apr&egrave;s d&eacute;passement du seuil CPU.
+        Version 1.0 - (c) 2026 Alain Boudreault
+      </footer>
+
+      <script>
+      let lastReplicas = null;
+      let startTime    = Date.now();
+
+      function padEnd(s, n) { return (String(s) + ' '.repeat(n)).slice(0, n); }
+      function fmtAge() {
+        const s = Math.floor((Date.now() - startTime) / 1000);
+        if (s < 60)   return s + 's';
+        if (s < 3600) return Math.floor(s/60) + 'm' + (s%60) + 's';
+        return Math.floor(s/3600) + 'h' + Math.floor((s%3600)/60) + 'm';
+      }
+
+      function showAlert(msg, type) {
+        const el = document.getElementById('alert-msg');
+        el.textContent = msg;
+        el.className = 'alert ' + type;
+        if (type === 'ok') setTimeout(() => { el.className = 'alert'; }, 4000);
+      }
+
+      const terminal   = document.getElementById('terminal');
+      const cursorLine = document.createElement('div');
+      cursorLine.innerHTML = '<span class="cursor"></span>';
+      terminal.appendChild(cursorLine);
+
+      function addTermRow(cpuCur, cpuTgt, minR, maxR, rep) {
+        const target = cpuCur + '%/' + cpuTgt + '%';
+        const line =
+          padEnd('php-apache', 13) +
+          padEnd('Deployment/php-apache', 24) +
+          padEnd(target, 15) +
+          padEnd(minR, 10) +
+          padEnd(maxR, 10) +
+          padEnd(rep, 11) +
+          fmtAge();
+        const div = document.createElement('div');
+        const over = parseInt(cpuCur) > parseInt(cpuTgt);
+        div.className = 'row' + (over ? ' warn' : ' ok') + (rep > 1 ? ' hi' : '');
+        const m = line.match(/^(.{37})(\S+)(.+?)(\d+)\s+(\S+)$/);
+        if (m) {
+          div.innerHTML = m[1] +
+            '<span class="cpu">'      + m[2] + '</span>' + m[3] +
+            '<span class="replicas">' + m[4] + '</span>  ' + m[5];
+        } else {
+          div.textContent = line;
+        }
+        terminal.insertBefore(div, cursorLine);
+        if (terminal.children.length > 52) terminal.children[2].remove();
+        terminal.scrollTop = terminal.scrollHeight;
+      }
+
+      function updatePods(n) {
+        const row = document.getElementById('pods-row');
+        row.innerHTML = '';
+        for (let i = 0; i < 10; i++) {
+          const p = document.createElement('div');
+          p.className   = 'pod' + (i < n ? ' active' : '');
+          p.title       = 'Pod ' + (i+1) + (i < n ? ' (actif)' : ' (inactif)');
+          p.textContent = i + 1;
+          row.appendChild(p);
+        }
+      }
+
+      async function controlLoad(action) {
+        const btnStart = document.getElementById('btn-start');
+        const btnStop  = document.getElementById('btn-stop');
+        btnStart.disabled = true;
+        btnStop.disabled  = true;
+        const sp = document.getElementById(action === 'start' ? 'sp-start' : 'sp-stop');
+        sp.style.display = 'inline-block';
+        try {
+          const res  = await fetch('/api/load/' + action, { method: 'POST' });
+          const data = await res.json();
+          if (data.ok) {
+            showAlert(
+              action === 'start'
+                ? 'Load generator demarré — la charge CPU va monter dans quelques secondes.'
+                : 'Load generator arrêté — le HPA va réduire les replicas progressivement.',
+              'ok'
+            );
+            fetchStatus(); // refresh immédiat
+          } else {
+            showAlert('Erreur : ' + (data.error || 'inconnue'), 'err');
+          }
+        } catch (e) {
+          showAlert('Impossible de joindre le proxy API : ' + e.message, 'err');
+        } finally {
+          sp.style.display  = 'none';
+          btnStart.disabled = false;
+          btnStop.disabled  = false;
+        }
+      }
+
+      async function fetchStatus() {
+        try {
+          const res  = await fetch('/api/status');
+          const data = await res.json();
+          const hpa  = data.hpa;
+          const lg   = data.loadGenerator;
+          const rep  = hpa.currentReplicas;
+          const cpuC = hpa.cpuCurrent === '<unknown>' ? '0' : hpa.cpuCurrent;
+          const cpuT = hpa.cpuTarget;
+
+          // Gauge CPU
+          const cpuNum = parseInt(cpuC) || 0;
+          const bar    = document.getElementById('cpu-bar');
+          bar.style.width = Math.min(100, cpuNum) + '%';
+          bar.className   = 'gauge-fill' + (cpuNum > 100 ? ' crit' : cpuNum > 50 ? ' warn' : '');
+          document.getElementById('cpu-label').textContent = cpuC + '%';
+
+          // Replicas
+          document.getElementById('replicas-count').textContent = rep;
+          updatePods(rep);
+
+          // Phase
+          const phaseEl = document.getElementById('hpa-phase');
+          if (lg.replicas === 0 && rep <= 1) {
+            phaseEl.style.color = '#3fb950'; phaseEl.textContent = 'Stable (1 replica)';
+          } else if (cpuNum > 50 && rep < hpa.maxReplicas) {
+            phaseEl.style.color = '#f85149'; phaseEl.textContent = 'Scale UP ↑';
+          } else if (cpuNum <= 50 && rep > 1) {
+            phaseEl.style.color = '#58a6ff'; phaseEl.textContent = 'Scale DOWN ↓';
+          } else if (rep === hpa.maxReplicas) {
+            phaseEl.style.color = '#d29922'; phaseEl.textContent = 'Max replicas (' + hpa.maxReplicas + ')';
+          } else {
+            phaseEl.style.color = '#3fb950'; phaseEl.textContent = 'Stable';
+          }
+
+          // Dot load generator
+          const dot = document.getElementById('load-dot');
+          const lbl = document.getElementById('load-label');
+          if (lg.replicas > 0) {
+            dot.className = 'dot red';
+            lbl.textContent = 'Load generator actif — génération de charge en cours';
+          } else {
+            dot.className = 'dot green';
+            lbl.textContent = 'Load generator arrêté';
+          }
+
+          // Terminal row
+          addTermRow(cpuC, cpuT, hpa.minReplicas, hpa.maxReplicas, rep);
+          lastReplicas = rep;
+
+        } catch (e) {
+          document.getElementById('load-label').textContent =
+            'Erreur de connexion au proxy API (' + e.message + ')';
+        }
+      }
+
+      fetchStatus();
+      setInterval(fetchStatus, 5000);
+      </script>
+    </body>
+    </html>
+
+---
+# ============================================================
+# Deployment — php-apache
+# ============================================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php-apache
+  namespace: hpa-demo
+  labels:
+    app: php-apache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: php-apache
+  template:
+    metadata:
+      labels:
+        app: php-apache
+    spec:
+      containers:
+      - name: php-apache
+        image: registry.k8s.io/hpa-example
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 200m
+            memory: 64Mi
+          limits:
+            cpu: 500m
+            memory: 128Mi
+
+---
+# ============================================================
+# Service — php-apache
+# ============================================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: php-apache
+  namespace: hpa-demo
+spec:
+  selector:
+    app: php-apache
+  ports:
+  - port: 80
+    targetPort: 80
+
+---
+
+# ============================================================
+# HorizontalPodAutoscaler
+# ============================================================
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: php-apache
+  namespace: hpa-demo
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: php-apache
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 30
+      policies:
+      - type: Pods
+        value: 4
+        periodSeconds: 60
+    scaleDown:
+      stabilizationWindowSeconds: 120
+      policies:
+      - type: Pods
+        value: 2
+        periodSeconds: 60
+
+---
+# ============================================================
+# Deployment — hpa-ui
+# 2 containers dans le même pod :
+#   nginx      -> sert le HTML + proxifie /api/* vers le sidecar
+#   api-proxy  -> Python, parle à l'API K8s via le ServiceAccount
+# ============================================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hpa-ui
+  namespace: hpa-demo
+  labels:
+    app: hpa-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hpa-ui
+  template:
+    metadata:
+      labels:
+        app: hpa-ui
+    spec:
+      serviceAccountName: hpa-ui-sa
+      containers:
+
+      - name: nginx
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: html
+          mountPath: /usr/share/nginx/html
+        - name: nginx-conf
+          mountPath: /etc/nginx/conf.d
+        resources:
+          requests:
+            cpu: 50m
+            memory: 32Mi
+          limits:
+            cpu: 100m
+            memory: 64Mi
+
+      - name: api-proxy
+        image: python:3.12-alpine
+        command: ["python", "/app/server.py"]
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+        - name: api-proxy-script
+          mountPath: /app
+        resources:
+          requests:
+            cpu: 50m
+            memory: 32Mi
+          limits:
+            cpu: 100m
+            memory: 64Mi
+
+      volumes:
+      - name: html
+        configMap:
+          name: hpa-ui-config
+      - name: nginx-conf
+        configMap:
+          name: hpa-nginx-conf
+      - name: api-proxy-script
+        configMap:
+          name: hpa-api-proxy
+
+---
+# ============================================================
+# Service — hpa-ui (NodePort 30080)
+# ============================================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: hpa-ui
+  namespace: hpa-demo
+spec:
+  selector:
+    app: hpa-ui
+  type: LoadBalancer  
+  ports:
+  - port: 80
+    targetPort: 80
+
+---
+# ============================================================
+# Deployment — Load Generator (0 replicas par défaut)
+# Contrôlé via les boutons de la page web
+# ============================================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: load-generator
+  namespace: hpa-demo
+  labels:
+    app: load-generator
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: load-generator
+  template:
+    metadata:
+      labels:
+        app: load-generator
+    spec:
+      containers:
+      - name: load-generator
+        image: busybox:latest
+        command:
+        - /bin/sh
+        - -c
+        - |
+          echo "Démarrage de la génération de charge vers http://php-apache/"
+          while true; do
+            wget -q -O- http://php-apache/ > /dev/null 2>&1
+          done
+        resources:
+          requests:
+            cpu: 50m
+            memory: 16Mi
+          limits:
+            cpu: 200m
+            memory: 32Mi
+      restartPolicy: Always

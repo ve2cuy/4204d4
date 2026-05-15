@@ -2,7 +2,12 @@
 
 ## 💡 Acte d'énoncer, d'exprimer en termes nets.
 
-## 🛑 Version 0.2b - Il y aura des modifications au courant de la semaine!
+### Version 1.0:2026.05.15
+
+---
+### Remise de la partie 1 (20/35) - Dimanche le 17 mai
+### Remise de la partie 2 (15/35) - lundi le 25 mai
+### Examen de fin de session (35/35) - 19 et 22 mai
 
 ---
 
@@ -34,7 +39,7 @@
 
 ---
 
-## Étape 1 - Déployer des applications en mode local - `👉 remise le 16 mai`
+## Étape 1 - Déployer des applications en mode local - `👉 remise le 17 mai`
 
 * À partir d'une VM `cloud.google`
     * Nommée `es-4204d4-h26`
@@ -361,50 +366,156 @@ replicaset.apps/wordpress-5d9548759d    1         1         1       24h
     <img src="images/superminou.05.png" alt="" width="300" />
 </p>
 
+---
+
 ### Dans un cluster `k8s` de type `auto-pilote`, sur google, nommé `tu-parles-dun-projet` 
 
 * Déployer `traefik`
-  * Renseigner des routes vers
+  *  En utilisant le nom de domaine `etape-02-MATRICULE.duckdns.org`, renseigner des routes vers
     * Toutes les applications de la partie 02
       * Le dashboard de Traefik, protégé par un mot de passe
+        *  `dashboard.etape-02-MATRICULE.duckdns.org`
       * Démonstration d'un auto-scaling (manifeste fourni)
+        *  `scaling.etape-02-MATRICULE.duckdns.org`
       * Immich avec données stockées sur un volume NFS
-    * Les images n'ont pas à être installées sur votre dépôt  
+        *  `immich.etape-02-MATRICULE.duckdns.org`
+    * Les images n'ont pas à être installées sur votre dépôt
 
-    <img src="images/esh26.partie.02.png" alt="" width="600" />
+---
+
+### 💡💡💡 Faire des tests en mode local avant le déploiement final sur `gcloud`. Cette section représente des coûts d'environ 8$ par jour.  Idéalement, il faudrait déployer sur `gcloud` autour de la date de remise.
+---
+
+## 2.1 - Homepage - partie 2
+
+<img src="images/esh26.partie.02.png" alt="" width="600" />
+
+---
+
+## 2.2 - Le dashboard de `traefik`
+
+Le dashboard de `traefik` doit être protégé par un mot de passe:
+
+<img src="images/gcloud-traefik-password.png" alt="" width="600" />
+
+* 💡 Indices
+
+Avec `Traefik`, on utilise le middleware `BasicAuth`.
+
+```
+htpasswd -nb admin leMotDePasseHyperSecret
+```
+
+```yaml
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: basic-auth
+  namespace: traefik
+spec:
+  basicAuth:
+    secret: traefik-auth-secret
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: traefik-auth-secret
+  namespace: traefik
+type: Opaque
+stringData:
+  users: "admin:$apr1$......"   # ← coller le résultat de htpasswd ici
+```
+
+Puis, référer au `Middleware` dans le fichier `values.yaml` de `traefik`
+
+```
+helm upgrade traefik traefik/traefik -n traefik -f values.yaml
+```
+
+<img src="images/gcloud-traefik.png" alt="" width="600" />
+
+
+---
+
+## 2.3 - Démo d'un auto-scaling sur K8s
+
+<img src="images/auto-scaling-low.png" alt="" width="600" />
+
+
+À partir du manifeste disponible --> ICI, le déployer l'application de démonstration de la fonction K8s d'auto-scaling.
+
+Ce projet permet d'expérimenter avec le scaling des `pods` en fonction de la demande.
+
+😉 Il ne manque que la route `ingress`.
+
+NOTE: 🛑 Les ressources de ce manifeste ne seront pas créées dans le `namespace default`.  Par défaut, `traefik` ne voit pas les services qui sont dans un autre `espace de nom` que `default`.
+
+💡Indice:
+
+```yaml
+  kubernetesCRD:
+    allowCrossNamespace: true   # ← ajouter ceci
+```
+
+<img src="images/auto-scaling-high.png" alt="" width="600" />
+
+---
+
+## 2.4 - Immich : Librairie de photos
+
+<img src="images/gcloud-immich-03.png" alt="" width="600" />
+
+<br/>
+Il faut déployer le gestionnaire de photos `Immich` en utilisant un volume `NFS` pour le contenu.
+
+<br/>
+
+
+<img src="images/gcloud-immich-04.png" alt="" width="600" />
+
+<br/>
+
+```
+#/etc/export
+/esh26/immich  *(rw,sync,no_subtree_check,all_squash,anonuid=65534,anongid=65534,insecure)
+```
+
+
+NOTE: 🛑 Les ressources de ce manifeste ne seront pas créées dans le `namespace default`.  Par défaut, `traefik` ne voit pas les services qui sont dans un autre `espace de nom` que `default`.
+
+
 ---
 
 ## Liste des dépots harbor et des applications dans le nuage
 
-
 | Matricule | Nom | Prénom | Liens |
 |-----------|-----|--------|-------|
-| 1146373 | Charbonneau | Félix | [harbor](https://harbor-1146373.duckdns.org)<br>[app-cloud](http://esh26-1146373.duckdns.org) |
-| 1929205 | Moussette | David | [harbor](https://harbor-1929205.duckdns.org)<br>[app-cloud](http://esh26-1929205.duckdns.org) |
-| 2133738 | Boudreault | Charles | [harbor](https://harbor-2133738.duckdns.org)<br>[app-cloud](http://esh26-2133738.duckdns.org) |
-| 2135251 | Latreille | Léa | [👍 harbor](https://harbor-2135251.duckdns.org)<br>[app-cloud](http://esh26-2135251.duckdns.org) |
-| 2176750 | Lamonde | Louis | [harbor](https://harbor-2176750.duckdns.org)<br>[app-cloud](http://esh26-2176750.duckdns.org) |
-| 2236171 | Papineau | Émy | [👍 harbor](https://harbor-2236171.duckdns.org)<br>[app-cloud](http://esh26-2236171.duckdns.org) |
-| 2248071 | Bilodeau | Lilianne | [👍 harbor](https://harbor-2248071.duckdns.org)<br>[app-cloud](http://esh26-2248071.duckdns.org) |
-| 2251141 | Bouchareb | Saad | [👍 harbor](https://harbor-2251141.duckdns.org)<br>[app-cloud](http://esh26-2251141.duckdns.org) |
-| 2464026 | Ezzahiri | Adam | [👍 harbor](https://harbor-2464026.duckdns.org)<br>[app-cloud](http://esh26-2464026.duckdns.org) |
-| 2467525 | Guertin | Ubert | [harbor](https://harbor-2467525.duckdns.org)<br>[app-cloud](http://esh26-2467525.duckdns.org) |
-| 2482651 | Korotkov | Maxim | [harbor](https://harbor-2482651.duckdns.org)<br>[app-cloud](http://esh26-2482651.duckdns.org) |
-| 2487266 | Goudreau | Gabriel | [👍 harbor](https://harbor-2487266.duckdns.org)<br>[app-cloud](http://esh26-2487266.duckdns.org) |
-| 6226374 | Gosselin-Beaudoin | Xavier | [harbor](https://harbor-6226374.duckdns.org)<br>[app-cloud](http://esh26-6226374.duckdns.org) |
-| 6294775 | Paradis | Laury-Ann | [👍 harbor](https://harbor-6294775.duckdns.org)<br>[app-cloud](http://esh26-6294775.duckdns.org) |
-| 6313976 | Lamirande | Xavier | [harbor](https://harbor-6313976.duckdns.org)<br>[app-cloud](http://esh26-6313976.duckdns.org) |
-| 1191869 | Bebnowski-Lavoie | Guillaume | [👍 harbor](https://harbor-1191869.duckdns.org)<br>[app-cloud](http://esh26-1191869.duckdns.org) |
-| 1970541 | Asfaw | Marcus | [harbor](https://harbor-1970541.duckdns.org)<br>[app-cloud](http://esh26-1970541.duckdns.org) |
-| 2156548 | Mechmachi | Achraf | [harbor](https://harbor-2156548.duckdns.org)<br>[app-cloud](http://esh26-2156548.duckdns.org) |
-| 2241079 | Légaré | Christopher | [👍 harbor](https://harbor-2241079.duckdns.org)<br>[app-cloud](http://esh26-2241079.duckdns.org) |
-| 2257181 | Rivet | Olivier | [harbor](https://harbor-2257181.duckdns.org)<br>[app-cloud](http://esh26-2257181.duckdns.org) |
-| 2357057 | Rimpel Morel | Chelsey | [harbor](https://harbor-2357057.duckdns.org)<br>[app-cloud](http://esh26-2357057.duckdns.org) |
-| 2383950 | Lalonde | Félix | [harbor](https://harbor-2383950.duckdns.org)<br>[app-cloud](http://esh26-2383950.duckdns.org) |
-| 2384502 | Guay | Raphaël | [harbor](https://harbor-2384502.duckdns.org)<br>[app-cloud](http://esh26-2384502.duckdns.org) |
-| 2482798 | Archambault | Derek | [harbor](https://harbor-2482798.duckdns.org)<br>[app-cloud](http://esh26-2482798.duckdns.org) |
-| 6220854 | Paradis | Louam | [👍 harbor](https://harbor-6220854.duckdns.org)<br>[app-cloud](http://esh26-6220854.duckdns.org) |
-| 6235015 | Diallo | Abdoulaye | [👍 harbor](https://harbor-6235015.duckdns.org)<br>[app-cloud](http://esh26-6235015.duckdns.org) |
-| 6289173 | Dubois | Zachary | [harbor](https://harbor-6289173.duckdns.org)<br>[app-cloud](http://esh26-6289173.duckdns.org) |
-| 6297476 | Forget | Antoine | [harbor](https://harbor-6297476.duckdns.org)<br>[app-cloud](http://esh26-6297476.duckdns.org) |
-| 6313680 | Nibimenya | Maëlys | [harbor](https://harbor-6313680.duckdns.org)<br>[app-cloud](http://esh26-6313680.duckdns.org) |
+| 1146373 | Charbonneau | Félix | [harbor](https://harbor-1146373.duckdns.org)<br>[app-cloud](http://esh26-1146373.duckdns.org)<br>[scaling](http://scaling.etape-02-1146373.duckdns.org/) |
+| 1929205 | Moussette | David | [harbor](https://harbor-1929205.duckdns.org)<br>[app-cloud](http://esh26-1929205.duckdns.org)<br>[scaling](http://scaling.etape-02-1929205.duckdns.org/) |
+| 2133738 | Boudreault | Charles | [harbor](https://harbor-2133738.duckdns.org)<br>[app-cloud](http://esh26-2133738.duckdns.org)<br>[scaling](http://scaling.etape-02-2133738.duckdns.org/) |
+| 2135251 | Latreille | Léa | [👍 harbor](https://harbor-2135251.duckdns.org)<br>[app-cloud](http://esh26-2135251.duckdns.org)<br>[scaling](http://scaling.etape-02-2135251.duckdns.org/) |
+| 2176750 | Lamonde | Louis | [harbor](https://harbor-2176750.duckdns.org)<br>[app-cloud](http://esh26-2176750.duckdns.org)<br>[scaling](http://scaling.etape-02-2176750.duckdns.org/) |
+| 2236171 | Papineau | Émy | [👍 harbor](https://harbor-2236171.duckdns.org)<br>[app-cloud](http://esh26-2236171.duckdns.org)<br>[scaling](http://scaling.etape-02-2236171.duckdns.org/) |
+| 2248071 | Bilodeau | Lilianne | [👍 harbor](https://harbor-2248071.duckdns.org)<br>[app-cloud](http://esh26-2248071.duckdns.org)<br>[scaling](http://scaling.etape-02-2248071.duckdns.org/) |
+| 2251141 | Bouchareb | Saad | [👍 harbor](https://harbor-2251141.duckdns.org)<br>[app-cloud](http://esh26-2251141.duckdns.org)<br>[scaling](http://scaling.etape-02-2251141.duckdns.org/) |
+| 2464026 | Ezzahiri | Adam | [👍 harbor](https://harbor-2464026.duckdns.org)<br>[app-cloud](http://esh26-2464026.duckdns.org)<br>[scaling](http://scaling.etape-02-2464026.duckdns.org/) |
+| 2467525 | Guertin | Ubert | [harbor](https://harbor-2467525.duckdns.org)<br>[app-cloud](http://esh26-2467525.duckdns.org)<br>[scaling](http://scaling.etape-02-2467525.duckdns.org/) |
+| 2482651 | Korotkov | Maxim | [harbor](https://harbor-2482651.duckdns.org)<br>[app-cloud](http://esh26-2482651.duckdns.org)<br>[scaling](http://scaling.etape-02-2482651.duckdns.org/) |
+| 2487266 | Goudreau | Gabriel | [👍 harbor](https://harbor-2487266.duckdns.org)<br>[app-cloud](http://esh26-2487266.duckdns.org)<br>[scaling](http://scaling.etape-02-2487266.duckdns.org/) |
+| 6226374 | Gosselin-Beaudoin | Xavier | [harbor](https://harbor-6226374.duckdns.org)<br>[app-cloud](http://esh26-6226374.duckdns.org)<br>[scaling](http://scaling.etape-02-6226374.duckdns.org/) |
+| 6294775 | Paradis | Laury-Ann | [👍 harbor](https://harbor-6294775.duckdns.org)<br>[app-cloud](http://esh26-6294775.duckdns.org)<br>[scaling](http://scaling.etape-02-6294775.duckdns.org/) |
+| 6313976 | Lamirande | Xavier | [harbor](https://harbor-6313976.duckdns.org)<br>[app-cloud](http://esh26-6313976.duckdns.org)<br>[scaling](http://scaling.etape-02-6313976.duckdns.org/) |
+| 1191869 | Bebnowski-Lavoie | Guillaume | [👍 harbor](https://harbor-1191869.duckdns.org)<br>[app-cloud](http://esh26-1191869.duckdns.org)<br>[scaling](http://scaling.etape-02-1191869.duckdns.org/) |
+| 1970541 | Asfaw | Marcus | [harbor](https://harbor-1970541.duckdns.org)<br>[app-cloud](http://esh26-1970541.duckdns.org)<br>[scaling](http://scaling.etape-02-1970541.duckdns.org/) |
+| 2156548 | Mechmachi | Achraf | [harbor](https://harbor-2156548.duckdns.org)<br>[app-cloud](http://esh26-2156548.duckdns.org)<br>[scaling](http://scaling.etape-02-2156548.duckdns.org/) |
+| 2241079 | Légaré | Christopher | [👍 harbor](https://harbor-2241079.duckdns.org)<br>[app-cloud](http://esh26-2241079.duckdns.org)<br>[scaling](http://scaling.etape-02-2241079.duckdns.org/) |
+| 2257181 | Rivet | Olivier | [harbor](https://harbor-2257181.duckdns.org)<br>[app-cloud](http://esh26-2257181.duckdns.org)<br>[scaling](http://scaling.etape-02-2257181.duckdns.org/) |
+| 2357057 | Rimpel Morel | Chelsey | [harbor](https://harbor-2357057.duckdns.org)<br>[app-cloud](http://esh26-2357057.duckdns.org)<br>[scaling](http://scaling.etape-02-2357057.duckdns.org/) |
+| 2383950 | Lalonde | Félix | [harbor](https://harbor-2383950.duckdns.org)<br>[app-cloud](http://esh26-2383950.duckdns.org)<br>[scaling](http://scaling.etape-02-2383950.duckdns.org/) |
+| 2384502 | Guay | Raphaël | [harbor](https://harbor-2384502.duckdns.org)<br>[app-cloud](http://esh26-2384502.duckdns.org)<br>[scaling](http://scaling.etape-02-2384502.duckdns.org/) |
+| 2482798 | Archambault | Derek | [harbor](https://harbor-2482798.duckdns.org)<br>[app-cloud](http://esh26-2482798.duckdns.org)<br>[scaling](http://scaling.etape-02-2482798.duckdns.org/) |
+| 6220854 | Paradis | Louam | [👍 harbor](https://harbor-6220854.duckdns.org)<br>[app-cloud](http://esh26-6220854.duckdns.org)<br>[scaling](http://scaling.etape-02-6220854.duckdns.org/) |
+| 6235015 | Diallo | Abdoulaye | [👍 harbor](https://harbor-6235015.duckdns.org)<br>[app-cloud](http://esh26-6235015.duckdns.org)<br>[scaling](http://scaling.etape-02-6235015.duckdns.org/) |
+| 6289173 | Dubois | Zachary | [harbor](https://harbor-6289173.duckdns.org)<br>[app-cloud](http://esh26-6289173.duckdns.org)<br>[scaling](http://scaling.etape-02-6289173.duckdns.org/) |
+| 6297476 | Forget | Antoine | [harbor](https://harbor-6297476.duckdns.org)<br>[app-cloud](http://esh26-6297476.duckdns.org)<br>[scaling](http://scaling.etape-02-6297476.duckdns.org/) |
+| 6313680 | Nibimenya | Maëlys | [harbor](https://harbor-6313680.duckdns.org)<br>[app-cloud](http://esh26-6313680.duckdns.org)<br>[scaling](http://scaling.etape-02-6313680.duckdns.org/) |
