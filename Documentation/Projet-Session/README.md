@@ -39,7 +39,7 @@
 * À partir d'une VM `cloud.google`
     * Nommée `es-4204d4-h26`
         * e2-small (2 vCPUs, 2 GB Memory) Us-central-1f
-        * Disque de 12 GO
+        * --->>>> Disque de 22 GO  <<<---
         * Sous ubuntu-minimal-2604-resolute-amd64
         * NOTE: 😉 Il est recommandé d'utiliser des [clés ssh](https://ve2cuy.com/420-3c3/?page_id=1492) pour la connexion à la VM.
           * 💡 Si la commande `sudo` ne reconnait plus le mot de passe, redémarrer la session ssh.
@@ -363,14 +363,15 @@ replicaset.apps/wordpress-5d9548759d    1         1         1       24h
 
 ### Dans un cluster `k8s` de type `auto-pilote`, sur google, nommé `tu-parles-dun-projet` 
 
-* Déploiyer `traefik`
+* Déployer `traefik`
   * Renseigner des routes vers
-    * Toutes les applications de la partie 02 - 😉 À suivre bientôt ...
-      * app01
-      * app02
-      * app3
+    * Toutes les applications de la partie 02
+      * Le dashboard de Traefik, protégé par un mot de passe
+      * Démonstration d'un auto-scaling (manifeste fourni)
+      * Immich avec données stockées sur un volume NFS
+    * Les images n'ont pas à être installées sur votre dépôt  
 
-
+    <img src="images/esh26.partie.02.png" alt="" width="600" />
 ---
 
 ## Liste des dépots harbor et des applications dans le nuage
@@ -381,29 +382,29 @@ replicaset.apps/wordpress-5d9548759d    1         1         1       24h
 | 1146373 | Charbonneau | Félix | [harbor](https://harbor-1146373.duckdns.org)<br>[app-cloud](http://esh26-1146373.duckdns.org) |
 | 1929205 | Moussette | David | [harbor](https://harbor-1929205.duckdns.org)<br>[app-cloud](http://esh26-1929205.duckdns.org) |
 | 2133738 | Boudreault | Charles | [harbor](https://harbor-2133738.duckdns.org)<br>[app-cloud](http://esh26-2133738.duckdns.org) |
-| 2135251 | Latreille | Léa | [harbor](https://harbor-2135251.duckdns.org)<br>[app-cloud](http://esh26-2135251.duckdns.org) |
+| 2135251 | Latreille | Léa | [👍 harbor](https://harbor-2135251.duckdns.org)<br>[app-cloud](http://esh26-2135251.duckdns.org) |
 | 2176750 | Lamonde | Louis | [harbor](https://harbor-2176750.duckdns.org)<br>[app-cloud](http://esh26-2176750.duckdns.org) |
 | 2236171 | Papineau | Émy | [👍 harbor](https://harbor-2236171.duckdns.org)<br>[app-cloud](http://esh26-2236171.duckdns.org) |
-| 2248071 | Bilodeau | Lilianne | [harbor](https://harbor-2248071.duckdns.org)<br>[app-cloud](http://esh26-2248071.duckdns.org) |
-| 2251141 | Bouchareb | Saad | [harbor](https://harbor-2251141.duckdns.org)<br>[app-cloud](http://esh26-2251141.duckdns.org) |
-| 2464026 | Ezzahiri | Adam | [harbor](https://harbor-2464026.duckdns.org)<br>[app-cloud](http://esh26-2464026.duckdns.org) |
+| 2248071 | Bilodeau | Lilianne | [👍 harbor](https://harbor-2248071.duckdns.org)<br>[app-cloud](http://esh26-2248071.duckdns.org) |
+| 2251141 | Bouchareb | Saad | [👍 harbor](https://harbor-2251141.duckdns.org)<br>[app-cloud](http://esh26-2251141.duckdns.org) |
+| 2464026 | Ezzahiri | Adam | [👍 harbor](https://harbor-2464026.duckdns.org)<br>[app-cloud](http://esh26-2464026.duckdns.org) |
 | 2467525 | Guertin | Ubert | [harbor](https://harbor-2467525.duckdns.org)<br>[app-cloud](http://esh26-2467525.duckdns.org) |
 | 2482651 | Korotkov | Maxim | [harbor](https://harbor-2482651.duckdns.org)<br>[app-cloud](http://esh26-2482651.duckdns.org) |
 | 2487266 | Goudreau | Gabriel | [👍 harbor](https://harbor-2487266.duckdns.org)<br>[app-cloud](http://esh26-2487266.duckdns.org) |
 | 6226374 | Gosselin-Beaudoin | Xavier | [harbor](https://harbor-6226374.duckdns.org)<br>[app-cloud](http://esh26-6226374.duckdns.org) |
-| 6294775 | Paradis | Laury-Ann | [harbor](https://harbor-6294775.duckdns.org)<br>[app-cloud](http://esh26-6294775.duckdns.org) |
+| 6294775 | Paradis | Laury-Ann | [👍 harbor](https://harbor-6294775.duckdns.org)<br>[app-cloud](http://esh26-6294775.duckdns.org) |
 | 6313976 | Lamirande | Xavier | [harbor](https://harbor-6313976.duckdns.org)<br>[app-cloud](http://esh26-6313976.duckdns.org) |
-| 1191869 | Bebnowski-Lavoie | Guillaume | [harbor](https://harbor-1191869.duckdns.org)<br>[app-cloud](http://esh26-1191869.duckdns.org) |
+| 1191869 | Bebnowski-Lavoie | Guillaume | [👍 harbor](https://harbor-1191869.duckdns.org)<br>[app-cloud](http://esh26-1191869.duckdns.org) |
 | 1970541 | Asfaw | Marcus | [harbor](https://harbor-1970541.duckdns.org)<br>[app-cloud](http://esh26-1970541.duckdns.org) |
 | 2156548 | Mechmachi | Achraf | [harbor](https://harbor-2156548.duckdns.org)<br>[app-cloud](http://esh26-2156548.duckdns.org) |
-| 2241079 | Légaré | Christopher | [harbor](https://harbor-2241079.duckdns.org)<br>[app-cloud](http://esh26-2241079.duckdns.org) |
+| 2241079 | Légaré | Christopher | [👍 harbor](https://harbor-2241079.duckdns.org)<br>[app-cloud](http://esh26-2241079.duckdns.org) |
 | 2257181 | Rivet | Olivier | [harbor](https://harbor-2257181.duckdns.org)<br>[app-cloud](http://esh26-2257181.duckdns.org) |
 | 2357057 | Rimpel Morel | Chelsey | [harbor](https://harbor-2357057.duckdns.org)<br>[app-cloud](http://esh26-2357057.duckdns.org) |
 | 2383950 | Lalonde | Félix | [harbor](https://harbor-2383950.duckdns.org)<br>[app-cloud](http://esh26-2383950.duckdns.org) |
 | 2384502 | Guay | Raphaël | [harbor](https://harbor-2384502.duckdns.org)<br>[app-cloud](http://esh26-2384502.duckdns.org) |
 | 2482798 | Archambault | Derek | [harbor](https://harbor-2482798.duckdns.org)<br>[app-cloud](http://esh26-2482798.duckdns.org) |
-| 6220854 | Paradis | Louam | [harbor](https://harbor-6220854.duckdns.org)<br>[app-cloud](http://esh26-6220854.duckdns.org) |
-| 6235015 | Diallo | Abdoulaye | [harbor](https://harbor-6235015.duckdns.org)<br>[app-cloud](http://esh26-6235015.duckdns.org) |
+| 6220854 | Paradis | Louam | [👍 harbor](https://harbor-6220854.duckdns.org)<br>[app-cloud](http://esh26-6220854.duckdns.org) |
+| 6235015 | Diallo | Abdoulaye | [👍 harbor](https://harbor-6235015.duckdns.org)<br>[app-cloud](http://esh26-6235015.duckdns.org) |
 | 6289173 | Dubois | Zachary | [harbor](https://harbor-6289173.duckdns.org)<br>[app-cloud](http://esh26-6289173.duckdns.org) |
 | 6297476 | Forget | Antoine | [harbor](https://harbor-6297476.duckdns.org)<br>[app-cloud](http://esh26-6297476.duckdns.org) |
 | 6313680 | Nibimenya | Maëlys | [harbor](https://harbor-6313680.duckdns.org)<br>[app-cloud](http://esh26-6313680.duckdns.org) |
