@@ -12,10 +12,21 @@
  * Via LEA (fichier zip)
  * GitHub - branche `etape2`
 
-### Examen de fin de session (35/35) - 19 et 22 mai
- * Il n'y aura pas d'accès à un ordinateur, téléphone , ...
- * Une feuille recto/verso permise, à main - pas de photocopie.
+---
 
+### Examen de fin de session (35/35) - 19 et 22 mai
+ * Il n'y aura pas d'accès à un ordinateur, téléphone ou autres appareils électroniques...
+ * Une feuille recto/verso permise, à main - pas de photocopie.
+ * Durée: une période (50 minutes)
+
+#### Détails sur l'examen théorique
+  * 20 questions de compréhension sur les lectures suivantes:
+    * [Kubernetes](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-Introduction.html)
+    * [Manifestes](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-Manisfestes-Expliques-version-longue.html)
+    * [ConfigMap](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-Config-map-et-secret.html)
+    * [Volumes](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-Les-volumes.html)
+    * [Reverse proxy](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/MetalLB-Traefik.html)
+  * 15 questions de compréhension sur les manifestes du projet de session ESH26
 ---
 
 <p align="center">
