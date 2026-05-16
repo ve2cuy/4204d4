@@ -6,8 +6,15 @@
 
 ---
 ### Remise de la partie 1 (20/35) - Dimanche le 17 mai
+ * Via LEA (fichier zip)
+ * GitHub - branche `main`
 ### Remise de la partie 2 (15/35) - lundi le 25 mai
+ * Via LEA (fichier zip)
+ * GitHub - branche `etape2`
+
 ### Examen de fin de session (35/35) - 19 et 22 mai
+ * Il n'y aura pas d'accès à un ordinateur, téléphone , ...
+ * Une feuille recto/verso permise, à main - pas de photocopie.
 
 ---
 
