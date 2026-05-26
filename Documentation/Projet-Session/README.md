@@ -517,7 +517,6 @@ NOTE: 🛑 Les ressources de ce manifeste ne seront pas créées dans le `namesp
 
 | Matricule | Nom | Prénom | Liens |
 |-----------|-----|--------|-------|
-<<<<<<< HEAD
 | 1146373 | Charbonneau | Félix | [harbor](https://harbor-1146373.duckdns.org)<br>[‼️Traefik](http://dashboard.etape-02-1146373.duckdns.org/)<br>[‼️scaling](http://scaling.etape-02-1146373.duckdns.org/) |
 | 1929205 | Moussette | David | [‼️harbor](https://harbor-1929205.duckdns.org)<br>[Traefik](http://dashboard.etape-02-1929205.duckdns.org/)<br>[scaling](http://scaling.etape-02-1929205.duckdns.org/) |
 | 2133738 | Boudreault | Charles | [harbor](https://harbor-2133738.duckdns.org)<br>[👍Traefik](http://dashboard.etape-02-2133738.duckdns.org/)<br>[👍scaling](http://scaling.etape-02-2133738.duckdns.org/) |
