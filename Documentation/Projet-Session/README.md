@@ -517,7 +517,7 @@ NOTE: 🛑 Les ressources de ce manifeste ne seront pas créées dans le `namesp
 
 | Matricule | Nom | Prénom | Liens |
 |-----------|-----|--------|-------|
-
+<<<<<<< HEAD
 | 1146373 | Charbonneau | Félix | [harbor](https://harbor-1146373.duckdns.org)<br>[‼️Traefik](http://dashboard.etape-02-1146373.duckdns.org/)<br>[‼️scaling](http://scaling.etape-02-1146373.duckdns.org/) |
 | 1929205 | Moussette | David | [‼️harbor](https://harbor-1929205.duckdns.org)<br>[Traefik](http://dashboard.etape-02-1929205.duckdns.org/)<br>[scaling](http://scaling.etape-02-1929205.duckdns.org/) |
 | 2133738 | Boudreault | Charles | [harbor](https://harbor-2133738.duckdns.org)<br>[👍Traefik](http://dashboard.etape-02-2133738.duckdns.org/)<br>[👍scaling](http://scaling.etape-02-2133738.duckdns.org/) |
@@ -532,8 +532,7 @@ NOTE: 🛑 Les ressources de ce manifeste ne seront pas créées dans le `namesp
 | 2487266 | Goudreau | Gabriel | [👍 harbor](https://harbor-2487266.duckdns.org)<br>[👍Traefik](http://dashboard.etape-02-2487266.duckdns.org/)<br>[👍scaling](http://scaling.etape-02-2487266.duckdns.org/) |
 | 6226374 | Gosselin-Beaudoin | Xavier | [‼️harbor](https://harbor-6226374.duckdns.org)<br>[Traefik](http://dashboard.etape-02-6226374.duckdns.org/)<br>[‼️scaling](http://scaling.etape-02-6226374.duckdns.org/) |
 | 6294775 | Paradis | Laury-Ann | [👍 harbor](https://harbor-6294775.duckdns.org)<br>[‼️Traefik](http://dashboard.etape-02-6294775.duckdns.org/)<br>[‼️scaling](http://scaling.etape-02-6294775.duckdns.org/) |
-| 6313976 | Lamirande | Xavier | [harbor](https://harbor-6313976.duckdns.org)<br>👍Traefik](http://dashboard.etape-02-6313976.duckdns.org/)<br>[👍scaling](http://scaling.etape-02-6313976.duckdns.org/) |
-
+| 6313976 | Lamirande | Xavier | [harbor](https://harbor-6313976.duckdns.org)<br>[👍Traefik](http://dashboard.etape-02-6313976.duckdns.org/)<br>[👍scaling](http://scaling.etape-02-6313976.duckdns.org/) |
 | 1191869 | Bebnowski-Lavoie | Guillaume | [👍 harbor](https://harbor-1191869.duckdns.org)<br>[Traefik](http://dashboard.etape-02-1191869.duckdns.org/)<br>[scaling](http://scaling.etape-02-1191869.duckdns.org/) |
 | 1970541 | Asfaw | Marcus | [👍 harbor](https://harbor-1970541.duckdns.org)<br>[Traefik](http://dashboard.etape-02-1970541.duckdns.org/)<br>[scaling](http://scaling.etape-02-1970541.duckdns.org/) |
 | 2156548 | Mechmachi | Achraf | [👍 harbor](https://harbor-2156548.duckdns.org)<br>[Traefik](http://dashboard.etape-02-2156548.duckdns.org/)<br>[scaling](http://scaling.etape-02-2156548.duckdns.org/) |
