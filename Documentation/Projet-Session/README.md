@@ -529,7 +529,7 @@ NOTE: 🛑 Les ressources de ce manifeste ne seront pas créées dans le `namesp
 | 2467525 | Guertin | Ubert | [👍harbor](https://harbor-2467525.duckdns.org)<br>[👍Traefik](http://dashboard.etape-02-2467525.duckdns.org/)<br>[👍scaling](http://scaling.etape-02-2467525.duckdns.org/) |
 | 2482651 | Korotkov | Maxim | [👍harbor](https://harbor-2482651.duckdns.org)<br>[‼️Traefik](http://dashboard.etape-02-2482651.duckdns.org/)<br>[‼️scaling](http://scaling.etape-02-2482651.duckdns.org/) |
 | 2487266 | Goudreau | Gabriel | [👍 harbor](https://harbor-2487266.duckdns.org)<br>[👍Traefik](http://dashboard.etape-02-2487266.duckdns.org/)<br>[👍scaling](http://scaling.etape-02-2487266.duckdns.org/) |
-| 6226374 | Gosselin-Beaudoin | Xavier | [‼️harbor](https://harbor-6226374.duckdns.org)<br>[‼️Traefik](http://dashboard.etape-02-6226374.duckdns.org/)<br>[‼️scaling](http://scaling.etape-02-6226374.duckdns.org/) |
+| 6226374 | Gosselin-Beaudoin | Xavier | [👍harbor](https://harbor-6226374.duckdns.org)<br>[‼️Traefik](http://dashboard.etape-02-6226374.duckdns.org/)<br>[‼️scaling](http://scaling.etape-02-6226374.duckdns.org/) |
 | 6294775 | Paradis | Laury-Ann | [👍 harbor](https://harbor-6294775.duckdns.org)<br>[‼️Traefik](http://dashboard.etape-02-6294775.duckdns.org/)<br>[‼️scaling](http://scaling.etape-02-6294775.duckdns.org/) |
 | 6313976 | Lamirande | Xavier | [👍harbor](https://harbor-6313976.duckdns.org)<br>[👍Traefik](http://dashboard.etape-02-6313976.duckdns.org/)<br>[👍scaling](http://scaling.etape-02-6313976.duckdns.org/) |
 | 1191869 | Bebnowski-Lavoie | Guillaume | [👍 harbor](https://harbor-1191869.duckdns.org)<br>[🤔Traefik](http://dashboard.etape-02-1191869.duckdns.org/)<br>[👍scaling](http://scaling.etape-02-1191869.duckdns.org/) |
