@@ -521,19 +521,19 @@ NOTE: 🛑 Les ressources de ce manifeste ne seront pas créées dans le `namesp
 | 1929205 | Moussette | David | [‼️harbor](https://harbor-1929205.duckdns.org)<br>[‼️Traefik](http://dashboard.etape-02-1929205.duckdns.org/)<br>[‼️scaling](http://scaling.etape-02-1929205.duckdns.org/) |
 | 2133738 | Boudreault | Charles | [👍harbor](https://harbor-2133738.duckdns.org)<br>[👍Traefik](http://dashboard.etape-02-2133738.duckdns.org/)<br>[👍scaling](http://scaling.etape-02-2133738.duckdns.org/) |
 | 2135251 | Latreille | Léa | [👍harbor](https://harbor-2135251.duckdns.org)<br>[👍Traefik](http://dashboard.etape-02-2135251.duckdns.org/)<br>[👍scaling](http://scaling.etape-02-2135251.duckdns.org/) |
-| 2176750 | Lamonde | Louis | [👍harbor](https://harbor-2176750.duckdns.org)<br>[‼️Traefik](http://dashboard.etape-02-2176750.duckdns.org/)<br>[‼️scaling](http://scaling.etape-02-2176750.duckdns.org/) |
+| 2176750 | Lamonde | Louis | [👍harbor](https://harbor-2176750.duckdns.org)<br>[👍Traefik](http://dashboard.etape-02-2176750.duckdns.org/)<br>[👍scaling](http://scaling.etape-02-2176750.duckdns.org/) |
 | 2236171 | Papineau | Émy | [👍 harbor](https://harbor-2236171.duckdns.org)<br>[👍Traefik](http://dashboard.etape-02-2236171.duckdns.org/)<br>[👍scaling](http://scaling.etape-02-2236171.duckdns.org/) |
 | 2248071 | Bilodeau | Lilianne | [👍 harbor](https://harbor-2248071.duckdns.org)<br>[👍Traefik](http://dashboard.etape-02-2248071.duckdns.org/)<br>[👍scaling](http://scaling.etape-02-2248071.duckdns.org/) |
 | 2251141 | Bouchareb | Saad | [👍harbor](https://harbor-2251141.duckdns.org)<br>[👍Traefik](http://dashboard.etape-02-2251141.duckdns.org/)<br>[👍scaling](http://scaling.etape-02-2251141.duckdns.org/) |
 | 2464026 | Ezzahiri | Adam | [👍harbor](https://harbor-2464026.duckdns.org)<br>[👍Traefik](http://dashboard.etape-02-2464026.duckdns.org/)<br>[👍scaling](http://scaling.etape-02-2464026.duckdns.org/) |
 | 2467525 | Guertin | Ubert | [👍harbor](https://harbor-2467525.duckdns.org)<br>[👍Traefik](http://dashboard.etape-02-2467525.duckdns.org/)<br>[👍scaling](http://scaling.etape-02-2467525.duckdns.org/) |
-| 2482651 | Korotkov | Maxim | [👍harbor](https://harbor-2482651.duckdns.org)<br>[‼️Traefik](http://dashboard.etape-02-2482651.duckdns.org/)<br>[‼️scaling](http://scaling.etape-02-2482651.duckdns.org/) |
+| 2482651 | Korotkov | Maxim | [👍harbor](https://harbor-2482651.duckdns.org)<br>[👍Traefik](http://dashboard.etape-02-2482651.duckdns.org/)<br>[👍scaling](http://scaling.etape-02-2482651.duckdns.org/) |
 | 2487266 | Goudreau | Gabriel | [👍 harbor](https://harbor-2487266.duckdns.org)<br>[👍Traefik](http://dashboard.etape-02-2487266.duckdns.org/)<br>[👍scaling](http://scaling.etape-02-2487266.duckdns.org/) |
 | 6226374 | Gosselin-Beaudoin | Xavier | [👍harbor](https://harbor-6226374.duckdns.org)<br>[‼️Traefik](http://dashboard.etape-02-6226374.duckdns.org/)<br>[‼️scaling](http://scaling.etape-02-6226374.duckdns.org/) |
 | 6294775 | Paradis | Laury-Ann | [👍 harbor](https://harbor-6294775.duckdns.org)<br>[‼️Traefik](http://dashboard.etape-02-6294775.duckdns.org/)<br>[‼️scaling](http://scaling.etape-02-6294775.duckdns.org/) |
 | 6313976 | Lamirande | Xavier | [👍harbor](https://harbor-6313976.duckdns.org)<br>[👍Traefik](http://dashboard.etape-02-6313976.duckdns.org/)<br>[👍scaling](http://scaling.etape-02-6313976.duckdns.org/) |
 | 1191869 | Bebnowski-Lavoie | Guillaume | [👍 harbor](https://harbor-1191869.duckdns.org)<br>[🤔Traefik](http://dashboard.etape-02-1191869.duckdns.org/)<br>[👍scaling](http://scaling.etape-02-1191869.duckdns.org/) |
-| 1970541 | Asfaw | Marcus | [👍 harbor](https://harbor-1970541.duckdns.org)<br>[‼️Traefik](http://dashboard.etape-02-1970541.duckdns.org/)<br>[‼️scaling](http://scaling.etape-02-1970541.duckdns.org/) |
+| 1970541 | Asfaw | Marcus | [👍 harbor](https://harbor-1970541.duckdns.org)<br>[👍Traefik](http://dashboard.etape-02-1970541.duckdns.org/)<br>[👍scaling](http://scaling.etape-02-1970541.duckdns.org/) |
 | 2156548 | Mechmachi | Achraf | [👍 harbor](https://harbor-2156548.duckdns.org)<br>[👍Traefik](http://dashboard.etape-02-2156548.duckdns.org/)<br>[‼️scaling](http://scaling.etape-02-2156548.duckdns.org/) |
 | 2241079 | Légaré | Christopher | [👍 harbor](https://harbor-2241079.duckdns.org)<br>[👍Traefik](http://dashboard.etape-02-2241079.duckdns.org/)<br>[👍scaling](http://scaling.etape-02-2241079.duckdns.org/) |
 | 2257181 | Rivet | Olivier | [‼️harbor](https://harbor-2257181.duckdns.org)<br>[‼️Traefik](http://dashboard.etape-02-2257181.duckdns.org/)<br>[‼️scaling](http://scaling.etape-02-2257181.duckdns.org/) |
