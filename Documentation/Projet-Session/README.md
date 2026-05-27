@@ -543,6 +543,6 @@ NOTE: 🛑 Les ressources de ce manifeste ne seront pas créées dans le `namesp
 | 2482798 | Archambault | Derek | [👍 harbor](https://harbor-2482798.duckdns.org)<br>[👍Traefik](http://dashboard.etape-02-2482798.duckdns.org/)<br>[👍scaling](http://scaling.etape-02-2482798.duckdns.org/) |
 | 6220854 | Paradis | Louam | [👍 harbor](https://harbor-6220854.duckdns.org)<br>[👍Traefik](http://dashboard.etape-02-6220854.duckdns.org/)<br>[👍scaling](http://scaling.etape-02-6220854.duckdns.org/) |
 | 6235015 | Diallo | Abdoulaye | [👍 harbor](https://harbor-6235015.duckdns.org)<br>[👍Traefik](http://dashboard.etape-02-6235015.duckdns.org/)<br>[👍scaling](http://scaling.etape-02-6235015.duckdns.org/) |
-| 6289173 | Dubois | Zachary | [👍 harbor](https://harbor-6289173.duckdns.org)<br>[‼️Traefik](http://dashboard.etape-02-6289173.duckdns.org/)<br>[‼️scaling](http://scaling.etape-02-6289173.duckdns.org/) |
+| 6289173 | Dubois | Zachary | [👍 harbor](https://harbor-6289173.duckdns.org)<br>[👍Traefik](http://dashboard.etape-02-6289173.duckdns.org/)<br>[👍scaling](http://scaling.etape-02-6289173.duckdns.org/) |
 | 6297476 | Forget | Antoine | [👍 harbor](https://harbor-6297476.duckdns.org)<br>[👍Traefik](http://dashboard.etape-02-6297476.duckdns.org/)<br>[👍scaling](http://scaling.etape-02-6297476.duckdns.org/) |
 | 6313680 | Nibimenya | Maëlys | [‼️harbor](https://harbor-6313680.duckdns.org)<br>[‼️Traefik](http://dashboard.etape-02-6313680.duckdns.org/)<br>[‼️scaling](http://scaling.etape-02-6313680.duckdns.org/) |
