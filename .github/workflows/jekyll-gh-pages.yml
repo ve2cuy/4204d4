@@ -2,10 +2,11 @@
 name: Deploy Jekyll with GitHub Pages dependencies preinstalled
 
 on:
-  # Runs on pushes targeting the default branch
-  # Mise en commentaire par A.B.
-  # push:
-  #  branches: ["main"]
+  # Publie le site (Markdown rendu par Jekyll) à chaque push sur main. C'est le seul flux
+  # qui publie Pages : l'ancien « Deploy static content to Pages » (static.yml), qui publiait
+  # le dépôt brut à chaque push et écrasait le site rendu, a été retiré.
+  push:
+    branches: ["main"]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
