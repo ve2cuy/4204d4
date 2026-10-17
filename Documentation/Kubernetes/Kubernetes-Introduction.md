@@ -1324,11 +1324,11 @@ minikube service list
 
 #### Action 3.10 – Consolidation des deux schémas
 
-Renseigner le fichier `3.10-nginx-dep+service.yml`:
+Renseigner le fichier `3.10-nginx-dep-service.yml`:
 
 ```yaml
 # -----------------------------------------------------------
-# Fichier: 3.10-nginx-dep+service.yml
+# Fichier: 3.10-nginx-dep-service.yml
 # Auteur:  Alain Boudreault
 # -----------------------------------------------------------
 # Voici la version consolidée de:

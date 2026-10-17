@@ -2,7 +2,7 @@
 
 - [Semaine 01 - Présentation du cours et installation des outils](Semaine-01.md)
 - - [Semaine 01 - Labo CLI Docker](labo-semaine01.md) 
-- [Semaine 02 - Introduction à Docker](https://ve2cuy.github.io/4204d4/Documentation/Docker/Introduction-%C3%A0-Docker.html)
+- [Semaine 02 - Introduction à Docker](https://ve2cuy.github.io/4204d4/Documentation/Docker/Introduction-a-Docker.html)
 - - Options -p (ports) et -e (variables d'environnemet)
 - - [Docker Hub, images perso, publication et volumes persistants](https://ve2cuy.github.io/4204d4/Documentation/Docker/Docker-Hub.html)
 - Semaine 3

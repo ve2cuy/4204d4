@@ -8,7 +8,7 @@
 # 👉 Partie 1
 
 * À partir d'un clone de la VM principale (`labo420`), nommé `Harbor`
-* Réaliser le laboratoire [Harbor](https://ve2cuy.github.io/4204d4/Installation/Registre-priv%C3%A9-d-images.html)
+* Réaliser le laboratoire [Harbor](https://ve2cuy.github.io/4204d4/Installation/Registre-prive-d-images.html)
     * **IMPORTANT:** 👉 Ajuster à la version actuelle de `Harbor`
     * 💡 `docker` doit être disponible pour installer `harbor` 
 * Ajouter une référence au DNS local (windows) pour:
@@ -38,7 +38,7 @@ En utilisant votre projet `Google Cloud` du Cégep, il faut:
 * Utiliser un service DNS gratuit - [duckdns](https://www.duckdns.org/) ou [dynu](https://www.dynu.com/) - pour pointer vers votre serveur, 
   * Créer un domaine sur `duckdns`
   * Utiliser l'adresse `IP externe` de la VM
-* Installer `Harbor`, voir le [document](https://ve2cuy.github.io/4204d4/Installation/Registre-priv%C3%A9-d-images.html)
+* Installer `Harbor`, voir le [document](https://ve2cuy.github.io/4204d4/Installation/Registre-prive-d-images.html)
   * NOTE: 💡 `docker` doit être disponible pour installer `harbor` 
   * 🛑 ATTENTION: Pensez à changer le mot de passe dans `harbor.yml`
     * `harbor_admin_password:`

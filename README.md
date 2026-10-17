@@ -40,9 +40,9 @@
 
 ### Concepts et Outils de Base (Docker)
 
-* [01 - Conteneurs vs machines virtuelles](Documentation/Docker/Intro-à-docker-et-kubernetes.md)
+* [01 - Conteneurs vs machines virtuelles](Documentation/Docker/Intro-a-docker-et-kubernetes.md)
 * [02 - Installation de Docker](Installation/Docker/Installation-de-Docker.md)
-* [03 - Docker – Introduction](Documentation/Docker/Introduction-à-Docker.md)
+* [03 - Docker – Introduction](Documentation/Docker/Introduction-a-Docker.md)
 * [04 - Yaml – Introduction](Documentation/Yaml/yaml.md)
 * [05 - Référence Yaml](Documentation/Yaml/yaml-reference.md)
 * [06 - Yaml – Exemple d'un document Yaml](Documentation/Yaml/yaml-exemple-ibm.md)
@@ -51,18 +51,18 @@
 * [08b- Dockerfile – Convention de nommage des 'labels'](Documentation/Docker/Dockerfile-convention-de-nommage.md)
 * [09 - Dockerfile - Exemple avec une app node.js](Documentation/Docker/Dockerfile-Exemple-node.js.md)
 * [F1 - Dockerfile – Formatif 01 - SuperMinou 🐈](Documentation/Docker/Dockerfile-atelier-de-renforcement.md)
-* [10 - Docker – Les réseaux](Documentation/Docker/Introduction-aux-réseaux.md)
+* [10 - Docker – Les réseaux](Documentation/Docker/Introduction-aux-reseaux.md)
 * [11 - Docker – Application multi-services](Documentation/Docker/Application-multi-services.md)
 * [12 - Docker – Retour sur les fusions (bind)](Documentation/Docker/Retour-sur-les-fusions-Bind.md)
 * [13a- Docker-Compose – Partie 1](Documentation/Docker/Docker-compose-p1.md)
 * * [13b- Docker-Compose – Partie 2](Documentation/Docker/Docker-compose-p2.md)
 * * [13c - Docker-Compose – Partie 3](Documentation/Docker/Docker-compose-p3.md)
 * [14 - Docker-Compose – Laboratoire (Drupal) TODO:](https://4204d4.ve2cuy.com/docker-compose-laboratoire-drupal/) 🛑
-* [15 - Dépôt privé d’images – Harbor](Installation/Registre-privé-d-images.md)
+* [15 - Dépôt privé d’images – Harbor](Installation/Registre-prive-d-images.md)
 * [16 - Automatisation des builds – GitHub actions](/Documentation/Automatisation/github-action.md)
 * [17 - Automatisation des builds – GitHub actions V2](/Documentation/Automatisation/github-action-v2.md)
 * [18 - Introduction à Homepage](Documentation/Docker/homepage.md)
-* [Docker - Référence rapide](Documentation/Docker/Docker-Référence-rapide.md) 👍
+* [Docker - Référence rapide](Documentation/Docker/Docker-Reference-rapide.md) 👍
 * [Projet de mi-session : 30%](https://github.com/ve2cuy/4204D4-TP01-H26-depart)
 
 ### Kubernetes (K8s)
@@ -99,7 +99,7 @@
 ### Formatifs et Laboratoires
 
 
-* [60 - Google.Cloud NFS et Harbor](/Documentation/Laboratoires/NFS+Habor.md)
+* [60 - Google.Cloud NFS et Harbor](Documentation/Laboratoires/NFS-Habor.md)
 
 ---
 

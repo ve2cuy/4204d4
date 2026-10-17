@@ -46,5 +46,5 @@ sort
 - kubectl get pod -o wide
 - kubectl apply -f 3.7-service-nginx-LB.yml
 - kubectl get service
-- kubectl apply -f 3.10-nginx-dep+service.yml
+- kubectl apply -f 3.10-nginx-dep-service.yml
 - kubectl get all
