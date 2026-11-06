@@ -90,8 +90,8 @@ Sans lien (seulement du texte à la place de `[Titre](lien)`), la carte est gris
 ```
 
 Les couleurs des dessins alternent d'elles-mêmes d'une carte à l'autre. Une liste dont toutes les
-cartes sont numérotées par une seule lettre (`A`, `B`) s'affiche en grandes cartes, comme le
-projet de session.
+cartes sont numérotées par une seule lettre (`A`, `B`) s'affiche en grandes cartes; pour les garder
+de la taille des autres, ajouter `grandes_cartes: false` dans l'en-tête d'`index.md`.
 
 ## Exemples
 

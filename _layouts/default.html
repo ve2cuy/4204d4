@@ -85,7 +85,7 @@
 {% endif %}
 
 <main class="wrap">
-  <article class="prose{% if page.titre %} cours accueil{% endif %}">
+  <article class="prose{% if page.titre %} cours accueil{% endif %}"{% if page.grandes_cartes == false %} data-grandes-cartes="non"{% endif %}>
 {{ content }}
   </article>
 </main>

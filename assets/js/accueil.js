@@ -89,7 +89,8 @@
   function cartes(items, couleur) {
     const docs = items.map(lireCarte);
     const grille = el("div", "docs " + couleur);
-    if (docs.every((d) => /^[A-Z]$/.test(d.numero))) grille.classList.add("grande");
+    // Cartes numérotées par une seule lettre (A, B…) : grandes cartes, sauf « grandes_cartes: false » dans index.md
+    if (root.dataset.grandesCartes !== "non" && docs.every((d) => /^[A-Z]$/.test(d.numero))) grille.classList.add("grande");
     for (const d of docs) {
       const carte = d.href ? el("a", "doc") : el("div", "doc sans-lien");
       if (d.href) carte.href = d.href;
