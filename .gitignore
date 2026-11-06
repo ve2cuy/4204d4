@@ -1,1 +1,6 @@
 Documentation/.DS_Store
+_site/
+.jekyll-cache/
+.sass-cache/
+outils/Gemfile.lock
+.DS_Store

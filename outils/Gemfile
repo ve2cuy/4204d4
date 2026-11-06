@@ -1,0 +1,12 @@
+# Gemmes de l'aperçu local (outils/apercu.sh) : la même version de Jekyll que GitHub Pages.
+source "https://rubygems.org"
+gem "github-pages", group: :jekyll_plugins
+# Retirées de la bibliothèque standard de Ruby récent, encore utilisées par ce Jekyll.
+gem "webrick"
+gem "csv"
+gem "base64"
+gem "bigdecimal"
+gem "logger"
+gem "ostruct"
+gem "observer"
+gem "fiddle"

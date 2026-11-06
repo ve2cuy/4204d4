@@ -1,0 +1,14 @@
+# Configuration ajoutée pour l'aperçu local (outils/apercu.sh) : les extensions que GitHub Pages
+# active d'office (pages Markdown sans en-tête, liens .md convertis en .html, titres…).
+plugins:
+  - jekyll-optional-front-matter
+  - jekyll-readme-index
+  - jekyll-default-layout
+  - jekyll-titles-from-headings
+  - jekyll-relative-links
+  - jekyll-github-metadata
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+highlighter: rouge

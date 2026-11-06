@@ -1,6 +1,10 @@
 
 # 📚 CSTJ.QC.CA - 420-4D4-JR : Serveurs Internet
 
+> **Site du cours :** <https://ve2cuy.github.io/4204d4/>. Pour modifier ou ajouter des documents,
+> et pour voir le site en local avant de publier, voir le **[guide d'entretien](GUIDE.md)**.
+> L'accueil du site est `index.md`, en Markdown : ce README n'est que la page du dépôt.
+
 *Mise à jour : 16 avril 2021 - Révision 2025.12.04*
 
 ## Introduction à Docker et Kubernetes
