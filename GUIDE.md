@@ -67,7 +67,7 @@ layout: accueil
 bandeau: "420-4D4-JR · techniques de l'informatique · cégep de saint-jérôme"
 titre: "Serveurs Internet."
 accroche: "Introduction à Docker et Kubernetes : conteneurs, images, Docker Compose…"
-image: Documentation/images/k8s-entete.webp
+image: Documentation/images/serveurs-entete.png
 ---
 ```
 
