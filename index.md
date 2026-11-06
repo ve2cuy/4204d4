@@ -4,7 +4,6 @@ bandeau: "420-4D4-JR · techniques de l'informatique · cégep de saint-jérôme
 titre: "Serveurs Internet."
 accroche: "Introduction à Docker et Kubernetes : conteneurs, images, Docker Compose, puis orchestration, volumes, services et déploiement continu."
 image: Documentation/images/k8s-entete.webp
-grandes_cartes: false
 ---
 
 ## Présentation sommaire du cours
@@ -108,9 +107,9 @@ Ce cours permettra à l'étudiant, à partir de l'approche DevOps, de réaliser,
 
 ![](dessins/drapeau.svg) *TP01, volets A et B, énoncés 2023*
 
-- ![](dessins/conteneur.svg) A · [Projet de mi-session – TP01 Docker](https://github.com/ve2cuy/4204D4-TP01-H26-depart) · 30 %
-- ![](dessins/coupe.svg) B · [Épreuve synthèse, volet A – TP02 K8s](Documentation/Projet-Session/README.md) · 35 %
-- ![](dessins/crayon.svg) C · Épreuve synthèse, volet B – examen pratique · 35 %
+- ![](dessins/conteneur.svg) 1 · [Projet de mi-session – TP01 Docker](https://github.com/ve2cuy/4204D4-TP01-H26-depart) · 30 %
+- ![](dessins/coupe.svg) 2 · [Épreuve synthèse, volet A – TP02 K8s](Documentation/Projet-Session/README.md) · 35 %
+- ![](dessins/crayon.svg) 3 · Épreuve synthèse, volet B – examen pratique · 35 %
 
 Énoncés des années précédentes :
 
