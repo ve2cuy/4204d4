@@ -1452,7 +1452,7 @@ $ kubectl api-resources
 
 ---
 
-Prochain document: [K8s-partie2](/Documentation/Kubernetes/Kubernetes-partie-2.md)
+Prochain document: [K8s-partie2](Kubernetes-partie-2.md)
 
 ---
 

@@ -804,7 +804,7 @@ sudo docker run --privileged -d --restart=unless-stopped -p 80:80 -p 443:443 ran
 * [Charts | Helm](https://helm.sh/docs/topics/charts/)
 * [K9s](https://k9scli.io/)
 
-<img src="../images/Capture-decran-2025-12-02-114632-1024x773.png" alt="K9s Interface" width="500" />
+<img src="images/Capture-decran-2025-12-02-114632-1024x773.png" alt="K9s Interface" width="500" />
 
 ```bash
 # Utiliser : pour soumettre des commandes supplémentaires ou sélectionner des ressources. Par exemple:
@@ -818,7 +818,7 @@ sudo docker run --privileged -d --restart=unless-stopped -p 80:80 -p 443:443 ran
 
 ## 16 – Importer un cluster dans portainer (sans LB)
 
-<img src="../images/Capture-decran-2025-12-01-112824-858x1024.png" alt="Portainer Cluster Import" width="500" />
+<img src="images/Capture-decran-2025-12-01-112824-858x1024.png" alt="Portainer Cluster Import" width="500" />
 
 ---
 
