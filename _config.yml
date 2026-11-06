@@ -6,6 +6,8 @@ cours_code: "420-4D4"
 cours_nom: "Serveurs Internet"
 depot: "ve2cuy/4204d4"
 baseurl: "/4204d4"
+# Le cours se donne à l'hiver : le tableau de bord ne montre que ces sessions.
+saison: hiver
 # Gabarit et feuilles de style (_layouts/default.html, assets/css/ve2cuy.css et cours.css)
 # repris de ve2cuy.com et du site 420-1C4. L'accueil du site est index.md; README.md reste
 # celui du dépôt. Les README des dossiers (Contenu, Projet-Session…) restent des pages du site.

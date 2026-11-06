@@ -59,7 +59,7 @@
           <p class="lede">{{ page.accroche }}</p>
         </div>
       </div>
-      <div class="meter" data-sessions="{{ '/assets/data/sessions.json' | relative_url }}" role="group" aria-labelledby="meter-title">
+      <div class="meter" data-sessions="{{ '/assets/data/sessions.json' | relative_url }}"{% if site.saison %} data-saison="{{ site.saison }}"{% endif %} role="group" aria-labelledby="meter-title">
             <div class="meter-head">
               <span class="title" id="meter-title">tableau de bord · <span id="cal-state" class="c-green">session</span></span>
               <span id="cal-today"></span>

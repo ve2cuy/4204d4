@@ -69,7 +69,7 @@ function status(session, day) {
   }
   if (day <= evalEnd) {
     return { state: "évaluations", tone: "cyan", week: total, left: 0, done: total,
-      note: "Période d'évaluation commune du " + shortDate(evalStart) + " au " + shortDate(evalEnd) + ".", breakAfter };
+      note: ("Période d'évaluation commune du " + shortDate(evalStart) + " au " + shortDate(evalEnd) + ".").replace(/\.\.$/, "."), breakAfter };
   }
   return { state: "session terminée", tone: "muted", week: total, left: 0, done: total,
     note: "La session " + session.nom.toLowerCase().replace(/^(\w+)/, "d'$1") + " est terminée.", breakAfter };
@@ -128,7 +128,13 @@ function renderDashboard(session, day) {
 async function setupDashboard() {
   try {
     const response = await fetch(document.querySelector(".meter").dataset.sessions, { cache: "no-cache" });
-    const sessions = await response.json();
+    let sessions = await response.json();
+    // saison: automne (ou hiver) dans _config.yml : seulement les sessions de cette saison.
+    const saison = (document.querySelector(".meter").dataset.saison || "").toLowerCase();
+    if (saison) {
+      const choisies = sessions.filter((s) => s.nom.toLowerCase().startsWith(saison));
+      if (choisies.length) sessions = choisies;
+    }
     const day = today();
     renderDashboard(pickSession(sessions, day), day);
   } catch (e) {
