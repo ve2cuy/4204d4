@@ -100,7 +100,7 @@
       const v = el("span", d.photo ? "vignette photo" : "vignette dessin");
       if (d.photo) { const i = el("img"); i.src = d.img.src; i.alt = d.img.alt || ""; i.loading = "lazy"; v.append(i); }
       else v.append(masque(d.img));
-      if (d.numero !== "-") { const n = el("span", "n"); n.textContent = d.numero || "+"; v.append(n); }
+      if (d.numero !== "-") { const n = el("span", "n"); n.textContent = d.numero || "+"; if (n.textContent.length > 4) n.classList.add("long"); v.append(n); }
       const info = el("span", "info");
       let t;
       if (bloc) { t = el("a", "titre principal"); t.href = d.href; } else t = el("span", "titre");

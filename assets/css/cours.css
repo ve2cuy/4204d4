@@ -220,3 +220,8 @@ html { scroll-behavior: smooth; }
 
 /* Titre long (plus de 30 caractères) : plus petit, pour rester moins haut que le tableau de bord */
 .hero h1.titre-auto.long { font-size: clamp(28px, 2.6vw, 38px); }
+
+/* Le dessin descend un peu pour laisser la place au numéro; numéro long (code de cours) plus petit */
+.doc .vignette.dessin { box-sizing: border-box; padding-top: 22px; }
+.docs:not(.grande) .doc .vignette.dessin .masque { width: 128px; height: 60px; }
+.doc .vignette .n.long, .docs:not(.grande) .doc .vignette .n.long { font-size: 13px; top: 7px; }
