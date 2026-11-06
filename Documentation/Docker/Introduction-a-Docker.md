@@ -545,6 +545,7 @@ $ docker inspect serveur-web | grep  "IPAddress"
 
 ### 3.10 – Appliquer un filtre à une commande: `docker --filter`
 
+{% raw %}
 ```bash
 $ docker container ls --filter "status=exited"
 
@@ -558,6 +559,7 @@ $ docker ps -a --filter ancestor=nginx
 #  Afficher avec un format personnalisé :
 $ docker ps --filter ancestor=nginx --format 'table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}'
 ```
+{% endraw %}
 
 <img src="../images/docker-format.png" alt="Docker format" width="750" />
 

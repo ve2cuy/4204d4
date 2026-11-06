@@ -35,7 +35,7 @@
 | `docker cp SRC DEST` | Copier fichiers entre hôte et conteneur | `docker cp ./config.json web:/app/config.json` |
 | `docker commit CONTAINER IMAGE:TAG` | Créer une image à partir d’un conteneur | `docker commit web myapp:from-web` |
 | `docker inspect OBJECT` | Obtenir les détails JSON d’un conteneur ou image | `docker inspect web` |
-| `docker inspect --format='{{.State.Running}}' CONTAINER` | Inspecter avec format Go template | `docker inspect --format='{{.State.Running}}' web` |
+{% raw %}| `docker inspect --format='{{.State.Running}}' CONTAINER` | Inspecter avec format Go template | `docker inspect --format='{{.State.Running}}' web` |{% endraw %}
 | `docker stats` | Afficher l’utilisation des ressources en temps réel | `docker stats` |
 | `docker top CONTAINER` | Afficher les processus d’un conteneur | `docker top web` |
 | `docker diff CONTAINER` | Montrer les changements de fichiers dans un conteneur | `docker diff web` |

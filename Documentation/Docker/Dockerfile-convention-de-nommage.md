@@ -55,6 +55,7 @@ CMD ["npm", "start"]
 
 ## 🔍 Voir les labels d'une image
 
+{% raw %}
 ```bash
 # Inspecter les labels d'une image
 docker inspect monapi:latest | jq '.[0].Config.Labels'
@@ -65,6 +66,7 @@ docker inspect --format='{{.Config.Labels}}' monapi:latest
 # Avec docker-compose
 docker-compose config
 ```
+{% endraw %}
 
 ## 📦 Exemple dans docker-compose.yml
 

@@ -25,6 +25,7 @@
 
 ## 2. Workflow de base (`.github/workflows/docker-build.yml`)
 
+{% raw %}
 ```yaml
 name: Build et Push Docker Image
 
@@ -77,9 +78,11 @@ jobs:
           cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/mon-image:buildcache
           cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/mon-image:buildcache,mode=max
 ```
+{% endraw %}
 
 ## 3. Workflow avec plusieurs Dockerfiles
 
+{% raw %}
 ```yaml
 name: Build Multiple Docker Images
 
@@ -137,9 +140,11 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/autre-app:latest
 ```
+{% endraw %}
 
 ## 4. Workflow avancé avec tests
 
+{% raw %}
 ```yaml
 name: Build, Test et Push Docker Image
 
@@ -225,9 +230,11 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 ```
+{% endraw %}
 
 ## 5. Workflow déclenché par tags (versioning)
 
+{% raw %}
 ```yaml
 name: Release Docker Image
 
@@ -273,9 +280,11 @@ jobs:
           repository: ${{ secrets.DOCKERHUB_USERNAME }}/mon-app
           readme-filepath: ./README.md
 ```
+{% endraw %}
 
 ## 6. Exemple avec build arguments
 
+{% raw %}
 ```yaml
 name: Build avec Arguments
 
@@ -310,6 +319,7 @@ jobs:
             BUILD_DATE=${{ github.event.head_commit.timestamp }}
             ENVIRONMENT=production
 ```
+{% endraw %}
 
 ## 7. Structure de projet recommandée
 
@@ -360,6 +370,7 @@ docker run -p 8080:80 votre-username/mon-app:latest
 
 ## 10. Exemple complet pour SuperMinou
 
+{% raw %}
 ```yaml
 name: Build SuperMinou
 
@@ -398,6 +409,7 @@ jobs:
           build-args: |
             PHP_VERSION=8.0.3
 ```
+{% endraw %}
 
 ## 11. Troubleshooting
 

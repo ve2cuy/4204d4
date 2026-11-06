@@ -34,6 +34,27 @@ Pour une image, la déposer dans `Documentation/images/` et y faire référence 
 
 Le chemin se compte à partir du document : `../images/` pour un document de `Documentation/Docker/`.
 
+### Exemples qui contiennent des `{{ }}` ou des `{% %}`
+
+Jekyll prend les doubles accolades pour ses propres variables et les retire de la page publiée :
+`docker ps --format '{{.Names}}'` deviendrait `docker ps --format ''`. C'est le cas des formats Go
+de Docker et de Kubernetes, des gabarits Helm et des expressions des GitHub Actions
+(`${{ secrets.… }}`). Entourer le bloc de code de `{% raw %}` et `{% endraw %}`, chacun sur sa
+ligne et avec la même indentation que le bloc :
+
+````markdown
+{% raw %}
+```bash
+docker ps --format 'table {{.ID}}\t{{.Names}}'
+```
+{% endraw %}
+````
+
+Sur le site, ces deux marques disparaissent et le bloc s'affiche tel quel; sur github.com, elles
+restent visibles. Pour une seule ligne hors d'un bloc (une ligne de tableau, par exemple), les
+mettre au début et à la fin de la ligne. L'aperçu local (`outils/apercu.sh`) affiche un
+« Liquid Warning » quand des accolades ne sont pas protégées, mais pas toujours : vérifier la page.
+
 ## L'accueil : `index.md`
 
 ### L'en-tête

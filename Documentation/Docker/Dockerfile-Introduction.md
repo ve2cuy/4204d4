@@ -431,6 +431,7 @@ BUILD_DATE=2025-12-22T15:11:36Z
 
 Inspecter la structure json du conteneur:
 
+{% raw %}
 ```
 $ docker inspect ID_CONTENEUR | grep -A5 Labels
     "Labels": {
@@ -450,6 +451,7 @@ $ docker inspect --format='{{index .Config.Labels "org.label-schema.docker.cmd"}
   --> docker run --build-arg BUILD_DATE= --build-arg BUILD_VERSION=1.0  mes-outils
 
 ```
+{% endraw %}
 
 **⚠️ Note importante** : Cet exemple utilise la syntaxe `org.label-schema` qui est maintenant **dépréciée** (mais toujours largement utilisée). Voir le document [Dockerfile convention de nommage](Dockerfile-convention-de-nommage.md) pour des exemples avec le standard 'OCI Image Spec Annotations'.
 

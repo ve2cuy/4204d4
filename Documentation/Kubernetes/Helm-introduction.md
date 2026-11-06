@@ -328,6 +328,7 @@ env:
 ```
 
 **templates/deployment.yaml**
+{% raw %}
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -355,6 +356,7 @@ spec:
           value: {{ .value | quote }}
         {{- end }}
 ```
+{% endraw %}
 
 ## Bonnes pratiques
 

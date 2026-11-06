@@ -435,6 +435,7 @@ sudo ip route add 192.168.1.192/27 dev macvlan_host
 
 ## Vérification et diagnostic
 
+{% raw %}
 ```bash
 # Lister les réseaux Docker
 docker network ls
@@ -448,6 +449,7 @@ docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ngi
 # Tester la connectivité depuis un autre appareil du réseau
 ping 192.168.1.200
 ```
+{% endraw %}
 
 ## Exemple pratique complet
 

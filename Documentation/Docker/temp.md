@@ -192,6 +192,7 @@ volumes:
 
 ## 5. Init qui copie et personnalise la config Apache
 
+{% raw %}
 ```yaml
 services:
   init-config:
@@ -233,6 +234,7 @@ services:
 volumes:
   apache-config:
 ```
+{% endraw %}
 
 ---
 

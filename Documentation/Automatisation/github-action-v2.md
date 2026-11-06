@@ -394,6 +394,7 @@ node_modules
 
 ### Fichier : `.github/workflows/docker-build-push.yml`
 
+{% raw %}
 ```yaml
 name: Build and Push Docker Image
 
@@ -563,9 +564,11 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "🔗 [Voir sur Docker Hub](https://hub.docker.com/r/${{ env.DOCKER_IMAGE }})" >> $GITHUB_STEP_SUMMARY
 ```
+{% endraw %}
 
 ### Fichier : `.github/workflows/docker-release.yml`
 
+{% raw %}
 ```yaml
 name: Release Docker Image
 
@@ -635,11 +638,14 @@ jobs:
             ```bash
             docker pull ${{ env.DOCKER_IMAGE }}:${{ steps.version.outputs.VERSION }}
             ```
+{% endraw %}
             
             ### 🚀 Utilisation
+            {% raw %}
             ```bash
             docker run -p 8080:80 ${{ env.DOCKER_IMAGE }}:${{ steps.version.outputs.VERSION }}
             ```
+            {% endraw %}
             
             Puis ouvrir http://localhost:8080
 ```
