@@ -114,6 +114,27 @@ Les couleurs des dessins alternent d'elles-mêmes d'une carte à l'autre. Une li
 cartes sont numérotées par une seule lettre (`A`, `B`) s'affiche en grandes cartes; pour les garder
 de la taille des autres, ajouter `grandes_cartes: false` dans l'en-tête d'`index.md`.
 
+### Autres possibilités
+
+| Ce qu'on écrit | Effet |
+|---|---|
+| `- ![Description](images/photo.jpg) - · [Titre](lien)` | Une carte avec une **photo** au lieu d'un dessin (toute image qui n'est pas dans `dessins/`) |
+| `… · [Titre](lien) · étiquette · [Dépôt GitHub](https://github.com/…)` | Des **liens de plus** sur la carte, en boutons; le titre reste le lien principal |
+| `-` à la place du numéro | Aucun numéro affiché sur le dessin |
+| `420-1C4` comme numéro | Un code de cours sert aussi de numéro |
+| `image_ronde: true` dans l'en-tête d'`index.md` | L'image de l'en-tête s'affiche en rond (pour une photo) |
+| Un titre de plus de 30 caractères | Il s'affiche un peu plus petit, pour rester moins haut que le tableau de bord |
+
+Le menu du haut se règle dans `_config.yml` (sinon : ve2cuy.com, Documents, Enseignant) :
+
+```yaml
+navigation:
+  - titre: "Cours"
+    lien: "/#section-a"
+  - titre: "Blogue"
+    lien: "https://ve2cuy.github.io/blog/"
+```
+
 ## Exemples
 
 ### Ajouter un document

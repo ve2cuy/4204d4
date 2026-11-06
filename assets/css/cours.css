@@ -197,3 +197,26 @@ html { scroll-behavior: smooth; }
 .masque-img { display: block; width: 140px; height: 70px; object-fit: contain; }
 .tile .art .masque-img { width: 180px; height: 90px; }
 .prose.cours .illus .masque-img { width: 114px; height: 57px; }
+
+/* Carte avec photo (image qui n'est pas un dessin) */
+.doc .vignette.photo { overflow: hidden; }
+.prose .doc .vignette.photo img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 0; margin: 0; }
+.docs.grande .doc .vignette.photo { height: 190px; }
+/* Carte avec liens de plus : le titre est le lien principal, étendu à toute la carte */
+.doc.multi { position: relative; transition: border-color .2s ease, transform .2s ease; }
+.doc.multi:hover { border-color: var(--line-2); transform: translateY(-2px); }
+.prose .doc .titre.principal { color: var(--fg); text-decoration: none; }
+.prose .doc .titre.principal::after { content: ""; position: absolute; inset: 0; border-radius: 14px; }
+.doc .liens { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.prose .doc .lien-sec {
+  position: relative; z-index: 1; display: inline-flex; align-items: center; min-height: 32px; padding: 0 10px;
+  border-radius: 8px; border: 1px solid var(--line-2); background: var(--panel); color: var(--muted);
+  font-family: var(--mono); font-size: 12px; text-decoration: none;
+}
+.prose .doc .lien-sec:hover { color: var(--fg); border-color: var(--fg); }
+
+/* Image d'en-tête ronde (image_ronde: true dans index.md), pour une photo */
+.hero-image.ronde { border-radius: 50%; object-fit: cover; border: 2px solid var(--line-2); box-shadow: 0 0 0 5px var(--panel); }
+
+/* Titre long (plus de 30 caractères) : plus petit, pour rester moins haut que le tableau de bord */
+.hero h1.titre-auto.long { font-size: clamp(28px, 2.6vw, 38px); }

@@ -79,7 +79,7 @@
   for (const ul of root.querySelectorAll(":scope > section > ul")) {
     const items = [...ul.children];
     const sec = ul.closest("section");
-    if (items.length && items.every((li) => { const f = premier(li); return f && f.tagName === "IMG" && estDessin(f); })) {
+    if (items.length && items.every((li) => { const f = premier(li); return f && f.tagName === "IMG"; })) {
       ul.replaceWith(cartes(items, sec.dataset.couleur));
     } else if (items.length && items.every((li) => { const f = premier(li); return f && f.tagName === "STRONG"; })) {
       ul.replaceWith(encadres(items));
@@ -92,45 +92,62 @@
     // Cartes numérotées par une seule lettre (A, B…) : grandes cartes, sauf « grandes_cartes: false » dans index.md
     if (root.dataset.grandesCartes !== "non" && docs.every((d) => /^[A-Z]$/.test(d.numero))) grille.classList.add("grande");
     for (const d of docs) {
-      const carte = d.href ? el("a", "doc") : el("div", "doc sans-lien");
-      if (d.href) carte.href = d.href;
-      const v = el("span", "vignette dessin");
-      const n = el("span", "n"); n.textContent = d.numero || "+";
-      v.append(masque(d.img), n);
+      // Avec des liens de plus (« · [Dépôt GitHub](…) ») : la carte est un bloc, son titre est le lien
+      // principal (étendu à toute la carte) et les autres liens deviennent des boutons.
+      const bloc = d.href && d.autres.length;
+      const carte = bloc ? el("div", "doc multi") : d.href ? el("a", "doc") : el("div", "doc sans-lien");
+      if (d.href && !bloc) carte.href = d.href;
+      const v = el("span", d.photo ? "vignette photo" : "vignette dessin");
+      if (d.photo) { const i = el("img"); i.src = d.img.src; i.alt = d.img.alt || ""; i.loading = "lazy"; v.append(i); }
+      else v.append(masque(d.img));
+      if (d.numero !== "-") { const n = el("span", "n"); n.textContent = d.numero || "+"; v.append(n); }
       const info = el("span", "info");
-      const t = el("span", "titre"); t.textContent = d.titre;
+      let t;
+      if (bloc) { t = el("a", "titre principal"); t.href = d.href; } else t = el("span", "titre");
+      t.textContent = d.titre;
       info.append(t);
       if (d.option) { const o = el("span", "option"); o.textContent = d.option; info.append(o); }
       if (d.notes) { const no = el("span", "notes"); no.textContent = d.notes; info.append(no); }
+      if (bloc) {
+        const liens = el("span", "liens");
+        for (const a of d.autres) { const b = el("a", "lien-sec"); b.href = a.getAttribute("href"); b.textContent = a.textContent.trim(); liens.append(b); }
+        info.append(liens);
+      }
       carte.append(v, info);
       grille.append(carte);
     }
     return grille;
   }
 
-  // « ![](dessins/x.svg) 21 · [Titre](lien) · étiquette », avec une sous-liste facultative (notes)
+  // « ![](dessins/x.svg) 21 · [Titre](lien) · étiquette · [Autre lien](…) », avec une sous-liste
+  // facultative (notes). Une image qui n'est pas un dessin s'affiche comme photo.
   function lireCarte(li) {
     const img = premier(li);
-    const lien = li.querySelector(":scope > a");
+    const liens = [...li.querySelectorAll(":scope > a")];
+    const lien = liens[0] || null;
     const sous = li.querySelector(":scope > ul");
     const copie = li.cloneNode(true);
     copie.querySelector(":scope > img").remove();
     if (copie.querySelector(":scope > ul")) copie.querySelector(":scope > ul").remove();
+    [...copie.querySelectorAll(":scope > a")].slice(1).forEach((a) => a.remove());
     const parts = copie.textContent.split("·").map((s) => s.trim()).filter(Boolean);
     let numero = "";
-    // Numéro : 1 à 4 lettres ou chiffres (21, 08b, 13a, F1, A) ou « + »
-    if (parts.length > 1 && /^([0-9A-Za-z]{1,4}|\+)$/.test(parts[0])) numero = parts.shift();
+    // Numéro : 1 à 4 lettres ou chiffres (21, 08b, F1, A), un code de cours (420-1C4),
+    // « + » (document d'appoint) ou « - » (aucun numéro affiché)
+    if (parts.length > 1 && /^([0-9A-Za-z]{1,4}|[0-9]{3}-[0-9A-Za-z]{3}|\+|-)$/.test(parts[0])) numero = parts.shift();
     let titre = parts.shift() || "";
     if (lien) {
       // Un titre de lien peut lui-même contenir « · » : on le reprend en entier.
       const t = lien.textContent.trim();
-      const reste = copie.textContent.slice(copie.textContent.indexOf(t) + t.length).split("·").map((s) => s.trim()).filter(Boolean);
+      const texte = copie.textContent;
+      const reste = texte.slice(texte.indexOf(t) + t.length).split("·").map((s) => s.trim()).filter(Boolean);
       titre = t;
       parts.splice(0, parts.length, ...reste);
     }
     return {
-      img, numero: numero === "+" ? "" : numero, titre,
+      img, photo: !estDessin(img), numero: numero === "+" ? "" : numero, titre,
       href: lien ? lien.getAttribute("href") : null,
+      autres: liens.slice(1),
       option: parts.join(SEP),
       notes: sous ? [...sous.children].map((x) => x.textContent.trim()).join(SEP) : "",
     };
@@ -200,6 +217,7 @@
   // 6. Titre de la bannière : initiales des mots principaux en couleur
   const h1 = document.querySelector(".hero h1.titre-auto");
   if (h1) {
+    if (h1.textContent.trim().length > 30) h1.classList.add("long");
     let i = 0;
     const couleurs = ["c-cyan", "c-amber", "c-violet", "c-green"];
     h1.innerHTML = h1.textContent.replace(/(^|\s)(\p{L})(\p{L}{3,})/gu, (tout, esp, ini, suite) =>
