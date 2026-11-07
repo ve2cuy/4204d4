@@ -459,6 +459,6 @@ Homepage transforme une collection de services en un portail unifié et professi
 
 ## Crédits
 
-*Document préparé par Alain Boudreault © 2026*  
+*Document préparé par Alain Boudreault © 2026-2027*  
 *Version 2026.01.07.2 - Révision 2026.11.07.1*  
 *Site par ve2cuy*

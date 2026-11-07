@@ -136,6 +136,6 @@ wsl --update
 
 ## Crédits
 
-*Document préparé par Alain Boudreault © 2022-2025*  
+*Document préparé par Alain Boudreault © 2022-2027*  
 *Version 2025.12.05.01 - Révision 2026.11.07.1*  
 *Site par ve2cuy*

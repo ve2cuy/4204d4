@@ -43,7 +43,7 @@ Note: Il est possible que la dernière version (TAG) de Drupal ne fonctionne pas
 
 ## Crédits
 
-*Document rédigé par Alain Boudreault © 2021-2026*  
+*Document rédigé par Alain Boudreault © 2021-2027*  
 *Révision 2026.11.07.1*  
 
 *Contenu par [VE2CUY](https://ve2cuy.github.io/blog/)*

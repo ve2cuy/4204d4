@@ -339,6 +339,6 @@ Référence pour la syntaxe [Dockerfile](https://docs.docker.com/engine/referenc
 
 ## Crédits
 
-*Document rédigé par Alain Boudreault © 2021-2026*  
+*Document rédigé par Alain Boudreault © 2021-2027*  
 *Version 2025.12.03.1 - Révision 2026.11.07.1*  
 *Site par ve2cuy*

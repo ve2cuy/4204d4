@@ -297,6 +297,6 @@ docker run -p 81:8080 -d nginxdemos/nginx-hello
 
  ## Crédits
 
-*Document rédigé par Alain Boudreault © 2021-2026*  
+*Document rédigé par Alain Boudreault © 2021-2027*  
 *Version 2026.01.22.1*  
 *Site par ve2cuy*

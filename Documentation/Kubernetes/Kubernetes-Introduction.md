@@ -1476,6 +1476,6 @@ Prochain document: [K8s-partie2](Kubernetes-partie-2.md)
 
 ## Crédits
 
-*Document rédigé par Alain Boudreault © 2021-2026*  
+*Document rédigé par Alain Boudreault © 2021-2027*  
 *Version 2026.03.10.1 - Révision 2026.11.07.1*  
 *Site par ve2cuy*
