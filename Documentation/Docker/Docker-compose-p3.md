@@ -355,7 +355,7 @@ SSLCertificateKeyFile /usr/local/apache2/conf/ssl/server.key
 ```yaml
 # Note: db-1 -  FATAL:  role "postgres" does not exist
 # Solution, effacer le volume précédent et recréer le conteneur
-# docker-compose down -v
+# docker compose down -v
 
 services:
   db:

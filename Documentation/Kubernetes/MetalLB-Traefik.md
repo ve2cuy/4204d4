@@ -35,7 +35,7 @@ En labo, nous avons utilisé le tunnel 'kubectl port-forward service/...' ou bie
 
 Pour le déploiement natif d'un amas K8S, il faut se rabattre sur des solutions tierces.
 
-Par exemple: [metallb](https://metallb.universe.tf/concepts/), etc.
+Par exemple: [metallb](https://metallb.io/concepts/), etc.
 
 ---
 
@@ -58,7 +58,7 @@ kubectl get nodes
 # ---------------------------------------------------------
 # Installer metallb (LoadBalancer externe)
 # NOTE: Ajuster le numéro de version. Référence: https://metallb.io/installation/
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.15.3/config/manifests/metallb-native.yaml
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.16.2/config/manifests/metallb-native.yaml
 
 # Résultat:
 # namespace/metallb-system created
@@ -412,7 +412,7 @@ spec:
           mountPath: "/webdata"
         command: ["/bin/sh", "-c", 'echo "<h1>Je suis un super <font color=blue>PITOU</font></h1><hr/><h2>Servi par: <?php echo gethostname(); ?></h2>" > /webdata/index.php']
       containers:
-      - image: php:8.0.3-apache-buster
+      - image: php:8.4-apache
         name: php-apache
         volumeMounts:
         - name: webdata
@@ -622,7 +622,7 @@ spec:
           mountPath: "/webdata"
         command: ["/bin/sh", "-c", 'echo "<h1>Je suis un super <font color=blue>PITOU</font></h1><hr/><h2>Servi par: <?php echo gethostname(); ?></h2>" > /webdata/index.php']
       containers:
-      - image: php:8.0.3-apache-buster
+      - image: php:8.4-apache
         name: php-apache
         volumeMounts:
         - name: webdata

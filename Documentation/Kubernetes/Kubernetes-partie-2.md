@@ -370,7 +370,7 @@ Il faut mettre en place, grace à deux manifestes, un déploiement **WordPress**
 
 **Durée:** 30 minutes
 
-* Publier sur votre compte docker hub, une image 'semaine08-labo2:latest, construite à partir de 'php:8.0.3-apache-buster',  proposant le site web 'Super Minou', dont le pied de page affiche le 'hostname' du serveur:
+* Publier sur votre compte docker hub, une image 'semaine08-labo2:latest, construite à partir de 'php:8.4-apache',  proposant le site web 'Super Minou', dont le pied de page affiche le 'hostname' du serveur:
 
 <img src="../images/Capture-decran-le-2023-04-04-a-12.36.07.png" alt="" width="450" />
 

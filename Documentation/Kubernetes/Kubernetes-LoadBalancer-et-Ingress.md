@@ -6,6 +6,8 @@
     <img src="../images/load-balancer-icon-19.jpg.png" alt="Load Balancer Icon" width="300" />
 </p>
 
+> 🛑 **Document désuet.** Le projet [ingress-nginx](https://kubernetes.io/blog/2025/11/11/ingress-nginx-retirement/) a été retiré en mars 2026 : plus de nouvelles versions ni de correctifs de sécurité. Les images restent disponibles, mais il ne faut plus l'utiliser pour un nouveau projet. Utiliser plutôt **Traefik** ([document 38](MetalLB-Traefik.md)) ou la [Gateway API](https://gateway-api.sigs.k8s.io/). La section 2 (MetalLB) reste valable.
+
 ## Contenu
 
 - [**1 – Mise en situation**](#section-1)
@@ -33,7 +35,7 @@ En labo, nous avons utilisé `kubectl port-forward`, les services `NodePort` ou 
 
 Pour le déploiement natif d'un amas K8S, il faut se rabattre sur des solutions tierces.
 
-Par exemple: [metallb](https://metallb.universe.tf/concepts/), [traefik proxy](https://traefik.io/traefik/), etc.
+Par exemple: [metallb](https://metallb.io/concepts/), [traefik proxy](https://traefik.io/traefik/), etc.
 
 ---
 
@@ -56,11 +58,8 @@ kubectl get nodes
 # ---------------------------------------------------------
 # Installer metallb (LoadBalancer externe)
 # NOTE: Ajuster le numéro de version. Référence: https://metallb.io/installation/
-
-# Vérifier la version disponible à
-# https://github.com/kubernetes/ingress-nginx/releases
-# NOTE: Ce projet est en mode 'STOP' depuis 2026.03.24
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.15.1/deploy/static/provider/cloud/deploy.yaml
+# Versions disponibles : https://github.com/metallb/metallb/releases
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.16.2/config/manifests/metallb-native.yaml
 
 
 # Résultat:
@@ -157,7 +156,8 @@ kubectl apply -f metallb-config.yaml
 ### 3.1 – Déploiement d'un service ingress de type Nginx {#section-3-1}
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.7.0/deploy/static/provider/cloud/deploy.yaml
+# Dernière version publiée avant le retrait du projet
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.15.1/deploy/static/provider/cloud/deploy.yaml
 
 # ---------------------------------------------------------
 # Résultat:
@@ -310,7 +310,7 @@ spec:
           mountPath: "/webdata"
         command: ["/bin/sh", "-c", 'echo "<h1>Je suis un super <font color=blue>PITOU</font></h1><hr/><h2>Servi par: <?php echo gethostname(); ?></h2>" > /webdata/index.php']
       containers:
-      - image: php:8.0.3-apache-buster
+      - image: php:8.4-apache
         name: php-apache
         volumeMounts:
         - name: webdata
@@ -490,7 +490,7 @@ spec:
           mountPath: "/webdata"
         command: ["/bin/sh", "-c", 'echo "<h1>Je suis un super <font color=blue>PITOU</font></h1><hr/><h2>Servi par: <?php echo gethostname(); ?></h2>" > /webdata/index.php']
       containers:
-      - image: php:8.0.3-apache-buster
+      - image: php:8.4-apache
         name: php-apache
         volumeMounts:
         - name: webdata

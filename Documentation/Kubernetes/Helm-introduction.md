@@ -60,7 +60,7 @@ Une **Release** est une instance déployée d'un Chart dans votre cluster.
 
 ```bash
 # Linux
-curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash
 
 # macOS
 brew install helm
@@ -77,11 +77,11 @@ helm version
 ### Ajouter un repository
 
 ```bash
-# Ajouter le repository officiel de Helm
-helm repo add stable https://charts.helm.sh/stable
-
 # Ajouter le repository Bitnami (très populaire)
 helm repo add bitnami https://charts.bitnami.com/bitnami
+
+# Note : l'ancien repository « stable » (https://charts.helm.sh/stable) est archivé
+# depuis 2020. Les charts se cherchent maintenant sur https://artifacthub.io
 
 # Mettre à jour la liste des charts
 helm repo update
@@ -149,8 +149,10 @@ helm get manifest mon-nginx
 helm upgrade mon-nginx bitnami/nginx --set replicaCount=3
 
 # Mise à jour vers une nouvelle version du chart
-helm upgrade mon-nginx bitnami/nginx --version 15.0.0
+helm upgrade mon-nginx bitnami/nginx --version 25.2.14
 ```
+
+> ⚠️ **Bitnami, depuis août 2025** : les charts restent gratuits, mais seules les images `latest` des applications sont encore publiées gratuitement (pour le développement). Les anciennes images versionnées ont été déplacées vers `docker.io/bitnamilegacy` et ne reçoivent plus de mises à jour. Une ancienne version d'un chart peut donc échouer (`ImagePullBackOff`). En laboratoire, utiliser la version courante des charts.
 
 ### Désinstaller une release
 
@@ -379,7 +381,7 @@ spec:
 
 ## 7 – Bonnes pratiques {#section-7}
 
-1. **Toujours spécifier les versions** : `helm install app bitnami/nginx --version 15.0.0`
+1. **Toujours spécifier les versions** : `helm install app bitnami/nginx --version 25.2.14`
 2. **Utiliser des fichiers de valeurs** plutôt que de multiples `--set`
 3. **Tester avant d'installer** : `helm install --dry-run --debug`
 4. **Documenter vos valeurs** dans `values.yaml`
@@ -398,7 +400,8 @@ helm lint mon-chart/
 # Afficher les templates rendus
 helm template mon-app bitnami/nginx
 
-# Vérifier les différences avant un upgrade
+# Vérifier les différences avant un upgrade (plugin à installer :
+# helm plugin install https://github.com/databus23/helm-diff)
 helm diff upgrade mon-app bitnami/nginx --values new-values.yaml
 ```
 

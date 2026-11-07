@@ -452,20 +452,20 @@ spec:
 
 ### Action 2.8 – Apportons une modification au fichier de configuration
 
-Version `nginx:1.18-alpine-perl`
+Version `nginx:1.28-alpine-perl`
 
-* **Remplacer la ligne: `- image: nginx` par `- image: nginx:1.18-alpine-perl`**
+* **Remplacer la ligne: `- image: nginx` par `- image: nginx:1.28-alpine-perl`**
 
 **NOTE:** Nous sommes dans 'vi'. Il faut appuyer sur la touche 'i' pour passer en mode édition.
 
 ```bash
 kubectl edit deployment serveur-web
 
-# Remplacer: - image: nginx par, - image: nginx:1.18-alpine-perl
+# Remplacer: - image: nginx par, - image: nginx:1.28-alpine-perl
 
      spec:
        containers:
-       - image: nginx:1.18-alpine-perl
+       - image: nginx:1.28-alpine-perl
          imagePullPolicy: Always
          name: nginx
 ```
@@ -932,7 +932,7 @@ Renseigner le fichier `3.2.1-deploiement-nginx.yml` suivant:
 # ---------------------------------------------------------
 # Fichier: 3.2.1-deploiement-nginx.yml
 # Auteur:  Alain Boudreault
-# Déploiement de deux pods nginx version 1.16
+# Déploiement de deux pods nginx version 1.28
 # ---------------------------------------------------------
 # M-A-J: A.B.2026.03.10 - Ajout de la section resources:
 # ---------------------------------------------------------
@@ -956,7 +956,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx:1.16
+        image: nginx:1.28
         ports:
         - containerPort: 80
         resources:

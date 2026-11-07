@@ -674,8 +674,6 @@ jobs:
 ### Fichier : `docker-compose.yml`
 
 ```yaml
-version: '3.8'
-
 services:
   web:
     build:
@@ -726,7 +724,7 @@ git clone https://github.com/votre-username/superminou-v2.git
 cd superminou-v2
 
 # Build avec Docker Compose
-docker-compose up --build
+docker compose up --build
 
 # Ou build manuel
 docker build -t superminou-v2 .

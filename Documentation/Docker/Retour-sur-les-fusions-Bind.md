@@ -68,14 +68,14 @@ echo
 
 La prochaine étape consiste à démarrer une `alpine` et à **lier le dossier `mes-scripts-sh`** au nouveau conteneur.
 
-Avec le cli-docker, il faut **TOUJOURS** utiliser l'**adressage absolu** lors de la liaison. Cela n'est pas très pratique, surtout si nous avons à travailler avec une structure profonde de dossiers. Heureusement, il est possible d'injecter le chemin du répertoire courant lors de la liaison (`-v`) de volumes.
+Avec le cli-docker, la liaison d'un dossier (`-v`) se fait avec un **chemin absolu**. Depuis Docker 23 (2023), un chemin relatif qui commence par `./` est aussi accepté (il est converti en chemin absolu), mais un nom sans `./` (`-v mes-scripts-sh:/x`) désigne un **volume nommé**, pas un dossier! Pour un résultat qui fonctionne avec toutes les versions et tous les terminaux, on injecte le chemin du répertoire courant lors de la liaison (`-v`) de volumes.
 
 ### Action 1.3 – Afficher le chemin absolu
 
 ```bash
 $ echo $(pwd)
 /Users/alain/420-4D4
-# Sous PowerShell, il faut utiliser la synthaxe suivante:
+# Sous PowerShell, il faut utiliser la syntaxe suivante:
 echo $PWD
 
 $ echo "$(pwd)/mes-scripts-sh"
@@ -86,14 +86,11 @@ $ echo "$(pwd)/mes-scripts-sh"
 
 ```bash
 docker run --rm -it --name momo-dit -v "$(pwd)/mes-scripts-sh/:/mes-scripts-sh" alpine
-# Sous PowerShell, il faut utiliser la synthaxe suivante:
+# Sous PowerShell, il faut utiliser la syntaxe suivante:
 docker run --rm -it --name momo-dit -v "$PWD/mes-scripts-sh/:/mes-scripts-sh" alpine
 
-# Cette syntaxe devrait fonctionner sous PS et shell Linux natif,
-# mais non recommandée: (à tester en lab). 
-# Ca ne devrait pas fonctionner sous git-bash
-# ---------------------------------------------------------------
-# Il est préférable d'utiliser l'adressage absolu. 
+# Chemin relatif : accepté depuis Docker 23 (le ./ est obligatoire).
+# Sous git-bash, les chemins peuvent être mal convertis : préférer $(pwd).
 docker run --rm -it --name momo-dit -v "./mes-scripts-sh/:/mes-scripts-sh" alpine
 ```
 
@@ -319,7 +316,7 @@ docker run -dit \
 -v ./BDInit:/tmp/database \
 -v ./maBD:/var/lib/mysql:rw \
 -e MYSQL_ROOT_PASSWORD=password \
-mysql:5.7 mysqld --init-file="/tmp/database/mabd-init.sql"
+mysql:8.4 mysqld --init-file="/tmp/database/mabd-init.sql"
 
 # OU 
 docker run -dit `
@@ -327,7 +324,7 @@ docker run -dit `
 -v ./BDInit:/tmp/database `
 -v ./maBD:/var/lib/mysql:rw `
 -e MYSQL_ROOT_PASSWORD=password `
-mysql:5.7 mysqld --init-file="/tmp/database/mabd-init.sql"
+mysql:8.4 mysqld --init-file="/tmp/database/mabd-init.sql"
 
 # Étape 2 - Vérifier la présence de la tbl_amis:
 docker exec -it amis bash
@@ -357,7 +354,7 @@ Ce fichier utilise le paramètre `command: mysqld` avec l'option `--init-file` p
 
 services:
   mysql:
-    image: mysql:5.7
+    image: mysql:8.4
     volumes:
       - ./BDInit:/tmp/database # Un zone temporaire de stockage
       - ./maBD:/var/lib/mysql:rw # Le dossier de stockage des BD.
@@ -414,7 +411,7 @@ docker run -d -v $(pwd)/db_data:/var/lib/mysql \
 --name baseDeDonneesPourWP \
 -p 3306:3306 \
 --network monreseau \
-mysql:5.7
+mysql:8.4
 
 # --> Sous PowerShell:
 docker run -d `
@@ -426,7 +423,7 @@ docker run -d `
   --name baseDeDonneesPourWP `
   -p 3306:3306 `
   --network monreseau `
-  mysql:5.7
+  mysql:8.4
 ```
 
 > **Note :** L'utilisation des variables d'environnement (`MYSQL_DATABASE`, `MYSQL_USER`, `MYSQL_PASSWORD`) permet la création d'une base de données et d'un compte utilisateur lors de la première exécution du conteneur.
@@ -463,7 +460,7 @@ wordpress:latest
 ```bash
 CONTAINER ID   IMAGE                COMMAND                  CREATED         STATUS         PORTS                              NAMES
 5715adf4eca2   wordpress:latest     "docker-entrypoint.s…"   21 seconds ago  Up 20 seconds  0.0.0.0:8000->80/tcp               worpress
-ac7ea4103539   mysql:5.7            "docker-entrypoint.s…"   16 minutes ago  Up 16 minutes  0.0.0.0:3306->3306/tcp, 33060/tcp  baseDeDonneesPourWP
+ac7ea4103539   mysql:8.4            "docker-entrypoint.s…"   16 minutes ago  Up 16 minutes  0.0.0.0:3306->3306/tcp, 33060/tcp  baseDeDonneesPourWP
 ```
 
 ### Action 5.6 – Lancer WordPress dans un fureteur

@@ -72,7 +72,7 @@ services:
     container_name: serveur03 # Optionnel
 ```
 
-> **Note :** Voici le tableau de compatibilité des versions : [https://docs.docker.com/compose/compose-file/compose-file-v3/](https://docs.docker.com/compose/compose-file/compose-file-v3/)
+> **Note :** Le format des fichiers est décrit par la [Compose Specification](https://docs.docker.com/reference/compose-file/). L'ancienne clé `version:` (« 3.8 », « 3.9 »…) en tête de fichier est désuète : `docker compose` l'ignore et affiche un avertissement.
 
 ### Action 1.1 – Démarrer les services
 

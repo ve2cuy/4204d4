@@ -48,7 +48,7 @@ questions:
   - question: "Quelle directive est aujourd'hui recommandée pour indiquer l'auteur de l'image?"
     choix: ["MAINTAINER", "LABEL", "AUTHOR", "ENV"]
     reponse: 2
-    explication: "LABEL Maintainer=\"…\" plutôt que MAINTAINER (note de la section 1.1)."
+    explication: "LABEL org.opencontainers.image.authors=\"…\" plutôt que MAINTAINER, désuet (note de la section 1.1)."
 
   - question: "Quelle commande construit l'image exercice01 à partir du Dockerfile du dossier courant?"
     choix:

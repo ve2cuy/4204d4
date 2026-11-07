@@ -448,7 +448,7 @@ jobs:
 FROM php:8.3-fpm-alpine
 
 # Multi-stage builds
-FROM node:18 AS builder
+FROM node:24 AS builder
 # ... build steps
 FROM nginx:alpine
 COPY --from=builder /app/dist /usr/share/nginx/html

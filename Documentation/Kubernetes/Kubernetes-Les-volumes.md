@@ -243,28 +243,16 @@ spec:
 
 **NOTE**: Le **hostPath** pointe dans le système de fichiers du nœud qui exécute le Pod. Il faut s'y connecter (ssh) pour en consulter le contenu.
 
-Voici une liste des types de stockages supportés par K8S:
+Voici les types de volumes persistants pris en charge directement par K8S :
 
-  * **GCEPersistentDisk**
-  * **AWSElasticBlockStore**
-  * **AzureFile**
-  * **AzureDisk**
-  * **CSI**
-  * **FC** (Fibre Channel)
-  * **FlexVolume**
-  * **Flocker**
+  * **CSI** (Container Storage Interface) : le mécanisme standard. Chaque fournisseur de stockage livre un pilote CSI : disques des nuages (Google, AWS, Azure), Ceph, Longhorn, vSphere, Portworx, NFS, etc.
   * **NFS**
   * **iSCSI**
-  * **RBD** (Ceph Block Device)
-  * **CephFS**
-  * **Cinder** (OpenStack block storage)
-  * **Glusterfs**
-  * **VsphereVolume**
-  * **Quobyte Volumes**
-  * **HostPath** (Test de nœud unique uniquement — le stockage local n’est en aucun cas pris en charge et NE FONCTIONNERA PAS dans un cluster à plusieurs nœuds)
-  * **Portworx Volumes**
-  * **ScaleIO Volumes**
-  * **StorageOS**
+  * **FC** (Fibre Channel)
+  * **local** (un disque ou un dossier d'un nœud précis)
+  * **HostPath** (test sur un nœud unique seulement — NE FONCTIONNERA PAS correctement dans un cluster à plusieurs nœuds)
+
+> 💡 Les anciens pilotes intégrés à Kubernetes (GCEPersistentDisk, AWSElasticBlockStore, AzureDisk, Cinder, CephFS, RBD, vSphereVolume...) ont été remplacés par leur pilote CSI. D'autres (Flocker, Quobyte, ScaleIO, StorageOS, GlusterFS) ont été retirés. FlexVolume est désuet. Référence : [Types de volumes persistants](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#types-of-persistent-volumes).
 
 **Action 3.1.1 –** Créer le volume persistant (PV)
 

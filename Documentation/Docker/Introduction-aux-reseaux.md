@@ -48,7 +48,7 @@ alain@srv02:~$ ip a
        valid_lft 559772sec preferred_lft 559772sec
 ```
 
-> **NOTE** : L’adresse de ma station est **192.168.2.152** dans un réseau de classe ‘**C**’ -\> **/24**.
+> **NOTE** : L’adresse de ma station est **192.168.2.152** dans un réseau **/24** (masque 255.255.255.0; on parlait autrefois de « classe C »).
 
 Voyons maintenant les paramètres d’une instance d’[Alpine](https://hub.docker.com/_/alpine):
 
@@ -68,7 +68,7 @@ $ ip a
        valid_lft forever preferred_lft forever
 ```
 
-> **NOTE** : L’adresse **IP** de l’instance est **172.17.0.2** dans un réseau de classe ‘**B**’ -\> **/16**.
+> **NOTE** : L’adresse **IP** de l’instance est **172.17.0.2** dans un réseau **/16** (masque 255.255.0.0; on parlait autrefois de « classe B »).
 
 Comment expliquer ces paramètres ?
 
@@ -301,6 +301,8 @@ docker run -d --name srv_websurlhote --rm --network host nginx
 
 Remarquez qu’ici, nous n’avons pas utilisé le paramètre `-p xx:xx`. Le conteneur va utiliser l’interface réseau de l’hôte et le port exposé du conteneur sera accessible directement via l’hôte.
 
+> 💡 Sous Linux, le mode `host` fonctionne directement. Sous Docker Desktop (macOS et Windows), il faut l'activer : ⚙️ `Settings` → `Resources` → `Network` → `Enable host networking` (Docker Desktop 4.34 et plus). Le conteneur partage alors le réseau de la VM de Docker Desktop, et ses ports TCP et UDP sont accessibles par `localhost`.
+
 Par exemple:
 
 ```
@@ -492,7 +494,7 @@ docker run -d --name reverse_proxy \
 docker run -d --name webapp \
   --network prod_network \
   --ip=192.168.1.201 \
-  node:18-alpine
+  node:24-alpine
 
 docker run -d --name database \
   --network prod_network \

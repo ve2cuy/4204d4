@@ -231,9 +231,9 @@ de=docker exec -it
 dv=docker volume ls
 dvc=docker volume create
 dvi=docker volume inspect
-DC=docker-compose
-DCd=docker-compose down
-DCl=docker-compose logs
+DC=docker compose
+DCd=docker compose down
+DCl=docker compose logs
 dflush=docker container stop $(docker container ls -aq) && docker system prune -af --volumes
 dcf=docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)
 dif=docker image prune -a -f
@@ -411,7 +411,6 @@ le CLI de Docker
 ## 6 – Stub docker-compose.yml {#section-6}
 
 ```yaml
-version: "3.9"
 services:
   service01:
     image: 

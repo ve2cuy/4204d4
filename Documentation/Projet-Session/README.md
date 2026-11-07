@@ -163,11 +163,11 @@
 NOTE: 🛑 Si `harbor` a été démarré avec le mot de passe par défaut, il faudra effacer la base de données et recommencer la configuration:
 
 ```
-sudo docker-compose down -v
+sudo docker compose down -v
 rm -r /data/database
 rm -r /data/registry
 sudo ./prepare
-sudo docker-compose up -d
+sudo docker compose up -d
 ```
 
 ---

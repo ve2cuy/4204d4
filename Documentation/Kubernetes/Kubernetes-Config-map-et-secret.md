@@ -528,7 +528,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx:1.16
+        image: nginx:1.28
         ports:
         - containerPort: 80
         volumeMounts:
@@ -644,7 +644,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx:1.16
+        image: nginx:1.28
         ports:
         - containerPort: 80
         volumeMounts:

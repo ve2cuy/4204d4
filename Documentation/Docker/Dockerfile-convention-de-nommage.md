@@ -111,7 +111,7 @@ Pour éviter que deux outils utilisent la même clé avec des sens différents, 
 ### 3.2 – Exemple pratique dans un Dockerfile {#section-3-2}
 
 ```dockerfile
-FROM node:18-alpine
+FROM node:24-alpine
 
 # Métadonnées selon org.label-schema
 LABEL org.label-schema.schema-version="1.0" \
@@ -188,7 +188,7 @@ Selon la spécification OCI :
 ### 4.3 – Exemple moderne (OCI) {#section-4-3}
 
 ```dockerfile
-FROM node:18-alpine
+FROM node:24-alpine
 
 LABEL org.opencontainers.image.created="2026-11-07T14:30:00Z" \
       org.opencontainers.image.authors="dev@monentreprise.com" \
@@ -201,7 +201,7 @@ LABEL org.opencontainers.image.created="2026-11-07T14:30:00Z" \
       org.opencontainers.image.licenses="MIT" \
       org.opencontainers.image.title="Mon API REST" \
       org.opencontainers.image.description="API pour la gestion des utilisateurs" \
-      org.opencontainers.image.base.name="docker.io/library/node:18-alpine"
+      org.opencontainers.image.base.name="docker.io/library/node:24-alpine"
 
 WORKDIR /app
 COPY package*.json ./

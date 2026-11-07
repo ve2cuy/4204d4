@@ -140,14 +140,14 @@ Démarrer, à partir d'un fichier `docker-compose`, le système de micro-service
 
 Mettre en place un site WordPress, en utilisant `docker compose`, pour la **CIE\_ABC**, en respectant le devis suivant :
 
-  * Un service **`mariadb` version 10.5**, nommé **`cie_db`** pour la base de données :
+  * Un service **`mariadb` version 11.4**, nommé **`cie_db`** pour la base de données :
       * Port externe: `3333`
       * base de données: `cie_abc`
       * utilisateur: `cieuser`
       * Mot de passe: `ciepassword`
       * Mot de passe root: `donttell`
       * La base de données est stockée localement dans le dossier `cie_data2`
-  * Un service **`WordPress version 5.6.2`** :
+  * Un service **`WordPress version 6.9`** :
       * Renseigner les paramètres assurant le bon fonctionnement du site WordPress de la CIE ABC
       * port IP local: `80`
   * Un service **`phpMyadmin`** :
@@ -285,7 +285,7 @@ DB_PASS=password
 ```yaml
 services:
   db:
-    image: mariadb:10.4.13
+    image: mariadb:11.4
     ports:
       - ${DB_PORT}:3306
     volumes:

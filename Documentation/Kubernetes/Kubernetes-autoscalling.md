@@ -138,7 +138,7 @@ kubectl set resources deployment php-apache \
 ```bash
 # Via kubectl autoscale (méthode rapide)
 kubectl autoscale deployment php-apache \
-  --cpu='50%' \
+  --cpu=50% \
   --min=1 \
   --max=10
 ```
@@ -681,7 +681,8 @@ kubectl top nodes
 
 ```bash
 # Créer un HPA rapidement
-kubectl autoscale deployment <nom> --cpu-percent=50 --min=1 --max=10
+kubectl autoscale deployment <nom> --cpu=50% --min=1 --max=10
+# (anciennes versions de kubectl : --cpu-percent=50)
 
 # Voir l'état du HPA
 kubectl get hpa

@@ -483,7 +483,9 @@ Build CI/CD ──→ S3 ──→ CloudFront/CDN ──→ Utilisateurs
 
 ### MinIO
 
-Voici un exemple de PVC avec un stockage S3 local via **MinIO** (l'implémentation S3 la plus courante en local sur K8S) :
+> ⚠️ **Depuis octobre 2025**, l'édition communautaire de MinIO est en mode maintenance : elle n'est plus distribuée qu'en code source, et l'image `minio/minio` de Docker Hub n'est plus mise à jour (elle contient des failles connues). L'exemple suivant reste utile pour comprendre le principe, mais pour un nouveau projet, préférer **Garage** (plus bas).
+
+Voici un exemple de PVC avec un stockage S3 local via **MinIO** (longtemps l'implémentation S3 la plus courante en local sur K8S) :
 
 **1. Déployer MinIO**
 ```yaml

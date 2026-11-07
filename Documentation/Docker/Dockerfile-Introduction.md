@@ -97,9 +97,8 @@ Dans un dossier vide, créer un fichier Dockerfile.
 # À partir d'une image
 FROM ubuntu
 
-# Optionnel
-MAINTAINER Alain Boudreault <aboudrea@cstj.qc.ca>
-LABEL Maintainer="Alain Boudreault <aboudrea@cstj.qc.ca>"
+# Optionnel : l'auteur de l'image (MAINTAINER est désuet, voir la note)
+LABEL org.opencontainers.image.authors="Alain Boudreault <aboudrea@cstj.qc.ca>"
 LABEL Auteur="Moi Moi"
 
 # Exécuter des commandes dans l'image
@@ -111,7 +110,7 @@ RUN mkdir /toto
 CMD ["echo"," --------------------------\n","Ici la voix des Mistérons!\n","--------------------------\n"]
 ````
 
-> **NOTE** : Il est aussi possible d’utiliser `LABEL` au lieu de `MAINTAINER`, ce qui est présentement la méthode recommandée.
+> **NOTE** : L'ancienne directive `MAINTAINER` est désuète; on utilise maintenant `LABEL`, avec la clé normalisée `org.opencontainers.image.authors` (voir le [document 9](Dockerfile-convention-de-nommage.md)).
 >
 > **NOTE2** : Les directives peuvent-être inscrites en caractères minuscules mais NON RECOMMANDÉ.
 
@@ -171,8 +170,8 @@ echo "------------------------------"
 # À partir d'une image
 FROM ubuntu
 
-# Optionel
-MAINTAINER Alain Boudreault <aboudrea@cstj.qc.ca>
+# Optionnel
+LABEL org.opencontainers.image.authors="Alain Boudreault <aboudrea@cstj.qc.ca>"
 
 # Exécuter des commandes dans l'image
 RUN apt-get update
@@ -779,6 +778,8 @@ docker run mon-image https://example.com
 
 ## 6 – Exemple d'un Dockerfile complexe (WordPress) {#section-6}
 
+> 💡 Cet exemple est le Dockerfile de l'image officielle de WordPress en 2022 (PHP 7.4, WordPress 5.9). PHP 7.4 n'est plus maintenu : il sert ici à **lire** un Dockerfile réel. La version actuelle est sur [GitHub, docker-library/wordpress](https://github.com/docker-library/wordpress/tree/master/latest).
+
 ```dockerfile
 FROM php:7.4-apache
 
@@ -791,7 +792,7 @@ RUN set -eux; \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
-# install the PHP extensions we need ([https://make.wordpress.org/hosting/handbook/handbook/server-environment/#php-extensions](https://make.wordpress.org/hosting/handbook/handbook/server-environment/#php-extensions))
+# install the PHP extensions we need (https://make.wordpress.org/hosting/handbook/handbook/server-environment/#php-extensions)
 RUN set -ex; \
 	\
 	savedAptMark="$(apt-mark showmanual)"; \
@@ -820,7 +821,7 @@ RUN set -ex; \
 		mysqli \
 		zip \
 	; \
-# [https://pecl.php.net/package/imagick](https://pecl.php.net/package/imagick)
+# https://pecl.php.net/package/imagick
 	pecl install imagick-3.6.0; \
 	docker-php-ext-enable imagick; \
 	rm -r /tmp/pear; \
@@ -853,7 +854,7 @@ RUN set -ex; \
 	[ -z "$err" ]
 
 # set recommended PHP.ini settings
-# see [https://secure.php.net/manual/en/opcache.installation.php](https://secure.php.net/manual/en/opcache.installation.php)
+# see https://secure.php.net/manual/en/opcache.installation.php
 RUN set -eux; \
 	docker-php-ext-enable opcache; \
 	{ \
@@ -863,10 +864,10 @@ RUN set -eux; \
 		echo 'opcache.revalidate_freq=2'; \
 		echo 'opcache.fast_shutdown=1'; \
 	} > /usr/local/etc/php/conf.d/opcache-recommended.ini
-# [https://wordpress.org/support/article/editing-wp-config-php/#configure-error-logging](https://wordpress.org/support/article/editing-wp-config-php/#configure-error-logging)
+# https://wordpress.org/support/article/editing-wp-config-php/#configure-error-logging
 RUN { \
-# [https://www.php.net/manual/en/errorfunc.constants.php](https://www.php.net/manual/en/errorfunc.constants.php)
-# [https://github.com/docker-library/wordpress/issues/420#issuecomment-517839670](https://github.com/docker-library/wordpress/issues/420#issuecomment-517839670)
+# https://www.php.net/manual/en/errorfunc.constants.php
+# https://github.com/docker-library/wordpress/issues/420#issuecomment-517839670
 		echo 'error_reporting = E_ERROR | E_WARNING | E_PARSE | E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_COMPILE_WARNING | E_RECOVERABLE_ERROR'; \
 		echo 'display_errors = Off'; \
 		echo 'display_startup_errors = Off'; \
@@ -881,7 +882,7 @@ RUN { \
 RUN set -eux; \
 	a2enmod rewrite expires; \
 	\
-# [https://httpd.apache.org/docs/2.4/mod/mod_remoteip.html](https://httpd.apache.org/docs/2.4/mod/mod_remoteip.html)
+# https://httpd.apache.org/docs/2.4/mod/mod_remoteip.html
 	a2enmod remoteip; \
 	{ \
 		echo 'RemoteIPHeader X-Forwarded-For'; \
@@ -893,7 +894,7 @@ RUN set -eux; \
 		echo 'RemoteIPTrustedProxy 127.0.0.0/8'; \
 	} > /etc/apache2/conf-available/remoteip.conf; \
 	a2enconf remoteip; \
-# [https://github.com/docker-library/wordpress/issues/383#issuecomment-507886512](https://github.com/docker-library/wordpress/issues/383#issuecomment-507886512)
+# https://github.com/docker-library/wordpress/issues/383#issuecomment-507886512
 # (replace all instances of "%h" with "%a" in LogFormat)
 	find /etc/apache2 -type f -name '*.conf' -exec sed -ri 's/([[:space:]]*LogFormat[[:space:]]+"[^"]*)%h([^"]*")/\1%a\2/g' '{}' +
 
@@ -901,14 +902,14 @@ RUN set -eux; \
 	version='5.9.1'; \
 	sha1='15746f848cd388e270bae612dccd0c83fa613259'; \
 	\
-	curl -o wordpress.tar.gz -fL "[https://wordpress.org/wordpress-$version.tar.gz](https://wordpress.org/wordpress-$version.tar.gz)"; \
+	curl -o wordpress.tar.gz -fL "https://wordpress.org/wordpress-$version.tar.gz"; \
 	echo "$sha1 *wordpress.tar.gz" | sha1sum -c -; \
 	\
 # upstream tarballs include ./wordpress/ so this gives us /usr/src/wordpress
 	tar -xzf wordpress.tar.gz -C /usr/src/; \
 	rm wordpress.tar.gz; \
 	\
-# [https://wordpress.org/support/article/htaccess/](https://wordpress.org/support/article/htaccess/)
+# https://wordpress.org/support/article/htaccess/
 	[ ! -e /usr/src/wordpress/.htaccess ]; \
 	{ \
 		echo '# BEGIN WordPress'; \
@@ -926,7 +927,7 @@ RUN set -eux; \
 	\
 	chown -R www-data:www-data /usr/src/wordpress; \
 # pre-create wp-content (and single-level children) for folks who want to bind-mount themes, etc so permissions are pre-created properly instead of root:root
-# wp-content/cache: [https://github.com/docker-library/wordpress/issues/534#issuecomment-705733507](https://github.com/docker-library/wordpress/issues/534#issuecomment-705733507)
+# wp-content/cache: https://github.com/docker-library/wordpress/issues/534#issuecomment-705733507
 	mkdir wp-content; \
 	for dir in /usr/src/wordpress/wp-content/*/ cache; do \
 		dir="$(basename "${dir%/}")"; \

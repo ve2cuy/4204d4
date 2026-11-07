@@ -23,9 +23,11 @@
 
 MetalLB est un load balancer pour Kubernetes qui fonctionne sur des clusters bare-metal (sans fournisseur cloud). Il permet d'obtenir des IP externes pour les services de type `LoadBalancer`.
 
+> 💡 Les annotations `metallb.universe.tf/...` des anciennes versions sont remplacées par `metallb.io/...`.
+
 ## Prérequis {#section-prerequis}
 
-- Kubernetes 1.13.0+
+- Un amas Kubernetes récent (MetalLB v0.16 suit les versions maintenues de Kubernetes)
 - Un pool d'adresses IP disponibles sur votre réseau
 - Pas d'autre load balancer déjà installé (klipper-lb, cloud provider LB, etc.)
 
@@ -34,6 +36,9 @@ MetalLB est un load balancer pour Kubernetes qui fonctionne sur des clusters bar
 ```bash
 # Vérifier si kube-proxy est en mode IPVS ou iptables
 kubectl get configmap kube-proxy -n kube-system -o yaml | grep mode
+
+# En mode IPVS, MetalLB (Layer 2) demande strictARP: true
+kubectl get configmap kube-proxy -n kube-system -o yaml | grep strictARP
 
 # Vérifier qu'aucun autre load balancer n'est installé
 kubectl get pods -n kube-system
@@ -45,7 +50,7 @@ kubectl get pods -n kube-system
 
 ```bash
 # Installer MetalLB
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.3/config/manifests/metallb-native.yaml
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.16.2/config/manifests/metallb-native.yaml
 
 # Vérifier l'installation
 kubectl get pods -n metallb-system
@@ -262,7 +267,7 @@ kind: Service
 metadata:
   name: mon-service
   annotations:
-    metallb.universe.tf/loadBalancerIPs: 192.168.1.240
+    metallb.io/loadBalancerIPs: 192.168.1.240
 spec:
   type: LoadBalancer
   selector:
@@ -326,7 +331,7 @@ kind: Service
 metadata:
   name: web-service
   annotations:
-    metallb.universe.tf/address-pool: web-pool
+    metallb.io/address-pool: web-pool
 spec:
   type: LoadBalancer
   selector:
@@ -470,7 +475,7 @@ metadata:
   name: traefik-lb
   namespace: traefik
   annotations:
-    metallb.universe.tf/loadBalancerIPs: 192.168.1.240
+    metallb.io/loadBalancerIPs: 192.168.1.240
 spec:
   type: LoadBalancer
   selector:
@@ -618,7 +623,7 @@ kubectl get svc --all-namespaces -o wide | grep LoadBalancer
 kubectl get svc -A -o jsonpath='{range .items[?(@.spec.type=="LoadBalancer")]}{.metadata.name}{"\t"}{.status.loadBalancer.ingress[0].ip}{"\n"}{end}'
 
 # Supprimer MetalLB
-kubectl delete -f https://raw.githubusercontent.com/metallb/metallb/v0.14.3/config/manifests/metallb-native.yaml
+kubectl delete -f https://raw.githubusercontent.com/metallb/metallb/v0.16.2/config/manifests/metallb-native.yaml
 
 # Redémarrer MetalLB
 kubectl rollout restart deployment controller -n metallb-system
@@ -658,10 +663,10 @@ spec:
 
 ## Ressources
 
-- [Documentation MetalLB](https://metallb.universe.tf/)
-- [Configuration Layer 2](https://metallb.universe.tf/configuration/_advanced_l2_configuration/)
-- [Configuration BGP](https://metallb.universe.tf/configuration/_advanced_bgp_configuration/)
-- [Troubleshooting](https://metallb.universe.tf/troubleshooting/)
+- [Documentation MetalLB](https://metallb.io/)
+- [Configuration Layer 2](https://metallb.io/configuration/_advanced_l2_configuration/)
+- [Configuration BGP](https://metallb.io/configuration/_advanced_bgp_configuration/)
+- [Troubleshooting](https://metallb.io/troubleshooting/)
 
 ---
 
