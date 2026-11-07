@@ -1,11 +1,19 @@
-# Laboratoire NFS+Harbor
+# 54 - Laboratoire NFS+Harbor
 
 
 <img src="../images/labo02.png" alt="" width="700" />
 
 ---
 
-# 👉 Partie 1
+## Contenu
+
+- [**1 – 👉 Partie 1**](#section-1)
+- [**2 – 👉 Partie 2**](#section-2)
+- [**💡Défi supplémentaire (demandé lors de l'épreuve synthèse)**](#section-defi-supplementaire-demande-lors-de-l-ep)
+
+---
+
+## 1 – 👉 Partie 1 {#section-1}
 
 * À partir d'un clone de la VM principale (`labo420`), nommé `Harbor`
 * Réaliser le laboratoire [Harbor](https://ve2cuy.github.io/4204d4/Installation/Registre-prive-d-images.html)
@@ -19,7 +27,7 @@
 
 <img src="../images/labo03.png" alt="" width="700" />
 
-# 👉 Partie 2
+## 2 – 👉 Partie 2 {#section-2}
 
 ---
 
@@ -54,7 +62,7 @@ En utilisant votre projet `Google Cloud` du Cégep, il faut:
 
 ---
 
-## 💡Défi supplémentaire (demandé lors de l'épreuve synthèse)
+## 💡Défi supplémentaire (demandé lors de l'épreuve synthèse) {#section-defi-supplementaire-demande-lors-de-l-ep}
 
 * Générer les certificats pour une connexion https
   * sudo apt install certbot
@@ -71,5 +79,5 @@ NOTE: 😉 Ce laboratoire est un pré-requis à l'épreuve synthèse du cours
 ## Crédits
 
 *Document rédigé par Alain Boudreault © 2021-2026*  
-*Version 2026.04.21.2*  
+*Version 2026.04.21.2 - Révision 2026.11.07.1*  
 *Site par [ve2cuy](https://ve2cuy.github.io/)*

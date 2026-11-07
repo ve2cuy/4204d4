@@ -1,10 +1,23 @@
-# 🐳 Docker-compose – Introduction - Partie 2
+# 16 - 🐳 Docker-compose – Introduction - Partie 2
 
 <p align="center">
     <img src="../images/docker-compose-transparent.png" alt="YAML" width="350" />
 </p>
 
-## 3 – Mise en place d'une application multi-services (MariaDB + Adminer)
+## Contenu
+
+- [**3 – Mise en place d'une application multi-services (MariaDB + Adminer)**](#section-3)
+- [**4 – Laboratoire 1 (MySQL + phpMyAdmin)**](#section-4)
+- [**5 – Laboratoire 2 (WordPress, MariaDB et phpMyAdmin)**](#section-5)
+- [**6 – Quelques commandes utiles**](#section-6)
+- [**7 – Exemple de `docker compose` avec un `build`**](#section-7)
+- [**8 – Utilisation de variables dans `docker-compose.yml`**](#section-8)
+- [**9 – Serveur `httpd` avec port `http` via une variable d'environnement**](#section-9)
+- [**10 – Configuration avancée d'un Nginx (substitution d'environnement)**](#section-10)
+
+---
+
+## 3 – Mise en place d'une application multi-services (MariaDB + Adminer) {#section-3}
 
 ### Action 3.1 – Renseigner le fichier `docker-compose.yml`
 
@@ -102,7 +115,7 @@ networks:
 -----
 <img src="../images/labo03.png" alt="" width="700" />
 
-## 4 – Laboratoire 1 (MySQL + phpMyAdmin)
+## 4 – Laboratoire 1 (MySQL + phpMyAdmin) {#section-4}
 
 Démarrer, à partir d'un fichier `docker-compose`, le système de micro-services suivants :
 
@@ -121,7 +134,7 @@ Démarrer, à partir d'un fichier `docker-compose`, le système de micro-service
 
 <img src="../images/labo02.png" alt="" width="700" />
 
-## 5 – Laboratoire 2 (WordPress, MariaDB et phpMyAdmin)
+## 5 – Laboratoire 2 (WordPress, MariaDB et phpMyAdmin) {#section-5}
 
 Mettre en place un site WordPress, en utilisant `docker compose`, pour la **CIE\_ABC**, en respectant le devis suivant :
 
@@ -142,7 +155,7 @@ Tester l'application WordPress de la CIE ABC et le service phpMyadmin.
 
 -----
 
-## 6 – Quelques commandes utiles
+## 6 – Quelques commandes utiles {#section-6}
 
 | Commande | Description |
 | :--- | :--- |
@@ -156,7 +169,7 @@ Tester l'application WordPress de la CIE ABC et le service phpMyadmin.
 
 -----
 
-## 7 – Exemple de `docker compose` avec un `build`
+## 7 – Exemple de `docker compose` avec un `build` {#section-7}
 
 `docker compose` permet la mise en place d'images personnalisées pendant le processus de démarrage d'une application multi-services.
 
@@ -252,11 +265,11 @@ networks:
 
 -----
 
-## 9 – Utilisation de variables dans `docker-compose.yml`
+## 8 – Utilisation de variables dans `docker-compose.yml` {#section-8}
 
 Il est possible d'externaliser les variables de configuration dans un fichier **`.env`**.
 
-### Action 9.1 – Le fichier **`.env`**
+### Action 8.1 – Le fichier **`.env`**
 
 ```properties
 DB_PORT=3306
@@ -265,7 +278,7 @@ DB_USER=bob
 DB_PASS=password
 ```
 
-### Action 9.2 – Utilisation dans `docker-compose.yml`
+### Action 8.2 – Utilisation dans `docker-compose.yml`
 
 ```yaml
 services:
@@ -288,7 +301,7 @@ services:
 
 -----
 
-## 10 - Serveur `httpd` avec port `http` via une variable d'environnement
+## 9 – Serveur `httpd` avec port `http` via une variable d'environnement {#section-9}
 
 ```yaml
 services:
@@ -319,7 +332,7 @@ HTTPD_PORT=88
 ----
 
 
-## 11 – Configuration avancée d'un Nginx (substitution d'environnement)
+## 10 – Configuration avancée d'un Nginx (substitution d'environnement) {#section-10}
 
 Pour configurer dynamiquement Nginx à partir de variables d'environnement (`PORT=8080`), on utilise la substitution (`envsubst`).
 
@@ -355,5 +368,5 @@ web:
 ## Crédits
 
 *Document rédigé par Alain Boudreault © 2021-2026*  
-*Version 2026.02.19.1*  
+*Version 2026.02.19.1 - Révision 2026.11.07.1*  
 *Site par ve2cuy*

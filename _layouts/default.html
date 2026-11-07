@@ -19,7 +19,8 @@
 </script>
 <script src="{{ '/assets/js/theme.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
 {% if page.titre %}<script src="{{ '/assets/js/session.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
-<script src="{{ '/assets/js/accueil.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>{% endif %}
+<script src="{{ '/assets/js/accueil.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+<script type="application/json" id="quiz-liste">[{% for q in site.data.quiz %}{{ q[0] | jsonify }}{% unless forloop.last %},{% endunless %}{% endfor %}]</script>{% endif %}
 </head>
 <body>
 <header class="site-head">
@@ -93,6 +94,12 @@
 <main class="wrap">
   <article class="prose{% if page.titre %} cours accueil{% endif %}"{% if page.grandes_cartes == false %} data-grandes-cartes="non"{% endif %}>
 {{ content }}
+{%- assign quiz_nom = page.name | remove: '.md' %}{% assign quiz = site.data.quiz[quiz_nom] %}
+{%- if quiz and quiz.questions %}
+    <section class="quiz" id="quiz" aria-label="Quiz de compréhension"><h2>Quiz de compréhension</h2><p>Le quiz s'affiche quand JavaScript est activé.</p></section>
+    <script type="application/json" id="quiz-donnees">{{ quiz | jsonify }}</script>
+    <script src="{{ '/assets/js/quiz.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+{%- endif %}
   </article>
 </main>
 

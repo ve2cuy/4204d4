@@ -1,4 +1,4 @@
-# 🐳 Docker Network
+# 12 - 🐳 Docker Network
 
 # Un peu de plaisir avec les réseaux Docker
 
@@ -8,7 +8,23 @@
 
 -----
 
-### 1 – Mise en situation
+## Contenu
+
+- [**1 – Mise en situation**](#section-1)
+- [**2 – Réseau de type ‘host’**](#section-2)
+- [**3 – Réseau de type MACVLan**](#section-3)
+  - [3.1 – Créer un réseau Macvlan sous Docker](#section-3-1)
+  - [3.2 – Prérequis](#section-3-2)
+  - [3.3 – Création d'un réseau Macvlan](#section-3-3)
+  - [3.4 – Utilisation avec des conteneurs](#section-3-4)
+  - [3.5 – Accéder aux conteneurs depuis l'hôte](#section-3-5)
+  - [3.6 – Vérification et diagnostic](#section-3-6)
+  - [3.7 – Exemple pratique complet](#section-3-7)
+  - [3.8 – Avantages et limitations](#section-3-8)
+
+---
+
+## 1 – Mise en situation {#section-1}
 
 Lorsque nous lançons un conteneur à partir d’une image, le moteur d’exécution ‘docker’ attribue à cette instance d’image, un réseau privé, par défaut, le réseau nommé ‘***bridge***’.
 
@@ -271,7 +287,7 @@ round-trip min/avg/max = 0.169/0.274/0.379 ms
 
 -----
 
-## 2 – Réseau de type ‘host’
+## 2 – Réseau de type ‘host’ {#section-2}
 
 Ce type d’interface réseau va utiliser directement la carte et les paramètres réseau de l’hôte.
 
@@ -314,13 +330,13 @@ Voir les réseaux disponibles sous Windows: [Windows 10 – place container dire
 </p>
 -----
 
-## 3 – Réseau de type MACVLan
+## 3 – Réseau de type MACVLan {#section-3}
 
-# Créer un réseau Macvlan sous Docker
+### 3.1 – Créer un réseau Macvlan sous Docker {#section-3-1}
 
 Le réseau **macvlan** permet à vos conteneurs Docker d'obtenir des adresses IP directement sur votre réseau physique, comme s'ils étaient des machines physiques distinctes.
 
-## Prérequis
+### 3.2 – Prérequis {#section-3-2}
 
 Avant de commencer, vous devez connaître :
 - L'interface réseau de votre hôte (ex: `eth0`, `enp0s3`)
@@ -337,9 +353,9 @@ ip addr show
 ip route
 ```
 
-## Création d'un réseau Macvlan
+### 3.3 – Création d'un réseau Macvlan {#section-3-3}
 
-### Exemple de base
+#### Exemple de base
 
 ```bash
 docker network create -d macvlan \
@@ -356,7 +372,7 @@ docker network create -d macvlan \
 - `-o parent=eth0` : l'interface physique parent
 - `macvlan_net` : le nom du réseau
 
-### Avec plage IP réservée
+#### Avec plage IP réservée
 
 Il est recommandé de réserver une plage d'IP pour Docker afin d'éviter les conflits :
 
@@ -373,9 +389,9 @@ Ici, `--ip-range=192.168.1.192/27` réserve les adresses de 192.168.1.192 à 192
 
 **NOTE** Cette étape est importante car les adresses attribuées vont entrer en conflit avec les appareils connectés au réseau local.
 
-## Utilisation avec des conteneurs
+### 3.4 – Utilisation avec des conteneurs {#section-3-4}
 
-### Lancer un conteneur avec une IP automatique
+#### Lancer un conteneur avec une IP automatique
 
 ```bash
 docker run -d --name nginx_macvlan \
@@ -383,7 +399,7 @@ docker run -d --name nginx_macvlan \
   nginx
 ```
 
-### Lancer un conteneur avec une IP spécifique
+#### Lancer un conteneur avec une IP spécifique
 
 ```bash
 docker run -d --name nginx_macvlan \
@@ -392,7 +408,7 @@ docker run -d --name nginx_macvlan \
   nginx
 ```
 
-### Exemple avec plusieurs conteneurs
+#### Exemple avec plusieurs conteneurs
 
 ```bash
 # Serveur web
@@ -415,7 +431,7 @@ docker run -d --name app \
   monapp:latest
 ```
 
-## Accéder aux conteneurs depuis l'hôte
+### 3.5 – Accéder aux conteneurs depuis l'hôte {#section-3-5}
 
 Par défaut, l'hôte Docker **ne peut pas** communiquer directement avec les conteneurs en macvlan. Pour résoudre ce problème, créez une interface macvlan sur l'hôte :
 
@@ -433,7 +449,7 @@ sudo ip link set macvlan_host up
 sudo ip route add 192.168.1.192/27 dev macvlan_host
 ```
 
-## Vérification et diagnostic
+### 3.6 – Vérification et diagnostic {#section-3-6}
 
 {% raw %}
 ```bash
@@ -451,7 +467,7 @@ ping 192.168.1.200
 ```
 {% endraw %}
 
-## Exemple pratique complet
+### 3.7 – Exemple pratique complet {#section-3-7}
 
 Voici un exemple de configuration complète pour un environnement web :
 
@@ -487,7 +503,7 @@ docker ps
 docker network inspect prod_network
 ```
 
-## Avantages et limitations
+### 3.8 – Avantages et limitations {#section-3-8}
 
 **Avantages :**
 - Les conteneurs sont accessibles directement depuis le réseau local sans port mapping
@@ -554,5 +570,5 @@ http://192.168.2.88
 ## Crédits
 
 *Document rédigé par Alain Boudreault © 2021-2026*  
-*Version 2025.12.03.1*  
+*Version 2025.12.03.1 - Révision 2026.11.07.1*  
 *Site par ve2cuy*

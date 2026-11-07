@@ -1,13 +1,33 @@
-# GitHub Action : Build et Push vers Docker Hub
+# 20 - GitHub Action : Build et Push vers Docker Hub
 
-## 1. Prérequis
+## Contenu
 
-### A. Créer un compte Docker Hub
+- [**1. Prérequis**](#section-1)
+  - [A. Créer un compte Docker Hub](#section-1-a)
+  - [B. Créer un Access Token Docker Hub](#section-1-b)
+  - [C. Ajouter les secrets dans GitHub](#section-1-c)
+- [**2. Workflow de base (`.github/workflows/docker-build.yml`)**](#section-2)
+- [**3. Workflow avec plusieurs Dockerfiles**](#section-3)
+- [**4. Workflow avancé avec tests**](#section-4)
+- [**5. Workflow déclenché par tags (versioning)**](#section-5)
+- [**6. Exemple avec build arguments**](#section-6)
+- [**7. Structure de projet recommandée**](#section-7)
+- [**8. Fichier .dockerignore recommandé**](#section-8)
+- [**9. Utilisation après déploiement**](#section-9)
+- [**10. Exemple complet pour SuperMinou**](#section-10)
+- [**11. Troubleshooting**](#section-11)
+- [**12. Commandes utiles**](#section-12)
+
+---
+
+## 1. Prérequis {#section-1}
+
+### A. Créer un compte Docker Hub {#section-1-a}
 - Allez sur [hub.docker.com](https://hub.docker.com)
 - Créez un compte si nécessaire
 - Notez votre **username Docker Hub**
 
-### B. Créer un Access Token Docker Hub
+### B. Créer un Access Token Docker Hub {#section-1-b}
 1. Connectez-vous à Docker Hub
 2. Allez dans **Account Settings** → **Security**
 3. Cliquez sur **New Access Token**
@@ -15,7 +35,7 @@
 5. Permissions : **Read, Write, Delete**
 6. Copiez le token généré (vous ne pourrez plus le voir après)
 
-### C. Ajouter les secrets dans GitHub
+### C. Ajouter les secrets dans GitHub {#section-1-c}
 1. Allez dans votre repo GitHub
 2. **Settings** → **Secrets and variables** → **Actions**
 3. Cliquez sur **New repository secret**
@@ -23,7 +43,7 @@
    - `DOCKERHUB_USERNAME` : votre username Docker Hub
    - `DOCKERHUB_TOKEN` : le token d'accès créé
 
-## 2. Workflow de base (`.github/workflows/docker-build.yml`)
+## 2. Workflow de base (`.github/workflows/docker-build.yml`) {#section-2}
 
 {% raw %}
 ```yaml
@@ -80,7 +100,7 @@ jobs:
 ```
 {% endraw %}
 
-## 3. Workflow avec plusieurs Dockerfiles
+## 3. Workflow avec plusieurs Dockerfiles {#section-3}
 
 {% raw %}
 ```yaml
@@ -142,7 +162,7 @@ jobs:
 ```
 {% endraw %}
 
-## 4. Workflow avancé avec tests
+## 4. Workflow avancé avec tests {#section-4}
 
 {% raw %}
 ```yaml
@@ -232,7 +252,7 @@ jobs:
 ```
 {% endraw %}
 
-## 5. Workflow déclenché par tags (versioning)
+## 5. Workflow déclenché par tags (versioning) {#section-5}
 
 {% raw %}
 ```yaml
@@ -282,7 +302,7 @@ jobs:
 ```
 {% endraw %}
 
-## 6. Exemple avec build arguments
+## 6. Exemple avec build arguments {#section-6}
 
 {% raw %}
 ```yaml
@@ -321,7 +341,7 @@ jobs:
 ```
 {% endraw %}
 
-## 7. Structure de projet recommandée
+## 7. Structure de projet recommandée {#section-7}
 
 ```
 mon-projet/
@@ -338,7 +358,7 @@ mon-projet/
 └── README.md
 ```
 
-## 8. Fichier .dockerignore recommandé
+## 8. Fichier .dockerignore recommandé {#section-8}
 
 ```
 .git
@@ -353,7 +373,7 @@ node_modules
 .DS_Store
 ```
 
-## 9. Utilisation après déploiement
+## 9. Utilisation après déploiement {#section-9}
 
 Une fois l'image publiée, vous pouvez la télécharger :
 
@@ -368,7 +388,7 @@ docker pull votre-username/mon-app:v1.2.3
 docker run -p 8080:80 votre-username/mon-app:latest
 ```
 
-## 10. Exemple complet pour SuperMinou
+## 10. Exemple complet pour SuperMinou {#section-10}
 
 {% raw %}
 ```yaml
@@ -411,7 +431,7 @@ jobs:
 ```
 {% endraw %}
 
-## 11. Troubleshooting
+## 11. Troubleshooting {#section-11}
 
 ### Erreur d'authentification
 ```bash
@@ -438,7 +458,7 @@ cache-from: type=gha
 cache-to: type=gha,mode=max
 ```
 
-## 12. Commandes utiles
+## 12. Commandes utiles {#section-12}
 
 ```bash
 # Tester localement le workflow
@@ -456,3 +476,12 @@ docker search votre-username
 - [Docker Build Push Action](https://github.com/docker/build-push-action)
 - [Docker Login Action](https://github.com/docker/login-action)
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
+
+---
+
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Révision 2026.11.07.1*  
+
+*Contenu par [VE2CUY](https://ve2cuy.github.io/blog/)*

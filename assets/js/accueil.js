@@ -101,6 +101,7 @@
       if (d.photo) { const i = el("img"); i.src = d.img.src; i.alt = d.img.alt || ""; i.loading = "lazy"; v.append(i); }
       else v.append(masque(d.img));
       if (d.numero !== "-") { const n = el("span", "n"); n.textContent = d.numero || "+"; if (n.textContent.length > 4) n.classList.add("long"); v.append(n); }
+      if (d.href) { v.dataset.quizHref = d.href; marquerQuiz(v); }
       const info = el("span", "info");
       let t;
       if (bloc) { t = el("a", "titre principal"); t.href = d.href; } else t = el("span", "titre");
@@ -117,6 +118,48 @@
       grille.append(carte);
     }
     return grille;
+  }
+
+  // Marqueur du quiz sur la vignette : « quiz » (à faire) ou « ✓ quiz 8/10 » (meilleur résultat du
+  // poste : rouge à 50 % et moins, ambre sous 80 %, vert sinon).
+  function marquerQuiz(v) {
+    const href = v.dataset.quizHref;
+    v.querySelectorAll(":scope > .quiz-fait").forEach((m) => m.remove());
+    const qf = quizFait(href);
+    let m = null;
+    if (qf) {
+      const pc = (100 * qf.meilleur) / qf.total;
+      m = el("span", "quiz-fait " + (pc <= 50 ? "faible" : pc < 80 ? "moyen" : "fort"));
+      m.textContent = "✓ quiz " + qf.meilleur + "/" + qf.total;
+      m.title = "Quiz fait sur ce poste : meilleur résultat " + qf.meilleur + " / " + qf.total;
+    } else if (aUnQuiz(href)) {
+      m = el("span", "quiz-fait offert"); m.textContent = "quiz"; m.title = "Ce document propose un quiz de compréhension";
+    }
+    if (m) v.append(m);
+  }
+  // Retour par le bouton « Précédent » : la page sort du cache du fureteur sans relancer ce script;
+  // on relit alors les résultats (quiz fait entre-temps).
+  const majQuiz = () => document.querySelectorAll(".vignette[data-quiz-href]").forEach(marquerQuiz);
+  addEventListener("pageshow", (ev) => { if (ev.persisted) majQuiz(); });
+  addEventListener("storage", (ev) => { if (!ev.key || ev.key.startsWith("ve2cuy-quiz:")) majQuiz(); });
+
+  // Documents qui ont un quiz (_data/quiz/<document>.yml, liste écrite par _layouts/default.html)
+  // (lue au premier appel : les cartes sont faites plus haut, avant cette ligne)
+  function aUnQuiz(href) {
+    try {
+      if (!aUnQuiz.liste) aUnQuiz.liste = JSON.parse((document.getElementById("quiz-liste") || {}).textContent || "[]");
+      const u = new URL(href, location.href);
+      return u.origin === location.origin && aUnQuiz.liste.includes(decodeURIComponent(u.pathname.split("/").pop().replace(/\.html$/, "")));
+    } catch (e) { return false; }
+  }
+
+  // Quiz du document fait sur ce poste (assets/js/quiz.js) : { score, meilleur, total, date } ou null
+  function quizFait(href) {
+    try {
+      const chemin = new URL(href, location.href).pathname.replace(/\.html$/, "").replace(/\/$/, "/index");
+      const r = JSON.parse(localStorage.getItem("ve2cuy-quiz:" + chemin));
+      return r && r.total ? { ...r, meilleur: r.meilleur ?? r.score } : null;
+    } catch (e) { return null; }
   }
 
   // « ![](dessins/x.svg) 21 · [Titre](lien) · étiquette · [Autre lien](…) », avec une sous-liste

@@ -1,4 +1,4 @@
-# ☁️ Docker Hub – Introduction
+# 7 - ☁️ Docker Hub – Introduction
 
 ## Publier une IMAGE à partir d'un conteneur PERSONNALISÉ et Stockage PERSISTANT
 
@@ -18,7 +18,40 @@ Dans ce module, nous verrons comment :
 
 -----
 
-## Mise en situation
+## Contenu
+
+- [**Mise en situation**](#section-mise-en-situation)
+- [**Étape 1 – Créer un nouveau dépôt sur hub.docker.com**](#section-1)
+- [**Étape 2 – Personnaliser un conteneur à partir de l'image de `nginx`**](#section-2)
+  - [2.1 – Créer un conteneur `web01` à partir de l'image `nginx:latest`](#section-2-1)
+  - [2.2 – Se connecter au 'shell' du conteneur `web01`](#section-2-2)
+  - [2.3 – Installer l'éditeur de texte `nano` dans le conteneur](#section-2-3)
+  - [2.4 – Remplacer le contenu du fichier `/usr/share/nginx/html/index.html`](#section-2-4)
+  - [2.5 – Par le code HTML suivant](#section-2-5)
+  - [2.6 – Quitter le 'shell' du conteneur et tester le serveur web](#section-2-6)
+- [**Étape 3 – Créer une image à partir du conteneur**](#section-3)
+  - [3.1 – Créer une image (nom : `votreNomDomaineDocker/nomDépôt:version(tag)`)](#section-3-1)
+  - [3.2 – Vérifier la présence de la nouvelle image](#section-3-2)
+  - [3.3 – Connexion au compte `hub.docker.com`](#section-3-3)
+  - [3.4 – Publier (`push`) l'image vers le dépôt `420-4d4` sur `hub.docker.com`](#section-3-4)
+  - [3.5 – Vérifier la présence de l'image sur votre dépôt `hub.docker`.](#section-3-5)
+- [**Étape 4 – Tester l'image qui se trouve sur `hub.docker.com`**](#section-4)
+  - [4.1 – Obtenir et exécuter l'application en utilisant le port `88`](#section-4-1)
+  - [4.2 – Tester dans un fureteur](#section-4-2)
+  - [4.3 – Conclusion](#section-4-3)
+- [**Étape 5 – Stockage persistant**](#section-5)
+  - [5.1 – Créer un répertoire local pour les fichiers du site web](#section-5-1)
+  - [5.2 – Créer le fichier `info.html` dans le répertoire de l'étape 5.1](#section-5-2)
+  - [5.3 – Démarrer un conteneur à partir de la syntaxe suivante](#section-5-3)
+  - [5.4 – Tester la page `info.html` dans un fureteur](#section-5-4)
+  - [5.5 – Ajoutons un peu plus de substance à notre site web](#section-5-5)
+  - [5.6 – Déplacer l'app vers le dossier lié au conteneur](#section-5-6)
+  - [5.7 – Tester l'app](#section-5-7)
+- [**Laboratoire**](#section-laboratoire)
+
+---
+
+## Mise en situation {#section-mise-en-situation}
 
 Lors du dernier module, nous avons apprivoisé quelques commandes de base sur des conteneurs d'images préexistantes. Pourquoi ne pas créer notre propre image à partir du conteneur d'une de ces images?
 
@@ -107,7 +140,7 @@ docker rm $(docker ps -a -q --filter="ancestor=nginx")
 
 -----
 
-## Étape 1 – Créer un nouveau dépôt sur hub.docker.com
+## Étape 1 – Créer un nouveau dépôt sur hub.docker.com {#section-1}
 
 Ici, nous nous apprêtons à créer un dépôt de conteneurs pour un projet à venir. Nous pourrons, par la suite, y archiver toutes les versions du projet.
 
@@ -136,37 +169,37 @@ Ici, nous nous apprêtons à créer un dépôt de conteneurs pour un projet à v
 
 -----
 
-## Étape 2 – Personnaliser un conteneur à partir de l'image de `nginx`
+## Étape 2 – Personnaliser un conteneur à partir de l'image de `nginx` {#section-2}
 
 Évidemment, ne voulant pas avoir à programmer, à partir de rien, un serveur web 😉, nous allons bâtir notre fondation sur l'image de `nginx`.
 
-### 2.1 – Créer un conteneur `web01` à partir de l'image `nginx:latest`
+### 2.1 – Créer un conteneur `web01` à partir de l'image `nginx:latest` {#section-2-1}
 
 ```bash
 docker run -d --name web01 -p 80:80 nginx
 ```
 
-### 2.2 – Se connecter au 'shell' du conteneur `web01`
+### 2.2 – Se connecter au 'shell' du conteneur `web01` {#section-2-2}
 
 ```bash
 docker exec -it web01 /bin/bash
 ```
 
-### 2.3 – Installer l'éditeur de texte `nano` dans le conteneur
+### 2.3 – Installer l'éditeur de texte `nano` dans le conteneur {#section-2-3}
 
 ```bash
 apt update
 apt install nano
 ```
 
-### 2.4 – Remplacer le contenu du fichier `/usr/share/nginx/html/index.html`
+### 2.4 – Remplacer le contenu du fichier `/usr/share/nginx/html/index.html` {#section-2-4}
 
 ```bash
 rm /usr/share/nginx/html/index.html
 nano /usr/share/nginx/html/index.html
 ```
 
-### 2.5 – Par le code HTML suivant
+### 2.5 – Par le code HTML suivant {#section-2-5}
 
 ```html
 <!DOCTYPE html>
@@ -197,7 +230,7 @@ Pour lancer le conteneur:<br/><br/>
 </html>
 ```
 
-### 2.6 – Quitter le 'shell' du conteneur et tester le serveur web
+### 2.6 – Quitter le 'shell' du conteneur et tester le serveur web {#section-2-6}
 
 ```bash
 exit
@@ -207,24 +240,24 @@ exit
 
 -----
 
-## Étape 3 – Créer une image à partir du conteneur
+## Étape 3 – Créer une image à partir du conteneur {#section-3}
 
 À ce point, nous avons adapté un conteneur à nos besoins. Il est temps d'en faire une image qui pourra être, par la suite, distribuée à l'infini.
 
-### 3.1 – Créer une image (nom : `votreNomDomaineDocker/nomDépôt:version(tag)`)
+### 3.1 – Créer une image (nom : `votreNomDomaineDocker/nomDépôt:version(tag)`) {#section-3-1}
 
 ```bash
 docker ps
 docker commit web01 VOTRECOMPTE/420-4d4:1.0
 ```
 
-### 3.2 – Vérifier la présence de la nouvelle image
+### 3.2 – Vérifier la présence de la nouvelle image {#section-3-2}
 
 ```bash
 docker images
 ```
 
-### 3.3 – Connexion au compte `hub.docker.com`
+### 3.3 – Connexion au compte `hub.docker.com` {#section-3-3}
 
 Pour être en mesure de pouvoir publier notre nouvelle image sur hub.docker, il faut obligatoirement s'authentifier, à partir de votre fenêtre terminal ou, alternativement, via l'application 'docker desktop'.
 
@@ -239,7 +272,7 @@ password: FOURNIRLEMOTDEPASSE (ou TOKEN)
     <img src="../images/Capture-decran-le-2023-01-31-a-16.10.37-1024x448.png" alt="" width="550" />
 </p>
 
-### 3.4 – Publier (`push`) l'image vers le dépôt `420-4d4` sur `hub.docker.com`
+### 3.4 – Publier (`push`) l'image vers le dépôt `420-4d4` sur `hub.docker.com` {#section-3-4}
 
 Maintenant que nous sommes authentifiés au dépôt docker il ne nous reste plus qu'à publier la nouvelle image :
 
@@ -247,14 +280,14 @@ Maintenant que nous sommes authentifiés au dépôt docker il ne nous reste plus
 docker push VOTRECOMPTE/420-4d4:1.0
 ```
 
-### 3.5 – Vérifier la présence de l'image sur votre dépôt `hub.docker`.
+### 3.5 – Vérifier la présence de l'image sur votre dépôt `hub.docker`. {#section-3-5}
 
 -----
 
-## Étape 4 – Tester l'image qui se trouve sur `hub.docker.com`
+## Étape 4 – Tester l'image qui se trouve sur `hub.docker.com` {#section-4}
 
 
-### 4.1 – Obtenir et exécuter l'application en utilisant le port `88`
+### 4.1 – Obtenir et exécuter l'application en utilisant le port `88` {#section-4-1}
 
 ```bash
 # Effacer l'image locale:
@@ -263,7 +296,7 @@ docker rmi VOTRECOMPTE/420-4d4:1.0
 docker run -d -p 88:80 --name web-test VOTRECOMPTE/420-4d4:1.0
 ```
 
-### 4.2 – Tester dans un fureteur
+### 4.2 – Tester dans un fureteur {#section-4-2}
 
 Tester l'accès à la page web via le port exposé (par exemple : `http://localhost:88`).
 
@@ -272,31 +305,31 @@ Tester l'accès à la page web via le port exposé (par exemple : `http://localh
 </p>
 
 
-### 4.3 – Conclusion
+### 4.3 – Conclusion {#section-4-3}
 
 Nous avons maintenant accès, à partir d'un dépôt **hub.docker**, à l'image personnalisée d'un serveur `nginx`, qui propose une page d'accueil sur mesure ainsi que l'éditeur de texte `nano`.
 
 -----
 
-## Étape 5 – Stockage persistant
+## Étape 5 – Stockage persistant {#section-5}
 
 **TRISTESSE** – À chaque fois que nous recréons un conteneur à partir d'une image, nous retrouvons le système de fichiers dans son état de départ. Cela pose un problème non négligeable lors des mises à jour de l'image.
 
 Pour contrer cet état de fait, docker propose les **stockages persistants**. Grâce à une série d'exemples, voyons comment cela fonctionne.
 
-### 5.1 – Créer un répertoire local pour les fichiers du site web
+### 5.1 – Créer un répertoire local pour les fichiers du site web {#section-5-1}
 
 ```bash
 mkdir /home/alain/docker-folder/siteweb
 ```
 
-### 5.2 – Créer le fichier `info.html` dans le répertoire de l'étape 5.1
+### 5.2 – Créer le fichier `info.html` dans le répertoire de l'étape 5.1 {#section-5-2}
 
 ```html
 <center><h1>Vive le sirop d'&eacute;rable ;-)</h1></center>
 ```
 
-### 5.3 – Démarrer un conteneur à partir de la syntaxe suivante:
+### 5.3 – Démarrer un conteneur à partir de la syntaxe suivante: {#section-5-3}
 
 L'option `-v` (volume) est utilisée pour lier le répertoire local au répertoire des fichiers web de `nginx` dans le conteneur (`/usr/share/nginx/html`).
 
@@ -308,7 +341,7 @@ docker run --name mon-nginx -v /home/alain/docker-folder/siteweb:/usr/share/ngin
 docker run --name mon-nginx -v C:\Users\4204D4\semaine02:/usr/share/nginx/html:rw -d -p 8080:80 nginx
 ```
 
-### 5.4 – Tester la page `info.html` dans un fureteur
+### 5.4 – Tester la page `info.html` dans un fureteur {#section-5-4}
 
 ```bash
 http://localhost:8080/info.html
@@ -321,7 +354,7 @@ http://localhost:8080/info.html
 </p>
 
 
-### 5.5 – Ajoutons un peu plus de substance à notre site web:
+### 5.5 – Ajoutons un peu plus de substance à notre site web: {#section-5-5}
 
 Dans un dossier de téléchargement, par exemple, : `/home/$USER/download`,
 
@@ -329,13 +362,13 @@ Dans un dossier de téléchargement, par exemple, : `/home/$USER/download`,
 git clone https://github.com/creativetimofficial/bootstrap4-cheatsheet.git
 ```
 
-### 5.6 – Déplacer l'app vers le dossier lié au conteneur:
+### 5.6 – Déplacer l'app vers le dossier lié au conteneur: {#section-5-6}
 
 ```bash
 mv bootstrap4/ /dossier/web/conteneur/bs
 ```
 
-### 5.7 – Tester l'app
+### 5.7 – Tester l'app {#section-5-7}
 
 Tester l'accès à l'application via le volume monté : `http://localhost:8080/bs/`
 
@@ -351,7 +384,7 @@ Tester l'accès à l'application via le volume monté : `http://localhost:8080/b
 
 <img src="../images/labo02.png" alt="" width="700" />
 
-## Laboratoire
+## Laboratoire {#section-laboratoire}
 
   * En utilisant votre compte **hub.docker.com**, créer un dépôt `labo-01`.
   * Bâtir un conteneur personnalisé à partir de l'image `apache` officielle.
@@ -370,5 +403,5 @@ Tester l'accès à l'application via le volume monté : `http://localhost:8080/b
 ## Crédits
 
 *Document rédigé par Alain Boudreault © 2021-2026*  
-*Version 2025.12.03.1*  
+*Version 2025.12.03.1 - Révision 2026.11.07.1*  
 *Site par ve2cuy*

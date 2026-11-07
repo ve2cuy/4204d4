@@ -1,4 +1,4 @@
-# ESH26 - Énoncé du projet de session
+# 49 - ESH26 - Énoncé du projet de session
 
 ## 💡 Acte d'énoncer, d'exprimer en termes nets.
 
@@ -57,7 +57,27 @@
 
 ---
 
-## Étape 1 - Déployer des applications en mode local - `👉 remise le 17 mai`
+## Contenu
+
+- [**Étape 1 - Déployer des applications en mode local - `👉 remise le 17 mai`**](#section-1)
+- [**Captures d'écrans et détails sur les applications**](#section-captures-d-ecrans-et-details-sur-les-app)
+- [**Harbor**](#section-harbor)
+- [**Homepage**](#section-homepage)
+- [**Wordpress**](#section-wordpress)
+- [**Node-red**](#section-node-red)
+- [**Mattermost**](#section-mattermost)
+- [**Jenkins**](#section-jenkins)
+- [**💡 Voici des astuces d'aide à la réalisation du projet**](#section-voici-des-astuces-d-aide-a-la-realisatio)
+- [**Étape 2 - Déployer des applications en nuage - `remise le 25 mai`**](#section-2)
+  - [2.1 – Homepage - partie 2](#section-2-1)
+  - [2.2 – Le dashboard de `traefik`](#section-2-2)
+  - [2.3 – Démo d'un auto-scaling sur K8s](#section-2-3)
+  - [2.4 – Immich : Librairie de photos](#section-2-4)
+- [**Liste des dépots harbor et des applications dans le nuage**](#section-liste-des-depots-harbor-et-des-applicati)
+
+---
+
+## Étape 1 - Déployer des applications en mode local - `👉 remise le 17 mai` {#section-1}
 
 * À partir d'une VM `cloud.google`
     * Nommée `es-4204d4-h26`
@@ -107,7 +127,7 @@
 
 ---
 
-## Captures d'écrans et détails sur les applications
+## Captures d'écrans et détails sur les applications {#section-captures-d-ecrans-et-details-sur-les-app}
 
 <p align="center">
     <img src="images/superminou.04.png" alt="" width="300" />
@@ -115,7 +135,7 @@
 
 ---
 
-## Harbor
+## Harbor {#section-harbor}
 
 <img src="images/harbor-01.png" alt="" width="800" />
 
@@ -129,7 +149,7 @@
 
 ---
 
-## Homepage
+## Homepage {#section-homepage}
 
 <img src="images/homepage.png" alt="" width="800" />
 
@@ -150,7 +170,7 @@ sudo docker-compose up -d
 
 ---
 
-## Wordpress
+## Wordpress {#section-wordpress}
 
 * Des thèmes supplémentaires proviennent du volune `NFS`  `/esh26/wordpress/themes` voir [ici](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-Les-volumes.html)
 * Ils doivent-être copiés localement par un conteneur d'initialisation.
@@ -168,7 +188,7 @@ sudo docker-compose up -d
 
 ---
 
-## Node-red
+## Node-red {#section-node-red}
 
 * Le dossier /data de node-red est monté sur le volume `NFS` `/esh26/node-red`
 
@@ -182,13 +202,13 @@ sudo docker-compose up -d
 
 ---
 
-## Mattermost
+## Mattermost {#section-mattermost}
 
 <img src="images/mattermost.png" alt="" width="800" />
 
 ---
 
-## Jenkins
+## Jenkins {#section-jenkins}
 
 * Le volume PVC de jenkins est de type `local-path`
 
@@ -210,7 +230,7 @@ spec:
 
 ---
 
-## 💡 Voici des astuces d'aide à la réalisation du projet
+## 💡 Voici des astuces d'aide à la réalisation du projet {#section-voici-des-astuces-d-aide-a-la-realisatio}
 
 <p align="center">
     <img src="images/superminou.03.png" alt="" width="300" />
@@ -378,7 +398,7 @@ replicaset.apps/wordpress-5d9548759d    1         1         1       24h
 
 ---
 
-## Étape 2 - Déployer des applications en nuage - `remise le 25 mai`
+## Étape 2 - Déployer des applications en nuage - `remise le 25 mai` {#section-2}
 
 <p align="center">
     <img src="images/superminou.05.png" alt="" width="300" />
@@ -404,13 +424,13 @@ replicaset.apps/wordpress-5d9548759d    1         1         1       24h
 ### 💡💡💡 Faire des tests en mode local avant le déploiement final sur `gcloud`. Cette section représente des coûts d'environ 8$ par jour.  Idéalement, il faudrait déployer sur `gcloud` autour de la date de remise.
 ---
 
-## 2.1 - Homepage - partie 2
+## 2.1 – Homepage - partie 2 {#section-2-1}
 
 <img src="images/esh26.partie.02.png" alt="" width="600" />
 
 ---
 
-## 2.2 - Le dashboard de `traefik`
+## 2.2 – Le dashboard de `traefik` {#section-2-2}
 
 Le dashboard de `traefik` doit être protégé par un mot de passe:
 
@@ -455,7 +475,7 @@ helm upgrade traefik traefik/traefik -n traefik -f values.yaml
 
 ---
 
-## 2.3 - Démo d'un auto-scaling sur K8s
+## 2.3 – Démo d'un auto-scaling sur K8s {#section-2-3}
 
 À partir du manifeste disponible --> [ICI](https://raw.githubusercontent.com/ve2cuy/4204d4/refs/heads/main/Documentation/Projet-Session/auto-scaling.yaml), déployer l'application de démonstration de la fonction K8s d'auto-scaling.
 
@@ -487,7 +507,7 @@ NOTE: 🛑 Les ressources de ce manifeste ne seront pas créées dans le `namesp
 
 ---
 
-## 2.4 - Immich : Librairie de photos
+## 2.4 – Immich : Librairie de photos {#section-2-4}
 
 Il faut déployer le gestionnaire de photos `Immich` en utilisant un volume `NFS` pour le contenu.
 
@@ -513,7 +533,7 @@ NOTE: 🛑 Les ressources de ce manifeste ne seront pas créées dans le `namesp
 
 ---
 
-## Liste des dépots harbor et des applications dans le nuage
+## Liste des dépots harbor et des applications dans le nuage {#section-liste-des-depots-harbor-et-des-applicati}
 
 | Matricule | Nom | Prénom | Liens |
 |-----------|-----|--------|-------|
@@ -546,3 +566,12 @@ NOTE: 🛑 Les ressources de ce manifeste ne seront pas créées dans le `namesp
 | 6289173 | Dubois | Zachary | [👍 harbor](https://harbor-6289173.duckdns.org)<br>[👍Traefik](http://dashboard.etape-02-6289173.duckdns.org/)<br>[👍scaling](http://scaling.etape-02-6289173.duckdns.org/) |
 | 6297476 | Forget | Antoine | [👍 harbor](https://harbor-6297476.duckdns.org)<br>[👍Traefik](http://dashboard.etape-02-6297476.duckdns.org/)<br>[👍scaling](http://scaling.etape-02-6297476.duckdns.org/) |
 | 6313680 | Nibimenya | Maëlys | [‼️harbor](https://harbor-6313680.duckdns.org)<br>[‼️Traefik](http://dashboard.etape-02-6313680.duckdns.org/)<br>[‼️scaling](http://scaling.etape-02-6313680.duckdns.org/) |
+
+---
+
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Révision 2026.11.07.1*  
+
+*Contenu par [VE2CUY](https://ve2cuy.github.io/blog/)*

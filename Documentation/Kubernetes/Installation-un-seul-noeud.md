@@ -1,6 +1,23 @@
-# Installation d'un amas/cluster Kubernetes avec un seul serveur (contrôleur/noeud) sous Ubuntu.
+# 24 - Installation d'un amas/cluster Kubernetes avec un seul serveur (contrôleur/noeud) sous Ubuntu.
 
-### Étape 1: Préparer le système
+## Contenu
+
+- [**1 – Préparer le système**](#section-1)
+- [**2 – Installer Kubernetes**](#section-2)
+- [**3 – Réaliser la configuration d'un amas K8s d'un seul noeud (sur le contrôleur)**](#section-3)
+- [**4 – Tester un déploiement**](#section-4)
+- [**5 – Gestion des erreurs**](#section-5)
+- [**6 – Installation d'un cluster à partir d'un dépôt GitHub**](#section-6)
+- [**7 – Mise à jour du cluster**](#section-7)
+- [**8 – Réinitialiser une installation K8S**](#section-8)
+- [**9 – Réinstallation de Docker**](#section-9)
+- [**10 – Installation d'un 'worker Node'**](#section-10)
+- [**11 – Retirer un noeud du cluster**](#section-11)
+- [**12 – Installation d'un cluster avec `kind`**](#section-12)
+
+---
+
+## 1 – Préparer le système {#section-1}
 
 **1 – Charger les modules du noyau Linux requis:**
 
@@ -63,7 +80,7 @@ sudo systemctl enable containerd
 
 ---
 
-### Étape 2: Installer Kubernetes
+## 2 – Installer Kubernetes {#section-2}
 
 **6 – Désactiver le fichier d'échange de la mémoire virtuelle:**
 
@@ -112,7 +129,7 @@ sudo apt-mark hold kubelet kubeadm kubectl
 
 ---
 
-### Étape 3: Réaliser la configuration d'un amas K8s d'un seul noeud (sur le contrôleur)
+## 3 – Réaliser la configuration d'un amas K8s d'un seul noeud (sur le contrôleur) {#section-3}
 
 **9 – Initialiser le contrôleur:**
 
@@ -226,7 +243,7 @@ kube-scheduler-k8stest            1/1     Running   0          114m
 
 ---
 
-## Tester un déploiement
+## 4 – Tester un déploiement {#section-4}
 
 ### À partir d'un manifeste disponible via le Web:
 
@@ -284,7 +301,7 @@ kubectl get pods -o wide
 
 ---
 
-## Gestion des erreurs
+## 5 – Gestion des erreurs {#section-5}
 
 Si au redémarrage du serveur, kubectl affiche le message suivant:
 
@@ -325,7 +342,7 @@ kubectl get nodes
 
 ---
 
-## Installation d'un cluster à partir d'un dépôt GitHub
+## 6 – Installation d'un cluster à partir d'un dépôt GitHub {#section-6}
 
 
 ```bash
@@ -341,7 +358,7 @@ kubectl label node nom-du-noeud node-role.kubernetes.io/worker=worker
 
 ---
 
-## Mise à jour du cluster
+## 7 – Mise à jour du cluster {#section-7}
 
 ```bash
 export K8S_VERSION=v1.34
@@ -359,13 +376,13 @@ sudo apt-mark hold kubeadm
 
 ---
 
-## Réinitialiser une installation K8S
+## 8 – Réinitialiser une installation K8S {#section-8}
 
 ```bash
 sudo kubeadm reset -f
 ```
 
-## 🛑 Réinstallation de Docker
+## 9 – Réinstallation de Docker {#section-9}
 
 Il est possible que Docker ne fonctionne plus suite à l'installation de K8s.
 
@@ -377,7 +394,7 @@ sudo apt-get install docker.io
 
 ---
 
-## Installation d'un 'worker Node'
+## 10 – Installation d'un 'worker Node' {#section-10}
 
 Pour installer un 'worker node' il faut réaliser les étapes 1 à 8 puis,
 
@@ -392,7 +409,7 @@ sudo kubeadm join 192.168.139.50:6443 --token 64th0n.eknzv4kxm1mxwl4o --discover
 
 ```
 
-## Retirer un noeud du cluster
+## 11 – Retirer un noeud du cluster {#section-11}
 
 ```
 # Sur le master
@@ -405,7 +422,7 @@ kubeadm reset
 
 ---
 
-## Installation d'un cluster avec `kind`
+## 12 – Installation d'un cluster avec `kind` {#section-12}
 
 ```yaml
 # Kind cluster configuration for multiple nodes
@@ -457,5 +474,5 @@ kind delete cluster --name mon-multinode-cluster
 ## Crédits
 
 *Document rédigé par Alain Boudreault © 2021-2026*  
-*Version 2025.12.03.1*  
+*Version 2025.12.03.1 - Révision 2026.11.07.1*  
 *Site par ve2cuy*

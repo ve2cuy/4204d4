@@ -1,4 +1,4 @@
-# 🐳 Docker compose – Introduction - Partie 1
+# 15 - 🐳 Docker compose – Introduction - Partie 1
 
 <p align="center">
     <img src="../images/docker-compose-transparent.png" alt="YAML" width="350" />
@@ -39,7 +39,14 @@ Par les exemples suivants, nous verrons comment ça fonctionne.
 
 -----
 
-## 1 – Système simple de trois conteneurs Alpine
+## Contenu
+
+- [**1 – Système simple de trois conteneurs Alpine**](#section-1)
+- [**2 – Ajout d'options et configuration**](#section-2)
+
+---
+
+## 1 – Système simple de trois conteneurs Alpine {#section-1}
 
 ### Action 1.0 – Créer un système à partir de trois Alpine
 
@@ -135,7 +142,7 @@ CTRL+PQ
 
 -----
 
-## 2 – Ajout d'options et configuration
+## 2 – Ajout d'options et configuration {#section-2}
 
 ### Action 2.0 – Ajout d'options supplémentaires – partie 01
 
@@ -277,5 +284,5 @@ services:
 ## Crédits
 
 *Document rédigé par Alain Boudreault © 2021-2026*  
-*Version 2025.12.03.1*  
+*Version 2025.12.03.1 - Révision 2026.11.07.1*  
 *Site par ve2cuy*

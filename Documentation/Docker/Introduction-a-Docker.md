@@ -1,11 +1,45 @@
-# 🐳 Docker – Commandes de base
+# 3 - 🐳 Docker – Commandes de base
 
 
 <p align="center">
     <img src="../images/pinkfloyd1969-300x213.jpg" alt="YAML" width="350" />
 </p>
 
-## Introduction
+## Contenu
+
+- [**Introduction**](#section-introduction)
+- [**1 – Accès à l'aide intégrée : `docker --help`**](#section-1)
+  - [1.1 – Aide sur une commande spécifique : `docker <cmd> --help`](#section-1-1)
+- [**2 – Types de commandes Docker Engine**](#section-2)
+  - [2.1 – Obtenir l'aide d'une commande de gestion : `docker cmdGestion --help`](#section-2-1)
+  - [2.2 – Obtenir la liste des images locales : `docker images`](#section-2-2)
+  - [2.3 – Obtenir la liste des conteneurs en exécution : `docker ps`](#section-2-3)
+  - [2.4 – Obtenir la liste de tous les conteneurs – incluant ceux qui sont terminés : `docker ps -a`](#section-2-4)
+  - [2.5 – Redémarrer un conteneur : `docker restart ID`](#section-2-5)
+  - [2.6 – Démarrer un conteneur en mode terminal (`-t`) interactif (`-i`) : `docker run -it image`](#section-2-6)
+  - [2.7 – S'attacher à un conteneur en cours d'exécution : `docker attach ID`](#section-2-7)
+  - [2.8 – Redémarrer le conteneur précédent : `docker restart ID`](#section-2-8)
+  - [2.9 – Quitter un conteneur sans provoquer son arrêt : Séquence CTRL P + Q](#section-2-9)
+  - [2.10 – Arrêter un conteneur : `docker stop ID`](#section-2-10)
+  - [2.11 – Nommer un conteneur : `docker run --name`](#section-2-11)
+  - [2.12 – Renommer un conteneur : `docker rename nom/ID nouveauNom`](#section-2-12)
+  - [2.13 – Effacer tous les conteneurs et toutes les images](#section-2-13)
+- [**3 – Notions de port IP**](#section-3)
+  - [3.1 – Obtenir l'image du serveur web nginx](#section-3-1)
+  - [3.2 – Créer un conteneur avec un lien sur le port IP 80 : `docker run -p P-host:P-conteneur`](#section-3-2)
+  - [3.3 – Vérifier le fonctionnement du serveur web : `localhost:8080`](#section-3-3)
+  - [3.4 – Consultation de la documentation de l'image 'nginx'](#section-3-4)
+  - [3.5 – Modifier le contenu : `docker exec`](#section-3-5)
+  - [3.6 – Laboratoire](#section-3-6)
+  - [3.7 – Afficher les statistiques d'utilisation matériel des conteneurs: `docker container stats`](#section-3-7)
+  - [3.8 – Afficher le journal (log) d'un conteneur : `docker logs ID|NAME`](#section-3-8)
+  - [3.9 – Afficher le détail complet (json) d'un conteneur : `docker inspect ID|NAME`](#section-3-9)
+  - [3.10 – Appliquer un filtre à une commande: `docker --filter`](#section-3-10)
+- [**4 – Outils pour Docker**](#section-4)
+
+---
+
+## Introduction {#section-introduction}
 
 Après avoir installé Docker, nous aurons accès à la commande 'docker' à partir du 'shell' du système d'exploitation du poste de l'installation.
 
@@ -24,7 +58,7 @@ $ ssh username@adresse_ip <mot de passe ou clé tls>
 
 -----
 
-## 1.0 – Accès à l'aide intégrée : `docker --help`
+## 1 – Accès à l'aide intégrée : `docker --help` {#section-1}
 
 ```bash
 $ docker --help
@@ -71,7 +105,7 @@ sudo chmod 666 /var/run/docker.sock
 
 -----
 
-## 1.1 – Aide sur une commande spécifique : `docker <cmd> --help`
+### 1.1 – Aide sur une commande spécifique : `docker <cmd> --help` {#section-1-1}
 
 **Exemple : `docker ps --help`**
 
@@ -110,14 +144,14 @@ $ winpty docker exec -it alpine sh
 
 -----
 
-## 2.0 – Types de commandes Docker Engine
+## 2 – Types de commandes Docker Engine {#section-2}
 
 Docker Engine propose deux types de commandes :
 
 1.  **Commandes de gestion** (ex: `docker container ls`)
 2.  **Commandes directes** (ex: `docker ps`)
 
-### 2.1 – Obtenir l'aide d'une commande de gestion : `docker cmdGestion --help`
+### 2.1 – Obtenir l'aide d'une commande de gestion : `docker cmdGestion --help` {#section-2-1}
 
 **Exemple : `docker container --help`**
 
@@ -156,7 +190,7 @@ $ docker run -it -d alpine
 
 ----
 
-### 2.2 – Obtenir la liste des images locales : `docker images`
+### 2.2 – Obtenir la liste des images locales : `docker images` {#section-2-2}
 
 ```bash
 $ docker images
@@ -165,7 +199,7 @@ alpine          latest              7731472c3f2a        10 days ago         5.61
 hello-world     latest              bf756fb1ae65        12 months ago       13.3kB
 ```
 
-### 2.3 – Obtenir la liste des conteneurs en exécution : `docker ps`
+### 2.3 – Obtenir la liste des conteneurs en exécution : `docker ps` {#section-2-3}
 
 ```bash
 $ docker ps
@@ -173,7 +207,7 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 c8026675b9b7        alpine              "/bin/sh"           48 minutes ago      Up 48 minutes                           intelligent_noether
 ```
 
-### 2.4 – Obtenir la liste de tous les conteneurs – incluant ceux qui sont terminés : `docker ps -a`
+### 2.4 – Obtenir la liste de tous les conteneurs – incluant ceux qui sont terminés : `docker ps -a` {#section-2-4}
 
 ```bash
 $ docker ps -a
@@ -293,7 +327,7 @@ Deleted: sha256:47e12946765b355fb29cdd14f54e78a05d24cb5d68afc1e0e92cd4a0243a1b1a
 
 > **💡Note :** S'il existe des instances 'conteneurs' de cette image, il faudra effacer les conteneurs avant ou bien utiliser l'option `-f` pour forcer la suppression de l'image.
 
-### 2.5 – Redémarrer un conteneur : `docker restart ID`
+### 2.5 – Redémarrer un conteneur : `docker restart ID` {#section-2-5}
 
 ```bash
 # Voici un conteneur terminé:
@@ -307,7 +341,7 @@ $docker restart d09c5b00adca$
 $ docker restart charming_mcnulty
 ```
 
-### 2.6 – Démarrer un conteneur en mode terminal (`-t`) interactif (`-i`) : `docker run -it image`
+### 2.6 – Démarrer un conteneur en mode terminal (`-t`) interactif (`-i`) : `docker run -it image` {#section-2-6}
 
 ```bash
 $ docker run -it alpine
@@ -318,7 +352,7 @@ bin  dev  etc  home  lib  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp 
 
 > **💡Note :** la commande `exit` va quitter et **terminer** le conteneur.
 
-### 2.7 – S'attacher à un conteneur en cours d'exécution : `docker attach ID`
+### 2.7 – S'attacher à un conteneur en cours d'exécution : `docker attach ID` {#section-2-7}
 
 Pour se connecter à un conteneur démarré en arrière-plan (`-it -d`), utilisez `docker attach ID/OU_NOM`.
 
@@ -339,7 +373,7 @@ $
 
 > **💡Note :** La commande `exit` a provoqué l'arrêt du conteneur.
 
-### 2.8 – Redémarrer le conteneur précédent : `docker restart ID`
+### 2.8 – Redémarrer le conteneur précédent : `docker restart ID` {#section-2-8}
 
 ```bash
 $ docker ps -a
@@ -357,7 +391,7 @@ drwxr-xr-x    2 root     root          4096 Jan 25 18:44 420-4C4
 
 > **💡Note :** Il n'est pas nécessaire de fournir tout le numéro d'ID dans une commande. Seulement un nombre suffisant de caractères pour rendre l'ID unique.
 
-### 2.9 – Quitter un conteneur sans provoquer son arrêt : Séquence **CTRL P + Q**
+### 2.9 – Quitter un conteneur sans provoquer son arrêt : Séquence **CTRL P + Q** {#section-2-9}
 
 ```bash
 # CTRL P + Q - permet de quitter sans arrêter le conteneur
@@ -368,7 +402,7 @@ c8026675b9b7        alpine              "/bin/sh"           2 hours ago         
 $
 ```
 
-### 2.10 – Arrêter un conteneur : `docker stop ID`
+### 2.10 – Arrêter un conteneur : `docker stop ID` {#section-2-10}
 
 ```bash
 $ docker stop c8
@@ -378,7 +412,7 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 $
 ```
 
-### 2.11 – Nommer un conteneur : `docker run --name`
+### 2.11 – Nommer un conteneur : `docker run --name` {#section-2-11}
 
 ```bash
 $ docker run -it -d --name monAlpine alpine
@@ -390,7 +424,7 @@ $ docker attach monAlpine
 / # CTRL P+Q
 ```
 
-### 2.12 – Renommer un conteneur : `docker rename nom/ID nouveauNom`
+### 2.12 – Renommer un conteneur : `docker rename nom/ID nouveauNom` {#section-2-12}
 
 ```bash
 $ docker ps
@@ -402,7 +436,7 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 ce5bde565bfa        alpine              "/bin/sh"           4 minutes ago       Up 4 minutes                            test
 ```
 
-### 2.13 – Effacer tous les conteneurs et toutes les images
+### 2.13 – Effacer tous les conteneurs et toutes les images {#section-2-13}
 
 Voici comment réinitialiser à zéro votre installation de docker :
 
@@ -422,11 +456,11 @@ docker container stop $(docker container ls -aq) ; docker system prune -af --vol
 
 -----
 
-## 3 – Notions de port IP
+## 3 – Notions de port IP {#section-3}
 
 Plusieurs images offrent des services via le protocol **TCP/IP**. Par défaut, le réseau du conteneur est isolé, mais il est possible d'établir un lien (**BIND**) entre le réseau du conteneur et l'ordinateur hôte.
 
-### 3.1 – Obtenir l'image du serveur web **nginx**  
+### 3.1 – Obtenir l'image du serveur web **nginx** {#section-3-1}
 
 **Téléchargement de l'image :**
 
@@ -437,7 +471,7 @@ Status: Downloaded newer image for nginx:latest
 docker.io/library/nginx:latest
 ```
 
-### 3.2 – Créer un conteneur avec un lien sur le port IP 80 : `docker run -p P-host:P-conteneur`
+### 3.2 – Créer un conteneur avec un lien sur le port IP 80 : `docker run -p P-host:P-conteneur` {#section-3-2}
 
 **Lancer le serveur Web sur le port `8080` de l'ordinateur hôte :**
 
@@ -451,19 +485,19 @@ CONTAINER ID        IMAGE               COMMAND                  CREATED        
 eb66bdef2f73        nginx               "/docker-entrypoint.…"   39 seconds ago      Up 38 seconds       0.0.0.0:8080->80/tcp    monServeurWeb
 ```
 
-### 3.3 – Vérifier le fonctionnement du serveur web : `localhost:8080`
+### 3.3 – Vérifier le fonctionnement du serveur web : `localhost:8080` {#section-3-3}
 <p align="center">
     <img src="../images/nginx.png" alt="YAML" width="550" />
 </p>
 
-### 3.4 – Consultation de la documentation de l'image 'nginx'
+### 3.4 – Consultation de la documentation de l'image 'nginx' {#section-3-4}
 
 [https://hub.docker.com/\_/nginx](https://hub.docker.com/_/nginx)
 
 Le répertoire racine du site web est localisé dans :
 `/usr/share/nginx/html`
 
-### 3.5 – Modifier le contenu : `docker exec`
+### 3.5 – Modifier le contenu : `docker exec` {#section-3-5}
 
 
 ```bash
@@ -494,7 +528,7 @@ $ apt update $$ apt install nano -y
 
 <img src="../images/labo02.png" alt="" width="700" />
 
-# 3.6 – Laboratoire
+### 3.6 – Laboratoire {#section-3-6}
 
 1.  Créer un conteneur à partir de l'image d'apache disponible sur docker hub.
 2.  Utiliser l'image officielle de 'The Apache HTTP Server Project'.
@@ -505,7 +539,7 @@ $ apt update $$ apt install nano -y
   
 -----
 
-### 3.7 – Afficher les statistiques d'utilisation matériel des conteneurs: `docker container stats`
+### 3.7 – Afficher les statistiques d'utilisation matériel des conteneurs: `docker container stats` {#section-3-7}
 
 ```bash
 $ docker container stats
@@ -515,7 +549,7 @@ eb66bdef2f73        monServeurWeb       0.00%               2.098MiB / 1.942GiB 
 CTRL+C pour quitter
 ```
 
-### 3.8 – Afficher le journal (log) d'un conteneur : `docker logs ID|NAME`
+### 3.8 – Afficher le journal (log) d'un conteneur : `docker logs ID|NAME` {#section-3-8}
 
 ```bash
 $ docker logs monServeurWeb
@@ -530,7 +564,7 @@ $ docker logs monServeurWeb
 
 ---
 
-### 3.9 – Afficher le détail complet (json) d'un conteneur : `docker inspect ID|NAME`
+### 3.9 – Afficher le détail complet (json) d'un conteneur : `docker inspect ID|NAME` {#section-3-9}
 
 ```bash
 $ docker inspect serveur-web 
@@ -543,7 +577,7 @@ $ docker inspect serveur-web | grep  "IPAddress"
     "Image": "nginx:latest",
 ```
 
-### 3.10 – Appliquer un filtre à une commande: `docker --filter`
+### 3.10 – Appliquer un filtre à une commande: `docker --filter` {#section-3-10}
 
 {% raw %}
 ```bash
@@ -565,7 +599,7 @@ $ docker ps --filter ancestor=nginx --format 'table {{.ID}}\t{{.Names}}\t{{.Stat
 
 -----
 
-## Outils pour Docker
+## 4 – Outils pour Docker {#section-4}
 
 - [Portainer](https://www.portainer.io/resources/get-started)
 - [Arcane](https://getarcane.app/)
@@ -576,5 +610,5 @@ $ docker ps --filter ancestor=nginx --format 'table {{.ID}}\t{{.Names}}\t{{.Stat
 ## Crédits
 
 *Document rédigé par Alain Boudreault © 2021-2026*  
-*Version 2025.12.10.1*  
+*Version 2025.12.10.1 - Révision 2026.11.07.1*  
 *Site par ve2cuy*

@@ -1,3 +1,5 @@
+# 43 - Cluster sur Google Cloud
+
 <img src="../images/gcloud.png" alt="" width="400" />
 
 À partir de la console Google-Cloud, créer un cluster Kubernetes
@@ -6,7 +8,17 @@
 
 ---
 
-## Gérer le cluster en mode local, via un terminal
+## Contenu
+
+- [**1 – Gérer le cluster en mode local, via un terminal**](#section-1)
+- [**2 – Tester le cluster**](#section-2)
+- [**3 – Résultat**](#section-3)
+- [**4 – Consulter l'état du déploiment via la console GCloud**](#section-4)
+- [**5 – Exemple de facturation d'un cluster K8s sur Google.cloud**](#section-5)
+
+---
+
+## 1 – Gérer le cluster en mode local, via un terminal {#section-1}
 
 ### Installation de gcloud
 
@@ -69,7 +81,7 @@ CURRENT   NAME                                     CLUSTER                      
 
 ---
 
-## Tester le cluster
+## 2 – Tester le cluster {#section-2}
 
 ```
 kubectl create deployment nginx-deployment \
@@ -84,7 +96,7 @@ kubectl expose deployment nginx-deployment \
   --target-port=80
 ```
 
-## Résultat
+## 3 – Résultat {#section-3}
 
 ```
 Etudiantn@DESKTOP-ATGBVNN MINGW64 ~
@@ -108,13 +120,13 @@ replicaset.apps/nginx-deployment-6c4bc789b6   4         4         4       3m53s
 
 ---
 
-## Consulter l'état du déploiment via la console GCloud
+## 4 – Consulter l'état du déploiment via la console GCloud {#section-4}
 
 <img src="../images/gcloud-05.png" alt="" width="700" />
 
 ---
 
-## Exemple de facturation d'un cluster K8s sur Google.cloud
+## 5 – Exemple de facturation d'un cluster K8s sur Google.cloud {#section-5}
 
 * Cluster de type auto-pilote (Le moins dispendieux)
 * nginx avec 4 réplicas (Un petit déploiement)
@@ -129,5 +141,5 @@ Pour un total d'environ 4$ pour 24 heures
 ## Crédits
 
 *Document rédigé par Alain Boudreault © 2021-2026*  
-*Version 2026.04.22.1*  
+*Version 2026.04.22.1 - Révision 2026.11.07.1*  
 *Site par [ve2cuy](https://ve2cuy.github.io/)*

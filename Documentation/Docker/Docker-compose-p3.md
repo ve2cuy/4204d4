@@ -1,4 +1,4 @@
-# 🐳 Docker-compose – Introduction - Partie 3
+# 17 - 🐳 Docker-compose – Introduction - Partie 3
 
 <p align="center">
     <img src="../images/docker-compose-transparent.png" alt="YAML" width="350" />
@@ -11,30 +11,22 @@
 
 ---
 
-## Table des matières
+## Contenu
 
-
-- [1. Init container basique avec `depends_on`](#-1-init-container-basique-avec-depends_on)
-- [2. Plusieurs services d'init en parallèle](#2-plusieurs-services-dinit-en-parallèle)
-  - [Résumé des conditions `depends_on`](#résumé-des-conditions-depends_on)
-- [3. Init qui génère du contenu HTML avant le démarrage d'`httpd`](#-3-init-qui-génère-du-contenu-html-avant-le-démarrage-dhttpd)
-- [4. Init qui copie un contenu web, pour httpd, à partir de github](#-4-init-qui-copie-un-contenu-web-pour-httpd-à-partir-de-github)
-- [5. Init qui copie et personnalise la config Apache](#5-init-qui-copie-et-personnalise-la-config-apache)
-- [6. Stack complète : Init + HTTPD + PHP-FPM + MySQL](#6-stack-complète--init--httpd--php-fpm--mysql)
-- [7. Init avec certificats SSL auto-signés pour HTTPS](#7-init-avec-certificats-ssl-auto-signés-pour-https)
-- [8. Exemple Postgres avec healthcheck](#-8-exemple-postgres-avec-healthcheck)
-- [9. `healthcheck`](#9-healthcheck--explication-détaillée)
-  - [`test`](#test)
-  - [`interval`](#interval)
-  - [`timeout`](#timeout)
-  - [`retries`](#retries)
-  - [Cycle de vie d'un conteneur avec healthcheck](#cycle-de-vie-dun-conteneur-avec-healthcheck)
-  - [Paramètre optionnel : `start_period`](#paramètre-optionnel--start_period)
-
+- [**💡 1. Init container basique avec `depends_on`**](#section-1)
+- [**2. Plusieurs services d'init en parallèle**](#section-2)
+  - [2.1 – Résumé des conditions `depends_on`](#section-2-1)
+- [**💡 3. Init qui génère du contenu HTML avant le démarrage d'`httpd`**](#section-3)
+- [**💡 4. Init qui copie un contenu web, pour httpd, à partir de github**](#section-4)
+- [**5. Init qui copie et personnalise la config Apache**](#section-5)
+- [**6. Stack complète : Init + HTTPD + PHP-FPM + MySQL**](#section-6)
+- [**7. Init avec certificats SSL auto-signés pour HTTPS**](#section-7)
+- [**💡 8. Exemple Postgres avec healthcheck**](#section-8)
+- [**9. `healthcheck` — Explication détaillée**](#section-9)
 
 ---
 
-## 💡 1. Init container basique avec `depends_on`
+## 💡 1. Init container basique avec `depends_on` {#section-1}
 
 ```yaml
 services:
@@ -67,7 +59,7 @@ Le service `app` ne démarre qu'une fois `init` terminé avec succès.
 
 ---
 
-## 2. Plusieurs services d'init en parallèle
+## 2. Plusieurs services d'init en parallèle {#section-2}
 
 ```yaml
 services:
@@ -106,7 +98,7 @@ Les deux inits s'exécutent en parallèle, et `app` attend qu'ils soient **tous 
 
 ---
 
-## Résumé des conditions `depends_on`
+### 2.1 – Résumé des conditions `depends_on` {#section-2-1}
 
 | Condition | Signification |
 |---|---|
@@ -118,7 +110,7 @@ L'approche la plus robuste est en général de combiner un **healthcheck** sur l
 
 ---
 
-## 💡 3. Init qui génère du contenu HTML avant le démarrage d'`httpd`
+## 💡 3. Init qui génère du contenu HTML avant le démarrage d'`httpd` {#section-3}
 
 ```yaml
 services:
@@ -155,7 +147,7 @@ volumes:
 
 ---
 
-## 💡 4. Init qui copie un contenu web, pour httpd, à partir de github
+## 💡 4. Init qui copie un contenu web, pour httpd, à partir de github {#section-4}
 
 ```yaml
 services:
@@ -188,7 +180,7 @@ volumes:
 
 ---
 
-## 5. Init qui copie et personnalise la config Apache
+## 5. Init qui copie et personnalise la config Apache {#section-5}
 
 {% raw %}
 ```yaml
@@ -236,7 +228,7 @@ volumes:
 
 ---
 
-## 6. Stack complète : Init + HTTPD + PHP-FPM + MySQL
+## 6. Stack complète : Init + HTTPD + PHP-FPM + MySQL {#section-6}
 
 ```yaml
 services:
@@ -291,7 +283,7 @@ La chaîne est : `db` → `init-db` → `php` → `httpd`.
 
 ---
 
-## 7. Init avec certificats SSL auto-signés pour HTTPS
+## 7. Init avec certificats SSL auto-signés pour HTTPS {#section-7}
 
 ```yaml
 services:
@@ -356,7 +348,7 @@ SSLCertificateKeyFile /usr/local/apache2/conf/ssl/server.key
 
 ---
 
-## 💡 8. Exemple Postgres avec healthcheck
+## 💡 8. Exemple Postgres avec healthcheck {#section-8}
 
 ```yaml
 # Note: db-1 -  FATAL:  role "postgres" does not exist
@@ -430,7 +422,7 @@ c) - Renseigner les paramètres de connexion
 
 ---
 
-## 9. `healthcheck` — Explication détaillée
+## 9. `healthcheck` — Explication détaillée {#section-9}
 
 Le healthcheck permet à Docker de **surveiller l'état de santé** d'un conteneur, au-delà du simple fait qu'il tourne. Un conteneur peut être démarré mais pas encore prêt à accepter des connexions.
 
@@ -520,5 +512,5 @@ Pendant le `start_period`, les échecs ne sont pas comptabilisés dans les `retr
 ## Crédits
 
 *Document rédigé par Alain Boudreault © 2021-2026*  
-*Version 2026.02.26.1*  
+*Version 2026.02.26.1 - Révision 2026.11.07.1*  
 *Site par ve2cuy*

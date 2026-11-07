@@ -1,8 +1,28 @@
-# Kubectl – Référence rapide
+# 47 - Kubectl – Référence rapide
 
 *2 Décembre 2025*
 
-## 🔧 Contexte & Configuration
+## Contenu
+
+- [**🔧 Contexte & Configuration**](#section-contexte-configuration)
+- [**📦 Pods**](#section-pods)
+- [**🚀 Déploiements**](#section-deploiements)
+- [**🌐 Services & Réseau**](#section-services-reseau)
+- [**⚙️ ConfigMaps & Secrets**](#section-configmaps-secrets)
+- [**🔐 RBAC**](#section-rbac)
+- [**📂 Namespaces**](#section-namespaces)
+- [**📊 Jobs & CronJobs**](#section-jobs-cronjobs)
+- [**📦 Stockage**](#section-stockage)
+- [**🔍 Débogage**](#section-debogage)
+- [**📄 YAML & Apply**](#section-yaml-apply)
+- [**🧹 Nettoyage**](#section-nettoyage)
+- [**📝 Exemples pour la création de ressources**](#section-exemples-pour-la-creation-de-ressources)
+- [**Contextes – Tableau de référence rapide**](#section-contextes-tableau-de-reference-rapide)
+- [**Workspaces (Namespaces) – Tableau de référence rapide**](#section-workspaces-namespaces-tableau-de-referen)
+
+---
+
+## 🔧 Contexte & Configuration {#section-contexte-configuration}
 
 | Commande | Description |
 | :--- | :--- |
@@ -13,7 +33,7 @@
 
 -----
 
-## 📦 Pods
+## 📦 Pods {#section-pods}
 
 | Commande | Description |
 | :--- | :--- |
@@ -25,7 +45,7 @@
 
 -----
 
-## 🚀 Déploiements
+## 🚀 Déploiements {#section-deploiements}
 
 | Commande | Description |
 | :--- | :--- |
@@ -36,7 +56,7 @@
 
 -----
 
-## 🌐 Services & Réseau
+## 🌐 Services & Réseau {#section-services-reseau}
 
 | Commande | Description |
 | :--- | :--- |
@@ -47,7 +67,7 @@
 
 -----
 
-## ⚙️ ConfigMaps & Secrets
+## ⚙️ ConfigMaps & Secrets {#section-configmaps-secrets}
 
 | Commande | Description |
 | :--- | :--- |
@@ -59,7 +79,7 @@
 
 -----
 
-## 🔐 RBAC
+## 🔐 RBAC {#section-rbac}
 
 | Commande | Description |
 | :--- | :--- |
@@ -69,7 +89,7 @@
 
 -----
 
-## 📂 Namespaces
+## 📂 Namespaces {#section-namespaces}
 
 | Commande | Description |
 | :--- | :--- |
@@ -79,7 +99,7 @@
 
 -----
 
-## 📊 Jobs & CronJobs
+## 📊 Jobs & CronJobs {#section-jobs-cronjobs}
 
 | Commande | Description |
 | :--- | :--- |
@@ -89,7 +109,7 @@
 
 -----
 
-## 📦 Stockage
+## 📦 Stockage {#section-stockage}
 
 | Commande | Description |
 | :--- | :--- |
@@ -99,7 +119,7 @@
 
 -----
 
-## 🔍 Débogage
+## 🔍 Débogage {#section-debogage}
 
 | Commande | Description |
 | :--- | :--- |
@@ -110,7 +130,7 @@
 
 -----
 
-## 📄 YAML & Apply
+## 📄 YAML & Apply {#section-yaml-apply}
 
 | Commande | Description |
 | :--- | :--- |
@@ -120,7 +140,7 @@
 
 -----
 
-## 🧹 Nettoyage
+## 🧹 Nettoyage {#section-nettoyage}
 
 | Commande | Description |
 | :--- | :--- |
@@ -129,7 +149,7 @@
 
 -----
 
-## 📝 Exemples pour la création de ressources
+## 📝 Exemples pour la création de ressources {#section-exemples-pour-la-creation-de-ressources}
 
 ### Création rapide
 
@@ -156,7 +176,7 @@
 
 -----
 
-## Contextes – Tableau de référence rapide
+## Contextes – Tableau de référence rapide {#section-contextes-tableau-de-reference-rapide}
 
 | **Commande** | **Description** | **Exemple** |
 | :--- | :--- | :--- |
@@ -173,7 +193,7 @@
 
 -----
 
-## Workspaces (Namespaces) – Tableau de référence rapide
+## Workspaces (Namespaces) – Tableau de référence rapide {#section-workspaces-namespaces-tableau-de-referen}
 
 | **Tâche** | **Commande kubectl** | **Description** |
 | :--- | :--- | :--- |
@@ -193,5 +213,5 @@
 ## Crédits
 
 *Document rédigé par Alain Boudreault © 2021-2026*  
-*Version 2025.12.03.1*  
+*Version 2025.12.03.1 - Révision 2026.11.07.1*  
 *Site par ve2cuy*

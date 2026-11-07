@@ -1,10 +1,10 @@
-# Kubernetes – Installation
+# 34 - Kubernetes – Installation
 
 *Document converti depuis 4204d4.ve2cuy.com — 7 avril 2021*
 
 <img src="../images/Kubernetes-Installation-cluster/installation-k8s-sur-vm.png" alt="" width="500" />
 
-## Contenu
+## Notions abordées
 
 * **Mise en situation**
 * **Création de machines virtuelles avec *Vagrant***
@@ -25,7 +25,28 @@
 
 ---
 
-### Mise en situation
+## Contenu
+
+- [**Mise en situation**](#section-mise-en-situation)
+- [**1 – Mise en place des VM (avec vagrant)**](#section-1)
+  - [1.1 – Lancer le script vagrant](#section-1-1)
+  - [1.2 – Installer docker sur les noeuds](#section-1-2)
+  - [1.3 – Désactiver le fichier d’échanges (swap)](#section-1-3)
+  - [1.4 – Au besoin, installer curl et apt-transport-https](#section-1-4)
+  - [1.5 – Installer la clé gpg et le dépôt apt-get de Google](#section-1-5)
+  - [1.6 – Actualiser le système et installer les modules Kubernetes](#section-1-6)
+- [**2 – Initialiser l’infrastructure du ‘cluster’ K8s**](#section-2)
+- [**3 – Permettre au noeud maître de rouler des Pods**](#section-3)
+- [**4 – Joindre un noeud ouvrier au ‘cluster’ K8s**](#section-4)
+- [**5 – Erreurs possibles avec Vagrant et VirtualBox**](#section-5)
+- [**6 – Tester l’infrastructure K8s**](#section-6)
+- [**7 – Programmer la complétion de code pour kubectl sur le master**](#section-7)
+- [**Conclusion**](#section-conclusion)
+- [**8 – Installation rapide de K8S sous Ubuntu 22.04**](#section-8)
+
+---
+
+## Mise en situation {#section-mise-en-situation}
 
 À date, nous avons fait nos apprentissages de *Kubernetes* en utilisant le ‘*cluster K8s*‘ proposé par *minikube*.
 
@@ -39,7 +60,7 @@ Dans ce laboratoire, nous installerons un noeud maître (*control-plane,master*)
 
 ---
 
-### 1 – Mise en place des VM (avec vagrant)
+## 1 – Mise en place des VM (avec vagrant) {#section-1}
 
 Pour notre réseau K8s, nous allons mettre en place trois serveurs Linux grace à l’utilisation de machines virtuelles;
 
@@ -150,7 +171,7 @@ wget https://raw.githubusercontent.com/ve2cuy/4204d4/main/module06/Vagrantfile
 curl https://raw.githubusercontent.com/ve2cuy/4204d4/main/module06/Vagrantfile > Vagrantfile
 ```
 
-### 1.1 – Lancer le script vagrant:
+### 1.1 – Lancer le script vagrant: {#section-1-1}
 
 Cette opération va créer trois (3) VM Linux.
 
@@ -172,7 +193,7 @@ $ vagrant box update
 
 ---
 
-### 1.2 – Installer docker sur les noeuds
+### 1.2 – Installer docker sur les noeuds {#section-1-2}
 
 ```
 L'installation de Docker est dans le fichier Vagrantfile
@@ -180,7 +201,7 @@ L'installation de Docker est dans le fichier Vagrantfile
 
 ---
 
-### 1.3 – Désactiver le fichier d’échanges (swap)
+### 1.3 – Désactiver le fichier d’échanges (swap) {#section-1-3}
 
 Kubernetes ne fonctionne pas sur des serveurs pour lesquels la mémoire virtuelle (swap file/partition) est activée.
 
@@ -211,7 +232,7 @@ df -hv
 
 ---
 
-### 1.4 – Au besoin, installer curl et apt-transport-https
+### 1.4 – Au besoin, installer curl et apt-transport-https {#section-1-4}
 
 ```
 apt install curl apt-transport-https
@@ -221,7 +242,7 @@ apt install curl apt-transport-https
 
 ---
 
-### 1.5 – Installer la clé gpg et le dépôt apt-get de Google
+### 1.5 – Installer la clé gpg et le dépôt apt-get de Google {#section-1-5}
 
 Pour être en mesure d’installer les applications nécessaires au fonctionnement de K8s, il faut ajouter la clé des packages Google – qui est l’éditeur de l’application *Kubernetes* – et ajouter l’adresse du dépôt dans la configuration de *apt-get*.
 
@@ -237,7 +258,7 @@ EOF
 
 **** NOTE IMPORTANTE**: ** Il faut ajuster le nom du ‘package k8s’ en fonction de la distribution de Linux utilisée.  Par exemple, pour Ubuntu 20.04 le nom du ‘package’ est ‘[kubernetes-focal](https://wiki.ubuntu.com/Releases)‘.  Par contre, au moment d’écrire ce document, Google n’a pas encore [publié de package pour ‘focal’](https://packages.cloud.google.com/apt/dists). Nous allons alors nous rabattre sur la version ‘xenial’
 
-### 1.6 – Actualiser le système et installer les modules Kubernetes
+### 1.6 – Actualiser le système et installer les modules Kubernetes {#section-1-6}
 
 ```
 sudo apt-get update
@@ -273,7 +294,7 @@ sudo ufw reload
 
 ---
 
-### 2 – Initialiser l’infrastructure du ‘cluster’ K8s
+## 2 – Initialiser l’infrastructure du ‘cluster’ K8s {#section-2}
 
 **Étapes:**
 
@@ -515,7 +536,7 @@ Note: Le ‘STATUS’ du master est ‘**Ready**‘.
 
 ---
 
-### 3 – Permettre au noeud maître de rouler des Pods
+## 3 – Permettre au noeud maître de rouler des Pods {#section-3}
 
 Pour des raisons de sécurité, K8s ne déploie pas de Pods sur le Master.  Par contre, est possible d’activer cette fonction avec la commande suivante:
 
@@ -525,7 +546,7 @@ kubectl taint nodes --all node-role.kubernetes.io/master-
 
 ---
 
-### 4 – Joindre un noeud ouvrier au ‘cluster’ K8s
+## 4 – Joindre un noeud ouvrier au ‘cluster’ K8s {#section-4}
 
 Nous allons maintenant joindre le ou les noeuds à l’infrastructure Kubernetes.
 
@@ -576,7 +597,7 @@ k8s-node1    Ready    worker                 13m   v1.21.0
 
 ---
 
-### 5 – Erreurs possibles avec Vagrant et VirtualBox
+## 5 – Erreurs possibles avec Vagrant et VirtualBox {#section-5}
 
 *La création d’une **VM** avec ‘vagrant’ donnera une machine avec **2 CIR**; un réseau NAT et un réseau privé.*
 
@@ -637,7 +658,7 @@ Voilà, le commande ‘*kubectl exec -it*‘ devrait maintenant fonctionner 😉
 
 ---
 
-### 6 – Tester l’infrastructure K8s
+## 6 – Tester l’infrastructure K8s {#section-6}
 
 ```
 kubectl create deployment webserver --image=nginx --port 80 --replicas=5
@@ -662,7 +683,7 @@ sudo journalctl -u kubelet | tail -n 100
 
 ---
 
-### 7 – Programmer la complétion de code pour *kubectl* sur le master
+## 7 – Programmer la complétion de code pour *kubectl* sur le master {#section-7}
 
 ```
 nano ~/.profile
@@ -676,7 +697,7 @@ complete -F __start_kubectl k
 
 ---
 
-### Conclusion
+## Conclusion {#section-conclusion}
 
 Voilà, nous avons installé un ‘cluster’ *Kubernetes*, composé d’un ‘*master*‘ et de, deux (2) ‘*nodes*‘.
 
@@ -706,7 +727,7 @@ VBoxManage hostonlyif remove vboxnet0
 
 ---
 
-## Installation rapide de K8S sous Ubuntu 22.04
+## 8 – Installation rapide de K8S sous Ubuntu 22.04 {#section-8}
 
 ```
 # 1 - Désactiver la pagination (swap) du système de fichiers
@@ -793,3 +814,12 @@ export KUBECONFIG=~/un-cluster-k8s.conf
 ---
 
 ###### Document rédigé par Alain Boudreault – aka, ve2cuy – version 2023.04.06.01
+
+---
+
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Révision 2026.11.07.1*  
+
+*Contenu par [VE2CUY](https://ve2cuy.github.io/blog/)*

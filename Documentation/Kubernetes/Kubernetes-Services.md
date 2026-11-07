@@ -1,10 +1,25 @@
-# Les Services Kubernetes
+# 37 - Les Services Kubernetes
 
 <p align="center">
     <img src="../images/k8s-services.avif" alt="" width="500" />
 </p>
 
-## À quoi sert un Service Kubernetes ?
+## Contenu
+
+- [**À quoi sert un Service Kubernetes ?**](#section-a-quoi-sert-un-service-kubernetes)
+- [**Les 4 Types de Services**](#section-les-4-types-de-services)
+- [**1. ClusterIP (Type par défaut)**](#section-1)
+- [**2. NodePort**](#section-2)
+- [**3. LoadBalancer**](#section-3)
+- [**4. ExternalName**](#section-4)
+- [**Exemple Complet : Application Multi-tiers**](#section-exemple-complet-application-multi-tiers)
+- [**Comparaison des Types**](#section-comparaison-des-types)
+- [**Commandes Utiles**](#section-commandes-utiles)
+- [**Résumé**](#section-resume)
+
+---
+
+## À quoi sert un Service Kubernetes ? {#section-a-quoi-sert-un-service-kubernetes}
 
 
 Un **Service** Kubernetes résout un problème fondamental : **comment accéder aux Pods de manière stable ?**
@@ -35,7 +50,7 @@ Imaginez un restaurant avec plusieurs cuisiniers (Pods) :
 
 ---
 
-## Les 4 Types de Services
+## Les 4 Types de Services {#section-les-4-types-de-services}
 
 | Type | Accès | Usage typique |
 |------|-------|---------------|
@@ -46,7 +61,7 @@ Imaginez un restaurant avec plusieurs cuisiniers (Pods) :
 
 ---
 
-## 1. ClusterIP (Type par défaut)
+## 1. ClusterIP (Type par défaut) {#section-1}
 
 ### À quoi ça sert ?
 
@@ -128,7 +143,7 @@ Le Service crée automatiquement un enregistrement DNS :
 
 ---
 
-## 2. NodePort
+## 2. NodePort {#section-2}
 
 ### À quoi ça sert ?
 
@@ -222,7 +237,7 @@ minikube service webapp-nodeport
 
 ---
 
-## 3. LoadBalancer
+## 3. LoadBalancer {#section-3}
 
 ### À quoi ça sert ?
 
@@ -341,7 +356,7 @@ curl http://192.168.1.240
 
 ---
 
-## 4. ExternalName
+## 4. ExternalName {#section-4}
 
 ### À quoi ça sert ?
 
@@ -467,7 +482,7 @@ spec:
 
 ---
 
-## Exemple Complet : Application Multi-tiers
+## Exemple Complet : Application Multi-tiers {#section-exemple-complet-application-multi-tiers}
 
 Application avec frontend, backend, et base de données :
 
@@ -592,7 +607,7 @@ spec:
 
 ---
 
-## Comparaison des Types
+## Comparaison des Types {#section-comparaison-des-types}
 
 | Critère | ClusterIP | NodePort | LoadBalancer | ExternalName |
 |---------|-----------|----------|--------------|--------------|
@@ -607,7 +622,7 @@ spec:
 
 ---
 
-## Commandes Utiles
+## Commandes Utiles {#section-commandes-utiles}
 
 ```bash
 # Créer un Service
@@ -639,7 +654,7 @@ kubectl delete service mon-service
 
 ---
 
-## Résumé
+## Résumé {#section-resume}
 
 **Service = Point d'accès stable pour des Pods éphémères**
 
@@ -649,3 +664,12 @@ kubectl delete service mon-service
 - **ExternalName** : Alias vers services externes
 
 **Règle d'or** : Toujours utiliser des Services, jamais les IPs des Pods directement !
+
+---
+
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Révision 2026.11.07.1*  
+
+*Contenu par [VE2CUY](https://ve2cuy.github.io/blog/)*

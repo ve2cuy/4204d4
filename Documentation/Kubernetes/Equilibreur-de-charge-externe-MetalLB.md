@@ -1,16 +1,33 @@
-# Installation et Configuration de MetalLB comme Load Balancer
+# 40 - Installation et Configuration de MetalLB comme Load Balancer
 
-## Qu'est-ce que MetalLB ?
+## Contenu
+
+- [**Qu'est-ce que MetalLB ?**](#section-qu-est-ce-que-metallb)
+- [**Prérequis**](#section-prerequis)
+- [**Étape 1 : Vérifier la compatibilité**](#section-1)
+- [**Étape 2 : Installation de MetalLB**](#section-2)
+- [**Étape 3 : Configuration de MetalLB**](#section-3)
+- [**Étape 4 : Tester MetalLB**](#section-4)
+- [**Étape 5 : Configuration avancée**](#section-5)
+- [**Exemple complet : Déploiement avec MetalLB**](#section-exemple-complet-deploiement-avec-metallb)
+- [**Intégration MetalLB + Traefik**](#section-integration-metallb-traefik)
+- [**Troubleshooting**](#section-troubleshooting)
+- [**Commandes utiles**](#section-commandes-utiles)
+- [**Configuration recommandée pour un lab local**](#section-configuration-recommandee-pour-un-lab-lo)
+
+---
+
+## Qu'est-ce que MetalLB ? {#section-qu-est-ce-que-metallb}
 
 MetalLB est un load balancer pour Kubernetes qui fonctionne sur des clusters bare-metal (sans fournisseur cloud). Il permet d'obtenir des IP externes pour les services de type `LoadBalancer`.
 
-## Prérequis
+## Prérequis {#section-prerequis}
 
 - Kubernetes 1.13.0+
 - Un pool d'adresses IP disponibles sur votre réseau
 - Pas d'autre load balancer déjà installé (klipper-lb, cloud provider LB, etc.)
 
-## Étape 1 : Vérifier la compatibilité
+## Étape 1 : Vérifier la compatibilité {#section-1}
 
 ```bash
 # Vérifier si kube-proxy est en mode IPVS ou iptables
@@ -20,7 +37,7 @@ kubectl get configmap kube-proxy -n kube-system -o yaml | grep mode
 kubectl get pods -n kube-system
 ```
 
-## Étape 2 : Installation de MetalLB
+## Étape 2 : Installation de MetalLB {#section-2}
 
 ### Option A : Installation par manifeste (Recommandé)
 
@@ -52,7 +69,7 @@ helm install metallb metallb/metallb --namespace metallb-system --create-namespa
 kubectl get pods -n metallb-system
 ```
 
-## Étape 3 : Configuration de MetalLB
+## Étape 3 : Configuration de MetalLB {#section-3}
 
 ### Pour Minikube
 
@@ -171,7 +188,7 @@ kubectl get ipaddresspool -n metallb-system
 kubectl get l2advertisement -n metallb-system
 ```
 
-## Étape 4 : Tester MetalLB
+## Étape 4 : Tester MetalLB {#section-4}
 
 ### Exemple 1 : Service simple
 
@@ -261,7 +278,7 @@ kubectl get svc -n traefik traefik-service
 # Exemple: http://192.168.1.240
 ```
 
-## Étape 5 : Configuration avancée
+## Étape 5 : Configuration avancée {#section-5}
 
 ### Assigner une IP spécifique à un service
 
@@ -381,7 +398,7 @@ spec:
   - bgp-pool
 ```
 
-## Exemple complet : Déploiement avec MetalLB
+## Exemple complet : Déploiement avec MetalLB {#section-exemple-complet-deploiement-avec-metallb}
 
 ```yaml
 ---
@@ -445,7 +462,7 @@ spec:
                   number: 80
 ```
 
-## Intégration MetalLB + Traefik
+## Intégration MetalLB + Traefik {#section-integration-metallb-traefik}
 
 ### Scénario complet
 
@@ -561,7 +578,7 @@ spec:
 curl http://app.local
 ```
 
-## Troubleshooting
+## Troubleshooting {#section-troubleshooting}
 
 ### Vérifier l'état de MetalLB
 
@@ -617,7 +634,7 @@ ip addr show
 kubectl run test --rm -it --image=busybox -- wget -O- http://<IP-EXTERNE>
 ```
 
-## Commandes utiles
+## Commandes utiles {#section-commandes-utiles}
 
 ```bash
 # Lister tous les services LoadBalancer
@@ -634,7 +651,7 @@ kubectl rollout restart deployment controller -n metallb-system
 kubectl rollout restart daemonset speaker -n metallb-system
 ```
 
-## Configuration recommandée pour un lab local
+## Configuration recommandée pour un lab local {#section-configuration-recommandee-pour-un-lab-lo}
 
 ```yaml
 ---
@@ -671,3 +688,12 @@ spec:
 - [Configuration Layer 2](https://metallb.universe.tf/configuration/_advanced_l2_configuration/)
 - [Configuration BGP](https://metallb.universe.tf/configuration/_advanced_bgp_configuration/)
 - [Troubleshooting](https://metallb.universe.tf/troubleshooting/)
+
+---
+
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Révision 2026.11.07.1*  
+
+*Contenu par [VE2CUY](https://ve2cuy.github.io/blog/)*

@@ -236,6 +236,39 @@ copier le même `sessions.json` ici.
 
 Pour vérifier une date précise : <https://ve2cuy.github.io/4204d4/?date=2027-03-31>.
 
+## Quiz de compréhension
+
+Un document peut finir par un quiz (vrai ou faux et choix multiple), tiré d'une banque de
+questions (30 questions par document). Il suffit d'ajouter un
+fichier `_data/quiz/<nom du document>.yml`, du même nom que le `.md` sans l'extension
+(exemple : `_data/quiz/Introduction-a-Docker.yml` pour
+`Documentation/Docker/Introduction-a-Docker.md`). Le gabarit place le quiz à la fin du document.
+
+```yaml
+titre: Quiz de compréhension
+nombre: 10                   # questions tirées au hasard à chaque essai (10 par défaut)
+questions:
+  - question: "Un microcontrôleur intègre le processeur, la mémoire et les entrées/sorties."
+    type: vf
+    reponse: vrai            # vrai ou faux
+    explication: "Affichée avec la correction (section 1)."
+  - question: "Quel microcontrôleur se trouve sur l'Arduino Uno?"
+    choix: ["ATmega2560", "ATmega328P", "ESP32", "RP2040"]
+    reponse: 2               # numéro du bon choix, à partir de 1
+    explication: "L'ATmega2560 est celui de l'Arduino Mega."
+```
+
+- À chaque essai, `nombre` questions sont tirées au hasard, d'abord parmi celles que le poste
+  n'a pas encore vues (avec 30 questions : trois essais sans répétition); l'ordre des choix
+  multiples est mélangé, `reponse` reste le numéro du bon choix dans le fichier.
+- Le bouton « Voir mon résultat » s'active quand toutes les questions ont une réponse; le
+  résultat, les bonnes réponses et les explications s'affichent alors.
+- Le résultat est gardé dans le navigateur du poste (`localStorage`, clé
+  `ve2cuy-quiz:<chemin de la page>`; questions déjà vues : `ve2cuy-quiz-vues:…`). La vignette du document affiche alors « ✓ quiz 8/10 »
+  (meilleur résultat : vert à 80 % et plus, ambre sous 80 %, rouge à 50 % et moins; même couleur pour le résultat du quiz). Un document qui a un quiz pas encore fait affiche « quiz ». Le résultat disparaît si les données du navigateur sont effacées.
+- Les réponses sont dans la page : c'est un outil d'autoévaluation, pas un examen.
+- Mettre les guillemets autour des textes qui contiennent « : » ou « # ».
+
 ## Aperçu local (valider avant de publier)
 
 Le script `outils/apercu.sh` construit et sert le site sur le Mac avec la **même version de

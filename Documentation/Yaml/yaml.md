@@ -1,4 +1,4 @@
-# YAML – Introduction
+# 4 - YAML – Introduction
 
 <p align="center">
     <img src="../images/yaml-768x769.png" alt="YAML" width="250" />
@@ -8,7 +8,27 @@
 
 ---
 
-## Description
+## Contenu
+
+- [**Description**](#section-description)
+- [**1 – Insérer des commentaires dans un document YAML**](#section-1)
+- [**2 – Variables scalaires**](#section-2)
+  - [2.1 – Chaines de caractères](#section-2-1)
+  - [2.2 – Définition d'une chaine sur plusieurs lignes](#section-2-2)
+  - [2.3 – Nombres](#section-2-3)
+  - [2.4 – Valeur booléenne](#section-2-4)
+  - [2.5 – Valeur 'null'](#section-2-5)
+  - [2.6 – Représentation de dates](#section-2-6)
+- [**3 – Structures et listes**](#section-3)
+  - [3.1 – Une liste (tableau, vecteur) de chaines de caractères](#section-3-1)
+  - [3.1c – Exemple d'une structure imbriquée](#section-3-1c)
+  - [3.2 – Structures complexes – valeurs imbriquées](#section-3-2)
+- [**4 – Les noeuds**](#section-4)
+  - [4.1 – Réutilisation d'un noeud](#section-4-1)
+
+---
+
+## Description {#section-description}
 
 **YAML Ain't Markup Language**
 
@@ -20,7 +40,7 @@
 
 ---
 
-## 1 – Insérer des commentaires dans un document YAML
+## 1 – Insérer des commentaires dans un document YAML {#section-1}
 
 ```yaml
 # Je suis un commentaire
@@ -37,9 +57,9 @@
 
 ---
 
-## 2 – Variables scalaires
+## 2 – Variables scalaires {#section-2}
 
-### 2.1 – Chaines de caractères
+### 2.1 – Chaines de caractères {#section-2-1}
 
 ```yaml
 # Une chaine non délimitée
@@ -66,7 +86,7 @@ especes: |
 }
 ```
 
-### 2.2 – Définition d'une chaine sur plusieurs lignes
+### 2.2 – Définition d'une chaine sur plusieurs lignes {#section-2-2}
 
 ```yaml
 # Expression sur plusieurs lignes avec un seul \n à la fin de la chaine:
@@ -84,7 +104,7 @@ commentaires: >
 }
 ```
 
-### 2.3 – Nombres
+### 2.3 – Nombres {#section-2-3}
 
 ```yaml
 # Définir des nombres:
@@ -109,7 +129,7 @@ population: 7.7947e+9
 }
 ```
 
-### 2.4 – Valeur booléenne
+### 2.4 – Valeur booléenne {#section-2-4}
 
 ```yaml
 # Valeur booléenne 
@@ -126,7 +146,7 @@ important: false
 }
 ```
 
-### 2.5 – Valeur 'null'
+### 2.5 – Valeur 'null' {#section-2-5}
 
 ```yaml
 # Représentation de la valeur 'null'
@@ -150,7 +170,7 @@ autre-valeur-null: null
 }
 ```
 
-### 2.6 – Représentation de dates
+### 2.6 – Représentation de dates {#section-2-6}
 
 ```yaml
 # Représentation des dates et horodatages (timestamps)
@@ -173,9 +193,9 @@ avec-espaces: 2021-02-14 23:59:43.10 -5
 
 ---
 
-## 3.0 – Structures et listes
+## 3 – Structures et listes {#section-3}
 
-### 3.1 – Une liste (tableau, vecteur) de chaines de caractères
+### 3.1 – Une liste (tableau, vecteur) de chaines de caractères {#section-3-1}
 
 ```yaml
 # Représentation d'une liste d'éléments
@@ -340,7 +360,7 @@ mammifères:
 
 ---
 
-### 3.1c – Exemple d'une structure imbriquée:
+### 3.1c – Exemple d'une structure imbriquée: {#section-3-1c}
 
 ```yaml
 ---
@@ -378,7 +398,7 @@ mammifères2:
 }
 ```
 
-### 3.2 – Structures complexes – valeurs imbriquées
+### 3.2 – Structures complexes – valeurs imbriquées {#section-3-2}
 
 ```yaml
 # Un livre marquant
@@ -409,9 +429,9 @@ Origine-des-espèces:
 
 ---
 
-## 4.0 Les noeuds
+## 4 – Les noeuds {#section-4}
 
-### 4.1 – Réutilisation d'un noeud
+### 4.1 – Réutilisation d'un noeud {#section-4-1}
 
 ```yaml
 # Ancrage de nœuds - Réutilisation d'un nœud
@@ -503,4 +523,4 @@ bob:
 
 ---
 
-###### Document rédigé par Alain Boudreault (c) 2021-2025 – Révision 2025.12.02
+###### Document rédigé par Alain Boudreault (c) 2021-2025 – Révision 2026.11.07

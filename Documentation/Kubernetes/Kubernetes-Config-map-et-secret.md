@@ -1,4 +1,4 @@
-# K8s - Config Map et Secrets
+# 31 - K8s - Config Map et Secrets
 
 <img src="../images/k8s-configmap.png" alt="" width="550" />
 
@@ -15,7 +15,19 @@ Contenu:
 
 ---
 
-## 3 – Les 'configMaps'
+## Contenu
+
+- [**1 – Les 'configMaps'**](#section-1)
+  - [1.1 – La directive 'envFrom'](#section-1-1)
+  - [Laboratoire 1 – 👉 IMPORTANT](#section-1-1-2)
+- [**2 – Monter un volume à partir d'un configmap**](#section-2)
+  - [2.1 – configMap + volume](#section-2-1)
+- [**3 – Les 'secrets'**](#section-3)
+- [**4 – TP2: Mosquitto+node-red**](#section-4)
+
+---
+
+## 1 – Les 'configMaps' {#section-1}
 
 configMap – définition:
 
@@ -267,7 +279,7 @@ mysql> show grants for 'wp';
 
 *Un version 'bloc' ne fonctionnera pas ici. Le conteneur 'mysql' s'attend à trouver des variables individuelles. Dans le cas d'une consolidation de**l'insertion de plusieurs variables, il est possible d'utiliser la directive 'envFrom:'.  Voici un exemple;*
 
-### 3.6 – La directive 'envFrom'
+### 1.1 – La directive 'envFrom' {#section-1-1}
 
 La directive '*envFrom*' permet l'importation des toutes les variables d'un '*configMap*'.
 
@@ -322,7 +334,7 @@ $ Kubectl exec -it  pod/meta-mysql-v2 -- mysql -uwp -pwp
 
 <img src="../images/labo03.png" alt="" width="700" />
 
-### Laboratoire 4 - 👉 IMPORTANT
+### Laboratoire 1 – 👉 IMPORTANT {#section-1-1-2}
 
 Reprendre le **Laboratoire 1, Section 2 de ce [--> document](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-partie-2.html)** en utilisant la directive **`envFrom`** pour les variables d'environnement du SGDB et de WordPress.
 
@@ -330,7 +342,7 @@ Reprendre le **Laboratoire 1, Section 2 de ce [--> document](https://ve2cuy.gith
 
 ---
 
-## 4 – **Monter un volume à partir d'un configmap**
+## 2 – Monter un volume à partir d'un configmap {#section-2}
 
 <img src="../images/graphic-of-persistent-volume-bond.png" alt="" width="550" />
 
@@ -338,7 +350,7 @@ Reprendre le **Laboratoire 1, Section 2 de ce [--> document](https://ve2cuy.gith
 
 ---
 
-## Voici l'exemple d'un volume K8S monté localement sur un noeud.
+### Voici l'exemple d'un volume K8S monté localement sur un noeud.
 
 **Note**: Ceci n'est pas une pratique recommandée.
 
@@ -469,7 +481,7 @@ index.html
 
 ---
 
-### 4.4 – configMap + volume
+### 2.1 – configMap + volume {#section-2-1}
 
 Dans l'exemple suivant, nous allons renseigner le contenu d'un fichier lié à un pod à partir d'un configMap.
 
@@ -682,7 +694,7 @@ spec:
 
 ---
 
-## 6 – Les 'secrets'
+## 3 – Les 'secrets' {#section-3}
 
 <img src="../images/keepingsecretsfromspouse-header-1024x538.jpg" alt="" width="450" />
 
@@ -916,13 +928,13 @@ mysql> show DATABASES;
 
 <img src="../images/labo02.png" alt="" width="700" />
 
-### Laboratoire 6
+### Laboratoire 3
 
 Reprendre le **Laboratoire 3 de ce --> [document](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-partie-2.html) ** en utilisant une ressource 'secret' pour le mot de passe et un configMap pour les autres informations.
 
 ---
 
-## 7 – TP2: Mosquitto+node-red
+## 4 – TP2: Mosquitto+node-red {#section-4}
 
 * [Voici un exemple complet](Kubernetes-Node-RED-Mosquitto.md) d'une application [Node-RED](https://nodered.org) + [mosquitto](https://mosquitto.org) + configMap (pour les fichiers de configuration) + secret.
 
@@ -935,3 +947,12 @@ Référence: [K8s-secret](https://kubernetes.io/fr/docs/concepts/configuration/s
 ###### Document rédigé par Alain Boudreault (c) 2021-2026 – version 2026.04.06.01
 
 site par ve2cuy
+
+---
+
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Révision 2026.11.07.1*  
+
+*Contenu par [VE2CUY](https://ve2cuy.github.io/blog/)*

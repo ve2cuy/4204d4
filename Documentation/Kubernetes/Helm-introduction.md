@@ -1,8 +1,25 @@
-# Introduction à Helm
+# 44 - Introduction à Helm
 
 Helm est le **gestionnaire de paquets** pour Kubernetes, comparable à `apt` pour Ubuntu ou `npm` pour Node.js. Il simplifie l'installation, la mise à jour et la gestion des applications Kubernetes.
 
-## Pourquoi utiliser Helm ?
+## Contenu
+
+- [**1 – Pourquoi utiliser Helm ?**](#section-1)
+- [**2 – Concepts de base**](#section-2)
+  - [1. Chart](#section-2-1)
+  - [2. Repository](#section-2-2)
+  - [3. Release](#section-2-3)
+- [**3 – Installation de Helm**](#section-3)
+- [**4 – Commandes essentielles**](#section-4)
+- [**5 – Exemples pratiques**](#section-5)
+- [**6 – Template de base pour un Chart personnalisé**](#section-6)
+- [**7 – Bonnes pratiques**](#section-7)
+- [**8 – Commandes de débogage**](#section-8)
+- [**9 – Résumé des commandes les plus utilisées**](#section-9)
+
+---
+
+## 1 – Pourquoi utiliser Helm ? {#section-1}
 
 **Sans Helm**, pour déployer une application complexe comme WordPress :
 - Vous devez créer et gérer 10-15 fichiers YAML (Deployment, Service, ConfigMap, Secret, PersistentVolumeClaim, etc.)
@@ -14,9 +31,9 @@ Helm est le **gestionnaire de paquets** pour Kubernetes, comparable à `apt` pou
 helm install mon-wordpress bitnami/wordpress
 ```
 
-## Concepts de base
+## 2 – Concepts de base {#section-2}
 
-### 1. Chart
+### 1. Chart {#section-2-1}
 Un **Chart** est un package Helm. C'est un ensemble de fichiers qui décrivent une application Kubernetes complète.
 
 Structure d'un Chart :
@@ -31,13 +48,13 @@ mon-chart/
 └── charts/             # Dépendances (autres charts)
 ```
 
-### 2. Repository
+### 2. Repository {#section-2-2}
 Un **Repository** est un dépôt qui contient des Charts, comme Docker Hub pour les images.
 
-### 3. Release
+### 3. Release {#section-2-3}
 Une **Release** est une instance déployée d'un Chart dans votre cluster.
 
-## Installation de Helm
+## 3 – Installation de Helm {#section-3}
 
 ```bash
 # Linux
@@ -53,7 +70,7 @@ choco install kubernetes-helm
 helm version
 ```
 
-## Commandes essentielles
+## 4 – Commandes essentielles {#section-4}
 
 ### Ajouter un repository
 
@@ -153,7 +170,7 @@ helm history mon-nginx
 helm rollback mon-nginx 1
 ```
 
-## Exemples pratiques
+## 5 – Exemples pratiques {#section-5}
 
 ### Exemple 1 : Installer WordPress avec MySQL
 
@@ -298,7 +315,7 @@ helm package mon-application
 helm install ma-release mon-application-0.1.0.tgz
 ```
 
-## Template de base pour un Chart personnalisé
+## 6 – Template de base pour un Chart personnalisé {#section-6}
 
 **Chart.yaml**
 ```yaml
@@ -358,7 +375,7 @@ spec:
 ```
 {% endraw %}
 
-## Bonnes pratiques
+## 7 – Bonnes pratiques {#section-7}
 
 1. **Toujours spécifier les versions** : `helm install app bitnami/nginx --version 15.0.0`
 2. **Utiliser des fichiers de valeurs** plutôt que de multiples `--set`
@@ -367,7 +384,7 @@ spec:
 5. **Versionner vos Charts personnalisés**
 6. **Utiliser des namespaces** pour isoler les applications
 
-## Commandes de débogage
+## 8 – Commandes de débogage {#section-8}
 
 ```bash
 # Simuler une installation sans l'exécuter
@@ -383,7 +400,7 @@ helm template mon-app bitnami/nginx
 helm diff upgrade mon-app bitnami/nginx --values new-values.yaml
 ```
 
-## Résumé des commandes les plus utilisées
+## 9 – Résumé des commandes les plus utilisées {#section-9}
 
 ```bash
 # Gestion des repositories
@@ -411,3 +428,12 @@ helm search hub <terme>
 
 
 Helm simplifie la gestion des applications Kubernetes en permettant de déployer des stacks complètes avec une seule commande, tout en offrant la flexibilité de personnaliser chaque aspect de la configuration.
+
+---
+
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Révision 2026.11.07.1*  
+
+*Contenu par [VE2CUY](https://ve2cuy.github.io/blog/)*

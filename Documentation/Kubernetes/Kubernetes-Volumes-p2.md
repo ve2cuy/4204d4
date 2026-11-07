@@ -1,4 +1,17 @@
-## Volume hostPath
+# 36 - Les volumes, partie 2
+
+## Contenu
+
+- [**1 – Volume hostPath**](#section-1)
+- [**2 – Quelle est la différence entre emptyDir et hostPath?**](#section-2)
+- [**3 – Faut-il créer le dossier avant de l'utiliser?**](#section-3)
+- [**4 – Services de stockage**](#section-4)
+- [**5 – Kubernetes et S3**](#section-5)
+- [**6 – Voici maintenant des exemples pratique avec MinIO et Garage**](#section-6)
+
+---
+
+## 1 – Volume hostPath {#section-1}
 
 Un volume `hostPath` monte un **fichier ou répertoire du nœud hôte** directement dans le Pod.
 
@@ -102,7 +115,7 @@ Si le Deployment a plusieurs réplicas sur des nœuds différents, chaque Pod vo
 ---
 
 
-## Quelle est la différence entre emptyDir et hostPath?
+## 2 – Quelle est la différence entre emptyDir et hostPath? {#section-2}
 
 
 **`emptyDir` — Stockage lié au Pod**
@@ -169,7 +182,7 @@ Pod A (vivant)          Pod A (mort)         Pod A (redémarré)
 
 ---
 
-## Faut-il créer le dossier avant de l'utiliser?
+## 3 – Faut-il créer le dossier avant de l'utiliser? {#section-3}
 
 ---
 
@@ -221,7 +234,7 @@ Si le dossier existe déjà, Kubernetes le monte simplement sans le modifier.
 
 ---
 
-## Services de stockage
+## 4 – Services de stockage {#section-4}
 
 ### Amazon S3, un standard
 
@@ -321,7 +334,7 @@ response = s3.list_objects_v2(Bucket="mon-bucket")
 
 ---
 
-## Kubernetes et S3
+## 5 – Kubernetes et S3 {#section-5}
 
 Kubernetes et S3 sont **complémentaires** — ils résolvent des problèmes différents et s'utilisent souvent ensemble.
 
@@ -463,7 +476,7 @@ Build CI/CD ──→ S3 ──→ CloudFront/CDN ──→ Utilisateurs
 
 ---
 
-## Voici maintenant des exemples pratique avec MinIO et Garage
+## 6 – Voici maintenant des exemples pratique avec MinIO et Garage {#section-6}
 
 ### MinIO
 
@@ -894,3 +907,12 @@ helm install --create-namespace --namespace garage \
 
 * https://github.com/HurbaLurba/garage-k8s-deployment/tree/main
 * https://medium.com/@kryukz/garage-standalone-your-lightweight-s3-compatible-object-storage-journey-5073bd51b566
+
+---
+
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Révision 2026.11.07.1*  
+
+*Contenu par [VE2CUY](https://ve2cuy.github.io/blog/)*

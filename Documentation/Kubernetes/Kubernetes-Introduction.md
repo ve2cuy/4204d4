@@ -1,11 +1,27 @@
-# Kubernetes – Introduction
+# 25 - Kubernetes – Introduction
 
 <p align="center">
     <img src="../images/k8s.png" alt="" width="300" />
 </p>
 
 
-## 1 – Qu'est-ce que Kubernetes (grec pour « timonier ») ?
+## Contenu
+
+- [**1 – Qu'est-ce que Kubernetes (grec pour « timonier ») ?**](#section-1)
+  - [1.1 – Les avantages des outils d'orchestration de K8s](#section-1-1)
+  - [1.2 – Les particularités](#section-1-2)
+  - [1.3 – Les composantes de Kubernetes](#section-1-3)
+- [**2 – Minikube et kubectl**](#section-2)
+  - [2.8 – Le manifeste de déploiement – un fichier YAML](#section-2-8)
+  - [Labo 2.12 – Exercice](#section-2-12)
+- [**3 – Les manifestes de K8s**](#section-3)
+  - [3.1 – Manifeste d'un Pod](#section-3-1)
+  - [3.2 – Manifeste d'un déploiement](#section-3-2)
+- [**4 – Référence : les types de ressources K8S**](#section-4)
+
+---
+
+## 1 – Qu'est-ce que Kubernetes (grec pour « timonier ») ? {#section-1}
 
 À l'origine développé par Google, [Kubernetes](https://kubernetes.io/fr/) est un projet 'open-source' d'[orchestration](https://fr.wikipedia.org/wiki/Orchestration_informatique) de conteneurs conçu pour automatiser le déploiement, la mise à l'échelle ainsi que la gestion d'applications conteneurisées. La version 1.0 de Kubernetes a été publiée en 2015.
 
@@ -18,20 +34,20 @@ Kubernetes s'est imposé comme le standard de facto pour l'orchestration de cont
   + ***Fun fact**: Le nom original de Kubernetes en interne fut 'Project Seven', en référence au personnage de Star Trek, 7 of 9. Les sept rayons de la barre du logo de Kubernetes sont une référence au nom original.*
 * Permet de gérer et de déployer, en utilisant une approche descriptive via un manifeste YAML – *par exemple, j'aimerais avoir 50 instances nginx* – des applications conteneurisées proposant, parfois, des centaines de micro-services
 
-### 1.1 – Les avantages des outils d'orchestration de K8s
+### 1.1 – Les avantages des outils d'orchestration de K8s {#section-1-1}
 
 * Forte disponibilité des services (peu de moments de panne)
 * Évolution du système en fonction de la demande, haute performance
 * Récupération simplifiée en cas de catastrophe – sauvegarde et restauration
 
-### 1.2 – Les particularités
+### 1.2 – Les particularités {#section-1-2}
 
 1. Kubernetes permet un déploiement rapide des applications
 2. Kubernetes propose une utilisation efficace des ressources (moins coûteux en ressources que des VM)
 3. Kubernetes est fortement intégré aux services des fournisseurs de solutions en nuage: *Amazon AWS*, *Linode*, *Microsoft Azure*, *Google Cloud Platform*
 4. Les fournisseurs de solutions en nuage proposent des solutions Kubernetes clé en main: serveurs maîtres, nœuds et répartiteurs de charges déjà installés
 
-### 1.3 – [Les composantes de Kubernetes](https://kubernetes.io/fr/docs/concepts/overview/components/)
+### 1.3 – [Les composantes de Kubernetes](https://kubernetes.io/fr/docs/concepts/overview/components/) {#section-1-3}
 
 1. **Le(s) serveur(s) maître(s) (master node)**
    * L'API du serveur (API Server)
@@ -97,7 +113,7 @@ Voici un schéma présentant l'architecture de base de Kubernetes:
 
 ---
 
-## 2 – Minikube et kubectl
+## 2 – Minikube et kubectl {#section-2}
 
 ### Description
 
@@ -556,7 +572,7 @@ Et tout ce qui est sous le déploiement est géré par Kubernetes.
 
 Voici la suite.
 
-### 2.8 – Le manifeste de déploiement – un fichier YAML
+### 2.8 – Le manifeste de déploiement – un fichier YAML {#section-2-8}
 
 Pour assurer la gestion correcte du déploiement, K8s a généré un manifeste de déploiement. Plus tard, nous verrons comment renseigner nos propres manifestes. Ce schéma contient des informations telles que: le nombre de duplicatas requis, la version des images, les ports exposés, etc.
 
@@ -719,7 +735,7 @@ Containers:
 
 **Note:** Il est possible d'appliquer la commande précédente sur d'autres objets. Par exemple, `kubectl describe deployments`.
 
-### Labo 2.12 – Exercice
+### Labo 2.12 – Exercice {#section-2-12}
 
 Renseigner 3 duplicatas dans le schéma puis, afficher la liste des pods.
 
@@ -735,11 +751,11 @@ $ kubectl get pod
 
 ---
 
-## 3 – Les manifestes de K8s
+## 3 – Les manifestes de K8s {#section-3}
 
 ---
 
-## Qu'est-ce qu'un Manifeste Kubernetes ?
+### Qu'est-ce qu'un Manifeste Kubernetes ?
 
 Un **manifeste Kubernetes** est un fichier YAML qui décrit l'état désiré d'une ressource. 
 
@@ -760,7 +776,7 @@ spec:                               # Spécification (état désiré) de la ress
 ---
 
 
-### 3.0 – Manifeste d'un Pod
+### 3.1 – Manifeste d'un Pod {#section-3-1}
 
 #### Action 3.0.1 – Manifeste d'un Pod, renseigner le fichier uneAlpine.yml
 
@@ -1083,7 +1099,7 @@ spec:
 
 ---
 
-### 3.1 – Manifeste d'un déploiement
+### 3.2 – Manifeste d'un déploiement {#section-3-2}
 
 #### Action 3.1 – Manifeste d'un déploiement
 
@@ -1404,7 +1420,7 @@ Remplacer l'image nginx utilisée dans le fichier de labo 3.11 par `alainboudrea
 
 ---
 
-## Référence 01 – K8S: Type de ressources
+## 4 – Référence : les types de ressources K8S {#section-4}
 
 | NOM | NOM COURT | VERSION API | NAMESPACED | KIND |
 |-----|-----------|-------------|------------|------|
@@ -1459,5 +1475,5 @@ Prochain document: [K8s-partie2](Kubernetes-partie-2.md)
 ## Crédits
 
 *Document rédigé par Alain Boudreault © 2021-2026*  
-*Version 2026.03.10.1*  
+*Version 2026.03.10.1 - Révision 2026.11.07.1*  
 *Site par ve2cuy*

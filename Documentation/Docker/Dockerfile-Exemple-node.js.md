@@ -1,12 +1,35 @@
-# Docker – Création d'une image avec une app Node.js
+# 10 - Docker – Création d'une image avec une app Node.js
 
-*Date: 1 février 2023 - Révision 2025.12.05*
+*Date: 1 février 2023 - Révision 2026.11.07*
 
 ---
 
-## Section A – Tester l'application Node.js
+## Contenu
 
-### 1 – Tester l'application node.js dans un conteneur Ubuntu
+- [**Section A – Tester l'application Node.js**](#section-a)
+  - [1 – Tester l'application node.js dans un conteneur Ubuntu](#section-a-1)
+  - [2 – Fichier 'package.json'](#section-a-2)
+  - [3 – Application serveur.js](#section-a-3)
+  - [4 – Démarrage de l'application node.js](#section-a-4)
+- [**Section B – Bâtir l'image de l'application**](#section-b)
+  - [5 – Le Dockerfile](#section-b-5)
+  - [6 – Produire l'image de notre application web serveur](#section-b-6)
+  - [7 – Lancer l'application](#section-b-7)
+  - [8 – Tester l'application](#section-b-8)
+- [**Section C – Version du serveur avec Express.js**](#section-c)
+  - [9 – serveur02.js avec le module Express.js](#section-c-9)
+- [**Section D – Arguments personnalisés**](#section-d)
+  - [10 – Dockerfile avec arguments (Dockerfile.srv03)](#section-d-10)
+  - [11 – serveur03.js - Utilisation d'une variable d'environnement](#section-d-11)
+  - [12 – package.json pour serveur03.js](#section-d-12)
+- [**Section E – Image multi-plateforme**](#section-e)
+  - [13 – Création d'une image multi-plateforme](#section-e-13)
+
+---
+
+## Section A – Tester l'application Node.js {#section-a}
+
+### 1 – Tester l'application node.js dans un conteneur Ubuntu {#section-a-1}
 
 ```bash
 sudo apt update && sudo apt install npm
@@ -23,7 +46,7 @@ npm install socket.io socket.io-client express --save
 
 ---
 
-### 2 – Fichier 'package.json'
+### 2 – Fichier 'package.json' {#section-a-2}
 
 ```json
 {
@@ -40,7 +63,7 @@ npm install socket.io socket.io-client express --save
 
 ---
 
-### 3 – Application serveur.js
+### 3 – Application serveur.js {#section-a-3}
 
 ```javascript
 // Fichier: serveur.js
@@ -86,7 +109,7 @@ console.log('----------------------------------');
 console.log('Mon petit serveur web Node.js vous écoute sur le port ' + PORT + ' ... cé pas ti fin ca!');
 ```
 
-### 4 – Démarrage de l'application node.js
+### 4 – Démarrage de l'application node.js {#section-a-4}
 
 ```bash
 npm start &
@@ -98,9 +121,9 @@ curl localhost:8080/api
 
 ---
 
-## Section B – Bâtir l'image de l'application
+## Section B – Bâtir l'image de l'application {#section-b}
 
-### 5 – Le Dockerfile
+### 5 – Le Dockerfile {#section-b-5}
 
 ```dockerfile
 # À partir de l'image de base:
@@ -121,7 +144,7 @@ CMD [ "npm","start" ]
 
 ---
 
-### 6 – Produire l'image de notre application web serveur
+### 6 – Produire l'image de notre application web serveur {#section-b-6}
 
 ```bash
 docker build -t notre_serveur_web .
@@ -129,7 +152,7 @@ docker build -t notre_serveur_web .
 
 ---
 
-### 7 – Lancer l'application
+### 7 – Lancer l'application {#section-b-7}
 
 ```bash
 docker run -d --rm -it --name yo -p 80:8080 notre_serveur_web
@@ -137,7 +160,7 @@ docker run -d --rm -it --name yo -p 80:8080 notre_serveur_web
 
 ---
 
-### 8 – Tester l'application
+### 8 – Tester l'application {#section-b-8}
 
 **8.1 Test 1 avec URL /**
 
@@ -150,9 +173,9 @@ docker run -d --rm -it --name yo -p 80:8080 notre_serveur_web
 
 ---
 
-## Section C – Version du serveur avec Express.js
+## Section C – Version du serveur avec Express.js {#section-c}
 
-### 9 – serveur02.js avec le module Express.js
+### 9 – serveur02.js avec le module Express.js {#section-c-9}
 
 ```javascript
 // Fichier: serveur02.js
@@ -219,9 +242,9 @@ var server = app.listen(PORT, function () {
 
 ---
 
-## Section D – Arguments personnalisés
+## Section D – Arguments personnalisés {#section-d}
 
-### 10 – Dockerfile avec arguments (Dockerfile.srv03)
+### 10 – Dockerfile avec arguments (Dockerfile.srv03) {#section-d-10}
 
 ```dockerfile
 # Specify a base image
@@ -248,7 +271,7 @@ CMD [ "npm","start" ]
 
 ---
 
-### 11 – serveur03.js - Utilisation d'une variable d'environnement
+### 11 – serveur03.js - Utilisation d'une variable d'environnement {#section-d-11}
 
 ```javascript
 // Fichier: serveur03.js
@@ -281,7 +304,7 @@ var server = app.listen(PORT, function () {
 
 ---
 
-### 12 – package.json pour serveur03.js
+### 12 – package.json pour serveur03.js {#section-d-12}
 
 ```json
 {
@@ -298,9 +321,9 @@ var server = app.listen(PORT, function () {
 
 ---
 
-## Section E – Image multi-plateforme
+## Section E – Image multi-plateforme {#section-e}
 
-### 13 – Création d'une image multi-plateforme
+### 13 – Création d'une image multi-plateforme {#section-e-13}
 
 [Application en Python - Tutorial DataCamp](https://www.datacamp.com/tutorial/docker-buildx?utm_cid=19589720830&utm_aid=192320612288&utm_campaign=230119_1-ps-other~dsa~tofu-tutorial_2-b2c_3-nam_4-prc_5-na_6-na_7-le_8-pdsh-go_9-nb-e_10-na_11-na&utm_loc=9000502-&utm_mtd=-c&utm_kw=&utm_source=google&utm_medium=paid_search&utm_content=ps-other~nam-en~dsa~tofu~tutorial~docker&gad_source=1&gad_campaignid=19589720830&gbraid=0AAAAADQ9WsHZyFJw8-QtIDRPwnLUtBoZv&gclid=Cj0KCQiAubrJBhCbARIsAHIdxD-HmBU0-05BptvzzImggyA2HmEgGDDYKwZU8XKvuJbtvmJSngRrUwUaAkqOEALw_wcB)
 
@@ -317,5 +340,5 @@ Référence pour la syntaxe [Dockerfile](https://docs.docker.com/engine/referenc
 ## Crédits
 
 *Document rédigé par Alain Boudreault © 2021-2026*  
-*Version 2025.12.03.1*  
+*Version 2025.12.03.1 - Révision 2026.11.07.1*  
 *Site par ve2cuy*

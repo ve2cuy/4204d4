@@ -1,4 +1,4 @@
-# YAML- Voici un exemple plus complexe 
+# 6 - YAML- Voici un exemple plus complexe 
 
 ```yaml
 
@@ -73,7 +73,7 @@ networks:
 
 ---
 
-## Conversion en JSON
+## Conversion en JSON {#section-conversion-en-json}
 
 ```json
 {
@@ -162,3 +162,12 @@ networks:
 ---
 
 FIN du Document
+
+---
+
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Révision 2026.11.07.1*  
+
+*Contenu par [VE2CUY](https://ve2cuy.github.io/blog/)*

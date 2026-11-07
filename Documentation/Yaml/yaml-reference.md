@@ -1,4 +1,4 @@
-# YAML – Référence
+# 5 - YAML – Référence
 
 *Date: 2 Décembre 2025*
 
@@ -14,7 +14,22 @@
 
 ---
 
-## 1. Qu'est-ce que YAML ?
+## Contenu
+
+- [**1. Qu'est-ce que YAML ?**](#section-1)
+- [**2. Règles fondamentales**](#section-2)
+- [**3. Types de données**](#section-3)
+- [**4. Collections**](#section-4)
+- [**5. Références et ancres**](#section-5)
+- [**6. Séparateurs de documents**](#section-6)
+- [**7. Bonnes pratiques**](#section-7)
+- [**8. Exemples complets**](#section-8)
+- [**9. Pièges courants**](#section-9)
+- [**10. Outils utiles**](#section-10)
+
+---
+
+## 1. Qu'est-ce que YAML ? {#section-1}
 
 YAML signifie **"YAML Ain't Markup Language"**.  
 
@@ -29,7 +44,7 @@ C'est un format de fichier **lisible par l'humain**, utilisé pour représenter 
 
 ---
 
-## 2. Règles fondamentales
+## 2. Règles fondamentales {#section-2}
 
 ### 2.1 Indentation
 
@@ -68,7 +83,7 @@ version: 1.2  # numéro de version
 
 ---
 
-## 3. Types de données
+## 3. Types de données {#section-3}
 
 ### 3.1 Chaînes de caractères
 
@@ -122,7 +137,7 @@ champ2: ~
 
 ---
 
-## 4. Collections
+## 4. Collections {#section-4}
 
 ### 4.1 Listes
 
@@ -174,7 +189,7 @@ produit:
 
 ---
 
-## 5. Références et ancres
+## 5. Références et ancres {#section-5}
 
 Permettent d'éviter la répétition de blocs.
 
@@ -195,7 +210,7 @@ bob:
 
 ---
 
-## 6. Séparateurs de documents
+## 6. Séparateurs de documents {#section-6}
 
 Permet d'avoir plusieurs documents YAML dans un seul fichier :
 
@@ -210,7 +225,7 @@ age: 28
 
 ---
 
-## 7. Bonnes pratiques
+## 7. Bonnes pratiques {#section-7}
 
 ✔️ Utiliser 2 espaces pour l'indentation  
 ✔️ Bien structurer les données selon leur sens  
@@ -220,7 +235,7 @@ age: 28
 
 ---
 
-## 8. Exemples complets
+## 8. Exemples complets {#section-8}
 
 ### 8.1 Fichier de configuration d'application
 
@@ -274,7 +289,7 @@ spec:
 
 ---
 
-## 9. Pièges courants
+## 9. Pièges courants {#section-9}
 
 ❌ **Tabulations interdites**  
 ❌ Ne pas mélanger indentation de 2 et 4 espaces  
@@ -286,7 +301,7 @@ mot_de_passe: "!#%secret"
 
 ---
 
-## 10. Outils utiles
+## 10. Outils utiles {#section-10}
 
 * **YamlLint** (validation)
 * **VSCode + extension YAML**
@@ -296,5 +311,7 @@ mot_de_passe: "!#%secret"
 ---
 
 ## Crédits
+
+*Révision 2026.11.07.1*  
 
 *Contenu par ve2cuy*

@@ -1,10 +1,27 @@
-# K8S – LoadBalancer externe + ingress
+# 39 - K8S – LoadBalancer externe + ingress
 
 <p align="center">
     <img src="../images/load-balancer-icon-19.jpg.png" alt="Load Balancer Icon" width="300" />
 </p>
 
-## 1 – Mise en situation
+## Contenu
+
+- [**1 – Mise en situation**](#section-1)
+- [**2 – Installation de MetalLB**](#section-2)
+  - [2.1 – Installation](#section-2-1)
+  - [2.2 – Renseigner la plage IP](#section-2-2)
+- [**3 – Installation d'un Ingress (reverse proxy) Nginx sur K8S**](#section-3)
+  - [3.1 – Déploiement d'un service ingress de type Nginx](#section-3-1)
+  - [3.2 – Déployer un service Web (superMinou)](#section-3-2)
+  - [3.3 – Fichier: ingress-demo.yml](#section-3-3)
+  - [3.4 – Fichier /etc/hosts](#section-3-4)
+  - [3.5 – Tester l'ingress (reverse proxy)](#section-3-5)
+- [**4 – Alternative à metallb**](#section-4)
+- [**5 – 💡 Exemple complet adapté à GCloud et duckdns**](#section-5)
+
+---
+
+## 1 – Mise en situation {#section-1}
 
 Kubernetes ne m'offre pas de service de balance de charge (load balancer externe au réseau K8s) pour plusieurs applications qui partagent le même point d'entrée (une seule adresse IP/même port).
 
@@ -18,9 +35,9 @@ Par exemple: [metallb](https://metallb.universe.tf/concepts/), [traefik proxy](h
 
 ---
 
-## 2 – Installation de MetalLB
+## 2 – Installation de MetalLB {#section-2}
 
-### 2.1 – Installation
+### 2.1 – Installation {#section-2-1}
 
 ```bash
 # Sur le cluster K8S suivant:
@@ -95,7 +112,7 @@ kubectl get all -n metallb-system -o wide
 # replicaset.apps/controller-844979dcdc   1         1         1       5m46s   controller   quay.io/metallb/controller:v0.13.9   app=metallb,component=controller,pod-template-hash=844979dcdc
 ```
 
-### 2.2 – Renseigner la plage IP
+### 2.2 – Renseigner la plage IP {#section-2-2}
 
 ```bash
 nano metallb-config.yaml
@@ -131,11 +148,11 @@ kubectl apply -f Metallb-config.yaml
 
 ---
 
-## 3 – Installation d'un Ingress (reverse proxy) Nginx sur K8S
+## 3 – Installation d'un Ingress (reverse proxy) Nginx sur K8S {#section-3}
 
 [Documentation officielle](https://kubernetes.github.io/ingress-nginx/deploy/)
 
-### 3.1 – Déploiement d'un service ingress de type Nginx
+### 3.1 – Déploiement d'un service ingress de type Nginx {#section-3-1}
 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.7.0/deploy/static/provider/cloud/deploy.yaml
@@ -216,7 +233,7 @@ Il est maintenant possible d'avoir accès au réseau k8s via cette adresse IP:
 
 ---
 
-### 3.2 – Déployer un service Web (superMinou)
+### 3.2 – Déployer un service Web (superMinou) {#section-3-2}
 
 [Référence Medium](https://medium.com/ci-cd-devops/internal-error-occurred-failed-calling-webhook-validate-nginx-ingress-kubernetes-io-b5008e628e03)
 
@@ -312,7 +329,7 @@ spec:
       targetPort: 80
 ```
 
-### 3.3 – Fichier: ingress-demo.yml
+### 3.3 – Fichier: ingress-demo.yml {#section-3-3}
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -377,13 +394,13 @@ kubectl describe ingress ingress-demo01
 #   Normal  Sync    13m (x7 over 107m)  nginx-ingress-controller  Scheduled for sync
 ```
 
-### 3.4 – Fichier /etc/hosts
+### 3.4 – Fichier /etc/hosts {#section-3-4}
 
 ```bash
 192.168.2.61  superminou.demo superpitou.demo
 ```
 
-### 3.5 – Tester l'ingress (reverse proxy)
+### 3.5 – Tester l'ingress (reverse proxy) {#section-3-5}
 
 <img src="../images/Capture-decran-le-2023-04-09-a-13.32.53.png" alt="SuperMinou Demo" width="500" />
 
@@ -391,13 +408,13 @@ kubectl describe ingress ingress-demo01
 
 ---
 
-## Alternative à metallb
+## 4 – Alternative à metallb {#section-4}
 
 <https://traefik.io/traefik/>
 
 ---
 
-# 💡Exemple complet adapté à GCloud et duckdns
+## 5 – 💡 Exemple complet adapté à GCloud et duckdns {#section-5}
 
 ```
 # Tester un reverse proxy avec Nginx Ingress Controller, version pour GCloud
@@ -526,5 +543,5 @@ spec:
 ## Crédits
 
 *Document rédigé par Alain Boudreault © 2021-2026*  
-*Version 2025.12.03.1*  
+*Version 2025.12.03.1 - Révision 2026.11.07.1*  
 *Site par ve2cuy*

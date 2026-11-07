@@ -1,6 +1,20 @@
-# Projet Complet : CI/CD avec GitHub Actions et Docker Hub
+# 21 - Projet Complet : CI/CD avec GitHub Actions et Docker Hub
 
-## Vue d'ensemble du projet
+## Contenu
+
+- [**Vue d'ensemble du projet**](#section-vue-d-ensemble-du-projet)
+- [**Structure du projet**](#section-structure-du-projet)
+- [**Étape 1 : Créer l'application**](#section-1)
+- [**Étape 2 : Créer le Dockerfile**](#section-2)
+- [**Étape 3 : Configuration GitHub Actions**](#section-3)
+- [**Étape 4 : Docker Compose pour tests locaux**](#section-4)
+- [**Étape 5 : Documentation**](#section-5)
+- [**Étape 7 : Utilisation**](#section-7)
+- [**🎯 Résultat final**](#section-resultat-final)
+
+---
+
+## Vue d'ensemble du projet {#section-vue-d-ensemble-du-projet}
 
 Nous allons créer une application web "SuperMinou v2" avec :
 - Une application PHP/Apache
@@ -9,7 +23,7 @@ Nous allons créer une application web "SuperMinou v2" avec :
 - Versioning automatique
 - Tests de qualité
 
-## Structure du projet
+## Structure du projet {#section-structure-du-projet}
 
 ```
 superminou-v2/
@@ -32,7 +46,7 @@ superminou-v2/
 └── README.md                          # Documentation
 ```
 
-## Étape 1 : Créer l'application
+## Étape 1 : Créer l'application {#section-1}
 
 ### Fichier : `src/index.php`
 
@@ -322,7 +336,7 @@ footer {
 }
 ```
 
-## Étape 2 : Créer le Dockerfile
+## Étape 2 : Créer le Dockerfile {#section-2}
 
 ### Fichier : `Dockerfile`
 
@@ -390,7 +404,7 @@ tests/
 node_modules
 ```
 
-## Étape 3 : Configuration GitHub Actions
+## Étape 3 : Configuration GitHub Actions {#section-3}
 
 ### Fichier : `.github/workflows/docker-build-push.yml`
 
@@ -650,7 +664,7 @@ jobs:
             Puis ouvrir http://localhost:8080
 ```
 
-## Étape 4 : Docker Compose pour tests locaux
+## Étape 4 : Docker Compose pour tests locaux {#section-4}
 
 ### Fichier : `docker-compose.yml`
 
@@ -678,7 +692,7 @@ services:
       retries: 3
 ```
 
-## Étape 5 : Documentation
+## Étape 5 : Documentation {#section-5}
 
 ### Fichier : `README.md`
 
@@ -807,7 +821,7 @@ git push -u origin main
    - `DOCKERHUB_USERNAME`: votre username
    - `DOCKERHUB_TOKEN`: le token créé
 
-## Étape 7 : Utilisation
+## Étape 7 : Utilisation {#section-7}
 
 ### Premier build
 
@@ -840,7 +854,7 @@ docker run -p 8080:80 votre-username/superminou-v2:latest
 # Ouvrir http://localhost:8080
 ```
 
-## 🎯 Résultat final
+## 🎯 Résultat final {#section-resultat-final}
 
 Après avoir suivi ce guide, vous aurez:
 
@@ -860,3 +874,12 @@ Après avoir suivi ce guide, vous aurez:
 - [Docker Build Push Action](https://github.com/docker/build-push-action)
 - [Docker Hub](https://hub.docker.com)
 - [Semantic Versioning](https://semver.org)
+
+---
+
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Révision 2026.11.07.1*  
+
+*Contenu par [VE2CUY](https://ve2cuy.github.io/blog/)*

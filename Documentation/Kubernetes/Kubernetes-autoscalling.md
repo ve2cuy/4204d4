@@ -1,21 +1,28 @@
-# Auto Scaling sous Kubernetes
+# 46 - Auto Scaling sous Kubernetes
 
 <p align="center">
     <img src="../images/auto-scaling.png" alt="Load Balancer Icon" width="300" />
 </p>
 
-## Table des matières
+## Contenu
 
-1. [Introduction](#introduction)
-2. [Horizontal Pod Autoscaler (HPA)](#horizontal-pod-autoscaler-hpa)
-3. [Vertical Pod Autoscaler (VPA)](#vertical-pod-autoscaler-vpa)
-4. [Cluster Autoscaler](#cluster-autoscaler)
-5. [KEDA – Event-Driven Autoscaling](#keda--event-driven-autoscaling)
-6. [Bonnes pratiques](#bonnes-pratiques)
+- [**1 – Introduction**](#section-1)
+- [**2 – Erreur possible sous docker-desktop**](#section-2)
+- [**3 – Horizontal Pod Autoscaler (HPA) - 💡 Section importante!**](#section-3)
+- [**4 – Vertical Pod Autoscaler (VPA)**](#section-4)
+- [**5 – Cluster Autoscaler**](#section-5)
+- [**6 – KEDA – Event-Driven Autoscaling**](#section-6)
+- [**7 – Bonnes pratiques**](#section-7)
+  - [1. Toujours définir des `requests` et `limits`](#section-7-1)
+  - [2. Ne pas combiner HPA et VPA en mode `Auto`](#section-7-2)
+  - [3. Configurer les `PodDisruptionBudgets` (PDB)](#section-7-3)
+  - [4. Surveiller les événements de scaling](#section-7-4)
+  - [5. Utiliser `kubectl top` pour valider les métriques](#section-7-5)
+- [**8 – Récapitulatif des commandes essentielles**](#section-8)
 
 ---
 
-## Introduction
+## 1 – Introduction {#section-1}
 
 L'auto scaling dans Kubernetes désigne la capacité du cluster à ajuster **automatiquement** le nombre de pods ou les ressources allouées en fonction de la charge courante. Il existe trois mécanismes principaux, complémentaires :
 
@@ -43,7 +50,7 @@ Si la commande échoue, installez `metrics-server` :
 kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
 ```
 
-## Erreur possible sous docker-desktop
+## 2 – Erreur possible sous docker-desktop {#section-2}
 
 ```bash
 I0324 17:14:24.000330       1 server.go:192] "Failed probe" probe="metric-storage-ready" err="no metrics to serve"
@@ -93,7 +100,7 @@ kube-system   etcd-docker-desktop                      17m          58Mi
 
 ---
 
-## Horizontal Pod Autoscaler (HPA) - 💡 Section importante!
+## 3 – Horizontal Pod Autoscaler (HPA) - 💡 Section importante! {#section-3}
 
 Le HPA surveille les métriques d'un `Deployment` (ou `StatefulSet`, `ReplicaSet`) et ajuste le nombre de réplicas à la hausse ou à la baisse.
 
@@ -388,7 +395,7 @@ spec:
 
 ---
 
-## Vertical Pod Autoscaler (VPA)
+## 4 – Vertical Pod Autoscaler (VPA) {#section-4}
 
 Le VPA ajuste les **requêtes de ressources** (CPU/RAM) d'un pod existant, sans changer le nombre de réplicas. Il est particulièrement utile pour les charges de travail imprévisibles ou mal calibrées.
 
@@ -480,7 +487,7 @@ kubectl delete vpa vpa-demo
 
 ---
 
-## Cluster Autoscaler
+## 5 – Cluster Autoscaler {#section-5}
 
 Le Cluster Autoscaler agit au niveau de l'infrastructure : il ajoute ou supprime des **nœuds** du cluster selon que des pods sont en attente (`Pending`) ou que des nœuds sont sous-utilisés.
 
@@ -530,7 +537,7 @@ kubectl get events --field-selector reason=ScaleDown
 
 ---
 
-## KEDA – Event-Driven Autoscaling
+## 6 – KEDA – Event-Driven Autoscaling {#section-6}
 
 KEDA (Kubernetes Event-Driven Autoscaling) étend le HPA pour scaler sur des **sources externes** : files de messages (Kafka, RabbitMQ, SQS), bases de données, métriques Prometheus, etc.
 
@@ -601,9 +608,9 @@ kubectl describe scaledobject prometheus-scaler
 
 ---
 
-## Bonnes pratiques
+## 7 – Bonnes pratiques {#section-7}
 
-### 1. Toujours définir des `requests` et `limits`
+### 1. Toujours définir des `requests` et `limits` {#section-7-1}
 
 Le HPA ne peut pas fonctionner sans `requests` CPU/mémoire définis sur les conteneurs.
 
@@ -613,13 +620,13 @@ kubectl get deployment my-app -o json | \
   jq '.spec.template.spec.containers[].resources'
 ```
 
-### 2. Ne pas combiner HPA et VPA en mode `Auto`
+### 2. Ne pas combiner HPA et VPA en mode `Auto` {#section-7-2}
 
 HPA et VPA en mode automatique peuvent entrer en conflit. Préférez :
 - HPA pour le scaling horizontal
 - VPA en mode `Off` ou `Initial` pour les recommandations
 
-### 3. Configurer les `PodDisruptionBudgets` (PDB)
+### 3. Configurer les `PodDisruptionBudgets` (PDB) {#section-7-3}
 
 Un PDB garantit qu'un minimum de pods reste disponible pendant un scale-down.
 
@@ -641,7 +648,7 @@ kubectl apply -f pdb.yaml
 kubectl get pdb
 ```
 
-### 4. Surveiller les événements de scaling
+### 4. Surveiller les événements de scaling {#section-7-4}
 
 ```bash
 # Événements HPA
@@ -656,7 +663,7 @@ kubectl logs -n kube-system \
   --tail=50 | grep -i hpa
 ```
 
-### 5. Utiliser `kubectl top` pour valider les métriques
+### 5. Utiliser `kubectl top` pour valider les métriques {#section-7-5}
 
 ```bash
 # Ressources des pods en temps réel
@@ -668,7 +675,7 @@ kubectl top nodes
 
 ---
 
-## Récapitulatif des commandes essentielles
+## 8 – Récapitulatif des commandes essentielles {#section-8}
 
 ```bash
 # Créer un HPA rapidement
@@ -691,3 +698,12 @@ kubectl get hpa,vpa,scaledobject -A
 ---
  
 **(c) VE2CUY - Version 2026.02.26.1**
+
+---
+
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Révision 2026.11.07.1*  
+
+*Contenu par [VE2CUY](https://ve2cuy.github.io/blog/)*

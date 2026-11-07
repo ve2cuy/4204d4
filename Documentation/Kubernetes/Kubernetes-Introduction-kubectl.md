@@ -1,9 +1,26 @@
-# Retour sur les commandes de base de `kubectl`
+# 26 - Retour sur les commandes de base de `kubectl`
 <p align="center">
     <img src="../images/k8s-nginx.png" alt="" width="350" />
 </p>
 
-## 1 - Créer un pod (run)
+## Contenu
+
+- [**1 – Créer un pod (run)**](#section-1)
+- [**2 – Déployer 4 nginx (create deployment)**](#section-2)
+- [**3 – Exposer via une adresse locale commune (expose)**](#section-3)
+- [**4 – Effacer une ressource (delete)**](#section-4)
+- [**5 – Exposer via une adresse publique (expose)**](#section-5)
+- [**6 – M-A-J du nombre de replicas (scale)**](#section-6)
+- [**7 – Exécuter une commande dans un pod**](#section-7)
+- [**8 – Obtenir le log d'un pod**](#section-8)
+- [**9 – Utilisation d'un manifeste**](#section-9)
+  - [9.1 – Création de Pods avec un manifeste de déploiement](#section-9-1)
+- [**10 – Utilisation d'un conteneur d'initialisation**](#section-10)
+  - [10.1 – Dépendance entre le conteneur `init` et les autres](#section-10-1)
+
+---
+
+## 1 – Créer un pod (run) {#section-1}
 
 ```
 kubectl run nginx-pod --image=nginx:latest --port=80
@@ -36,7 +53,7 @@ kubectl attach test -c test -i -t
 
 ---
 
-## 2 - Déployer 4 nginx (create deployment)
+## 2 – Déployer 4 nginx (create deployment) {#section-2}
 ```
 kubectl create deployment nginx-deployment \
   --image=nginx:latest \
@@ -49,7 +66,7 @@ kubectl get pod -o wide
 
 Note: 💡 `kubectl create` est pour les ressources de haut niveau (Deployment, Service, etc.). `kubectl run` est la commande dédiée à la création de pods.
 
-## 3 - Exposer via une adresse locale commune (expose)
+## 3 – Exposer via une adresse locale commune (expose) {#section-3}
 
 ```
 kubectl expose deployment nginx-deployment \
@@ -65,13 +82,13 @@ kubectl describe service/nginx-service
 # Tester IP avec curl
 ```
 
-## 4 - Effacer une ressource (delete)
+## 4 – Effacer une ressource (delete) {#section-4}
 ```
 # Effacer le svc nginx-service:
 kubectl delete service/nginx-service
 ```
 
-## 5 - Exposer via une adresse publique (expose) 
+## 5 – Exposer via une adresse publique (expose) {#section-5}
 
 * Note: Sous Docker-Desktop = localhost
 
@@ -85,7 +102,7 @@ kubectl expose deployment nginx-deployment \
 
 ---
 
-## 6 - M-A-J du nombre de replicas (scale)
+## 6 – M-A-J du nombre de replicas (scale) {#section-6}
 
 ```
 kubectl scale deployment nginx-deployment --replicas=12
@@ -105,7 +122,7 @@ kubectl edit deployment nginx-deployment
 
 ---
 
-## 7 - Exécuter une commande dans un pod
+## 7 – Exécuter une commande dans un pod {#section-7}
 
 ```
 kubectl exec -it nginx-deployment-6d95bc85cf-8qsc7 -- bash
@@ -121,7 +138,7 @@ curl 10.97.12.45 # Plusieurs fois ...
 
 ---
 
-## 8 - Obtenir le log d'un pod
+## 8 – Obtenir le log d'un pod {#section-8}
 
 ```
 kubectl logs nginx-deployment-6d95bc85cf-8qsc7 
@@ -129,13 +146,13 @@ kubectl logs nginx-deployment-6d95bc85cf-8qsc7 -f  // En continu
 ```
 
 ---
-## 9 - Utilisation d'un manifeste
+## 9 – Utilisation d'un manifeste {#section-9}
 
 Tout comme pour Docker, il est possible de créer des ressources K8s en utilisant YAML.  Ces fichiers de directives sont nommés `Manifestes`.
 
 * Astuce, laisser à K8s le soin de créer la structure de départ du manifeste.  Par exemple, 
 
-### 9.1 - Création de Pods avec un manifeste de déploiement
+### 9.1 – Création de Pods avec un manifeste de déploiement {#section-9-1}
 
 * Générer le manifeste du déploiement
 
@@ -236,7 +253,7 @@ replicaset.apps/nginx-deployment-6d95bc85cf   4         4         4       5s    
 
 ---
 
-## 10 - Utilisation d'un conteneur d'initialisation
+## 10 – Utilisation d'un conteneur d'initialisation {#section-10}
 
 * nginx avec une page personnalisée
 
@@ -290,7 +307,7 @@ Le volume est créé **sur le nœud (node) qui héberge le pod**, dans un dossie
 ---
 
 
-### 10.1 - Dépendance entre le conteneur `init` et les autres
+### 10.1 – Dépendance entre le conteneur `init` et les autres {#section-10-1}
 
 La dépendance est native dans Kubernetes — c'est le comportement par défaut des init containers :
 
@@ -320,8 +337,11 @@ nginx-pod   1/1     Running          0          # nginx prêt
 
 ---
 
+---
 
+## Crédits
 
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Révision 2026.11.07.1*  
 
-
-
+*Contenu par [VE2CUY](https://ve2cuy.github.io/blog/)*

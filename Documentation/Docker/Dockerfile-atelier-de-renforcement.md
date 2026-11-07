@@ -1,5 +1,5 @@
 
-# Dockerfile – Atelier de renforcement, version H26
+# 11 - Dockerfile – Atelier de renforcement, version H26
 
 ## NOTE: Cet atelier est un exercice formatif à l'épreuve synthèse volet B.
 ## Il ne faut pas utiliser l'IA pour réaliser ce laboratoire. 
@@ -104,7 +104,15 @@ Un `inspect` de l'image devrait afficher:
 
  ---
 
-## Résultat
+## Contenu
+
+- [**Résultat**](#section-resultat)
+- [**Défi supplémentaire pour les plus téméraires**](#section-defi-supplementaire-pour-les-plus-temera)
+- [**Formatif 01 de l'épreuve synthèse volet B**](#section-formatif-01-de-l-epreuve-synthese-volet)
+
+---
+
+## Résultat {#section-resultat}
 
 ### Page principale
 
@@ -123,7 +131,7 @@ Un `inspect` de l'image devrait afficher:
 
  ----
 
-## Défi supplémentaire pour les plus téméraires
+## Défi supplémentaire pour les plus téméraires {#section-defi-supplementaire-pour-les-plus-temera}
  
  * Créer l'utilisateur **gestionweb**
  * Renseigner **'donttell'** comme mot de passe
@@ -140,7 +148,7 @@ $ docker run -d -p 80:80 alainboudreault/labo:super-minou
 ```
 ---
 
-## Formatif 01 de l'épreuve synthèse volet B
+## Formatif 01 de l'épreuve synthèse volet B {#section-formatif-01-de-l-epreuve-synthese-volet}
 
 À réaliser en classe et à remettre à la fin du cours.
 
@@ -151,5 +159,5 @@ $ docker run -d -p 80:80 alainboudreault/labo:super-minou
 ## Crédits
 
 *Document rédigé par Alain Boudreault © 2021-2026*  
-*Version 2026.02.10.1*  
+*Version 2026.02.10.1 - Révision 2026.11.07.1*  
 *Site par ve2cuy*

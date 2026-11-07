@@ -1,6 +1,20 @@
-# Guide des Manifestes Kubernetes (Version courte)
+# 27 - Guide des Manifestes Kubernetes (Version courte)
 
-## Structure de base
+## Contenu
+
+- [**Structure de base**](#section-structure-de-base)
+- [**1. Pod**](#section-1)
+- [**2. Deployment**](#section-2)
+- [**3. ConfigMap**](#section-3)
+- [**4. Secret**](#section-4)
+- [**5. Service**](#section-5)
+- [**Exemple Complet**](#section-exemple-complet)
+- [**Commandes Essentielles**](#section-commandes-essentielles)
+- [**Résumé**](#section-resume)
+
+---
+
+## Structure de base {#section-structure-de-base}
 
 Tous les manifestes Kubernetes partagent cette structure :
 
@@ -13,7 +27,7 @@ spec:       # Spécification (état désiré)
 
 ---
 
-## 1. Pod
+## 1. Pod {#section-1}
 
 **À quoi ça sert ?** Plus petite unité déployable. Groupe de conteneur(s) partageant réseau et stockage.
 
@@ -44,7 +58,7 @@ spec:
 
 ---
 
-## 2. Deployment
+## 2. Deployment {#section-2}
 
 **À quoi ça sert ?** Gère les Pods : réplication, mises à jour, rollback, auto-guérison.
 
@@ -87,7 +101,7 @@ spec:
 
 ---
 
-## 3. ConfigMap
+## 3. ConfigMap {#section-3}
 
 **À quoi ça sert ?** Stocke des données de configuration non sensibles (variables, fichiers).
 
@@ -139,7 +153,7 @@ spec:
 
 ---
 
-## 4. Secret
+## 4. Secret {#section-4}
 
 **À quoi ça sert ?** Stocke des données sensibles encodées en base64 (mots de passe, tokens).
 
@@ -201,7 +215,7 @@ kubectl create secret generic ssh-secret \
 
 ---
 
-## 5. Service
+## 5. Service {#section-5}
 
 **À quoi ça sert ?** Expose les Pods sur le réseau avec IP stable, DNS et load balancing.
 
@@ -249,7 +263,7 @@ spec:
 
 ---
 
-## Exemple Complet
+## Exemple Complet {#section-exemple-complet}
 
 Application avec toutes les ressources :
 
@@ -322,7 +336,7 @@ spec:
 
 ---
 
-## Commandes Essentielles
+## Commandes Essentielles {#section-commandes-essentielles}
 
 ```bash
 # Appliquer un manifeste
@@ -350,7 +364,7 @@ kubectl delete pod mon-pod
 
 ---
 
-## Résumé
+## Résumé {#section-resume}
 
 | Ressource | Usage | Type de données |
 |-----------|-------|-----------------|
@@ -359,3 +373,12 @@ kubectl delete pod mon-pod
 | **ConfigMap** | Configuration | Non sensibles |
 | **Secret** | Credentials | Sensibles (base64) |
 | **Service** | Exposition réseau | - |
+
+---
+
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Révision 2026.11.07.1*  
+
+*Contenu par [VE2CUY](https://ve2cuy.github.io/blog/)*

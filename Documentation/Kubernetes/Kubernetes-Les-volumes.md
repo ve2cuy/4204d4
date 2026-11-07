@@ -1,10 +1,10 @@
-# Kubernetes – Les volumes
+# 35 - Kubernetes – Les volumes
 
 <p align="center">
     <img src="../images/volumes.png" alt="YAML" width="600" />
 </p>
 
-## Contenu
+## Notions abordées
 
   * Les types de **volumes K8s**
     1.  **emptyDir** (stockage éphémère dans un *pod*)
@@ -14,7 +14,26 @@
 
 -----
 
-## 1 – Volume hébergé dans un Pod – `emptyDir`
+## Contenu
+
+- [**1 – Volume hébergé dans un Pod – `emptyDir`**](#section-1)
+- [**2 – Volume hébergé sur le host**](#section-2)
+- [**3 – Les volumes persistants (PV et PVC)**](#section-3)
+- [**4 – Les volumes externes**](#section-4)
+  - [4.1 – Mise en place d’un volume NFS sur un serveur Ubuntu 20.04](#section-4-1)
+  - [4.2 – Connexion à un partage NFS (À partir de MacOS)](#section-4-2)
+  - [4.3 – Connexion à un partage NFS (À partir de Linux)](#section-4-3)
+  - [4.4 – Connexion à un partage NFS à partir de Minikube](#section-4-4)
+- [**5 – Voici un exemple d’un déploiement nginx avec un PV à partir d’une VM sur le cloud de Google**](#section-5)
+- [**6 – Laboratoire PV/PVC/NFS (durée 30-40 minutes)**](#section-6)
+  - [1 – Vous devez mettre en place un déploiement K8S qui fait rouler](#section-6-1)
+  - [2 – Avec phpMyAdmin, créer un utilisateur et une BD ‘wordpress’](#section-6-2)
+  - [3 – Effacer le déploiement](#section-6-3)
+- [**Astuces**](#section-astuces)
+
+---
+
+## 1 – Volume hébergé dans un Pod – `emptyDir` {#section-1}
 
 
 Un `emptyDir` dans Kubernetes est créé sur le nœud (node) qui exécute le Pod, à un emplacement géré automatiquement par Kubelet :
@@ -141,7 +160,7 @@ Je suis 420-4D4 ;)-
 
 -----
 
-## 2 – Volume hébergé sur le host
+## 2 – Volume hébergé sur le host {#section-2}
 
 **Action 2.1 –** Renseigner le manifeste suivant:
 
@@ -182,7 +201,7 @@ spec:
 
 -----
 
-## 3 – Les volumes persistants (PV et PVC)
+## 3 – Les volumes persistants (PV et PVC) {#section-3}
 
 [Référence sur le site de Kubernetes](https://kubernetes.io/fr/docs/concepts/storage/persistent-volumes/)
 
@@ -334,11 +353,11 @@ Ici la voix des Misterons!
 
 -----
 
-## 4 – Les volumes externes
+## 4 – Les volumes externes {#section-4}
 
 Volume [NFS](https://fr.wikipedia.org/wiki/Network_File_System)
 
-### 4.1 – Mise en place d’un volume NFS sur un serveur Ubuntu 20.04
+### 4.1 – Mise en place d’un volume NFS sur un serveur Ubuntu 20.04 {#section-4-1}
 
 ```bash
 # Installer le service nfs sur le serveur
@@ -375,7 +394,7 @@ alain@k8s:/var/nfs/420-4D4$ sudo systemctl status nfs-kernel-server
    Main PID: 37211 (code=exited, status=0/SUCCESS)
 ```
 
-### 4.2 – Connexion à un partage NFS (À partir de MacOS):
+### 4.2 – Connexion à un partage NFS (À partir de MacOS): {#section-4-2}
 
 <img src="../images/nfs02.png" alt="" width="500" />
 
@@ -399,7 +418,7 @@ nfs.client.mount.options = vers=4
 
 -----
 
-### 4.3 – Connexion à un partage NFS (À partir de Linux):
+### 4.3 – Connexion à un partage NFS (À partir de Linux): {#section-4-3}
 
 ```bash
 # Au besoin, installer le client NFS:
@@ -416,7 +435,7 @@ drwxr-xr-x 2 nobody nogroup 4096 Apr 20 15:01 'Test a partir de MacOS'
 
 -----
 
-### 4.4 – Connexion à un partage NFS à partir de Minikube:
+### 4.4 – Connexion à un partage NFS à partir de Minikube: {#section-4-4}
 
 **ATTENTION, LA SECTION 4.4 NE S’APPLIQUE PAS AU PROJET DE SESSION\!\!\!**
 
@@ -566,7 +585,7 @@ kubectl get events
 
 -----
 
-## 5 – Voici un exemple d’un déploiement ***nginx*** avec un ***PV*** à partir d’une VM sur le cloud de Google:
+## 5 – Voici un exemple d’un déploiement ***nginx*** avec un ***PV*** à partir d’une VM sur le cloud de Google: {#section-5}
 
 ```yaml
 #  Exemple d'un service web qui utilise un dossier de partage NFS
@@ -660,9 +679,9 @@ spec:
 
 <img src="../images/labo02.png" alt="" width="700" />
 
-## 6 – Laboratoire PV/PVC/NFS (durée 30-40 minutes)
+## 6 – Laboratoire PV/PVC/NFS (durée 30-40 minutes) {#section-6}
 
-### 1 – Vous devez mettre en place un déploiement K8S qui fait rouler
+### 1 – Vous devez mettre en place un déploiement K8S qui fait rouler {#section-6-1}
 
   * ***phpMAadmin*** avec
   * ***MariaDB***
@@ -670,9 +689,9 @@ spec:
           - Il faut créer une **VM Ubuntu** et installer le service ***NFS***
               * le dossier de partage sur le serveur Ubuntu est ***/partage-nfs***
 
-### 2 – Avec phpMyAdmin, créer un utilisateur et une BD ‘wordpress’
+### 2 – Avec phpMyAdmin, créer un utilisateur et une BD ‘wordpress’ {#section-6-2}
 
-### 3 – Effacer le déploiement
+### 3 – Effacer le déploiement {#section-6-3}
 
   * Le relancer et valider que la BD ‘wordpress’ a été préservée.
   * Vérifier le contenu du dossier `/partage-nfs` sur le serveur Ubuntu. Il devrait contenir une structure semblable à ceci:
@@ -699,7 +718,7 @@ drwx------ 2 mysql mysql      4096 Apr 28 14:46 wordpress
 
 -----
 
-## Astuces
+## Astuces {#section-astuces}
 
 Le Pod qui roule le SGBD va tenter un `'chown'` sur le dossier de partage NFS. Ce qui va provoquer un `'CrashLoopBackOff'` du Pod et un log :
 
@@ -745,5 +764,5 @@ Pour exécuter le conteneur avec les droits de ce propriétaire, il faut ajouter
 ## Crédits
 
 *Document rédigé par Alain Boudreault © 2021-2026*  
-*Version 2025.12.03.1*  
+*Version 2025.12.03.1 - Révision 2026.11.07.1*  
 *Site par ve2cuy*

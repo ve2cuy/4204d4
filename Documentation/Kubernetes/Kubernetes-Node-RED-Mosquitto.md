@@ -1,8 +1,19 @@
-# Kubernetes:  Node-RED + Mosquitto + ConfigMap + Secret
+# 52 - Kubernetes:  Node-RED + Mosquitto + ConfigMap + Secret
 
 *Document converti depuis 4204d4.ve2cuy.com — 5 avril 2021*
 
-## TP02 ( 20% ) – Contenu:
+## Contenu
+
+- [**TP02 ( 20% ) – Énoncé**](#section-tp02-20-enonce)
+  - [1 – Mise en route du serveur MQTT Mosquitto – (30% de la note)](#section-tp02-20-enonce-1)
+  - [2 – Mise en place du configmap et du secret](#section-tp02-20-enonce-2)
+  - [3 – Mise en route de l’application Node-RED (40% de la note)](#section-tp02-20-enonce-3)
+- [**À faire**](#section-a-faire)
+- [**Remise ( 20% de la note finale du cours )**](#section-remise-20-de-la-note-finale-du-cours)
+
+---
+
+## TP02 ( 20% ) – Énoncé {#section-tp02-20-enonce}
 
 * **Une application [Node-RED](https://nodered.org) sous Kubernetes.**
 * **Un service MQTT (message broker), [Mosquitto,](https://mosquitto.org) sous Kubernetes.**
@@ -46,7 +57,7 @@ La **solution** est dans les étapes
 
 ---
 
-### 1 – Mise en route du serveur MQTT Mosquitto – (30% de la note)
+### 1 – Mise en route du serveur MQTT Mosquitto – (30% de la note) {#section-tp02-20-enonce-1}
 
 **Action 1.0 –** Renseigner le fichier manifeste suivant:
 
@@ -139,7 +150,7 @@ mosquitto.conf
 
 ---
 
-### 2 – Mise en place du configmap et du secret
+### 2 – Mise en place du configmap et du secret {#section-tp02-20-enonce-2}
 
 Ces objets serviront à fournir deux fichiers, un de configuration et un simulant un certificat.
 
@@ -258,7 +269,7 @@ $ kubectl exec -it mosquitto-647cb466df-2r4k6 -- sh
 
 ---
 
-### 3 – Mise en route de l’application Node-RED (40% de la note)
+### 3 – Mise en route de l’application Node-RED (40% de la note) {#section-tp02-20-enonce-3}
 
 **Action 3.0 –** Renseigner le fichier manifeste suivant ‘node-red-depart.yml’ :
 
@@ -379,7 +390,7 @@ password:  p4204d4 (dans un secret)
 
 ---
 
-## À faire:
+## À faire: {#section-a-faire}
 
 #### Lister toutes les nouvelles propriétés, et leurs rôles, que vous avez rencontrées dans ce document: ( à ajouter sous forme de commentaires dans le fichier manifeste)
 
@@ -395,7 +406,7 @@ _________________________________________________________________________
 
 ---
 
-## Remise ( 20% de la note finale du cours )
+## Remise ( 20% de la note finale du cours ) {#section-remise-20-de-la-note-finale-du-cours}
 
 Un fichier ‘***420-4d4-tp02.yml’ via LEA***.
 
@@ -408,3 +419,12 @@ Un fichier ‘***420-4d4-tp02.yml’ via LEA***.
 ---
 
 ###### Document rédigé par Alain Boudreault (aka – ve2cuy) – version 2023.04.12.01
+
+---
+
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Révision 2026.11.07.1*  
+
+*Contenu par [VE2CUY](https://ve2cuy.github.io/blog/)*

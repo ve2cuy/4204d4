@@ -1,6 +1,19 @@
-# Guide des Manifestes Kubernetes
+# 28 - Guide des Manifestes Kubernetes
 
-## Qu'est-ce qu'un Manifeste Kubernetes ?
+## Contenu
+
+- [**Qu'est-ce qu'un Manifeste Kubernetes ?**](#section-qu-est-ce-qu-un-manifeste-kubernetes)
+- [**1. Pod**](#section-1)
+- [**2. Deployment**](#section-2)
+- [**3. ConfigMap**](#section-3)
+- [**4. Secret**](#section-4)
+- [**5. Service**](#section-5)
+- [**Résumé des Ressources**](#section-resume-des-ressources)
+- [**Commandes Utiles**](#section-commandes-utiles)
+
+---
+
+## Qu'est-ce qu'un Manifeste Kubernetes ? {#section-qu-est-ce-qu-un-manifeste-kubernetes}
 
 Un **manifeste Kubernetes** est un fichier YAML qui décrit l'état désiré d'une ressource. Structure commune :
 
@@ -13,7 +26,7 @@ spec:       # Spécification (état désiré)
 
 ---
 
-## 1. Pod
+## 1. Pod {#section-1}
 
 ### À quoi ça sert ?
 Le **Pod** est la plus petite unité déployable. Un groupe de conteneurs partageant réseau et stockage.
@@ -99,7 +112,7 @@ spec:
 
 ---
 
-## 2. Deployment
+## 2. Deployment {#section-2}
 
 ### À quoi ça sert ?
 Le **Deployment** gère les Pods : réplication, mises à jour progressives, rollback, auto-guérison.
@@ -221,7 +234,7 @@ spec:
 
 ---
 
-## 3. ConfigMap
+## 3. ConfigMap {#section-3}
 
 ### À quoi ça sert ?
 Le **ConfigMap** stocke des données de configuration non sensibles (fichiers, variables).
@@ -345,7 +358,7 @@ spec:
 
 ---
 
-## 4. Secret
+## 4. Secret {#section-4}
 
 ### À quoi ça sert ?
 Le **Secret** stocke des données sensibles encodées en base64 (mots de passe, tokens, certificats).
@@ -499,7 +512,7 @@ kubectl create secret docker-registry docker-secret \
 
 ---
 
-## 5. Service
+## 5. Service {#section-5}
 
 ### À quoi ça sert ?
 Le **Service** expose les Pods sur le réseau avec une IP stable, DNS et load balancing.
@@ -640,7 +653,7 @@ spec:
   externalName: api.example.com    # Redirige vers ce DNS
 ```
 
-## Résumé des Ressources
+## Résumé des Ressources {#section-resume-des-ressources}
 
 | Ressource | Usage | Exemple |
 |-----------|-------|---------|
@@ -650,7 +663,7 @@ spec:
 | **Secret** | Données sensibles | Mots de passe, tokens |
 | **Service** | Exposition réseau des Pods | Accès à l'application |
 
-## Commandes Utiles
+## Commandes Utiles {#section-commandes-utiles}
 
 ```bash
 # Appliquer un manifeste
@@ -675,3 +688,12 @@ kubectl logs deployment/mon-deployment
 kubectl delete -f fichier.yml
 kubectl delete pod mon-pod
 ```
+
+---
+
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Révision 2026.11.07.1*  
+
+*Contenu par [VE2CUY](https://ve2cuy.github.io/blog/)*

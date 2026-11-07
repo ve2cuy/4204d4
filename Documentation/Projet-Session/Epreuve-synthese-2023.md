@@ -1,4 +1,4 @@
-# Épreuve synthèse 2023
+# 53 - Épreuve synthèse 2023
 
 *Document converti depuis 4204d4.ve2cuy.com — 29 avril 2023*
 
@@ -52,9 +52,36 @@ git clone https://github.com/ve2cuy/420-4D4.TP03.Depart.git
 
 ---
 
-## Partie A (10%) – Déployer une infrastructure K8S H.A.
+## Contenu
 
-### 1 – En équipe de n, il faut déployer 3 serveurs Proxmox.
+- [**Partie A (10%) – Déployer une infrastructure K8S H.A.**](#section-partie-a-10-deployer-une-infrastructure)
+  - [1 – En équipe de n, il faut déployer 3 serveurs Proxmox.](#section-partie-a-10-deployer-une-infrastructure-1)
+  - [2 – Créer 4 VMs Ubuntu serveur 22.04.](#section-partie-a-10-deployer-une-infrastructure-2)
+  - [3 – Installer un Amas K8S sur les 4 VM](#section-partie-a-10-deployer-une-infrastructure-3)
+  - [4 – Installer le loadbalancer metallb](#section-partie-a-10-deployer-une-infrastructure-4)
+  - [5 – Installer un ingress controler](#section-partie-a-10-deployer-une-infrastructure-5)
+  - [6 – Installer Rancher et tester](#section-partie-a-10-deployer-une-infrastructure-6)
+  - [7 – Importer votre cluster K8S](#section-partie-a-10-deployer-une-infrastructure-7)
+  - [8 – Installer le ‘monitoring’ sur votre cluster](#section-partie-a-10-deployer-une-infrastructure-8)
+  - [9 – Installer Longhorn et tester](#section-partie-a-10-deployer-une-infrastructure-9)
+  - [10 – Tester le cluster de votre équipe à partir de votre poste de travail](#section-partie-a-10-deployer-une-infrastructure-10)
+  - [11 – Documenter toutes les étapes de la mise en place des points précédents](#section-partie-a-10-deployer-une-infrastructure-11)
+- [**Partie B (40%) – En cours de rédaction Attention – version 0.314159265359 Il y aura des ajouts**](#section-partie-b-40-en-cours-de-redaction-attent)
+- [**Objectif**](#section-objectif)
+- [**1 – Détails de déploiement de l’image principale du projet**](#section-1)
+- [**Volume NFS en nuage**](#section-volume-nfs-en-nuage)
+- [**2 – NextCloud**](#section-2)
+- [**3 – MatterMost**](#section-3)
+- [**4 – Défi WordPress – 10 % extra pour les aventureux**](#section-4)
+- [**5 – Documentation du projet**](#section-5)
+- [**6 – Méthodes de remise de l’épreuve synthèse**](#section-6)
+- [**Journaux d’un projet fonctionnel**](#section-journaux-dun-projet-fonctionnel)
+
+---
+
+## Partie A (10%) – Déployer une infrastructure K8S H.A. {#section-partie-a-10-deployer-une-infrastructure}
+
+### 1 – En équipe de n, il faut déployer 3 serveurs Proxmox. {#section-partie-a-10-deployer-une-infrastructure-1}
 
 Le mot de passe pour les serveurs, les VM et Rancher est !abc_def_123_456!
 
@@ -74,7 +101,7 @@ Toutes les adresses IP doivent être fixes, serveurs, VM, nœuds K8s. Voici la p
 
 ---
 
-### 2 – Créer 4 VMs Ubuntu serveur 22.04.
+### 2 – Créer 4 VMs Ubuntu serveur 22.04. {#section-partie-a-10-deployer-une-infrastructure-2}
 
 Il faut créer **4** vms (une VM par équipe) Ubuntu 22.0**4** par serveur Proxmox avec les ressources nécessaires pour rouler K8S, Rancher, metallb, longhorn, Ingress, le monitoring (prometheus, grafana) et les déploiements de la partie 2. Les VMs seront nommées, E1-VM1, E2-VM1, E3-VM1 et E**4**-VM1 sur le serveur **Promox 01**, E1-VM2, E2-VM2 sur le serveur **Promox 01**, E3-VM2 sur le serveur **Promox 02** et E**4**-VM2 sur le serveur **Promox 03**, E1-VM3, E2-VM3, E3-VM3 et E**4**-VM3 sur le serveur **Promox 02** et E1-VM**4**, E2-VM**4**, E3-VM**4** et E**4**-VM**4** sur le serveur **Promox 03**.
 
@@ -82,7 +109,7 @@ Il faut créer **4** vms (une VM par équipe) Ubuntu 22.0**4** par serveur Proxm
 
 ---
 
-### 3 – Installer un Amas K8S sur les 4 VM
+### 3 – Installer un Amas K8S sur les 4 VM {#section-partie-a-10-deployer-une-infrastructure-3}
 
 Il faut installer un amas K8S constitué de 4 noeuds – 1 master, 3 worker – selon la topologie suivante:
 
@@ -91,13 +118,13 @@ Il faut installer un amas K8S constitué de 4 noeuds – 1 master, 3 worker – 
 
 ---
 
-### 4 – Installer le loadbalancer [metallb](https://metallb.universe.tf)
+### 4 – Installer le loadbalancer [metallb](https://metallb.universe.tf) {#section-partie-a-10-deployer-une-infrastructure-4}
 
 * Utiliser 2 adresses IP de la banque des adresses disponibles
 
 ---
 
-### 5 – Installer un ingress controler
+### 5 – Installer un ingress controler {#section-partie-a-10-deployer-une-infrastructure-5}
 
 ```
 alain@k8s01:~$ k get pod -n ingress-nginx
@@ -107,7 +134,7 @@ ingress-nginx-controller-7d9674b7cf-nrb87   1/1     Running                  0  
 
 ---
 
-### 6 – Installer [Rancher](https://www.rancher.com/) et tester
+### 6 – Installer [Rancher](https://www.rancher.com/) et tester {#section-partie-a-10-deployer-une-infrastructure-6}
 
 <img src="../images/Epreuve-synthese-2023/Capture-decran-le-2023-04-29-a-19.16.36.png" alt="" width="500" />
 
@@ -115,13 +142,13 @@ ingress-nginx-controller-7d9674b7cf-nrb87   1/1     Running                  0  
 
 ---
 
-### 7 – Importer votre cluster K8S
+### 7 – Importer votre cluster K8S {#section-partie-a-10-deployer-une-infrastructure-7}
 
 * Cette opération peut-être longue – 30 minutes –
 
 ---
 
-### 8 – Installer le ‘monitoring’ sur votre cluster
+### 8 – Installer le ‘monitoring’ sur votre cluster {#section-partie-a-10-deployer-une-infrastructure-8}
 
 <img src="../images/Epreuve-synthese-2023/Capture-decran-le-2023-04-27-a-10.15.09.png" alt="" width="500" />
 
@@ -129,19 +156,19 @@ ingress-nginx-controller-7d9674b7cf-nrb87   1/1     Running                  0  
 
 ---
 
-### 9 – Installer [Longhorn](https://longhorn.io/) et tester
+### 9 – Installer [Longhorn](https://longhorn.io/) et tester {#section-partie-a-10-deployer-une-infrastructure-9}
 
 <img src="../images/Epreuve-synthese-2023/Capture-decran-le-2023-04-27-a-10.16.39-1024x295.png" alt="" width="500" />
 
 ---
 
-### 10 – Tester le cluster de votre équipe à partir de votre poste de travail
+### 10 – Tester le cluster de votre équipe à partir de votre poste de travail {#section-partie-a-10-deployer-une-infrastructure-10}
 
 * export KUBECONFIG=~/un-cluster-k8s.conf
 
 ---
 
-### 11 – Documenter toutes les étapes de la mise en place des points précédents
+### 11 – Documenter toutes les étapes de la mise en place des points précédents {#section-partie-a-10-deployer-une-infrastructure-11}
 
 **NOOOOOTE**: Chaque étudiant est responsable de la rédaction de son document. **Cette étape n’est pas un travail d’équipe** 🫥.
 
@@ -151,7 +178,7 @@ ingress-nginx-controller-7d9674b7cf-nrb87   1/1     Running                  0  
 
 ---
 
-## Partie B (40%) – En cours de rédaction Attention – version 0.314159265359 Il y aura des ajouts
+## Partie B (40%) – En cours de rédaction Attention – version 0.314159265359 Il y aura des ajouts {#section-partie-b-40-en-cours-de-redaction-attent}
 
 <img src="../images/Epreuve-synthese-2023/Tintin-aa_d.jpg.webp" alt="" width="500" />
 
@@ -169,7 +196,7 @@ De plus, il faut **ABSOLUMENT** créer un espace de nom – ***namespace*** – 
 
 ---
 
-## Objectif
+## Objectif {#section-objectif}
 
 Déployer, en utilisant **l’infrastructure du D139** , une application ***apache2/php*** – en **10** *duplicas –* qui affiche la page suivante:
 
@@ -177,7 +204,7 @@ Déployer, en utilisant **l’infrastructure du D139** , une application ***apac
 
 ---
 
-## 1 – Détails de déploiement de l’image principale du projet
+## 1 – Détails de déploiement de l’image principale du projet {#section-1}
 
 ### Il faut,
 
@@ -244,7 +271,7 @@ Ce qui devrait alors produire le résultat suivant:
 
 ---
 
-## Volume NFS en nuage
+## Volume NFS en nuage {#section-volume-nfs-en-nuage}
 
 Le fichier ‘***index.php***‘ du site principal doit être stocké et lu à partir d’un Volume persistant – **PV** – de type **NFS** hébergé sur un service en nuage tel que [Linode](https://www.linode.com), [AWS](https://aws.amazon.com/fr/) ou [Google cloud](https://cloud.google.com).
 
@@ -254,7 +281,7 @@ Le fichier ‘***index.php***‘ du site principal doit être stocké et lu à p
 
 ---
 
-## 2 – NextCloud
+## 2 – NextCloud {#section-2}
 
 [**NextCloud**](https://hub.docker.com/_/nextcloud) est une application qui permet l’accès à des fichiers personnels via une interface Web.
 
@@ -345,7 +372,7 @@ Il ne reste qu’à se connecter en utilisant les valeurs renseignée par les se
 
 ---
 
-## 3 – MatterMost
+## 3 – MatterMost {#section-3}
 
 [‘*Mattermost*](https://fr.wikipedia.org/wiki/Mattermost) *est un logiciel et un service de messagerie instantanée libre auto-hébergeable. Il est conçu comme un chat interne pour les organisations et les entreprises, et il est présenté comme une alternative à Slack*‘
 
@@ -372,7 +399,7 @@ Voici la page d’accueil d’une nouvelle installation de ***Mattermost***:
 
 ---
 
-## 4- Défi WordPress – 10 % extra pour les aventureux
+## 4 – Défi WordPress – 10 % extra pour les aventureux {#section-4}
 
 ### Ce ne sera pas facile, à moins d’être aussi bon que moi 😉
 
@@ -399,7 +426,7 @@ Voici la page d’accueil d’une nouvelle installation de ***Mattermost***:
 
 ---
 
-## 5 – Documentation du projet
+## 5 – Documentation du projet {#section-5}
 
 * Il faut documenter l’entête de chacune des ressources du fichier yml
   * Auteur
@@ -409,7 +436,7 @@ Voici la page d’accueil d’une nouvelle installation de ***Mattermost***:
 
 ---
 
-## 6 – Méthodes de remise de l’épreuve synthèse
+## 6 – Méthodes de remise de l’épreuve synthèse {#section-6}
 
 * Partie A – Un document Word via LEA
 * Partie B
@@ -423,7 +450,7 @@ Voici la page d’accueil d’une nouvelle installation de ***Mattermost***:
 
 ---
 
-## Journaux d’un projet fonctionnel
+## Journaux d’un projet fonctionnel {#section-journaux-dun-projet-fonctionnel}
 
 **1 – État de départ – avant le déploiement**
 
@@ -557,3 +584,12 @@ ingress-tp03 nginx accueil.tp03,
 ---
 
 ###### Document rédigé par Alain Boudreault (c) 2021-2023 – version 2023.04.29.01
+
+---
+
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Révision 2026.11.07.1*  
+
+*Contenu par [VE2CUY](https://ve2cuy.github.io/blog/)*

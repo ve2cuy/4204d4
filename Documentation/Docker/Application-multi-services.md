@@ -1,4 +1,4 @@
-# 🐳 Applications – Multi-services
+# 13 - 🐳 Applications – Multi-services
 
 
 ## Et pourquoi pas un défi de taille
@@ -19,7 +19,15 @@
 
 ----
 
-## 1 – Les variables d'environnement
+## Contenu
+
+- [**1 – Les variables d'environnement**](#section-1)
+- [**2 – Construire une image qui utilise une variable d'environnement**](#section-2)
+- [**3 – Application multi-services : MariaDB + Adminer**](#section-3)
+
+---
+
+## 1 – Les variables d'environnement {#section-1}
 
 ### Mise en situation
 
@@ -79,7 +87,7 @@ LOGIN-NAME=Coco Lafortune
 
 ---
 
-### Étape 2 – Construire une image qui utilise une variable d'environnement:
+## 2 – Construire une image qui utilise une variable d'environnement {#section-2}
 
 #### Action 2.1 – Dockerfile
 
@@ -188,7 +196,7 @@ EXEMPLE: 2.1
 
 -----
 
-## Étape 3 – Application multi-services : MariaDB + Adminer
+## 3 – Application multi-services : MariaDB + Adminer {#section-3}
 
 Mise en place d'une application, à partir d'un conteneur **MariaDB** et d'un conteneur **adminer**, qui roulent (les deux conteneurs) dans un **réseau privé**.
 
@@ -285,5 +293,5 @@ Dans un fureteur, inscrire l'adresse `localhost:8080`, ce qui devrait afficher l
 ## Crédits
 
 *Document rédigé par Alain Boudreault © 2021-2026*  
-*Version 2026.02.19.1*  
+*Version 2026.02.19.1 - Révision 2026.11.07.1*  
 *Site par ve2cuy*

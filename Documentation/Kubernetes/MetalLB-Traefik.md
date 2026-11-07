@@ -1,10 +1,29 @@
-# K8S – LoadBalancer externe + Traefik
+# 38 - K8S – LoadBalancer externe + Traefik
 
 <p align="center">
     <img src="../images/load-balancer-icon-19.jpg.png" alt="Load Balancer Icon" width="300" />
 </p>
 
-## 1 – Mise en situation
+## Contenu
+
+- [**1 – Mise en situation**](#section-1)
+- [**2 – Installation de MetalLB**](#section-2)
+  - [2.1 – Installation](#section-2-1)
+  - [2.2 – Renseigner la plage IP](#section-2-2)
+  - [2.3 – Tester le loadbalancer de type métal](#section-2-3)
+- [**3 – Installation d'un Ingress (reverse proxy) Traefik sur K8S**](#section-3)
+  - [3.1 – Déploiement d'un service ingress de type Traefik via Helm](#section-3-1)
+  - [3.2 – Déployer un service Web (superMinou)](#section-3-2)
+  - [3.3 – Fichier: ingress-demo.yml](#section-3-3)
+  - [3.4 – Fichier /etc/hosts](#section-3-4)
+  - [3.5 – Tester l'ingress (reverse proxy)](#section-3-5)
+- [**4 – 💡 Exemple complet version Google-Cloud et DuckDNS**](#section-4)
+  - [4.1 – Fichier values.yaml](#section-4-1)
+  - [4.2 – Le fichier de déploiement](#section-4-2)
+
+---
+
+## 1 – Mise en situation {#section-1}
 
 Kubernetes ne m'offre pas de service de balance de charge (load balancer externe au réseau K8s) pour plusieurs applications qui partagent le même point d'entrée (une seule adresse IP/même port).
 
@@ -18,9 +37,9 @@ Par exemple: [metallb](https://metallb.universe.tf/concepts/), etc.
 
 ---
 
-## 2 – Installation de MetalLB
+## 2 – Installation de MetalLB {#section-2}
 
-### 2.1 – Installation
+### 2.1 – Installation {#section-2-1}
 
 ```bash
 # Sur le cluster K8S suivant:
@@ -74,7 +93,7 @@ kubectl get all -n metallb-system -o wide
 
 ---
 
-### 2.2 – Renseigner la plage IP
+### 2.2 – Renseigner la plage IP {#section-2-2}
 
 Il faut maintenant renseigner la plage d'adresse IP que MetalLB pourra utiliser comme points d'entrées.  Ce sont des adresses valides et disponibles dans votre réseau local.
 
@@ -138,7 +157,7 @@ kubectl apply -f Metallb-config.yaml
 
 ---
 
-## 2.5 Tester le loadbalancer de type métal
+### 2.3 – Tester le loadbalancer de type métal {#section-2-3}
 
 ```bash
 kubectl expose deployment nginx-deployment \
@@ -163,7 +182,7 @@ nginx-service   LoadBalancer   10.109.182.2   192.168.139.91   80:31429/TCP   3s
 
 ---
 
-## 3 – Installation d'un Ingress (reverse proxy) Traefik sur K8S
+## 3 – Installation d'un Ingress (reverse proxy) Traefik sur K8S {#section-3}
 
 [Documentation officielle](https://doc.traefik.io/traefik/getting-started/quick-start-with-kubernetes/)
 
@@ -179,7 +198,7 @@ $ sudo snap install helm --classic
 
 ---
 
-### 3.1 – Déploiement d'un service ingress de type Traefik via Helm
+### 3.1 – Déploiement d'un service ingress de type Traefik via Helm {#section-3-1}
 
 * Ajouter le dépot Helm de Traefik
 
@@ -318,7 +337,7 @@ spec:
 ---
 
 
-### 3.2 – Déployer un service Web (superMinou)
+### 3.2 – Déployer un service Web (superMinou) {#section-3-2}
 
 #### Manifeste SuperMinou
 
@@ -412,7 +431,7 @@ spec:
       targetPort: 80
 ```
 
-### 3.3 – Fichier: ingress-demo.yml
+### 3.3 – Fichier: ingress-demo.yml {#section-3-3}
 
 ```yaml
 # whoami-ingressroute.yaml
@@ -476,13 +495,13 @@ Spec:
 Events:      <none>
 ```
 
-### 3.4 – Fichier /etc/hosts
+### 3.4 – Fichier /etc/hosts {#section-3-4}
 
 ```bash
 192.168.2.60  superminou.labo420 superpitou.labo420
 ```
 
-### 3.5 – Tester l'ingress (reverse proxy)
+### 3.5 – Tester l'ingress (reverse proxy) {#section-3-5}
 
 <img src="../images/Capture-decran-le-2023-04-09-a-13.32.53.png" alt="SuperMinou Demo" width="500" />
 
@@ -493,11 +512,11 @@ Events:      <none>
 
 ---
 
-# 💡 Exemple complet version Google-Cloud et DuckDNS
+## 4 – 💡 Exemple complet version Google-Cloud et DuckDNS {#section-4}
 
 **NOTE**: Le loadbalancer (par exemple MetalLB) sera géré par le Cloud provider. 
 
-## Fichier values.yaml
+### 4.1 – Fichier values.yaml {#section-4-1}
 ```yaml
 # values.yaml
 # Sans autres directives, les rêgles suivantes seront en fonction:
@@ -528,7 +547,7 @@ kubectl create namespace traefik
 ./helm install traefik traefik/traefik -f values.yaml --wait --namespace traefik
 ```
 
-## Le fichier déploiement
+### 4.2 – Le fichier de déploiement {#section-4-2}
 
 ```yaml
 # Tester un reverse proxy avec Traefik Ingress Controller, version pour GCloud
@@ -651,5 +670,5 @@ Certificats TLS - À compléter
 ## Crédits
 
 *Document rédigé par Alain Boudreault © 2021-2026*  
-*Version 2026.04.27.1*  
+*Version 2026.04.27.1 - Révision 2026.11.07.1*  
 *Site par ve2cuy*

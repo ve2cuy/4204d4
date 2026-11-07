@@ -1,5 +1,5 @@
 
-# 💾 Docker – Retour sur les fusions (bind) Expérimentation avec MySQL
+# 14 - 💾 Docker – Retour sur les fusions (bind) Expérimentation avec MySQL
 
 Histoire de bien intégrer les notions acquises lors des ateliers précédents, nous allons revisiter :
 
@@ -15,7 +15,21 @@ Histoire de bien intégrer les notions acquises lors des ateliers précédents, 
 
 -----
 
-## Étape 1 – Liaison d'un dossier sur une `alpine`
+## Contenu
+
+- [**1 – Liaison d'un dossier sur une `alpine`**](#section-1)
+- [**2 – Fusion de ports et persistance (Node-RED)**](#section-2)
+  - [Étape 2 – Expérimentation avec `node-red`](#section-2-2)
+- [**3 – Fun with MySQL (Persistance et Port)**](#section-3)
+  - [Laboratoire 3.5 - 🛑 Facultatif](#section-3-5)
+- [**4 – Une image MySQL avec une BD personnalisée (Docker Compose)**](#section-4)
+- [**5 – Démarrage d'une application WordPress**](#section-5)
+- [**6 – Laboratoire (WordPress avec MariaDB)**](#section-6)
+- [**7 – Outil de gestion Web pour Docker – Portainer**](#section-7)
+
+---
+
+## 1 – Liaison d'un dossier sur une `alpine` {#section-1}
 
 ### Action 1.1 – Créer le répertoire local
 
@@ -100,9 +114,9 @@ Momo dit: Bonjour le monde!
 
 -----
 
-## 2 – Fusion de ports et persistance (Node-RED)
+## 2 – Fusion de ports et persistance (Node-RED) {#section-2}
 
-### Étape 2 – Expérimentation avec `node-red`
+### Étape 2 – Expérimentation avec `node-red` {#section-2-2}
 
 **Node-RED** est un outil de développement basé sur des flux de programmation visuelle.
 
@@ -157,7 +171,7 @@ docker run -it -d -p 80:1880 -v "$(pwd)/node-red/:/data" nodered/node-red
 
 -----
 
-## Étape 3 – Fun with MySQL (Persistance et Port)
+## 3 – Fun with MySQL (Persistance et Port) {#section-3}
 
 ### Pré-requis
 
@@ -212,7 +226,7 @@ Utiliser l'application (ex: MySQL WorkBench) pour créer une nouvelle connexion 
 
 ---
 
-### Laboratoire 3.5 - 🛑 Facultatif
+### Laboratoire 3.5 - 🛑 Facultatif {#section-3-5}
 
 1.  Créer une table `tbl_amis` (`nom varchar(30)`, `email varchar(30)`).
 2.  Ajouter deux enregistrements.
@@ -261,7 +275,7 @@ mysql> exit
 
 -----
 
-## 4 – Une image MySQL avec une BD personnalisée (Docker Compose)
+## 4 – Une image MySQL avec une BD personnalisée (Docker Compose) {#section-4}
 
 ### À partir d'un dossier vide
 
@@ -378,7 +392,7 @@ mysql> SELECT host, user FROM mysql.user;
 
 -----
 
-## 5 – Démarrage d'une application WordPress
+## 5 – Démarrage d'une application WordPress {#section-5}
 
 ### Action 5.1 – Créer un réseau privé docker pour l'application
 
@@ -483,7 +497,7 @@ Tester l'accès : `http://localhost:8000` et compléter l'installation.
 
 <img src="../images/labo03.png" alt="" width="700" />
 
-## 6 – Laboratoire (WordPress avec MariaDB)
+## 6 – Laboratoire (WordPress avec MariaDB) {#section-6}
 
 Mettre en place un site WordPress, à partir de conteneurs, pour la **CIE\_ABC**, en respectant le devis suivant :
 
@@ -506,9 +520,9 @@ Voilà, nous venons de terminer notre expérimentation avec un conteneur de type
 
 -----
 
-## 8 – Outil de gestion Web pour Docker – Portainer
+## 7 – Outil de gestion Web pour Docker – Portainer {#section-7}
 
-### Action 8.1 – Démarrer l'application via docker
+### Action 7.1 – Démarrer l'application via docker
 
 ```bash
 # Note: Syntaxe pour une station MacOs ou Linux:
@@ -529,7 +543,7 @@ portainer/portainer-ce:2.11.1
 
 > Note : [Documentation pour Windows ici](URL non fournie dans la source)
 
-### Action 8.2 – Ouvrir l'application
+### Action 7.2 – Ouvrir l'application
 
 Tester l'accès : `https://localhost:9443`
 
@@ -541,5 +555,5 @@ Tester l'accès : `https://localhost:9443`
 ## Crédits
 
 *Document rédigé par Alain Boudreault © 2021-2026*  
-*Version 2025.12.03.1*  
+*Version 2025.12.03.1 - Révision 2026.11.07.1*  
 *Site par ve2cuy*

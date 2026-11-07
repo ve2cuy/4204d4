@@ -1,14 +1,21 @@
-# Docker-Compose – Laboratoire (Drupal)
+# 18 - Docker-Compose – Laboratoire (Drupal)
 
 *Document converti depuis 4204d4.ve2cuy.com — 23 février 2023*
 
-## Défi
+## Contenu
+
+- [**1 – Défi**](#section-1)
+- [**2 – Prescriptions**](#section-2)
+
+---
+
+## 1 – Défi {#section-1}
 
 Déployer le gestionnaire de contenu ***Drupal*** à l’aide de **Docker-compose**.
 
 [Référence](https://hub.docker.com/_/drupal)
 
-## Prescriptions
+## 2 – Prescriptions {#section-2}
 
 * Réseau privé nommé ‘***drupal_net***‘
 * Volumes, dans des dossiers de l’hôte, pour les:
@@ -29,3 +36,12 @@ Note: Il est possible que la dernière version (TAG) de Drupal ne fonctionne pas
 <https://gitlab.com/deviktta/docker-compose-for-drupal>
 
 <https://wodby.com/docs/1.0/stacks/drupal/local/>
+
+---
+
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Révision 2026.11.07.1*  
+
+*Contenu par [VE2CUY](https://ve2cuy.github.io/blog/)*

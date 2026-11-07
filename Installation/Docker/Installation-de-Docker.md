@@ -1,4 +1,4 @@
-# Installation de Docker
+# 2 - Installation de Docker
 
 *Mis à jour le 23 Décembre 2020 - Révision du 2025.12.05*
 
@@ -8,7 +8,18 @@
 
 ---
 
-## 1 – Docker-Desktop
+## Contenu
+
+- [**1 – Docker-Desktop**](#section-1)
+- [**2 – Installation manuelle sous Ubuntu (Server ou Desktop)**](#section-2)
+  - [2.1 – Configuration de Docker sans sudo](#section-2-1)
+- [**3 – Installation sous Ubuntu avec Vagrant**](#section-3)
+- [**4 – Installation sous Windows**](#section-4)
+- [**5 – Installation sous MacOS**](#section-5)
+
+---
+
+## 1 – Docker-Desktop {#section-1}
 
 La façon la plus simple d'installer Docker sur un poste de travail est d'utiliser l'application d'installation de **Docker-Desktop**. Cette application est disponible pour Windows, Linux et MacOS.
 
@@ -22,7 +33,7 @@ Ce document explique comment installer Docker à partir d'une **CLI**.
 
 ---
 
-## 2 – Installation manuelle sous Ubuntu (Server ou Desktop)
+## 2 – Installation manuelle sous Ubuntu (Server ou Desktop) {#section-2}
 
 *Mise à jour le 2025.10.24*
 
@@ -70,7 +81,7 @@ sudo systemctl status docker
 docker --version
 ```
 
-### 2.1 – Configuration de Docker sans sudo
+### 2.1 – Configuration de Docker sans sudo {#section-2-1}
 
 ```bash
 # 1 - Tester la commande suivante:
@@ -99,13 +110,13 @@ docker run hello-world
 
 ---
 
-## 3 – Installation sous Ubuntu avec Vagrant
+## 3 – Installation sous Ubuntu avec Vagrant {#section-3}
 
 Voir [ici](../Vagrant/VM-Docker-avec-Vagrant.md)
 
 ---
 
-## 4 – Installation sous Windows
+## 4 – Installation sous Windows {#section-4}
 
 [Instructions officielles](https://docs.docker.com/docker-for-windows/install/)
 
@@ -117,7 +128,7 @@ wsl --update
 
 ---
 
-## 5 – Installation sous MacOS
+## 5 – Installation sous MacOS {#section-5}
 
 [Instructions officielles](https://docs.docker.com/docker-for-mac/install/)
 
@@ -126,5 +137,5 @@ wsl --update
 ## Crédits
 
 *Document préparé par Alain Boudreault © 2022-2025*  
-*Version 2025.12.05.01*  
+*Version 2025.12.05.01 - Révision 2026.11.07.1*  
 *Site par ve2cuy*

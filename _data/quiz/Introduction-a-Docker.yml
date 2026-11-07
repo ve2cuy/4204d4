@@ -1,0 +1,190 @@
+# Quiz du document 3 - Introduction à Docker (Documentation/Docker/Introduction-a-Docker.md).
+# Le nom du fichier est celui du document, sans .md. Voir GUIDE.md, « Quiz de compréhension ».
+titre: Quiz de compréhension
+nombre: 10   # questions tirées au hasard dans la banque à chaque essai
+questions:
+  - question: "Quelle commande affiche l'aide intégrée de Docker?"
+    choix: ["docker help-me", "docker --help", "docker info", "man docker-engine"]
+    reponse: 2
+    explication: "docker --help liste les options, les commandes de gestion et les commandes directes (section 1)."
+
+  - question: "Comment obtenir l'aide d'une commande précise, par exemple ps?"
+    choix: ["docker help ps --all", "docker ps --help", "docker --help=ps", "docker ps -h -a"]
+    reponse: 2
+    explication: "docker <cmd> --help, par exemple docker ps --help (section 1.1)."
+
+  - question: "Sous Linux, l'erreur « permission denied while trying to connect to the Docker daemon socket » se règle en ajoutant l'utilisateur au groupe docker."
+    type: vf
+    reponse: vrai
+    explication: "sudo usermod -aG docker $USER (section 1)."
+
+  - question: "Docker Engine propose deux types de commandes. Lesquels?"
+    choix:
+      - "Les commandes de gestion (docker container ls) et les commandes directes (docker ps)"
+      - "Les commandes locales et les commandes distantes"
+      - "Les commandes d'images et les commandes de réseaux"
+      - "Les commandes Linux et les commandes Windows"
+    reponse: 1
+    explication: "Section 2."
+
+  - question: "Quelle commande liste les images présentes sur le poste?"
+    choix: ["docker ps", "docker images", "docker pull", "docker search"]
+    reponse: 2
+    explication: "docker images affiche le dépôt, l'étiquette (TAG), l'ID et la taille de chaque image (section 2.2)."
+
+  - question: "La commande docker ps affiche aussi les conteneurs terminés."
+    type: vf
+    reponse: faux
+    explication: "docker ps n'affiche que les conteneurs en exécution; il faut docker ps -a pour voir tous les conteneurs (sections 2.3 et 2.4)."
+
+  - question: "Quelle commande cherche des images sur Docker Hub?"
+    choix: ["docker find cowsay", "docker search cowsay", "docker pull --list cowsay", "docker hub cowsay"]
+    reponse: 2
+    explication: "docker search <expression> (section 2.4.1)."
+
+  - question: "Que fait docker pull lherrera/cowsay?"
+    choix:
+      - "Elle démarre un conteneur cowsay"
+      - "Elle télécharge l'image depuis un dépôt, sans démarrer de conteneur"
+      - "Elle publie l'image sur Docker Hub"
+      - "Elle efface l'image locale"
+    reponse: 2
+    explication: "pull télécharge l'image; run crée et démarre un conteneur (sections 2.4.2 et 2.4.3)."
+
+  - question: "Sans étiquette (tag), docker pull alpine télécharge quelle version de l'image?"
+    choix: ["La plus ancienne", "La version latest", "La version stable choisie au hasard", "Aucune : l'étiquette est obligatoire"]
+    reponse: 2
+    explication: "Using default tag: latest, soit alpine:latest (section 2.4.2)."
+
+  - question: "Un conteneur est une instance d'une image."
+    type: vf
+    reponse: vrai
+    explication: "docker run crée un conteneur, une instance de l'image (section 2.4.3)."
+
+  - question: "Quelle commande efface un conteneur?"
+    choix: ["docker rmi ID", "docker rm ID", "docker stop ID", "docker delete ID"]
+    reponse: 2
+    explication: "docker rm efface un conteneur; docker rmi efface une image (sections 2.4.4 et 2.4.5)."
+
+  - question: "Quelle commande efface une image?"
+    choix: ["docker rm ID", "docker rmi ID", "docker image stop ID", "docker prune ID"]
+    reponse: 2
+    explication: "docker rmi ID (section 2.4.5)."
+
+  - question: "Il est impossible d'effacer une image tant que des conteneurs de cette image existent, même avec l'option -f."
+    type: vf
+    reponse: faux
+    explication: "Il faut effacer les conteneurs d'abord, ou bien forcer la suppression avec l'option -f (section 2.4.5)."
+
+  - question: "Avec quelle option passe-t-on une variable d'environnement à un conteneur?"
+    choix: ["-v", "-p", "-e", "-d"]
+    reponse: 3
+    explication: "docker run -e MESSAGE=\"Bonjour le monde!\" alainboudreault/momo-dit (section 2.4.3)."
+
+  - question: "Quelle commande redémarre un conteneur terminé?"
+    choix: ["docker run ID", "docker restart ID", "docker attach ID", "docker exec ID"]
+    reponse: 2
+    explication: "docker restart, avec l'ID ou le nom du conteneur (section 2.5)."
+
+  - question: "Que signifient les options -i et -t de docker run?"
+    choix:
+      - "Mode interactif (-i) et terminal (-t)"
+      - "Image (-i) et tag (-t)"
+      - "Installer (-i) et tester (-t)"
+      - "Identifiant (-i) et temps d'exécution (-t)"
+    reponse: 1
+    explication: "docker run -it alpine ouvre un terminal interactif dans le conteneur (section 2.6)."
+
+  - question: "Que fait l'option -d de docker run?"
+    choix:
+      - "Elle efface le conteneur à la fin"
+      - "Elle démarre le conteneur en arrière-plan (détaché)"
+      - "Elle active le mode débogage"
+      - "Elle télécharge l'image avant de la démarrer"
+    reponse: 2
+    explication: "docker run -it -d alpine démarre le conteneur en arrière-plan; on s'y connecte ensuite avec docker attach (sections 2.1.1 et 2.7)."
+
+  - question: "Dans un conteneur démarré avec docker run -it alpine, la commande exit quitte et termine le conteneur."
+    type: vf
+    reponse: vrai
+    explication: "exit termine le processus principal, donc le conteneur (sections 2.6 et 2.7)."
+
+  - question: "Quelle séquence de touches permet de quitter un conteneur sans l'arrêter?"
+    choix: ["CTRL C", "CTRL D", "CTRL P puis CTRL Q", "CTRL Z"]
+    reponse: 3
+    explication: "CTRL P + Q détache le terminal; le conteneur reste en exécution (section 2.9)."
+
+  - question: "Quelle commande permet de se connecter au terminal d'un conteneur démarré en arrière-plan?"
+    choix: ["docker attach ID", "docker connect ID", "docker logs ID", "docker restart ID"]
+    reponse: 1
+    explication: "docker attach ID ou nom (section 2.7)."
+
+  - question: "Dans une commande, il faut toujours écrire l'ID complet du conteneur."
+    type: vf
+    reponse: faux
+    explication: "Quelques caractères suffisent, tant qu'ils identifient un seul conteneur : docker restart c8 (section 2.8)."
+
+  - question: "Comment donne-t-on le nom monAlpine à un conteneur, à sa création?"
+    choix:
+      - "docker run -it -d --name monAlpine alpine"
+      - "docker rename alpine monAlpine"
+      - "docker run -it -d alpine:monAlpine"
+      - "docker create -n monAlpine"
+    reponse: 1
+    explication: "L'option --name de docker run; docker rename change ensuite le nom d'un conteneur existant (sections 2.11 et 2.12)."
+
+  - question: "Que fait la commande docker system prune -af --volumes?"
+    choix:
+      - "Elle affiche l'espace disque utilisé"
+      - "Elle efface les conteneurs arrêtés, les images, les réseaux et les volumes inutilisés"
+      - "Elle redémarre tous les conteneurs"
+      - "Elle met à jour toutes les images"
+    reponse: 2
+    explication: "Après avoir arrêté tous les conteneurs, elle remet Docker à zéro. Attention : elle efface aussi les images de Minikube (section 2.13)."
+
+  - question: "Dans docker run -d -p 8080:80 nginx, que représente 8080?"
+    choix:
+      - "Le port du conteneur"
+      - "Le port de l'ordinateur hôte"
+      - "Le numéro de version de nginx"
+      - "La mémoire allouée au conteneur"
+    reponse: 2
+    explication: "-p P-hôte:P-conteneur : le port 8080 de l'hôte est relié au port 80 du conteneur (section 3.2)."
+
+  - question: "Par défaut, le réseau d'un conteneur est isolé de celui de l'ordinateur hôte."
+    type: vf
+    reponse: vrai
+    explication: "Il faut établir un lien (bind) avec l'option -p pour joindre un service du conteneur (section 3)."
+
+  - question: "Dans quel dossier se trouve le site web de l'image nginx?"
+    choix: ["/var/www/html", "/usr/share/nginx/html", "/etc/nginx/www", "/home/nginx"]
+    reponse: 2
+    explication: "Voir la documentation de l'image nginx sur Docker Hub (section 3.4)."
+
+  - question: "Quelle commande ouvre un shell dans un conteneur nginx en exécution?"
+    choix:
+      - "docker attach monServeurWeb"
+      - "docker exec -it monServeurWeb /bin/bash"
+      - "docker run -it monServeurWeb"
+      - "docker shell monServeurWeb"
+    reponse: 2
+    explication: "docker exec exécute une commande dans un conteneur en marche. attach, lui, rejoint le point d'entrée, qui n'est pas un shell dans le cas de nginx (section 3.5)."
+
+  - question: "Quelle commande affiche le journal (log) d'un conteneur?"
+    choix: ["docker inspect NOM", "docker logs NOM", "docker stats NOM", "docker history NOM"]
+    reponse: 2
+    explication: "docker logs NOM; l'option -f affiche le journal en continu (section 3.8)."
+
+  - question: "Quelle commande affiche le détail complet d'un conteneur, en JSON, par exemple son adresse IP?"
+    choix: ["docker ps -a", "docker inspect NOM", "docker logs NOM", "docker container stats"]
+    reponse: 2
+    explication: "docker inspect NOM | grep \"IPAddress\" (section 3.9)."
+
+  - question: "Comment n'afficher que les conteneurs terminés?"
+    choix:
+      - "docker container ls --filter \"status=exited\""
+      - "docker ps --exited"
+      - "docker container stats --all"
+      - "docker ps -q"
+    reponse: 1
+    explication: "L'option --filter, par exemple status=exited, name=toto ou ancestor=nginx (section 3.10)."

@@ -1,8 +1,25 @@
-## 📋 Qu'est-ce que `org.label-schema` ?
+# 9 - Convention de nommage des labels
+
+## Contenu
+
+- [**1 – Qu'est-ce que `org.label-schema` ?**](#section-1)
+- [**2 – Objectif**](#section-2)
+- [**3 – Labels principaux**](#section-3)
+- [**4 – Exemple pratique dans un Dockerfile**](#section-4)
+- [**5 – Voir les labels d'une image**](#section-5)
+- [**6 – Exemple dans docker-compose.yml**](#section-6)
+- [**7 – Label-Schema vs OCI**](#section-7)
+- [**8 – Exemple moderne (OCI)**](#section-8)
+- [**9 – Cas d'usage**](#section-9)
+- [**10 – Automatisation avec des variables**](#section-10)
+
+---
+
+## 1 – Qu'est-ce que `org.label-schema` ? {#section-1}
 
 `org.label-schema` est une **convention de nommage standardisée** pour les labels (métadonnées) dans les images Docker. C'est un projet qui définit un schéma commun pour documenter les images de conteneurs.
 
-## 🎯 Objectif
+## 2 – Objectif {#section-2}
 
 Permettre à tous les créateurs d'images Docker d'utiliser les **mêmes clés de métadonnées** pour décrire leurs images, facilitant ainsi :
 - L'automatisation
@@ -10,7 +27,7 @@ Permettre à tous les créateurs d'images Docker d'utiliser les **mêmes clés d
 - La gestion des images
 - L'audit et la conformité
 
-## 🏷️ Labels principaux
+## 3 – Labels principaux {#section-3}
 
 Voici les labels les plus courants :
 
@@ -27,7 +44,7 @@ Voici les labels les plus courants :
 | `org.label-schema.url` | Site web du projet | `https://monapp.com` |
 | `org.label-schema.docker.cmd` | Commande d'exécution | `docker run -p 8080:8080 monapp` |
 
-## 📝 Exemple pratique dans un Dockerfile
+## 4 – Exemple pratique dans un Dockerfile {#section-4}
 
 ```dockerfile
 FROM node:18-alpine
@@ -53,7 +70,7 @@ EXPOSE 3000
 CMD ["npm", "start"]
 ```
 
-## 🔍 Voir les labels d'une image
+## 5 – Voir les labels d'une image {#section-5}
 
 {% raw %}
 ```bash
@@ -68,7 +85,7 @@ docker-compose config
 ```
 {% endraw %}
 
-## 📦 Exemple dans docker-compose.yml
+## 6 – Exemple dans docker-compose.yml {#section-6}
 
 ```yaml
 version: '3.8'
@@ -88,7 +105,7 @@ services:
       - "3000:3000"
 ```
 
-## 🆚 Label-Schema vs OCI
+## 7 – Label-Schema vs OCI {#section-7}
 
 **⚠️ Note importante** : `org.label-schema` est maintenant **déprécié** (mais toujours largement utilisé).
 
@@ -101,7 +118,7 @@ Le standard moderne est **OCI Image Spec Annotations** :
 | `org.label-schema.vcs-url` | `org.opencontainers.image.source` |
 | `org.label-schema.description` | `org.opencontainers.image.description` |
 
-## 🎯 Exemple moderne (OCI)
+## 8 – Exemple moderne (OCI) {#section-8}
 
 ```dockerfile
 LABEL org.opencontainers.image.created="2024-12-22T14:30:00Z" \
@@ -117,7 +134,7 @@ LABEL org.opencontainers.image.created="2024-12-22T14:30:00Z" \
       org.opencontainers.image.description="API pour la gestion des utilisateurs"
 ```
 
-## 💡 Cas d'usage
+## 9 – Cas d'usage {#section-9}
 
 1. **CI/CD** : Tracer quelle version de code a généré une image
 2. **Audit** : Savoir qui a créé l'image et quand
@@ -125,7 +142,7 @@ LABEL org.opencontainers.image.created="2024-12-22T14:30:00Z" \
 4. **Automatisation** : Scripts qui lisent les métadonnées
 5. **Sécurité** : Identifier rapidement les images vulnérables
 
-## 🔧 Automatisation avec des variables
+## 10 – Automatisation avec des variables {#section-10}
 
 ```dockerfile
 ARG BUILD_DATE
@@ -147,3 +164,12 @@ docker build \
 ```
 
 **En résumé** : Les labels sont comme des "tags de métadonnées" qui accompagnent vos images Docker pour les documenter et les rendre traçables ! 🏷️
+
+---
+
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Révision 2026.11.07.1*  
+
+*Contenu par [VE2CUY](https://ve2cuy.github.io/blog/)*

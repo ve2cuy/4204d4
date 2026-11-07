@@ -1,4 +1,4 @@
-# Docker – Référence rapide
+# 23 - Docker – Référence rapide
 
 
 | **Commande** | **Description** | **Exemple** |
@@ -65,6 +65,8 @@
 ---
 
 ## Crédits
+
+*Révision 2026.11.07.1*  
 
 *Document rédigé par Alain Boudreault © 2021-2026*  
 *Version 2025.12.03.1*  

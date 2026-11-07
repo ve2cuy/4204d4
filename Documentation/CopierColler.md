@@ -2,7 +2,37 @@
 
 *Date: 2 février 2022 - Révision du 2025.12.05*
 
-## 1 – Commandes de base
+## Contenu
+
+- [**1 – Commandes de base**](#section-1)
+- [**2 – Voici mes Alias Docker - K8s**](#section-2)
+  - [2.1 – Alias en format CMDer](#section-2-1)
+  - [2.2 – Auto-completion](#section-2-2)
+- [**3 – Augmenter la taille de la police sous Visual Code**](#section-3)
+- [**4 – Cheat Sheet de VS Code**](#section-4)
+- [**5 – Les commandes de la semaine**](#section-5)
+- [**6 – Stub docker-compose.yml**](#section-6)
+- [**7 – Stub Kubernetes avec un service de type 'LoadBalancer'**](#section-7)
+- [**8 – Installation d'un amas K8S (Ubuntu srv 22.04)**](#section-8)
+- [**9 – Retirer un noeud d'un amas K8S**](#section-9)
+- [**10 – Travailler dans un namespace**](#section-10)
+  - [10.1 – Travailler avec plusieurs contextes](#section-10-1)
+- [**11 – Erreur lors du montage d'un volume de type NFS**](#section-11)
+- [**12 – J'obtiens une adresse IP externe par service, pourquoi?**](#section-12)
+- [**13 – Fixer l'éditeur pour la commande kubectl edit**](#section-13)
+- [**14 – K8S : Commandes utiles**](#section-14)
+- [**15 – Outils**](#section-15)
+- [**16 – Importer un cluster dans portainer (sans LB)**](#section-16)
+- [**17 – Configuration réseau sous Ubuntu**](#section-17)
+- [**18 – Installation d'un fureteur web pour terminal (Brow6el)**](#section-18)
+- [**19 – Désactiver Wayland**](#section-19)
+- [**20 – Scripts bash de création de Master/Worker sur Ubuntu 24.04**](#section-20)
+  - [20.1 – Pour le master](#section-20-1)
+  - [20.2 – Pour les workers](#section-20-2)
+
+---
+
+## 1 – Commandes de base {#section-1}
 
 ```bash
 # Obtenir le matériel de cours
@@ -75,7 +105,7 @@ kubectl svc/serveur-web 80
 
 ---
 
-## 2 – Voici mes Alias Docker - K8s
+## 2 – Voici mes Alias Docker - K8s {#section-2}
 
 ```bash
 # Voici la liste de mes Alias 'Docker'
@@ -184,7 +214,7 @@ alias lzd='lazydocker'
 
 ---
 
-## 2.1 – Alias en format CMDer
+## 2.1 – Alias en format CMDer {#section-2-1}
 
 ### fichier: %cmder_root%\config\user_aliases.cmd
 
@@ -238,7 +268,7 @@ kdlc=kubectl delete configmaps
 ked=kubectl edit deployment
 ```
 
-## 2.1 Auto-completion
+## 2.2 – Auto-completion {#section-2-2}
 
 ```
 sudo apt-get install bash-completion # Debian/Ubuntu
@@ -258,7 +288,7 @@ source ~/.bashrc  # recharger la session
 
 ---
 
-## 3 – Augmenter la taille de la police sous Visual Code
+## 3 – Augmenter la taille de la police sous Visual Code {#section-3}
 
 ```json
 Shift+CTRL+P
@@ -273,13 +303,13 @@ Choisir: "Open Settings (JSON)"
 
 ---
 
-## 4 – Cheat Sheet de VS Code
+## 4 – Cheat Sheet de VS Code {#section-4}
 
 [vscode-keyboard-shortcuts-macos](vscode-keyboard-shortcuts-macos.pdf)
 
 ---
 
-## 5 – Les commandes de la semaine
+## 5 – Les commandes de la semaine {#section-5}
 
 ### Semaine 01
 
@@ -378,7 +408,7 @@ le CLI de Docker
             Extra, créer une nouvelle image 'image-web' à partir du résultat final et tester.
 ```
 
-## 6 – Stub docker-compose.yml
+## 6 – Stub docker-compose.yml {#section-6}
 
 ```yaml
 version: "3.9"
@@ -447,7 +477,7 @@ networks:
     driver: bridge
 ```
 
-## 7 – Stub Kubernetes avec un service de type 'LoadBalancer'
+## 7 – Stub Kubernetes avec un service de type 'LoadBalancer' {#section-7}
 
 ```yaml
 # Manifeste d'un déploiement avec un service de type LoadBalancer
@@ -497,7 +527,7 @@ spec:
 
 ---
 
-## 8 – Installation d'un amas K8S (Ubuntu srv 22.04)
+## 8 – Installation d'un amas K8S (Ubuntu srv 22.04) {#section-8}
 
 ```bash
 # Désactiver la pagination (swap) du système de fichiers
@@ -583,7 +613,7 @@ export KUBECONFIG=~/un-cluster-k8s.conf
 
 ---
 
-## 9 – Retirer un noeud d'un amas K8S
+## 9 – Retirer un noeud d'un amas K8S {#section-9}
 
 ```bash
 kubectl drain k8s05 --ignore-daemonsets --delete-emptydir-data
@@ -592,7 +622,7 @@ kubectl delete node k8s05
 
 ---
 
-## 10 – Travailler dans un namespace
+## 10 – Travailler dans un namespace {#section-10}
 
 ```bash
 # 1 - Renseigner le manifest pour le nouveau NS:
@@ -682,7 +712,7 @@ spec:
 
 ---
 
-## 10.1 – Travailler avec plusieurs contextes
+## 10.1 – Travailler avec plusieurs contextes {#section-10-1}
 
 ```bash
 # Sans modification du fichier ./kube/config
@@ -701,7 +731,7 @@ kubectl config current-context
 
 ---
 
-## 11 – Erreur lors du montage d'un volume de type NFS
+## 11 – Erreur lors du montage d'un volume de type NFS {#section-11}
 
 ```bash
 # Exemple d'une erreur:
@@ -730,7 +760,7 @@ sudo apt install nfs-common -y
 
 ---
 
-## 12 – J'obtiens une adresse IP externe par service, pourquoi?
+## 12 – J'obtiens une adresse IP externe par service, pourquoi? {#section-12}
 
 ```bash
 # NAME                        TYPE            CLUSTER-IP       EXTERNAL-IP        PORT(S)          AGE
@@ -764,7 +794,7 @@ spec:
 
 ---
 
-## 13 – Fixer l'éditeur pour la commande kubectl edit
+## 13 – Fixer l'éditeur pour la commande kubectl edit {#section-13}
 
 ```bash
 export KUBE_EDITOR="code --wait"
@@ -772,7 +802,7 @@ export KUBE_EDITOR="code --wait"
 
 ---
 
-## 14 – K8S : Commandes utiles
+## 14 – K8S : Commandes utiles {#section-14}
 
 ```bash
 # Afficher les pods en exécution:
@@ -786,7 +816,7 @@ kubectl scale deployment deploy-superminou --replicas=5
 
 ---
 
-## 15 – Outils
+## 15 – Outils {#section-15}
 
 * [Portainer](https://www.portainer.io/)
 
@@ -816,13 +846,13 @@ sudo docker run --privileged -d --restart=unless-stopped -p 80:80 -p 443:443 ran
 
 ---
 
-## 16 – Importer un cluster dans portainer (sans LB)
+## 16 – Importer un cluster dans portainer (sans LB) {#section-16}
 
 <img src="images/Capture-decran-2025-12-01-112824-858x1024.png" alt="Portainer Cluster Import" width="500" />
 
 ---
 
-## 17 - Configuration réseau sous Ubuntu
+## 17 – Configuration réseau sous Ubuntu {#section-17}
 
 ```yaml
 # /etc/netplan$ sudo nano 00-installer-config.yaml
@@ -841,7 +871,7 @@ network:
 
 ---
 
-## 18 - Installation d'un fureteur web pour terminal (Brow6el)
+## 18 – Installation d'un fureteur web pour terminal (Brow6el) {#section-18}
 
 ```
 alias w="~/brow6el/build/run_brow6el.sh"
@@ -902,7 +932,7 @@ v - Enter VISUAL mode (text selection)
 
 ---
 
-## 19 - Désactiver Wayland
+## 19 – Désactiver Wayland {#section-19}
 
 NOTE: A partir d'Ubuntu 24, le sreenSaver rend la connexion impossible via le GUI.
 
@@ -918,7 +948,7 @@ sudo systemctl restart gdm3
 
 ---
 
-## 50 – Scripts bash de création de Master/Worker sur Ubuntu 24.04
+## 20 – Scripts bash de création de Master/Worker sur Ubuntu 24.04 {#section-20}
 
 **Note**: Si vous avez cloné des VM, ne pas oublier de mettre à jour les fichiers `/etc/hosts` et `/etc/hostname` avant de rouler les scripts suivants.
 
@@ -955,12 +985,21 @@ kubectl get pods --all-namespaces -o wide -w
 # kube-system   weave-net-q9pfj                    2/2     Running   1 (15s ago)   18s   192.168.188.133   4204d4     <none>           <none>
 ```
 
-### 50.1 – Pour le master
+### 20.1 – Pour le master {#section-20-1}
 
 Le script pour le master est trop long pour être affiché ici. Référez-vous au document original pour le contenu complet du script master.
 
-### 50.2 – Pour les workers
+### 20.2 – Pour les workers {#section-20-2}
 
 Le script pour les workers est également trop long pour être affiché ici. Référez-vous au document original pour le contenu complet du script worker.
 
 ---
+
+---
+
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Révision 2026.11.07.1*  
+
+*Contenu par [VE2CUY](https://ve2cuy.github.io/blog/)*

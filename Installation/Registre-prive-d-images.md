@@ -1,7 +1,7 @@
 
-# Registre (Dépôt) privé d’images – Harbor
+# 19 - Registre (Dépôt) privé d’images – Harbor
 
- 29 novembre 2025 - Révision 2025.12.05
+ 29 novembre 2025 - Révision 2026.11.07
 
 <p align="center">
     <img src="Images/logo-harbor.webp" alt="" width="450" />
@@ -12,7 +12,24 @@ Pré-requis: docker, // docker-compose et python3-setuptools doivent-être insta
 
 ---
 
-## 1 – Télécharger les scripts d’installation
+## Contenu
+
+- [**1 – Télécharger les scripts d’installation**](#section-1)
+- [**2 – Décompresser l’archive**](#section-2)
+- [**3 – Copier harbor.yml.tmpl dans harbor.yml et éditer**](#section-3)
+- [**4 – Renseigner le fichier hosts du serveur**](#section-4)
+- [**5 – Exécuter le script ./prepare**](#section-5)
+- [**6 – Exécuter docker compose up**](#section-6)
+- [**Du poste client**](#section-du-poste-client)
+- [**7 – Docker:Settings – Registres non sécurisés**](#section-7)
+- [**8 – Tester le registre**](#section-8)
+- [**Droits d'accès sous Harbor**](#section-droits-d-acces-sous-harbor)
+- [**9 – Installation avec un certificat TLS (à valider)**](#section-9)
+- [**10 – Signature des images - À compléter**](#section-10)
+
+---
+
+## 1 – Télécharger les scripts d’installation {#section-1}
 
  [https://github.com/goharbor/harbor/releases](https://github.com/goharbor/harbor/releases)
 
@@ -21,13 +38,13 @@ Pré-requis: docker, // docker-compose et python3-setuptools doivent-être insta
 wget https://github.com/goharbor/harbor/releases/download/v2.14.2/harbor-offline-installer-v2.14.2.tgz 
 ```
 
-## 2 – Décompresser l’archive
+## 2 – Décompresser l’archive {#section-2}
 
 ```bash
 tar -xvzf harbor-offline-installer-v2.14.2.tgz
 ```
 
-## 3- Copier harbor.yml.tmpl dans harbor.yml et éditer
+## 3 – Copier harbor.yml.tmpl dans harbor.yml et éditer {#section-3}
 
 
 ```yaml
@@ -56,14 +73,14 @@ http:
 
 -----
 
-## 4 – Renseigner le fichier hosts du serveur:
+## 4 – Renseigner le fichier hosts du serveur: {#section-4}
 
 ```
 # ajuster à l'adresse IP de votre serveur
 192.168.139.55  mon.registre.info
 ```
 
-## 4 – Exécuter le script ./prepare
+## 5 – Exécuter le script ./prepare {#section-5}
 
 En cas d'erreur de permission:
 
@@ -71,13 +88,13 @@ En cas d'erreur de permission:
 sudo chmod a+rw /home/user/harbor/ -R
 ```
 
-## 5 – Exécuter docker compose up
+## 6 – Exécuter docker compose up {#section-6}
 
 -----
 
-## Du poste client
+## Du poste client {#section-du-poste-client}
 
-## 6 – Docker:Settings – Registres non sécurisés
+## 7 – Docker:Settings – Registres non sécurisés {#section-7}
 
 ```
 # Par défaut, docker utilise un connexion sécurisée pour les requêtes vers les registres.
@@ -124,7 +141,7 @@ $ docker info
 
 -----
 
-## 7 – Tester le registre:
+## 8 – Tester le registre: {#section-8}
 
 #### 7.1 - Accès à la console de Harbor
 
@@ -189,14 +206,14 @@ docker push mon.registre.info:8080/4204d4/portainer/portainer-ce:latest
 
 ---
 
-## Droits d'accès sous Harbor
+## Droits d'accès sous Harbor {#section-droits-d-acces-sous-harbor}
 
 <img src="Images/harbor-rbac.png" alt="" width="550" />
 
 
 -----
 
-## 8 – Installation avec un certificat TLS (à valider)
+## 9 – Installation avec un certificat TLS (à valider) {#section-9}
 
 ```bash
 # 1 - 
@@ -276,7 +293,7 @@ docker push mon.registre.info/library/hello-world:v1
 
 -----
 
-## 9 – Signature des images - À compléter
+## 10 – Signature des images - À compléter {#section-10}
 
 ```bash
 # Sous Windows, installer cosign avec go

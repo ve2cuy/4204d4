@@ -1,5 +1,5 @@
 
-# 🐳 Dockerfile – Introduction
+# 8 - 🐳 Dockerfile – Introduction
 
 ## La Dockerfile – tout ce que vous avez toujours voulu savoir
 
@@ -31,7 +31,38 @@ Alors voici comment nous élever au **dessus de la foule** 👨‍👩‍👦‍
 
 ---
 
-## Dockerfile
+## Contenu
+
+- [**1 – Dockerfile**](#section-1)
+- [**2 – Exemple d’une image Ubuntu avec un binaire écrit en 'C'**](#section-2)
+  - [2.1 – Programme 'C' (bonjour.cpp)](#section-2-1)
+  - [2.2 – Compiler le code source](#section-2-2)
+  - [2.3 – Dockerfile](#section-2-3)
+  - [2.4 – Produire l’image](#section-2-4)
+  - [2.5 – Tester l’image](#section-2-5)
+  - [Laboratoire 2.6 – Durée 30 minutes](#section-2-6)
+- [**3 – Construire l’image d’un site web**](#section-3)
+  - [3.1 – Obtenir les fichiers de départ](#section-3-1)
+  - [3.2 – Se déplacer vers le dossier de l'exercice](#section-3-2)
+  - [3.3 – Construire une image nommée 'test'](#section-3-3)
+  - [3.4 – Tester l’image](#section-3-4)
+  - [3.9 – Une version fonctionnelle (Exemple)](#section-3-9)
+- [**4 – Laboratoire – Durée 30 minutes**](#section-4)
+- [**5 – Exemples supplémentaires**](#section-5)
+  - [5.1 – Conteneur qui requiert la définition de variables d'environnement](#section-5-1)
+  - [5.2 – Exemple d’utilisation d’une variable d’environnement lors du build](#section-5-2)
+  - [5.3 – Le fichier `.dockerignore`](#section-5-3)
+  - [5.4 – La directive WORKDIR, exemple d’utilisation](#section-5-4)
+  - [5.5 – Différences entre les directives ADD et COPY](#section-5-5)
+  - [5.6 – Dockerfile de l’image Alpine](#section-5-6)
+  - [5.7 – Exécuter un bloc d'instruction pour créer un fichier](#section-5-7)
+  - [5.8 – La directive 'EXPOSE'](#section-5-8)
+  - [5.9 – Différence entre CMD et ENTRYPOINT dans Dockerfile](#section-5-9)
+- [**6 – Exemple d'un Dockerfile complexe (WordPress)**](#section-6)
+
+---
+
+## 1 – Dockerfile {#section-1}
 
 Il est possible de **créer** un image **personnalisée** à partir d’un **fichier de directives**.
 
@@ -190,11 +221,11 @@ docker run exercice01:1.1
 
 -----
 
-## 2.0 – Exemple d’une image Ubuntu avec un binaire écrit en 'C'
+## 2 – Exemple d’une image Ubuntu avec un binaire écrit en 'C' {#section-2}
 
 **NOTE** : Démonstration de l’enseignant à partir d’un session Ubuntu – Explication des dépendances OS.
 
-### 2.1 – Programme 'C' (bonjour.cpp)
+### 2.1 – Programme 'C' (bonjour.cpp) {#section-2-1}
 
 ```c
 // Fichier: bonjour.cpp
@@ -216,13 +247,13 @@ int main(){
 } // main()
 ```
 
-### 2.2 – Compiler le code source
+### 2.2 – Compiler le code source {#section-2-2}
 
 ```bash
 $ g++ bonjour.cpp -o bonjour
 ```
 
-### 2.3 – Dockerfile
+### 2.3 – Dockerfile {#section-2-3}
 
 ```dockerfile
 FROM ubuntu
@@ -230,13 +261,13 @@ COPY bonjour /bin
 CMD ["/bin/bonjour"]
 ```
 
-### 2.4 – Produire l’image
+### 2.4 – Produire l’image {#section-2-4}
 
 ```bash
 docker build -t alainboudreault/bonjour420:latest .
 ```
 
-### 2.5 – Tester l’image
+### 2.5 – Tester l’image {#section-2-5}
 
 ```bash
 docker run alainboudreault/bonjour420
@@ -244,7 +275,7 @@ docker run alainboudreault/bonjour420
 ---
 <img src="../images/labo03.png" alt="" width="700" />
 
-### Laboratoire 2.6 – Durée 30 minutes
+### Laboratoire 2.6 – Durée 30 minutes {#section-2-6}
 
 **1 – Programmer un *Dockerfile* qui:**
 
@@ -267,7 +298,7 @@ docker run alainboudreault/bonjour420
 
 -----
 
-## 3 – Construire l’image d’un site web
+## 3 – Construire l’image d’un site web {#section-3}
 
 ### Pré-requis
 
@@ -277,7 +308,7 @@ docker run alainboudreault/bonjour420
   * Sous **MacOS** – git est probablement déjà installé. Sinon voir [git-pour-MacOS](https://www.atlassian.com/fr/git/tutorials/install-git)
   * Sous **Linux** – Référez-vous à la documentation de votre distribution. Par exemple pour [Debian](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
-### 3.1 – Obtenir les fichiers de départ
+### 3.1 – Obtenir les fichiers de départ {#section-3-1}
 
 À partir de **https://github.com/ve2cuy**
 
@@ -287,13 +318,13 @@ docker run alainboudreault/bonjour420
 > git clone https://github.com/ve2cuy/superminou-depart
 > ```
 
-### 3.2 – Se déplacer vers le dossier de l'exercice
+### 3.2 – Se déplacer vers le dossier de l'exercice {#section-3-2}
 
 ```bash
 cd superminou-depart/
 ```
 
-### 3.3 – Construire une image nommée 'test'
+### 3.3 – Construire une image nommée 'test' {#section-3-3}
 
 À partir du fichier 'Dockerfile' ainsi que le contenu du dossier.
 
@@ -301,13 +332,13 @@ cd superminou-depart/
 docker build -t test .
 ```
 
-### 3.4 – Tester l’image
+### 3.4 – Tester l’image {#section-3-4}
 
 ```bash
 docker run -d -p 99:80 test
 ```
 
-### 3.9 – Une version fonctionnelle (Exemple)
+### 3.9 – Une version fonctionnelle (Exemple) {#section-3-9}
 
 ```bash
 docker run -d -p 99:80 alainboudreault/420-4d4:exemple03
@@ -318,7 +349,7 @@ docker run -d -p 99:80 alainboudreault/420-4d4:exemple03
 -----
 <img src="../images/labo02.png" alt="" width="700" />
 
-## 4.0 – Laboratoire – Durée 30 minutes
+## 4 – Laboratoire – Durée 30 minutes {#section-4}
 
   * **Reproduire l’exercice précédent** à partir de l’image ***httpd***
   * Y ajouter les applications `git`, `nano`, `mc` et `tmux`
@@ -333,9 +364,9 @@ docker run -d -p 99:80 alainboudreault/420-4d4:exemple03
 
 -----
 
-## 5.0 – Exemples supplémentaires
+## 5 – Exemples supplémentaires {#section-5}
 
-### 5.1 – Conteneur qui requiert la définition de variables d'environnement
+### 5.1 – Conteneur qui requiert la définition de variables d'environnement {#section-5-1}
 
 ```dockerfile
 # EXEMPLE AVEC UN TIME-ZONE et autres choses ...
@@ -383,7 +414,7 @@ Et le DNS est: 1.1.1.1
 
 ---
 
-### 5.2 – Exemple d’utilisation d’une variable d’environnement lors du build
+### 5.2 – Exemple d’utilisation d’une variable d’environnement lors du build {#section-5-2}
 
 Voici comment passer des informations, pour le build, à partir de la ligne de commande:
 
@@ -461,7 +492,7 @@ $ docker inspect --format='{{index .Config.Labels "org.label-schema.docker.cmd"}
 
 La commande `docker build --no-cache=true` force Docker à reconstruire l'image **sans utiliser le cache** des couches précédentes.
 
-## Comment fonctionne le cache Docker normalement ?
+#### Comment fonctionne le cache Docker normalement ?
 
 Quand vous construisez une image Docker, chaque instruction du Dockerfile crée une **couche** (layer). Docker met en cache ces couches pour accélérer les builds futurs. Si rien n'a changé dans une instruction, Docker réutilise la couche en cache au lieu de la reconstruire.
 
@@ -476,7 +507,7 @@ COPY app.py /app/
 Lors du premier build : tout est construit.
 Lors du second build : si seul `app.py` a changé, Docker réutilise le cache pour les commandes `apt-get` (qui sont lentes) et reconstruit seulement à partir de `COPY`.
 
-## Pourquoi utiliser `--no-cache=true` ?
+#### Pourquoi utiliser `--no-cache=true` ?
 
 **1. Obtenir les dernières mises à jour**
 ```bash
@@ -499,7 +530,7 @@ Avec `--no-cache`, pip télécharge la dernière version disponible.
 **4. Éviter des comportements imprévisibles**
 Parfois Docker ne détecte pas tous les changements (fichiers externes, variables d'environnement, etc.).
 
-## Syntaxes équivalentes
+#### Syntaxes équivalentes
 
 ```bash
 docker build --no-cache=true -t mon-image .
@@ -507,7 +538,7 @@ docker build --no-cache -t mon-image .        # Équivalent
 docker build --no-cache=false -t mon-image .  # Utilise le cache (défaut)
 ```
 
-## Inconvénient
+#### Inconvénient
 
 Le build sera **beaucoup plus long** car Docker doit tout refaire depuis le début, y compris télécharger et installer les dépendances.
 
@@ -515,7 +546,7 @@ Le build sera **beaucoup plus long** car Docker doit tout refaire depuis le déb
 
 --- 
 
-### 5.3 – Le fichier `.dockerignore`
+### 5.3 – Le fichier `.dockerignore` {#section-5-3}
 
 Si présent dans le répertoire du Dockerfile, le fichier `.dockerignore` permet d'exclure des fichiers lorsque les directives 'COPY' et 'ADD' sont utilisées.
 
@@ -534,7 +565,7 @@ LICENSE
 
 ---
 
-### 5.4 – La directive WORKDIR, exemple d’utilisation:
+### 5.4 – La directive WORKDIR, exemple d’utilisation: {#section-5-4}
 
 ```dockerfile
 FROM nginx
@@ -546,7 +577,7 @@ COPY . ./
 
 ---
 
-### 5.5 – Différences entre les directives ADD et COPY
+### 5.5 – Différences entre les directives ADD et COPY {#section-5-5}
 
   * `COPY src dest`: copie des fichiers/dossiers d’une source locale vers une destination dans l’image.
   * `ADD src dest`: Propose les fonctions de `COPY` et :
@@ -557,7 +588,7 @@ Si les fonctions supplémentaires de `ADD` ne sont pas requises, il est recomman
 
 ---
 
-### 5.6 – Dockerfile de l’image Alpine
+### 5.6 – Dockerfile de l’image Alpine {#section-5-6}
 
 ```dockerfile
 FROM scratch
@@ -567,7 +598,7 @@ CMD ["/bin/sh"]
 
 ---
 
-### 5.7 – Exécuter un bloc d'instruction pour créer un fichier
+### 5.7 – Exécuter un bloc d'instruction pour créer un fichier {#section-5-7}
 ```dockerfile
 FROM alpine
 
@@ -618,7 +649,7 @@ labo5-7-1:/#
 
 ---
 
-## 5.8 - La directice 'EXPOSE'
+### 5.8 – La directive 'EXPOSE' {#section-5-8}
 
 ```Dockerfile
 # docker build -f Dockerfile-labo-5-8-1 -t mon-httpd:8080 .
@@ -668,7 +699,7 @@ docker run -d -p 88:581 alainboudreault/labo:5.8.1
 
 ---
 
-### 5.9 - Différence entre CMD et ENTRYPOINT dans Dockerfile
+### 5.9 – Différence entre CMD et ENTRYPOINT dans Dockerfile {#section-5-9}
 
 Les deux instructions servent à définir ce qui s'exécute au démarrage d'un conteneur, mais elles fonctionnent différemment.
 
@@ -744,7 +775,7 @@ docker run mon-image https://example.com
 
 ---
 
-### 6 – Exemple d'un Dockerfile complexe (WordPress)
+## 6 – Exemple d'un Dockerfile complexe (WordPress) {#section-6}
 
 ```dockerfile
 FROM php:7.4-apache
@@ -917,5 +948,5 @@ CMD ["apache2-foreground"]
 ## Crédits
 
 *Document rédigé par Alain Boudreault © 2021-2026*  
-*Version 2025.12.22.1*  
+*Version 2025.12.22.1 - Révision 2026.11.07.1*  
 *Site par ve2cuy*

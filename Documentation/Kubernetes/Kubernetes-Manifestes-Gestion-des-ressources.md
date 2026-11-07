@@ -1,12 +1,35 @@
-# Explication détaillée de la section `resources`
+# 29 - Explication détaillée de la section `resources`
 
-## Vue d'ensemble
+## Contenu
+
+- [**Vue d'ensemble**](#section-vue-d-ensemble)
+- [**Structure complète**](#section-structure-complete)
+- [**1. `resources:`**](#section-1)
+- [**2. `requests:`**](#section-2)
+- [**3. `cpu: 100m`**](#section-3)
+- [**4. `memory: 128Mi`**](#section-4)
+- [**5. `limits:`**](#section-5)
+- [**6. `cpu: 500m` (dans limits)**](#section-6)
+- [**7. `memory: 512Mi` (dans limits)**](#section-7)
+- [**Comportements détaillés**](#section-comportements-detailles)
+- [**Exemples pratiques**](#section-exemples-pratiques)
+- [**Impact sur le scheduling**](#section-impact-sur-le-scheduling)
+  - [1. Guaranteed (Garanti)](#section-impact-sur-le-scheduling-1)
+  - [2. Burstable (Votre cas)](#section-impact-sur-le-scheduling-2)
+  - [3. BestEffort (Meilleur effort)](#section-impact-sur-le-scheduling-3)
+- [**Vérifier l'utilisation réelle**](#section-verifier-l-utilisation-reelle)
+- [**Conseils pratiques**](#section-conseils-pratiques)
+- [**Résumé de la configuration suivante**](#section-resume-de-la-configuration-suivante)
+
+---
+
+## Vue d'ensemble {#section-vue-d-ensemble}
 
 La section `resources` définit les **ressources CPU et mémoire** allouées à un conteneur. Elle contient deux sous-sections : `requests` et `limits`.
 
 ---
 
-## Structure complète
+## Structure complète {#section-structure-complete}
 
 ```yaml
 resources:
@@ -20,13 +43,13 @@ resources:
 
 ---
 
-## 1. `resources:`
+## 1. `resources:` {#section-1}
 
 Cette clé indique le début de la section qui définit les ressources du conteneur.
 
 ---
 
-## 2. `requests:`
+## 2. `requests:` {#section-2}
 
 Les **requests** (demandes) définissent les **ressources minimales garanties** pour le conteneur.
 
@@ -41,7 +64,7 @@ Si un nœud a 2 CPU disponibles et que vous demandez `cpu: 100m`, Kubernetes sai
 
 ---
 
-## 3. `cpu: 100m`
+## 3. `cpu: 100m` {#section-3}
 
 ### Explication de l'unité CPU
 
@@ -72,7 +95,7 @@ cpu: "1.5"   # 1.5 CPU
 
 ---
 
-## 4. `memory: 128Mi`
+## 4. `memory: 128Mi` {#section-4}
 
 ### Explication de l'unité Mémoire
 
@@ -112,7 +135,7 @@ memory: 2Gi      # 2 Gibibytes ≈ 2.15 GB
 
 ---
 
-## 5. `limits:`
+## 5. `limits:` {#section-5}
 
 Les **limits** (limites) définissent les **ressources maximales** qu'un conteneur peut utiliser.
 
@@ -125,7 +148,7 @@ Les **limits** (limites) définissent les **ressources maximales** qu'un contene
 
 ---
 
-## 6. `cpu: 500m` (dans limits)
+## 6. `cpu: 500m` (dans limits) {#section-6}
 
 - Le conteneur peut utiliser **jusqu'à 50%** d'un cœur CPU
 - S'il essaie d'utiliser plus, il sera **ralenti (throttled)**
@@ -143,7 +166,7 @@ Le conteneur peut **burster** entre 10% et 50% selon la disponibilité.
 
 ---
 
-## 7. `memory: 512Mi` (dans limits)
+## 7. `memory: 512Mi` (dans limits) {#section-7}
 
 - Le conteneur peut utiliser **jusqu'à 512 Mi** de RAM
 - S'il essaie d'utiliser plus, il sera **tué (OOM Killed)**
@@ -161,7 +184,7 @@ Le conteneur peut utiliser entre 128 Mi et 512 Mi. Au-delà de 512 Mi, il sera t
 
 ---
 
-## Comportements détaillés
+## Comportements détaillés {#section-comportements-detailles}
 
 ### Comportement CPU
 
@@ -183,7 +206,7 @@ Le conteneur peut utiliser entre 128 Mi et 512 Mi. Au-delà de 512 Mi, il sera t
 
 ---
 
-## Exemples pratiques
+## Exemples pratiques {#section-exemples-pratiques}
 
 ### Exemple 1 : Application légère (API simple)
 
@@ -233,11 +256,11 @@ resources:
 
 ---
 
-## Impact sur le scheduling
+## Impact sur le scheduling {#section-impact-sur-le-scheduling}
 
 Kubernetes classe les pods en 3 catégories selon leurs ressources :
 
-### 1. **Guaranteed** (Garanti)
+### 1. **Guaranteed** (Garanti) {#section-impact-sur-le-scheduling-1}
 ```yaml
 # requests = limits
 resources:
@@ -251,7 +274,7 @@ resources:
 - Priorité la plus élevée
 - Derniers à être évincés
 
-### 2. **Burstable** (Votre cas)
+### 2. **Burstable** (Votre cas) {#section-impact-sur-le-scheduling-2}
 ```yaml
 # requests < limits
 resources:
@@ -265,7 +288,7 @@ resources:
 - Priorité moyenne
 - Peuvent être évincés si le nœud manque de ressources
 
-### 3. **BestEffort** (Meilleur effort)
+### 3. **BestEffort** (Meilleur effort) {#section-impact-sur-le-scheduling-3}
 ```yaml
 # Pas de requests ni limits
 resources: {}
@@ -275,7 +298,7 @@ resources: {}
 
 ---
 
-## Vérifier l'utilisation réelle
+## Vérifier l'utilisation réelle {#section-verifier-l-utilisation-reelle}
 
 ```bash
 # Voir l'utilisation actuelle des ressources
@@ -290,7 +313,7 @@ kubectl get events --sort-by='.lastTimestamp'
 
 ---
 
-## Conseils pratiques
+## Conseils pratiques {#section-conseils-pratiques}
 
 1. **Toujours définir requests et limits** pour éviter les problèmes de ressources
 2. **Commencer conservateur** puis ajuster selon les métriques réelles
@@ -300,7 +323,7 @@ kubectl get events --sort-by='.lastTimestamp'
 
 ---
 
-## Résumé de la configuration suivante:
+## Résumé de la configuration suivante: {#section-resume-de-la-configuration-suivante}
 
 ```yaml
 resources:
@@ -316,3 +339,12 @@ Cette configuration convient à une application web légère à moyenne qui :
 - Utilise normalement ~10% CPU et ~128 Mi
 - Peut burster jusqu'à 50% CPU et 512 Mi lors des pics
 - Sera ralentie (CPU) ou redémarrée (mémoire) si elle dépasse ces limites
+
+---
+
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Révision 2026.11.07.1*  
+
+*Contenu par [VE2CUY](https://ve2cuy.github.io/blog/)*

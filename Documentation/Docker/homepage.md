@@ -1,10 +1,22 @@
-# Introduction à Homepage
+# 22 - Introduction à Homepage
 
 <p align="center">
   <img src="../images/homepage-logo2.png" alt="" width="400" />
 </p>
 
-## Qu'est-ce que Homepage ?
+## Contenu
+
+- [**1 – Qu'est-ce que Homepage ?**](#section-1)
+- [**2 – Installation avec Docker, en cli**](#section-2)
+- [**3 – Configuration de base**](#section-3)
+- [**4 – Voici un exemple complet, avec variables d'environnement et génération des fichiers de configuration par programmation.**](#section-4)
+- [**5 – Conseils d'utilisation**](#section-5)
+- [**6 – Conclusion**](#section-6)
+- [**7 – Laboratoire – Durée 30 minutes**](#section-7)
+
+---
+
+## 1 – Qu'est-ce que Homepage ? {#section-1}
 
 **Homepage** est un tableau de bord personnalisable pour centraliser l'accès aux services auto-hébergés, applications web et ressources réseau. 
 
@@ -27,7 +39,7 @@ Conçu pour les utilisateurs de 'homelab' et les administrateurs système, Homep
 
 ---
 
-## Installation avec Docker, en cli:
+## 2 – Installation avec Docker, en cli: {#section-2}
 
 ```bash
 $ mkdir ./homepage-config
@@ -60,7 +72,7 @@ Accéder ensuite à `http://localhost:3000`
 
 ---
 
-## Configuration de base
+## 3 – Configuration de base {#section-3}
 
 Homepage utilise des fichiers YAML dans le dossier `config/`. Les trois fichiers principaux sont :
 
@@ -225,7 +237,7 @@ favicon: https://votresite.com/favicon.ico
 ---
 
 
-## 💡 5 - Voici un exemple complet, avec variables d'environnement et génération des fichiers de configuration par programmation.
+## 4 – Voici un exemple complet, avec variables d'environnement et génération des fichiers de configuration par programmation. {#section-4}
 
 
 ```yaml
@@ -409,7 +421,7 @@ docker compose -f ... up
 
 ---
 
-## Conseils d'utilisation
+## 5 – Conseils d'utilisation {#section-5}
 
 **Organisation** : Regrouper les services par catégorie logique (Média, Réseau, Administration, etc.)
 
@@ -429,13 +441,13 @@ docker compose -f ... up
 
 ---
 
-## Conclusion
+## 6 – Conclusion {#section-6}
 
 Homepage transforme une collection de services en un portail unifié et professionnel, parfait pour gérer efficacement une infrastructure personnelle ou professionnelle.
 
 ---
 
-## 6 - Laboratoire: Durée 30 minutes
+## 7 – Laboratoire – Durée 30 minutes {#section-7}
 
 <img src="../images/labo02.png" alt="" width="700" />
 
@@ -446,5 +458,5 @@ Homepage transforme une collection de services en un portail unifié et professi
 ## Crédits
 
 *Document préparé par Alain Boudreault © 2026*  
-*Version 2026.01.07.2*  
+*Version 2026.01.07.2 - Révision 2026.11.07.1*  
 *Site par ve2cuy*

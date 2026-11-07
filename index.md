@@ -41,92 +41,155 @@ Ce cours permettra à l'étudiant, à partir de l'approche DevOps, de réaliser,
 
 ![](dessins/porte-documents.svg) *Plan de cours, contenus et copier/coller*
 
-- ![](dessins/document.svg) + · [Plan de cours, hiver 2026 (PDF)](Documentation/420-4D4-JR_ab_pc_H26.pdf)
-- ![](dessins/livres.svg) + · [Contenus du cours](Documentation/Contenu/)
-- ![](dessins/copier-coller.svg) + · [Les copier/coller](Documentation/CopierColler.md) · 👍
-- ![](dessins/document.svg) + · Description de l'épreuve synthèse · à suivre
+- ![](dessins/document.svg) - · [Plan de cours](Documentation/420-4D4-JR_ab_pc_H26.pdf)
+  - Hiver 2026 · PDF officiel
+- ![](dessins/livres.svg) - · [Contenus du cours](Documentation/Contenu/)
+  - Le dossier des contenus de la session
+- ![](dessins/copier-coller.svg) - · [Les copier/coller](Documentation/CopierColler.md) · 👍
+  - Commandes et alias Docker et K8s · stubs Compose et K8s · scripts d'installation
+- ![](dessins/document.svg) - · Description de l'épreuve synthèse · à suivre
 
 ## B) Concepts et outils de base (Docker)
 
 ![](dessins/conteneur.svg) *Conteneurs, images, Dockerfile, Compose*
 
-- ![](dessins/conteneur-vm.svg) 01 · [Conteneurs vs machines virtuelles](Documentation/Docker/Intro-a-docker-et-kubernetes.md)
+- ![](dessins/conteneur-vm.svg) 01 · [Conteneurs et machines virtuelles](Documentation/Docker/Intro-a-docker-et-kubernetes.md)
+  - VM et conteneurs · Docker et Kubernetes · Podman, Buildah, Kaniko
 - ![](dessins/telechargement.svg) 02 · [Installation de Docker](Installation/Docker/Installation-de-Docker.md)
-- ![](dessins/conteneur.svg) 03 · [Docker – Introduction](Documentation/Docker/Introduction-a-Docker.md)
-- ![](dessins/yaml.svg) 04 · [Yaml – Introduction](Documentation/Yaml/yaml.md)
-- ![](dessins/livres.svg) 05 · [Référence Yaml](Documentation/Yaml/yaml-reference.md)
-- ![](dessins/document.svg) 06 · [Yaml – Exemple d'un document Yaml](Documentation/Yaml/yaml-exemple-ibm.md)
-- ![](dessins/nuage.svg) 07 · [hub.docker.com – Introduction](Documentation/Docker/Docker-Hub.md)
+  - Docker Desktop · Ubuntu · Vagrant · Windows et macOS
+- ![](dessins/conteneur.svg) 03 · [Introduction à Docker](Documentation/Docker/Introduction-a-Docker.md)
+  - Commandes de base : run, ps, images, exec · ports IP · logs et inspect
+- ![](dessins/yaml.svg) 04 · [YAML – Introduction](Documentation/Yaml/yaml.md)
+  - Commentaires · scalaires · listes et structures · nœuds réutilisables
+- ![](dessins/livres.svg) 05 · [Référence YAML](Documentation/Yaml/yaml-reference.md)
+  - Règles, types de données, collections, ancres · pièges courants
+- ![](dessins/document.svg) 06 · [Exemple d'un document YAML](Documentation/Yaml/yaml-exemple-ibm.md)
+  - Un exemple complexe et sa conversion en JSON
+- ![](dessins/nuage.svg) 07 · [Docker Hub](Documentation/Docker/Docker-Hub.md)
+  - Publier une image personnalisée · stockage persistant
 - ![](dessins/couches.svg) 08 · [Dockerfile – Introduction](Documentation/Docker/Dockerfile-Introduction.md)
-- ![](dessins/etiquette.svg) 08b · [Dockerfile – Convention de nommage des « labels »](Documentation/Docker/Dockerfile-convention-de-nommage.md)
-- ![](dessins/terminal.svg) 09 · [Dockerfile – Exemple avec une app node.js](Documentation/Docker/Dockerfile-Exemple-node.js.md)
-- ![](dessins/chat.svg) F1 · [Dockerfile – Formatif 01 – SuperMinou 🐈](Documentation/Docker/Dockerfile-atelier-de-renforcement.md) · formatif
-- ![](dessins/reseau.svg) 10 · [Docker – Les réseaux](Documentation/Docker/Introduction-aux-reseaux.md)
-- ![](dessins/multi-services.svg) 11 · [Docker – Application multi-services](Documentation/Docker/Application-multi-services.md)
-- ![](dessins/dossier-lien.svg) 12 · [Docker – Retour sur les fusions (bind)](Documentation/Docker/Retour-sur-les-fusions-Bind.md)
-- ![](dessins/compose.svg) 13a · [Docker-Compose – Partie 1](Documentation/Docker/Docker-compose-p1.md)
-- ![](dessins/compose.svg) 13b · [Docker-Compose – Partie 2](Documentation/Docker/Docker-compose-p2.md)
-- ![](dessins/compose.svg) 13c · [Docker-Compose – Partie 3](Documentation/Docker/Docker-compose-p3.md)
-- ![](dessins/fiole.svg) 14 · [Docker-Compose – Laboratoire (Drupal)](Documentation/Docker/Docker-compose-laboratoire-Drupal.md) · à revoir 🛑
-- ![](dessins/registre.svg) 15 · [Dépôt privé d'images – Harbor](Installation/Registre-prive-d-images.md)
-- ![](dessins/engrenage.svg) 16 · [Automatisation des builds – GitHub Actions](Documentation/Automatisation/github-action.md)
-- ![](dessins/engrenage.svg) 17 · [Automatisation des builds – GitHub Actions V2](Documentation/Automatisation/github-action-v2.md)
-- ![](dessins/tableau-de-bord.svg) 18 · [Introduction à Homepage](Documentation/Docker/homepage.md)
-- ![](dessins/livres.svg) + · [Docker – Référence rapide](Documentation/Docker/Docker-Reference-rapide.md) · 👍
+  - FROM, RUN, COPY, ENV, WORKDIR, EXPOSE · CMD et ENTRYPOINT · cache
+- ![](dessins/etiquette.svg) 09 · [Convention de nommage des labels](Documentation/Docker/Dockerfile-convention-de-nommage.md)
+  - Métadonnées des images · org.label-schema et OCI
+- ![](dessins/terminal.svg) 10 · [Image d'une application Node.js](Documentation/Docker/Dockerfile-Exemple-node.js.md)
+  - Dockerfile · Express.js · arguments · image multi-plateforme
+- ![](dessins/chat.svg) 11 · [SuperMinou 🐈](Documentation/Docker/Dockerfile-atelier-de-renforcement.md) · formatif
+  - Dockerfile – formatif 01 de l'épreuve synthèse, volet B
+- ![](dessins/reseau.svg) 12 · [Les réseaux Docker](Documentation/Docker/Introduction-aux-reseaux.md)
+  - Réseaux host et macvlan
+- ![](dessins/multi-services.svg) 13 · [Application multi-services](Documentation/Docker/Application-multi-services.md)
+  - Variables d'environnement · MariaDB + Adminer
+- ![](dessins/dossier-lien.svg) 14 · [Retour sur les fusions (bind)](Documentation/Docker/Retour-sur-les-fusions-Bind.md)
+  - Dossiers liés · Node-RED, MySQL et WordPress · Portainer
+- ![](dessins/compose.svg) 15 · [Docker Compose – Partie 1](Documentation/Docker/Docker-compose-p1.md)
+  - Services, options et configuration
+- ![](dessins/compose.svg) 16 · [Docker Compose – Partie 2](Documentation/Docker/Docker-compose-p2.md)
+  - Multi-services · build · variables et fichier .env
+- ![](dessins/compose.svg) 17 · [Docker Compose – Partie 3](Documentation/Docker/Docker-compose-p3.md)
+  - Services d'initialisation · depends_on · healthcheck
+- ![](dessins/fiole.svg) 18 · [Laboratoire Drupal](Documentation/Docker/Docker-compose-laboratoire-Drupal.md) · à revoir 🛑
+  - Docker Compose : Drupal et sa base de données
+- ![](dessins/registre.svg) 19 · [Dépôt privé d'images – Harbor](Installation/Registre-prive-d-images.md)
+  - Installation · registre non sécurisé · droits d'accès
+- ![](dessins/engrenage.svg) 20 · [GitHub Actions](Documentation/Automatisation/github-action.md)
+  - Build et push automatiques vers Docker Hub
+- ![](dessins/engrenage.svg) 21 · [GitHub Actions, version 2](Documentation/Automatisation/github-action-v2.md)
+  - Projet complet de CI/CD : application, workflows, releases
+- ![](dessins/tableau-de-bord.svg) 22 · [Homepage](Documentation/Docker/homepage.md)
+  - Tableau de bord des services · configuration et widgets
+- ![](dessins/livres.svg) 23 · [Docker – Référence rapide](Documentation/Docker/Docker-Reference-rapide.md) · 👍
+  - Les commandes Docker essentielles
 
 ## C) Kubernetes (K8s)
 
 ![](dessins/roue.svg) *Orchestration, manifestes, volumes, services*
 
-- ![](dessins/serveur.svg) 20 · [Kubernetes – Installation d'un nœud unique sous Linux](Documentation/Kubernetes/Installation-un-seul-noeud.md) · 👍
-- ![](dessins/roue.svg) 21 · [Kubernetes – Introduction](Documentation/Kubernetes/Kubernetes-Introduction.md) · 👍
-- ![](dessins/terminal.svg) 21b · [Kubernetes – kubectl, renforcement](Documentation/Kubernetes/Kubernetes-Introduction-kubectl.md)
-- ![](dessins/yaml.svg) 22 · [Kubernetes – Manifestes expliqués, version courte](Documentation/Kubernetes/Kubernetes-Manifestes-Expliques-version-courte.md)
-- ![](dessins/yaml.svg) 23 · [Kubernetes – Manifestes expliqués, version longue](Documentation/Kubernetes/Kubernetes-Manisfestes-Expliques-version-longue.md)
-- ![](dessins/jauge.svg) 24 · [Kubernetes – Manifestes, gestion des ressources](Documentation/Kubernetes/Kubernetes-Manifestes-Gestion-des-ressources.md)
-- ![](dessins/roue.svg) 25 · [Kubernetes – Partie 2](Documentation/Kubernetes/Kubernetes-partie-2.md) · 👍
-- ![](dessins/cle.svg) 26 · [Kubernetes – Config Map et Secrets](Documentation/Kubernetes/Kubernetes-Config-map-et-secret.md) · 👍
-- ![](dessins/jauge.svg) 27 · [Kubernetes – Gestion des ressources](Documentation/Kubernetes/Kubernetes-Manifestes-Gestion-des-ressources.md) · 👍
-- ![](dessins/cluster.svg) 28 · Préparation à l'atelier d'installation d'un cluster K8s avec Vagrant
-- ![](dessins/cluster.svg) 29 · [Kubernetes – Installation d'un cluster; 1 Master, 2 Nodes](Documentation/Kubernetes/Kubernetes-Installation-cluster.md)
-- ![](dessins/disque.svg) 30 · [Kubernetes – Les volumes](Documentation/Kubernetes/Kubernetes-Les-volumes.md) · 👍
-- ![](dessins/disque.svg) 30b · [Kubernetes – Les volumes, partie 2](Documentation/Kubernetes/Kubernetes-Volumes-p2.md) · 🧠
-- ![](dessins/reseau.svg) 31 · [Kubernetes – Services](Documentation/Kubernetes/Kubernetes-Services.md) · 🧠
-- ![](dessins/balance.svg) 32 · [LoadBalancer et ingress avec Traefik](Documentation/Kubernetes/MetalLB-Traefik.md)
-- ![](dessins/balance.svg) 33 · [Kubernetes – LoadBalancer externe et ingress avec Nginx](Documentation/Kubernetes/Kubernetes-LoadBalancer-et-Ingress.md) · désuet
-- ![](dessins/balance.svg) 34 · [Équilibreur de charge externe MetalLB – info supplémentaire](Documentation/Kubernetes/Equilibreur-de-charge-externe-MetalLB.md)
-- ![](dessins/espaces.svg) 35 · Espaces de nom (namespaces) · 🧠
-- ![](dessins/badge.svg) 36 · ServiceAccount · 🧠
-- ![](dessins/nuage.svg) 37 · [Utilisation d'un cluster sur Google Cloud](Documentation/Kubernetes/Kubernetes-Google.cloud.md) · 🧠
-- ![](dessins/roue.svg) 38 · [Helm – Introduction](Documentation/Kubernetes/Helm-introduction.md) · 👍
-- ![](dessins/engrenage.svg) 39 · Automatisation des builds d'images Docker/GitHub · 🧠
-- ![](dessins/autoscale.svg) 40 · [Autoscaling](Documentation/Kubernetes/Kubernetes-autoscalling.md) · 👍
-- ![](dessins/livres.svg) 99 · [kubectl – Référence rapide](Documentation/Kubernetes/Kubernetes-Reference-rapide.md) · 👍
+- ![](dessins/serveur.svg) 24 · [Installation d'un nœud unique](Documentation/Kubernetes/Installation-un-seul-noeud.md) · 👍
+  - Amas K8s d'un seul serveur sous Linux · worker · kind
+- ![](dessins/roue.svg) 25 · [Kubernetes – Introduction](Documentation/Kubernetes/Kubernetes-Introduction.md) · 👍
+  - Minikube et kubectl · pods et déploiements · manifestes
+- ![](dessins/terminal.svg) 26 · [kubectl, renforcement](Documentation/Kubernetes/Kubernetes-Introduction-kubectl.md)
+  - run, create, expose, scale, logs · conteneur d'initialisation
+- ![](dessins/yaml.svg) 27 · [Manifestes expliqués, version courte](Documentation/Kubernetes/Kubernetes-Manifestes-Expliques-version-courte.md)
+  - Pod, Deployment, ConfigMap, Secret, Service
+- ![](dessins/yaml.svg) 28 · [Manifestes expliqués, version longue](Documentation/Kubernetes/Kubernetes-Manisfestes-Expliques-version-longue.md)
+  - Chaque ressource, avec des exemples commentés
+- ![](dessins/jauge.svg) 29 · [Manifestes, gestion des ressources](Documentation/Kubernetes/Kubernetes-Manifestes-Gestion-des-ressources.md)
+  - requests et limits · CPU et mémoire
+- ![](dessins/roue.svg) 30 · [Kubernetes – Partie 2](Documentation/Kubernetes/Kubernetes-partie-2.md) · 👍
+  - MongoDB + Mongo Express · laboratoires WordPress et PostgreSQL
+- ![](dessins/cle.svg) 31 · [ConfigMap et Secrets](Documentation/Kubernetes/Kubernetes-Config-map-et-secret.md) · 👍
+  - envFrom · volume à partir d'un configmap · secrets
+- ![](dessins/jauge.svg) 32 · [Gestion des ressources](Documentation/Kubernetes/Kubernetes-Manifestes-Gestion-des-ressources.md) · 👍
+  - Qualité de service : Guaranteed, Burstable, BestEffort
+- ![](dessins/cluster.svg) 33 · Préparation de l'atelier cluster K8s
+  - Installation d'un cluster avec Vagrant
+- ![](dessins/cluster.svg) 34 · [Installation d'un cluster](Documentation/Kubernetes/Kubernetes-Installation-cluster.md)
+  - 1 master, 2 nodes · Vagrant · kubeadm
+- ![](dessins/disque.svg) 35 · [Les volumes](Documentation/Kubernetes/Kubernetes-Les-volumes.md) · 👍
+  - emptyDir, hostPath, PV et PVC, NFS
+- ![](dessins/disque.svg) 36 · [Les volumes, partie 2](Documentation/Kubernetes/Kubernetes-Volumes-p2.md) · 🧠
+  - hostPath · stockage S3 : MinIO et Garage
+- ![](dessins/reseau.svg) 37 · [Les services](Documentation/Kubernetes/Kubernetes-Services.md) · 🧠
+  - ClusterIP, NodePort, LoadBalancer, ExternalName
+- ![](dessins/balance.svg) 38 · [LoadBalancer et ingress avec Traefik](Documentation/Kubernetes/MetalLB-Traefik.md)
+  - MetalLB · Traefik par Helm · Google Cloud et DuckDNS
+- ![](dessins/balance.svg) 39 · [LoadBalancer et ingress avec Nginx](Documentation/Kubernetes/Kubernetes-LoadBalancer-et-Ingress.md) · désuet
+  - MetalLB · ingress Nginx
+- ![](dessins/balance.svg) 40 · [Équilibreur de charge MetalLB](Documentation/Kubernetes/Equilibreur-de-charge-externe-MetalLB.md)
+  - Information supplémentaire : installation, Layer 2, Traefik
+- ![](dessins/espaces.svg) 41 · Espaces de nom (namespaces) · 🧠
+- ![](dessins/badge.svg) 42 · ServiceAccount · 🧠
+- ![](dessins/nuage.svg) 43 · [Cluster sur Google Cloud](Documentation/Kubernetes/Kubernetes-Google.cloud.md) · 🧠
+  - gcloud · contexte du cluster · facturation
+- ![](dessins/roue.svg) 44 · [Helm – Introduction](Documentation/Kubernetes/Helm-introduction.md) · 👍
+  - Charts, repositories et releases · exemples
+- ![](dessins/engrenage.svg) 45 · Automatisation des builds d'images · 🧠
+  - Docker et GitHub
+- ![](dessins/autoscale.svg) 46 · [Autoscaling](Documentation/Kubernetes/Kubernetes-autoscalling.md) · 👍
+  - HPA, VPA, Cluster Autoscaler, KEDA
+- ![](dessins/livres.svg) 47 · [kubectl – Référence rapide](Documentation/Kubernetes/Kubernetes-Reference-rapide.md) · 👍
+  - Pods, déploiements, services, contextes, namespaces
 
 ## D) Projets et épreuve synthèse
 
 ![](dessins/drapeau.svg) *TP01, volets A et B, énoncés 2023*
 
-- ![](dessins/conteneur.svg) 1 · [Projet de mi-session – TP01 Docker](https://github.com/ve2cuy/4204D4-TP01-H26-depart) · 30 %
-- ![](dessins/coupe.svg) 2 · [Épreuve synthèse, volet A – TP02 K8s](Documentation/Projet-Session/README.md) · 35 %
-- ![](dessins/crayon.svg) 3 · Épreuve synthèse, volet B – examen pratique · 35 %
+- ![](dessins/conteneur.svg) 48 · [Projet de mi-session – TP01](https://github.com/ve2cuy/4204D4-TP01-H26-depart) · 30 %
+  - Docker · dépôt de départ sur GitHub
+- ![](dessins/coupe.svg) 49 · [Épreuve synthèse, volet A](Documentation/Projet-Session/README.md) · 35 %
+  - TP02 K8s · applications en local, puis en nuage
+- ![](dessins/crayon.svg) 50 · Épreuve synthèse, volet B · 35 %
+  - Examen pratique
 
 Énoncés des années précédentes :
 
-- ![](dessins/document.svg) + · Énoncé du TP01 – Docker, version 2023 · 30 %
-- ![](dessins/document.svg) + · [Énoncé du TP02 – K8s, Node-red + mosquitto + configmap + secret](Documentation/Kubernetes/Kubernetes-Node-RED-Mosquitto.md) · 20 %
-- ![](dessins/document.svg) + · [Énoncé de l'épreuve synthèse, version 2023](Documentation/Projet-Session/Epreuve-synthese-2023.md) · 50 %
+- ![](dessins/document.svg) 51 · Énoncé du TP01, version 2023 · 30 %
+  - Docker
+- ![](dessins/document.svg) 52 · [Énoncé du TP02](Documentation/Kubernetes/Kubernetes-Node-RED-Mosquitto.md) · 20 %
+  - K8s : Node-RED + Mosquitto + ConfigMap + Secret
+- ![](dessins/document.svg) 53 · [Épreuve synthèse, version 2023](Documentation/Projet-Session/Epreuve-synthese-2023.md) · 50 %
+  - Infrastructure K8s H.A. · NextCloud et Mattermost
 
 ## E) Laboratoires et outils
 
 ![](dessins/cle-a-molette.svg) *Laboratoires, outils et scripts*
 
-- ![](dessins/fiole.svg) 60 · [Google Cloud, NFS et Harbor](Documentation/Laboratoires/NFS-Habor.md) · laboratoire
-- ![](dessins/terminal.svg) + · [LazyDocker](https://github.com/jesseduffield/lazydocker)
-- ![](dessins/terminal.svg) + · [K9s](https://k9scli.io/)
-- ![](dessins/tableau-de-bord.svg) + · [Arcane](https://getarcane.app/)
-- ![](dessins/tableau-de-bord.svg) + · [Portainer](https://www.portainer.io/)
-- ![](dessins/roue.svg) + · [Rancher](https://www.rancher.com/quick-start)
-- ![](dessins/disque.svg) + · [LongHorn](https://longhorn.io/)
-- ![](dessins/serveur.svg) + · [Script d'installation d'un serveur K8s](Installation/Kubernetes/script-serveur.md)
-- ![](dessins/serveur.svg) + · [Script d'installation d'un nœud K8s](Installation/Kubernetes/script-noeud.md)
+- ![](dessins/fiole.svg) 54 · [Google Cloud, NFS et Harbor](Documentation/Laboratoires/NFS-Habor.md) · laboratoire
+  - Laboratoire en deux parties
+- ![](dessins/terminal.svg) 55 · [LazyDocker](https://github.com/jesseduffield/lazydocker)
+  - Interface en mode texte pour Docker
+- ![](dessins/terminal.svg) 56 · [K9s](https://k9scli.io/)
+  - Interface en mode texte pour Kubernetes
+- ![](dessins/tableau-de-bord.svg) 57 · [Arcane](https://getarcane.app/)
+  - Interface Web de gestion de Docker
+- ![](dessins/tableau-de-bord.svg) 58 · [Portainer](https://www.portainer.io/)
+  - Gestion de Docker et de Kubernetes par le Web
+- ![](dessins/roue.svg) 59 · [Rancher](https://www.rancher.com/quick-start)
+  - Gestion de clusters Kubernetes
+- ![](dessins/disque.svg) 60 · [Longhorn](https://longhorn.io/)
+  - Stockage distribué pour Kubernetes
+- ![](dessins/serveur.svg) 61 · [Script d'installation d'un serveur K8s](Installation/Kubernetes/script-serveur.md)
+  - server.sh
+- ![](dessins/serveur.svg) 62 · [Script d'installation d'un nœud K8s](Installation/Kubernetes/script-noeud.md)
+  - node.sh

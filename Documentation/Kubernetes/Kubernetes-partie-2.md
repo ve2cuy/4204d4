@@ -1,20 +1,23 @@
-# Kubernetes – Partie 2
+# 30 - Kubernetes – Partie 2
 
 <img src="../images/comvecteezy446657.jpg" alt="" width="" />
 
 ## K8s, déployer une application de complexité moyenne
 
-Contenu:
+---
 
-1. **[Démonstration d'une app MongoDB + MongoExpress](#item1)**
-2. **[Laboratoire](#item2)**
-   1. **Déployer une application WordPress**
-   2. **Déployer super Minou en 25 duplicatas**
-   3. **Déployer PostgreSQL et pgadmin4**
+## Contenu
+
+- [**💡- Une petite révision d'un manifeste K8s**](#section-une-petite-revision-d-un-manifeste-k8s)
+- [**1 – Déploiement de MongoDB + MongoExpress**](#section-1)
+- [**2 – Laboratoires**](#section-2)
+  - [Laboratoire 2.1 – Déployer une application WordPress](#section-2-1)
+  - [Laboratoire 2.2 – Déployer super Minou avec 25 duplicatas](#section-2-2)
+  - [Laboratoire 2.3 – Déployer PostgreSQL et pgadmin4](#section-2-3)
 
 ---
 
-## 💡- Une petite révision d'un manifeste K8s
+## 💡- Une petite révision d'un manifeste K8s {#section-une-petite-revision-d-un-manifeste-k8s}
 
 ```
 apiVersion: apps/v1
@@ -73,7 +76,7 @@ $ kubectl apply -f https://raw.githubusercontent.com/ve2cuy/4204d4/refs/heads/ma
 
 ---
 
-## 1 – Déploiement de MongoDB + MongoExpress
+## 1 – Déploiement de MongoDB + MongoExpress {#section-1}
 
 **Étape 1.1 –** Dans l'exemple suivant, nous allons déployer un système proposant un SGBD *MongoDB* et deux instances de – pour des raisons de fiabilité – *Mongo-Express*.
 
@@ -332,9 +335,9 @@ Ce qui va donner:
 
 <img src="../images/labo02.png" alt="" width="700" />
 
-## Section 2 
+## 2 – Laboratoires {#section-2}
 
-### Laboratoire 1 – Déployer une application WordPress
+### Laboratoire 2.1 – Déployer une application WordPress {#section-2-1}
 
 **Durée:** 40 minutes
 
@@ -364,7 +367,7 @@ Il faut mettre en place, grace à deux manifestes, un déploiement **WordPress**
 
 ---
 
-### Laboratoire 2 – Déployer super Minou avec 25 duplicatas
+### Laboratoire 2.2 – Déployer super Minou avec 25 duplicatas {#section-2-2}
 
 **Durée:** 30 minutes
 
@@ -387,7 +390,7 @@ Résultat:
 
 ---
 
-### Laboratoire 3 – Déployer PostgreSQL et pgadmin4
+### Laboratoire 2.3 – Déployer PostgreSQL et pgadmin4 {#section-2-3}
 
 **Durée:** 30 minutes
 
@@ -404,3 +407,12 @@ Prochain document: [K8s-Configmap et Secrets](Kubernetes-Config-map-et-secret.md
 ###### Document rédigé par Alain Boudreault (c) 2021-2026 – version 2026.04.06.01
 
 site par ve2cuy
+
+---
+
+## Crédits
+
+*Document rédigé par Alain Boudreault © 2021-2026*  
+*Révision 2026.11.07.1*  
+
+*Contenu par [VE2CUY](https://ve2cuy.github.io/blog/)*
