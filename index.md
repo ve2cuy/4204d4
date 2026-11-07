@@ -70,7 +70,7 @@ Ce cours permettra à l'étudiant, à partir de l'approche DevOps, de réaliser,
 - ![](dessins/couches.svg) 08 · [Dockerfile – Introduction](Documentation/Docker/Dockerfile-Introduction.md)
   - FROM, RUN, COPY, ENV, WORKDIR, EXPOSE · CMD et ENTRYPOINT · cache
 - ![](dessins/etiquette.svg) 09 · [Convention de nommage des labels](Documentation/Docker/Dockerfile-convention-de-nommage.md)
-  - Métadonnées des images · org.label-schema et OCI
+  - Métadonnées des images · OCI et org.label-schema · Compose · laboratoires
 - ![](dessins/terminal.svg) 10 · [Image d'une application Node.js](Documentation/Docker/Dockerfile-Exemple-node.js.md)
   - Dockerfile · Express.js · arguments · image multi-plateforme
 - ![](dessins/chat.svg) 11 · [SuperMinou 🐈](Documentation/Docker/Dockerfile-atelier-de-renforcement.md) · formatif
