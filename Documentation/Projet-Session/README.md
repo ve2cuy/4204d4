@@ -64,7 +64,7 @@
         * e2-small (2 vCPUs, 2 GB Memory) Us-central-1f
         * --->>>> Disque de 22 GO  <<<---
         * Sous ubuntu-minimal-2604-resolute-amd64
-        * NOTE: 😉 Il est recommandé d'utiliser des [clés ssh](https://ve2cuy.com/420-3c3/?page_id=1492) pour la connexion à la VM.
+        * NOTE: 😉 Il est recommandé d'utiliser des [clés ssh](https://ve2cuy.github.io/4203c3/Documentation/Configuration-et-utilisation-de-ssh.html) pour la connexion à la VM.
           * 💡 Si la commande `sudo` ne reconnait plus le mot de passe, redémarrer la session ssh.
     * Installer `Harbor` avec certificats `TLS`
         * 👉 Attention au mot de passe

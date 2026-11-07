@@ -177,7 +177,7 @@ Dans un dossier vide, enregistrer le fichier **`Dockerfile`** :
 # ###########################################################################
 FROM debian
 LABEL authors="Alain Boudreault <aboudrea@cstj.qc.ca>"
-LABEL Atelier="7.1 de http://ve2cuy.com/420-4d4b/index.php/docker-compose-introduction-2/"
+LABEL Atelier="7.1 de https://ve2cuy.github.io/4204d4/Documentation/Docker/Docker-compose-p2.html"
 ENV UN_MOT_DE_PASSE=tepasserieux
 ENV UNE_BASE_DE_DONNEES=db_de_la_ciex
 # Definir des variables avec des séquences ANSI pour afficher de la couleur sous BASH

@@ -30,7 +30,7 @@ En utilisant votre projet `Google Cloud` du Cégep, il faut:
   * Disque de 15go
   * Port HTTP ouvert
 * Installer un service `NFS` avec un partage sur le dossier `/esh26`
-  * Un document de référence est disponible --> [ici](https://ve2cuy.com/420-3c3/?page_id=2511)
+  * Un document de référence est disponible --> [ici](https://ve2cuy.github.io/4203c3/Documentation/NFS-Installation-et-utilisation.html)
   * ATTENTION: Ne pas créer le dossier dans votre dossier de travail mais bien dans `\`
   * Renseigner le `firewall` du projet pour exposer les ports requis pour `NFS`
     * 👉 Voir le document de référence

@@ -374,7 +374,7 @@ le CLI de Docker
         $ docker commit --change='CMD ["/bin/yo"]' bonjour:v2
         $ dr bonjour:v2
 
-        Faire labo 3.6 de http://ve2cuy.com/420-4d4b/index.php/docker-introduction/
+        Faire labo 3.6 de https://ve2cuy.github.io/4204d4/Documentation/Docker/Introduction-a-Docker.html#36--laboratoire
             Extra, créer une nouvelle image 'image-web' à partir du résultat final et tester.
 ```
 

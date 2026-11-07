@@ -191,7 +191,7 @@ h1 { <span style="color: #6f82bf;">color: #6f82bf;</span>
 <br/><br/>
 Pour lancer le conteneur:<br/><br/>
 <strong> docker run -it -d -p 80:80 --name serveurweb VOTRECOMPTE/420-4d4:1.0</strong><br>
-<br/><a href="http://ve2cuy.com/420-4d4b/">Contenu du cours</a>.</p>
+<br/><a href="https://ve2cuy.github.io/4204d4/">Contenu du cours</a>.</p>
 <p><em>Ceci est la version 1.0 de l'application<br/><br/>(c) Votre prénom nom - 2023-2026</em></p>
 </body>
 </html>

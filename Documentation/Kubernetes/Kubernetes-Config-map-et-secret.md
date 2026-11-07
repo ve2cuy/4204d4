@@ -423,7 +423,7 @@ Résultat -->
 
 *L'exemple précédent est l'utilisation la plus simple possible d'un volume.  Kubernetes offre un large éventail de volumes permettant d'assurer le partage et la persistance des données.*
 
-*Nous explorerons plus de possibilités dans un laboratoire à [venir](http://ve2cuy.com/420-4d4b/index.php/kubernetes-les-volumes/).*
+*Nous explorerons plus de possibilités dans un laboratoire à [venir](Kubernetes-Les-volumes.md).*
 
 Référence Kubernetes sur les [volumes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/)
 
@@ -574,7 +574,7 @@ $ kubectl port-forward --address 192.168.2.49,localhost svc/nginx-service 8080:8
 # minikube service nginx-service
 ```
 
-**Note:** Le manifeste pour nginx est identique à celui que nous avons vu [ici à l'action 3.10](http://ve2cuy.com/420-4d4b/index.php/kubernetes-introduction/).  *Seules les directives au volume ont été ajoutées.*
+**Note:** Le manifeste pour nginx est identique à celui que nous avons vu [ici à l'action 3.10](Kubernetes-Introduction.md#action-310--consolidation-des-deux-schémas).  *Seules les directives au volume ont été ajoutées.*
 
 ---
 
@@ -924,7 +924,7 @@ Reprendre le **Laboratoire 3 de ce --> [document](https://ve2cuy.github.io/4204d
 
 ## 7 – TP2: Mosquitto+node-red
 
-* [Voici un exemple complet](http://ve2cuy.com/420-4d4b/index.php/kubernetes-node-red-mosquitto-configmap-secret/) d'une application [Node-RED](https://nodered.org) + [mosquitto](https://mosquitto.org) + configMap (pour les fichiers de configuration) + secret.
+* [Voici un exemple complet](https://4204d4.ve2cuy.com/kubernetes-node-red-mosquitto-configmap-secret/) d'une application [Node-RED](https://nodered.org) + [mosquitto](https://mosquitto.org) + configMap (pour les fichiers de configuration) + secret.
 
 Encodage en [Base64](https://fr.wikipedia.org/wiki/Base64), [encodeur/décodeur](https://www.base64decode.org)
 
