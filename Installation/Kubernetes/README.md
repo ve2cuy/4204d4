@@ -338,7 +338,7 @@ sudo kubeadm reset -f
 
 ---
 
-**NOTE**: Voir les alias K8s dans la section [copier/coller](https://4204d4.ve2cuy.com/docker-copier-coller/)
+**NOTE**: Voir les alias K8s dans la section [copier/coller](../../Documentation/CopierColler.md)
 
 ---
 

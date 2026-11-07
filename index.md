@@ -67,7 +67,7 @@ Ce cours permettra à l'étudiant, à partir de l'approche DevOps, de réaliser,
 - ![](dessins/compose.svg) 13a · [Docker-Compose – Partie 1](Documentation/Docker/Docker-compose-p1.md)
 - ![](dessins/compose.svg) 13b · [Docker-Compose – Partie 2](Documentation/Docker/Docker-compose-p2.md)
 - ![](dessins/compose.svg) 13c · [Docker-Compose – Partie 3](Documentation/Docker/Docker-compose-p3.md)
-- ![](dessins/fiole.svg) 14 · [Docker-Compose – Laboratoire (Drupal)](https://4204d4.ve2cuy.com/docker-compose-laboratoire-drupal/) · à revoir 🛑
+- ![](dessins/fiole.svg) 14 · [Docker-Compose – Laboratoire (Drupal)](Documentation/Docker/Docker-compose-laboratoire-Drupal.md) · à revoir 🛑
 - ![](dessins/registre.svg) 15 · [Dépôt privé d'images – Harbor](Installation/Registre-prive-d-images.md)
 - ![](dessins/engrenage.svg) 16 · [Automatisation des builds – GitHub Actions](Documentation/Automatisation/github-action.md)
 - ![](dessins/engrenage.svg) 17 · [Automatisation des builds – GitHub Actions V2](Documentation/Automatisation/github-action-v2.md)
@@ -87,8 +87,8 @@ Ce cours permettra à l'étudiant, à partir de l'approche DevOps, de réaliser,
 - ![](dessins/roue.svg) 25 · [Kubernetes – Partie 2](Documentation/Kubernetes/Kubernetes-partie-2.md) · 👍
 - ![](dessins/cle.svg) 26 · [Kubernetes – Config Map et Secrets](Documentation/Kubernetes/Kubernetes-Config-map-et-secret.md) · 👍
 - ![](dessins/jauge.svg) 27 · [Kubernetes – Gestion des ressources](Documentation/Kubernetes/Kubernetes-Manifestes-Gestion-des-ressources.md) · 👍
-- ![](dessins/cluster.svg) 28 · [Préparation à l'atelier d'installation d'un cluster K8s avec Vagrant](https://4204d4.ve2cuy.com/pre-requis-atelier-k8s-vagrant/)
-- ![](dessins/cluster.svg) 29 · [Kubernetes – Installation d'un cluster; 1 Master, 2 Nodes](https://4204d4.ve2cuy.com/kubernetes-installation-dun-cluster-1-master-2-nodes/)
+- ![](dessins/cluster.svg) 28 · Préparation à l'atelier d'installation d'un cluster K8s avec Vagrant
+- ![](dessins/cluster.svg) 29 · [Kubernetes – Installation d'un cluster; 1 Master, 2 Nodes](Documentation/Kubernetes/Kubernetes-Installation-cluster.md)
 - ![](dessins/disque.svg) 30 · [Kubernetes – Les volumes](Documentation/Kubernetes/Kubernetes-Les-volumes.md) · 👍
 - ![](dessins/disque.svg) 30b · [Kubernetes – Les volumes, partie 2](Documentation/Kubernetes/Kubernetes-Volumes-p2.md) · 🧠
 - ![](dessins/reseau.svg) 31 · [Kubernetes – Services](Documentation/Kubernetes/Kubernetes-Services.md) · 🧠
@@ -113,9 +113,9 @@ Ce cours permettra à l'étudiant, à partir de l'approche DevOps, de réaliser,
 
 Énoncés des années précédentes :
 
-- ![](dessins/document.svg) + · [Énoncé du TP01 – Docker, version 2023](https://4204d4.ve2cuy.com/tp01-docker/) · 30 %
-- ![](dessins/document.svg) + · [Énoncé du TP02 – K8s, Node-red + mosquitto + configmap + secret](https://4204d4.ve2cuy.com/tp02-k8s/) · 20 %
-- ![](dessins/document.svg) + · [Énoncé de l'épreuve synthèse, version 2023](https://4204d4.ve2cuy.com/epreuve-synthese-2023/) · 50 %
+- ![](dessins/document.svg) + · Énoncé du TP01 – Docker, version 2023 · 30 %
+- ![](dessins/document.svg) + · [Énoncé du TP02 – K8s, Node-red + mosquitto + configmap + secret](Documentation/Kubernetes/Kubernetes-Node-RED-Mosquitto.md) · 20 %
+- ![](dessins/document.svg) + · [Énoncé de l'épreuve synthèse, version 2023](Documentation/Projet-Session/Epreuve-synthese-2023.md) · 50 %
 
 ## E) Laboratoires et outils
 

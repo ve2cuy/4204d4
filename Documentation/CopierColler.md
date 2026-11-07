@@ -275,7 +275,7 @@ Choisir: "Open Settings (JSON)"
 
 ## 4 – Cheat Sheet de VS Code
 
-[vscode-keyboard-shortcuts-macos](http://4204d4.ve2cuy.com/wp-content/uploads/2021/03/vscode-keyboard-shortcuts-macos.pdf)
+[vscode-keyboard-shortcuts-macos](vscode-keyboard-shortcuts-macos.pdf)
 
 ---
 

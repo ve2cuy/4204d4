@@ -23,7 +23,7 @@
 * [Projet 01](https://github.com/ve2cuy/4204D4-TP01-H26-depart)
 * [Épreuve synthèse - Volet A: 35%](Documentation/Projet-Session/README.md)
 * [Copier/coller](Documentation/CopierColler.md)
-* [ve2cuy](https://ve2cuy.com/)
+* [ve2cuy](https://ve2cuy.github.io/)
 
 ---
 ## Liste des documents de cours
@@ -61,7 +61,7 @@
 * [13a- Docker-Compose – Partie 1](Documentation/Docker/Docker-compose-p1.md)
 * * [13b- Docker-Compose – Partie 2](Documentation/Docker/Docker-compose-p2.md)
 * * [13c - Docker-Compose – Partie 3](Documentation/Docker/Docker-compose-p3.md)
-* [14 - Docker-Compose – Laboratoire (Drupal) TODO:](https://4204d4.ve2cuy.com/docker-compose-laboratoire-drupal/) 🛑
+* [14 - Docker-Compose – Laboratoire (Drupal) TODO:](Documentation/Docker/Docker-compose-laboratoire-Drupal.md) 🛑
 * [15 - Dépôt privé d’images – Harbor](Installation/Registre-prive-d-images.md)
 * [16 - Automatisation des builds – GitHub actions](/Documentation/Automatisation/github-action.md)
 * [17 - Automatisation des builds – GitHub actions V2](/Documentation/Automatisation/github-action-v2.md)
@@ -80,8 +80,8 @@
 * [25 - Kubernetes – Partie 2](Documentation/Kubernetes/Kubernetes-partie-2.md) 👍
 * [26 - Kubernetes – Config Map et Secrets](Documentation/Kubernetes/Kubernetes-Config-map-et-secret.md) 👍
 * [27 - Kubernetes – Gestion des ressources](Documentation/Kubernetes/Kubernetes-Manifestes-Gestion-des-ressources.md) 👍
-* [28 - Préparation à l'atelier d'installation d'un 'cluster' K8s avec Vagrant](https://4204d4.ve2cuy.com/pre-requis-atelier-k8s-vagrant/)
-* [29 - Kubernetes – Installation d'un cluster; 1 Master, 2 Nodes](https://4204d4.ve2cuy.com/kubernetes-installation-dun-cluster-1-master-2-nodes/)
+* 28 - Préparation à l'atelier d'installation d'un 'cluster' K8s avec Vagrant (page introuvable)
+* [29 - Kubernetes – Installation d'un cluster; 1 Master, 2 Nodes](Documentation/Kubernetes/Kubernetes-Installation-cluster.md)
 * [30 - Kubernetes – Les volumes](Documentation/Kubernetes/Kubernetes-Les-volumes.md) 👍
 * [30b-Kubernetes – Les volumes P2](Documentation/Kubernetes/Kubernetes-Volumes-p2.md) 🧠  
 * [31 - Kubernetes - Services](Documentation/Kubernetes/Kubernetes-Services.md) 🧠
@@ -121,9 +121,9 @@
 
 ### Évaluations
 
-* [Énoncé du TP01 – Docker - Version 2023 (30%)](https://4204d4.ve2cuy.com/tp01-docker/)
-* [Énoncé du TP02 – K8s – Node-red+mosquitto+configmap+secret (20%)](https://4204d4.ve2cuy.com/tp02-k8s/)
-* [Énoncé de l'épreuve synthèse - version 2023 (50%)](https://4204d4.ve2cuy.com/epreuve-synthese-2023/)
+* Énoncé du TP01 – Docker - Version 2023 (30%) (page introuvable)
+* [Énoncé du TP02 – K8s – Node-red+mosquitto+configmap+secret (20%)](Documentation/Kubernetes/Kubernetes-Node-RED-Mosquitto.md)
+* [Énoncé de l'épreuve synthèse - version 2023 (50%)](Documentation/Projet-Session/Epreuve-synthese-2023.md)
 
 ---
 

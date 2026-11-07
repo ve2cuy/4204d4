@@ -72,4 +72,4 @@ NOTE: 😉 Ce laboratoire est un pré-requis à l'épreuve synthèse du cours
 
 *Document rédigé par Alain Boudreault © 2021-2026*  
 *Version 2026.04.21.2*  
-*Site par [ve2cuy](https://ve2cuy.com)*
+*Site par [ve2cuy](https://ve2cuy.github.io/)*

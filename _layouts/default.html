@@ -34,7 +34,7 @@
       <a href="{% if n.lien contains '://' %}{{ n.lien }}{% else %}{{ n.lien | relative_url }}{% endif %}">{{ n.titre }}</a>
       {%- endfor %}
       {%- else %}
-      <a href="https://ve2cuy.com/">ve2cuy.com</a>
+      <a href="https://ve2cuy.github.io/">ve2cuy.github.io</a>
       <a href="{{ '/' | relative_url }}#documents"{% if page.titre %} aria-current="page"{% endif %}>Documents</a>
       <a href="{{ '/' | relative_url }}#enseignant">Enseignant</a>
       {%- endif %}

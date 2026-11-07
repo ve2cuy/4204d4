@@ -101,7 +101,7 @@ docker run hello-world
 
 ## 3 – Installation sous Ubuntu avec Vagrant
 
-Voir [ici](https://4204d4.ve2cuy.com/420-4d4b/index.php/mise-en-route-dune-vm-docker-avec-vagrant/)
+Voir [ici](../Vagrant/VM-Docker-avec-Vagrant.md)
 
 ---
 

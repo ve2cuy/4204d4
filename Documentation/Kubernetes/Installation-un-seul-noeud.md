@@ -450,7 +450,7 @@ kind delete cluster --name mon-multinode-cluster
 
 ---
 
-**NOTE**: Voir les alias K8s dans la section [copier/coller](https://4204d4.ve2cuy.com/docker-copier-coller/)
+**NOTE**: Voir les alias K8s dans la section [copier/coller](../CopierColler.md)
 
 ---
 

@@ -130,4 +130,4 @@ Pour un total d'environ 4$ pour 24 heures
 
 *Document rédigé par Alain Boudreault © 2021-2026*  
 *Version 2026.04.22.1*  
-*Site par [ve2cuy](https://ve2cuy.com)*
+*Site par [ve2cuy](https://ve2cuy.github.io/)*

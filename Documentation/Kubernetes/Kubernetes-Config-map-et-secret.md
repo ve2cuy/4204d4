@@ -334,7 +334,7 @@ Reprendre le **Laboratoire 1, Section 2 de ce [--> document](https://ve2cuy.gith
 
 <img src="../images/graphic-of-persistent-volume-bond.png" alt="" width="550" />
 
-**Note**: Dans ce module, nous verrons comment présenter des donnés stockées dans un configmap sous forme d'un volume. Les notions plus approfondies sur volumes K8S sont disponibles dans ce [document](https://4204d4.ve2cuy.com/kubernetes-les-volumes/).
+**Note**: Dans ce module, nous verrons comment présenter des donnés stockées dans un configmap sous forme d'un volume. Les notions plus approfondies sur volumes K8S sont disponibles dans ce [document](Kubernetes-Les-volumes.md).
 
 ---
 
@@ -924,7 +924,7 @@ Reprendre le **Laboratoire 3 de ce --> [document](https://ve2cuy.github.io/4204d
 
 ## 7 – TP2: Mosquitto+node-red
 
-* [Voici un exemple complet](https://4204d4.ve2cuy.com/kubernetes-node-red-mosquitto-configmap-secret/) d'une application [Node-RED](https://nodered.org) + [mosquitto](https://mosquitto.org) + configMap (pour les fichiers de configuration) + secret.
+* [Voici un exemple complet](Kubernetes-Node-RED-Mosquitto.md) d'une application [Node-RED](https://nodered.org) + [mosquitto](https://mosquitto.org) + configMap (pour les fichiers de configuration) + secret.
 
 Encodage en [Base64](https://fr.wikipedia.org/wiki/Base64), [encodeur/décodeur](https://www.base64decode.org)
 

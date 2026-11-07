@@ -125,7 +125,7 @@ de la taille des autres, ajouter `grandes_cartes: false` dans l'en-tête d'`inde
 | `image_ronde: true` dans l'en-tête d'`index.md` | L'image de l'en-tête s'affiche en rond (pour une photo) |
 | Un titre de plus de 30 caractères | Il s'affiche un peu plus petit, pour rester moins haut que le tableau de bord |
 
-Le menu du haut se règle dans `_config.yml` (sinon : ve2cuy.com, Documents, Enseignant) :
+Le menu du haut se règle dans `_config.yml` (sinon : ve2cuy.github.io, Documents, Enseignant) :
 
 ```yaml
 navigation:
@@ -173,7 +173,7 @@ Un document prévu, sans page pour l'instant :
 Un lien vers une page extérieure :
 
 ```markdown
-- ![](dessins/cluster.svg) 29 · [Kubernetes – Installation d'un cluster](https://4204d4.ve2cuy.com/kubernetes-installation-dun-cluster-1-master-2-nodes/)
+- ![](dessins/cluster.svg) + · [Documentation officielle de Kubernetes](https://kubernetes.io/fr/docs/home/) · lien externe
 ```
 
 ### Modifier, déplacer ou retirer une carte
