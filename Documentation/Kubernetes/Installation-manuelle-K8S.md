@@ -137,7 +137,9 @@ ssh -J usager@relais1,usager@relais2 etudiant@192.168.122.50
 scp -J claude@192.168.2.9 manifeste.yml etudiant@192.168.122.50:~
 ```
 
-**Configuration permanente** dans le fichier `~/.ssh/config` du poste de travail :
+> 💡 **Windows 11** : le client OpenSSH est installé avec le système. `ssh`, `scp`, `-J` et `-L` fonctionnent tels quels dans PowerShell ou le Terminal Windows.
+
+**Configuration permanente** dans le fichier `~/.ssh/config` du poste de travail (Windows : `C:\Users\<nom>\.ssh\config`, sans extension) :
 
 ```
 Host relais
@@ -163,9 +165,18 @@ Host k8s-w3
 ssh k8s-cp
 scp manifeste.yml k8s-w1:~
 
-# Copier sa clé publique sur le relais, puis sur le contrôleur : plus de mot de passe à taper
+# Créer une paire de clés (une seule fois), puis copier la clé publique
+# sur le relais et sur le contrôleur : plus de mot de passe à taper
+ssh-keygen -t ed25519
 ssh-copy-id relais
 ssh-copy-id k8s-cp
+```
+
+`ssh-copy-id` n'existe pas sous Windows. Dans PowerShell :
+
+```powershell
+type $env:USERPROFILE\.ssh\id_ed25519.pub | ssh relais "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys"
+type $env:USERPROFILE\.ssh\id_ed25519.pub | ssh k8s-cp "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys"
 ```
 
 **Tunnel vers un service de l'amas** : l'option `-L` rend un port du réseau privé accessible sur le poste de travail.

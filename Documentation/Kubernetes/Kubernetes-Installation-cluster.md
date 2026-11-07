@@ -184,7 +184,7 @@ Sept VM Ubuntu Server 26.04 LTS, dans le réseau privé `192.168.56.0/24` :
 
 | Poste | Installation |
 |-------|--------------|
-| Windows | [VirtualBox](https://www.virtualbox.org/wiki/Downloads), puis [Vagrant](https://developer.hashicorp.com/vagrant/install) (ou `winget install Hashicorp.Vagrant`) |
+| Windows 11 | [VirtualBox](https://www.virtualbox.org/wiki/Downloads), [Vagrant](https://developer.hashicorp.com/vagrant/install) et [Git](https://git-scm.com/download/win) (ou `winget install Oracle.VirtualBox Hashicorp.Vagrant Git.Git`) |
 | macOS (Intel) | `brew install --cask virtualbox vagrant` |
 | macOS (Apple Silicon) | VirtualBox 7.1+ pour ARM, ou Parallels/VMware Fusion; la boîte `bento/ubuntu-26.04` existe en arm64 |
 | Linux | VirtualBox et Vagrant; ou KVM : `sudo apt install qemu-system-x86 libvirt-daemon-system libvirt-dev ovmf build-essential`, puis `vagrant plugin install vagrant-libvirt` (Vagrant : dépôt apt de [HashiCorp](https://developer.hashicorp.com/vagrant/install)) |
@@ -194,6 +194,8 @@ vagrant --version
 ```
 
 > ⚠️ Sous Windows, Hyper-V (et WSL 2) peut ralentir VirtualBox. Si les VM sont très lentes ou ne démarrent pas, voir la [section 8](#section-8).
+
+> 💡 **Windows 11** : les commandes `vagrant` se tapent dans PowerShell (ou le Terminal Windows). Les commandes `kubectl`, `curl`, `grep`… de ce document se tapent **dans les VM** (`vagrant ssh k8s-cp1`), sous bash. Dans PowerShell 5, `curl` est un alias d'`Invoke-WebRequest` : taper `curl.exe`, ou ouvrir l'adresse dans le fureteur.
 
 ### 3.3 – Les commandes essentielles {#section-3-3}
 
@@ -233,7 +235,7 @@ end
 
 ```bash
 vagrant up           # quelques minutes la première fois (téléchargement de la boîte)
-curl http://192.168.56.5
+curl http://192.168.56.5      # PowerShell : curl.exe http://192.168.56.5
 vagrant ssh          # exit pour sortir
 vagrant destroy -f
 ```
@@ -262,6 +264,8 @@ HA/
 git clone https://github.com/ve2cuy/4204d4.git
 cd 4204d4/Installation/Kubernetes/HA
 ```
+
+> 💡 Sans Git : télécharger le dépôt en ZIP (bouton *Code* → *Download ZIP* sur GitHub) et le décompresser. Les scripts `.sh` doivent garder des fins de ligne Unix (LF) : le fichier `.gitattributes` du projet l'impose à Git, même sous Windows, et Vagrant convertit au besoin les scripts qu'il envoie aux VM.
 
 ### 4.2 – Le Vagrantfile {#section-4-2}
 
@@ -579,10 +583,10 @@ kube-controller-manager   k8s-cp1_f54692cf-33dd-429a-bf25-3ae9e437e2ec
 
 ```bash
 # Quel équilibreur porte l'IP virtuelle?
-vagrant ssh k8s-lb1 -c "ip -4 -br addr show eth1"
+vagrant ssh k8s-lb1 -c "ip -4 -br addr"
 
-# État des contrôleurs vu par HAProxy (page de statistiques)
-curl -s "http://192.168.56.11:8404/;csv" | cut -d, -f1,2,18 | grep k8s-cp
+# État des contrôleurs vu par HAProxy : http://192.168.56.11:8404/ dans le fureteur, ou :
+vagrant ssh k8s-cp1 -c "curl -s 'http://192.168.56.11:8404/;csv' | cut -d, -f1,2,18 | grep k8s-cp"
 ```
 
 ```
@@ -633,7 +637,7 @@ kubectl expose deployment web --port=80 --type=NodePort
 
 1. Avec `k8s-cp2` toujours arrêté, arrêter aussi `k8s-cp3`.
 2. L'API répond-elle? Pourquoi, alors que `k8s-cp1` est en marche (voir [1.3](#section-1-3))?
-3. Les Pods de l'application répondent-ils encore (`curl http://192.168.56.31:<NodePort>`)?
+3. Les Pods de l'application répondent-ils encore? Ouvrir `http://192.168.56.31:<NodePort>` dans le fureteur du poste.
 4. Redémarrer `k8s-cp3` : après combien de temps l'API répond-elle de nouveau?
 5. Redémarrer `k8s-cp2`.
 
@@ -692,6 +696,10 @@ Depuis VirtualBox 6.1.28, les réseaux privés doivent être dans `192.168.56.0/
 
 Hyper-V, WSL 2 ou l'isolation du noyau (*Memory integrity*) occupent les fonctions de virtualisation. VirtualBox 7 sait fonctionner par-dessus Hyper-V, mais lentement. Pour de meilleures performances : désactiver *Memory integrity* (Sécurité Windows → Sécurité de l'appareil) et la fonction Windows « Plateforme d'hyperviseur », puis redémarrer.
 
+#### 🤚 Windows : « /bin/bash^M: bad interpreter » ou « $'\r': command not found »
+
+Un script `.sh` a des fins de ligne Windows (CRLF), par exemple après une modification avec un éditeur mal configuré. Le convertir en LF (VS Code : cliquer sur `CRLF` dans la barre d'état → `LF`), puis `vagrant provision <nom>`.
+
 #### 🤚 L'IP virtuelle ne répond pas
 
 ```bash
@@ -709,7 +717,8 @@ vagrant halt                    # arrêter tout l'amas (à la fin d'une séance)
 vagrant up                      # le redémarrer : l'approvisionnement n'est pas refait
 vagrant snapshot save k8s-cp1 avant-test     # photo d'une VM
 vagrant snapshot restore k8s-cp1 avant-test
-vagrant destroy -f && rm -rf pki   # tout effacer, CA comprise
+vagrant destroy -f              # tout effacer...
+rm -rf pki                      # ... CA comprise (PowerShell : Remove-Item -Recurse -Force pki)
 ```
 
 **Complétion de code pour kubectl** (sur un contrôleur) :
