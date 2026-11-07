@@ -1,4 +1,4 @@
-# 24 - Installation d'un amas/cluster Kubernetes avec un seul serveur (contrôleur/noeud) sous Ubuntu.
+# 24 - Installation manuelle de K8S
 
 *Révision du 2026.11.07*
 

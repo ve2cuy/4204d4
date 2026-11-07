@@ -104,7 +104,7 @@ Ce cours permettra à l'étudiant, à partir de l'approche DevOps, de réaliser,
 
 ![](dessins/roue.svg) *Orchestration, manifestes, volumes, services*
 
-- ![](dessins/serveur.svg) 24 · [Installation d'un nœud unique](Documentation/Kubernetes/Installation-un-seul-noeud.md) · 👍
+- ![](dessins/serveur.svg) 24 · [Installation manuelle de K8S](Documentation/Kubernetes/Installation-un-seul-noeud.md) · 👍
   - Amas K8s d'un seul serveur sous Linux · worker · kind
 - ![](dessins/roue.svg) 25 · [Kubernetes – Introduction](Documentation/Kubernetes/Kubernetes-Introduction.md) · 👍
   - kubectl · pods et déploiements · manifestes

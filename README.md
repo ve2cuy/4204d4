@@ -71,7 +71,7 @@
 
 ### Kubernetes (K8s)
 
-* [20 - Kubernetes – Installation d'un nœud unique sous Linux](Documentation/Kubernetes/Installation-un-seul-noeud.md) 👍
+* [20 - Installation manuelle de K8S](Documentation/Kubernetes/Installation-un-seul-noeud.md) 👍
 * [21 - Kubernetes – Introduction](Documentation/Kubernetes/Kubernetes-Introduction.md) 👍
 * [21b- Kubernetes - kubectl, renforcement](Documentation/Kubernetes/Kubernetes-Introduction-kubectl.md)
 * [22 - Kubernetes – Manifestes expliqués - version courte](Documentation/Kubernetes/Kubernetes-Manifestes-Expliques-version-courte.md)
