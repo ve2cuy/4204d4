@@ -1,0 +1,194 @@
+# Quiz du document 7 - Docker Hub (Documentation/Docker/Docker-Hub.md).
+# Le nom du fichier est celui du document, sans .md. Voir GUIDE.md, « Quiz de compréhension ».
+titre: Quiz de compréhension
+nombre: 10   # questions tirées au hasard dans la banque à chaque essai
+questions:
+  - question: "Qu'est-ce que hub.docker.com?"
+    choix:
+      - "Un registre public de dépôts d'images Docker"
+      - "Un éditeur de Dockerfile en ligne"
+      - "L'interface graphique de Docker Desktop"
+      - "Un service d'hébergement de sites web"
+    reponse: 1
+    explication: "On y crée des dépôts pour y archiver et partager les versions de ses images (Étape 1)."
+
+  - question: "Le nom d'un dépôt Docker Hub peut contenir des majuscules."
+    type: vf
+    reponse: faux
+    explication: "Que des caractères minuscules dans le nom, par exemple 420-4d4 (Étape 1)."
+
+  - question: "Quelle commande démarre un conteneur nginx nommé web01, en arrière-plan, sur le port 80?"
+    choix:
+      - "docker run -d --name web01 -p 80:80 nginx"
+      - "docker start web01 nginx -p 80"
+      - "docker create nginx --port 80 web01"
+      - "docker run -it nginx web01"
+    reponse: 1
+    explication: "Section 2.1."
+
+  - question: "Comment ouvre-t-on un shell dans le conteneur web01 en exécution?"
+    choix: ["docker attach web01", "docker exec -it web01 /bin/bash", "docker run -it web01 bash", "docker shell web01"]
+    reponse: 2
+    explication: "Section 2.2."
+
+  - question: "Après docker exec -it … /bin/bash, la commande exit arrête le conteneur."
+    type: vf
+    reponse: faux
+    explication: "exec lance un processus à part : quitter ce shell ne touche pas au processus principal (section 2.6)."
+
+  - question: "Dans le conteneur nginx, quelles commandes installent l'éditeur nano?"
+    choix: ["apk add nano", "apt update puis apt install nano", "yum install nano", "pacman -Sy nano"]
+    reponse: 2
+    explication: "L'image nginx est basée sur Debian, donc apt (section 2.3). pacman sert pour archlinux, apk pour alpine."
+
+  - question: "Où se trouve la page d'accueil de nginx dans le conteneur?"
+    choix: ["/var/www/html/index.html", "/usr/share/nginx/html/index.html", "/etc/nginx/index.html", "/home/nginx/index.html"]
+    reponse: 2
+    explication: "Section 2.4."
+
+  - question: "Quelle commande crée une image à partir d'un conteneur personnalisé?"
+    choix: ["docker build", "docker commit web01 VOTRECOMPTE/420-4d4:1.0", "docker save web01", "docker push web01"]
+    reponse: 2
+    explication: "docker commit fige l'état du conteneur dans une nouvelle image (section 3.1)."
+
+  - question: "Quel est le format du nom d'une image à publier sur Docker Hub?"
+    choix:
+      - "compte/dépôt:étiquette, par exemple VOTRECOMPTE/420-4d4:1.0"
+      - "dépôt@compte/version"
+      - "compte.dépôt.version"
+      - "https://hub.docker.com/compte/dépôt"
+    reponse: 1
+    explication: "votreNomDomaineDocker/nomDépôt:version(tag) (section 3.1)."
+
+  - question: "Dans VOTRECOMPTE/420-4d4:1.0, que représente 1.0?"
+    choix: ["Le numéro du port", "L'étiquette (tag), soit la version de l'image", "La taille de l'image", "Le numéro du conteneur"]
+    reponse: 2
+    explication: "Le tag identifie la version de l'image dans le dépôt (section 3.1)."
+
+  - question: "Quelle commande vérifie que la nouvelle image existe sur le poste?"
+    choix: ["docker ps", "docker images", "docker search", "docker logs"]
+    reponse: 2
+    explication: "Section 3.2."
+
+  - question: "Il faut s'authentifier avant de publier une image sur Docker Hub."
+    type: vf
+    reponse: vrai
+    explication: "docker login --username=VOTRECOMPTE, avec le mot de passe ou un jeton d'accès (section 3.3)."
+
+  - question: "Au lieu du mot de passe, avec quoi peut-on se connecter à Docker Hub en ligne de commande?"
+    choix: ["Une clé SSH", "Un jeton d'accès (Access Token)", "Le numéro de l'image", "Aucune authentification n'est nécessaire"]
+    reponse: 2
+    explication: "Au besoin, il faut créer un « Access Token » dans le compte Docker Hub (section 3.3)."
+
+  - question: "Quelle commande publie l'image sur Docker Hub?"
+    choix: ["docker commit VOTRECOMPTE/420-4d4:1.0", "docker push VOTRECOMPTE/420-4d4:1.0", "docker pull VOTRECOMPTE/420-4d4:1.0", "docker upload VOTRECOMPTE/420-4d4:1.0"]
+    reponse: 2
+    explication: "push envoie l'image vers le dépôt; pull la télécharge (section 3.4)."
+
+  - question: "Pour vérifier que l'image publiée fonctionne, pourquoi efface-t-on d'abord l'image locale?"
+    choix:
+      - "Pour libérer de la mémoire vive"
+      - "Pour obliger docker run à la télécharger depuis Docker Hub"
+      - "Parce que docker run refuse une image locale"
+      - "Pour changer son étiquette"
+    reponse: 2
+    explication: "docker rmi, puis docker run télécharge l'image du dépôt (section 4.1)."
+
+  - question: "Avec docker run -d -p 88:80 --name web-test …, à quelle adresse teste-t-on le site?"
+    choix: ["http://localhost:80", "http://localhost:88", "http://localhost:8080", "http://web-test:80"]
+    reponse: 2
+    explication: "Le port 88 de l'hôte est relié au port 80 du conteneur (sections 4.1 et 4.2)."
+
+  - question: "Quel problème le stockage persistant règle-t-il?"
+    choix:
+      - "Un conteneur recréé à partir d'une image repart toujours de l'état de départ de son système de fichiers"
+      - "Les images sont trop grosses"
+      - "Docker Hub refuse les images personnalisées"
+      - "Les ports ne fonctionnent pas"
+    reponse: 1
+    explication: "« TRISTESSE » : les modifications faites dans un conteneur sont perdues avec lui (Étape 5)."
+
+  - question: "Quelle option de docker run lie un dossier de l'hôte à un dossier du conteneur?"
+    choix: ["-p", "-v", "-e", "-d"]
+    reponse: 2
+    explication: "-v /home/alain/docker-folder/siteweb:/usr/share/nginx/html:rw (section 5.3)."
+
+  - question: "Dans -v /home/alain/siteweb:/usr/share/nginx/html:rw, que signifie rw?"
+    choix: ["Redémarrage automatique (restart when)", "Lecture et écriture (read-write)", "Réseau web", "Rien, c'est un commentaire"]
+    reponse: 2
+    explication: "Le dossier lié est accessible en lecture et en écriture (section 5.3)."
+
+  - question: "Avec un dossier lié (-v), il faut publier une nouvelle version de l'image chaque fois que le site change."
+    type: vf
+    reponse: faux
+    explication: "Les nouveaux contenus sont stockés localement, dans le dossier lié (section 5.7)."
+
+  - question: "Un fichier info.html placé dans le dossier lié de l'hôte apparaît aussitôt dans le site du conteneur."
+    type: vf
+    reponse: vrai
+    explication: "http://localhost:8080/info.html (sections 5.2 à 5.4)."
+
+  - question: "Quelle commande démarre un conteneur arrêté sans créer une nouvelle instance?"
+    choix: ["docker run ID", "docker start ID", "docker create ID", "docker exec ID"]
+    reponse: 2
+    explication: "docker start; restart fait un stop suivi d'un start (Mise en situation)."
+
+  - question: "Quelle commande liste les conteneurs dont le nom contient « web », en n'affichant que leurs ID?"
+    choix:
+      - "docker ps -a -q --filter=\"name=web\""
+      - "docker images --filter web"
+      - "docker ps --name web"
+      - "docker logs web"
+    reponse: 1
+    explication: "-q n'affiche que les ID; utile pour docker stop $(…) ou docker rm $(…) (Mise en situation)."
+
+  - question: "Que fait docker rm $(docker ps -a -q --filter=\"ancestor=nginx\")?"
+    choix:
+      - "Elle efface l'image nginx"
+      - "Elle efface tous les conteneurs créés à partir de l'image nginx"
+      - "Elle redémarre les conteneurs nginx"
+      - "Elle télécharge nginx"
+    reponse: 2
+    explication: "ancestor filtre les conteneurs par image d'origine (Mise en situation)."
+
+  - question: "Le conteneur archlinux démarré avec docker run -d archlinux s'arrête aussitôt. Pourquoi?"
+    choix:
+      - "L'image est brisée"
+      - "Il n'a pas de tâche en boucle : son processus principal se termine"
+      - "Le port 80 est occupé"
+      - "Il manque l'option -p"
+    reponse: 2
+    explication: "Un conteneur vit tant que son processus principal tourne (Mise en situation)."
+
+  - question: "Quelle commande affiche l'utilisation des ressources des conteneurs en continu?"
+    choix: ["docker stats", "docker top", "docker info", "docker inspect"]
+    reponse: 1
+    explication: "CTRL C pour quitter (Mise en situation)."
+
+  - question: "Dans le laboratoire, où doit être installée l'application bootstrap-cheat-sheet?"
+    choix:
+      - "Dans un dossier lié avec -v"
+      - "Dans le conteneur lui-même, avant d'en faire une image"
+      - "Sur Docker Hub directement"
+      - "Dans le dossier personnel de l'hôte"
+    reponse: 2
+    explication: "L'application doit être dans le conteneur, et non dans un dossier lié, pour faire partie de l'image (Laboratoire)."
+
+  - question: "Le laboratoire demande une image construite à partir de quelle image officielle?"
+    choix: ["nginx", "apache (httpd)", "alpine", "ubuntu"]
+    reponse: 2
+    explication: "Un conteneur personnalisé à partir de l'image apache officielle (Laboratoire)."
+
+  - question: "Une image personnalisée à partir d'un conteneur (docker commit) contient les logiciels installés dans ce conteneur, comme nano."
+    type: vf
+    reponse: vrai
+    explication: "L'image publiée offre la page d'accueil sur mesure et l'éditeur nano (section 4.3)."
+
+  - question: "Que fait docker pull VOTRECOMPTE/420-4d4:1.0?"
+    choix:
+      - "Elle publie l'image"
+      - "Elle télécharge l'image depuis Docker Hub"
+      - "Elle crée l'image à partir d'un conteneur"
+      - "Elle démarre un conteneur"
+    reponse: 2
+    explication: "pull télécharge; docker run le fait aussi automatiquement si l'image est absente (Étape 4)."

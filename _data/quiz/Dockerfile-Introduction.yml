@@ -1,0 +1,214 @@
+# Quiz du document 8 - Dockerfile – Introduction (Documentation/Docker/Dockerfile-Introduction.md).
+# Le nom du fichier est celui du document, sans .md. Voir GUIDE.md, « Quiz de compréhension ».
+titre: Quiz de compréhension
+nombre: 10   # questions tirées au hasard dans la banque à chaque essai
+questions:
+  - question: "À quoi sert un fichier Dockerfile?"
+    choix:
+      - "À créer une image personnalisée à partir de directives"
+      - "À démarrer plusieurs conteneurs à la fois"
+      - "À publier une image sur Docker Hub"
+      - "À configurer le réseau de l'hôte"
+    reponse: 1
+    explication: "Un fichier de directives (FROM, RUN, CMD…) qui décrit la construction de l'image (section 1)."
+
+  - question: "Le fichier de directives doit obligatoirement se nommer Dockerfile."
+    type: vf
+    reponse: faux
+    explication: "C'est l'usage, pas une obligation : un autre nom se donne avec l'option -f (sections 1 et 1.3)."
+
+  - question: "Quelle directive indique l'image de départ?"
+    choix: ["RUN", "FROM", "CMD", "COPY"]
+    reponse: 2
+    explication: "FROM ubuntu, FROM alpine… (section 1)."
+
+  - question: "Quelle directive exécute une commande pendant la construction de l'image?"
+    choix: ["CMD", "RUN", "ENTRYPOINT", "EXPOSE"]
+    reponse: 2
+    explication: "RUN apt-get update && apt-get install nano -y; RUN utilise /bin/sh -c (section 1)."
+
+  - question: "Quand la commande de la directive CMD est-elle exécutée?"
+    choix:
+      - "Pendant la construction de l'image"
+      - "Au démarrage d'un conteneur"
+      - "À la publication de l'image"
+      - "Jamais : c'est un commentaire"
+    reponse: 2
+    explication: "CMD : commande exécutée au démarrage du conteneur (section 1)."
+
+  - question: "Pourquoi recommande-t-on d'écrire apt-get update et apt-get install dans la même directive RUN?"
+    choix:
+      - "Pour réduire la taille du texte"
+      - "Pour que la mise à jour et l'installation soient faites ensemble, dans une même couche"
+      - "Parce que deux RUN de suite sont interdits"
+      - "Pour éviter d'utiliser sudo"
+    reponse: 2
+    explication: "Recommandation de la documentation de Docker (section 1.1); sinon un update en cache peut être périmé (section 5.2.2)."
+
+  - question: "Quelle directive est aujourd'hui recommandée pour indiquer l'auteur de l'image?"
+    choix: ["MAINTAINER", "LABEL", "AUTHOR", "ENV"]
+    reponse: 2
+    explication: "LABEL Maintainer=\"…\" plutôt que MAINTAINER (note de la section 1.1)."
+
+  - question: "Quelle commande construit l'image exercice01 à partir du Dockerfile du dossier courant?"
+    choix:
+      - "docker build -t exercice01:latest ."
+      - "docker run -t exercice01 Dockerfile"
+      - "docker commit exercice01 ."
+      - "docker create exercice01"
+    reponse: 1
+    explication: "Attention au point final : il désigne le dossier courant comme contexte (section 1.2)."
+
+  - question: "Les directives d'un Dockerfile peuvent s'écrire en minuscules, et c'est la façon recommandée."
+    type: vf
+    reponse: faux
+    explication: "Elles peuvent s'écrire en minuscules, mais ce n'est PAS recommandé (note 2 de la section 1.1)."
+
+  - question: "Comment construit-on une image avec un fichier nommé Dockerfile02?"
+    choix:
+      - "docker build -f Dockerfile02 -t docker_build_02 ."
+      - "docker build Dockerfile02"
+      - "docker build -n Dockerfile02 ."
+      - "Impossible : le fichier doit se nommer Dockerfile"
+    reponse: 1
+    explication: "Section 1.3."
+
+  - question: "Quelle directive copie un fichier local, par exemple bonjour, vers l'image?"
+    choix: ["RUN", "COPY", "FROM", "EXPOSE"]
+    reponse: 2
+    explication: "COPY bonjour /bin (section 2.3); ADD peut aussi le faire (section 1.4b)."
+
+  - question: "Qu'offre ADD de plus que COPY?"
+    choix:
+      - "Rien : ce sont des synonymes"
+      - "Une URL comme source et la décompression automatique des archives"
+      - "La compilation des fichiers copiés"
+      - "La copie vers un autre conteneur"
+    reponse: 2
+    explication: "Si ces fonctions ne sont pas requises, il est recommandé d'utiliser COPY (section 5.5)."
+
+  - question: "Un exécutable compilé sous Ubuntu peut dépendre de bibliothèques du système d'exploitation de l'image."
+    type: vf
+    reponse: vrai
+    explication: "D'où l'image ubuntu pour le binaire bonjour : explication des dépendances OS (section 2)."
+
+  - question: "Quelle directive définit une variable d'environnement disponible dans le conteneur?"
+    choix: ["ARG", "ENV", "LABEL", "WORKDIR"]
+    reponse: 2
+    explication: "ENV TZ=\"PoleNord/NoelVille\" (section 5.1)."
+
+  - question: "Quelle directive déclare une valeur passée seulement pendant la construction, avec --build-arg?"
+    choix: ["ENV", "ARG", "CMD", "EXPOSE"]
+    reponse: 2
+    explication: "ARG BUILD_DATE, puis docker build --build-arg BUILD_DATE=… (section 5.2)."
+
+  - question: "Que fait l'option --no-cache=true de docker build?"
+    choix:
+      - "Elle efface les anciennes images"
+      - "Elle reconstruit toutes les couches sans utiliser le cache"
+      - "Elle empêche de publier l'image"
+      - "Elle réduit la taille de l'image"
+    reponse: 2
+    explication: "Utile pour obtenir les dernières mises à jour; le build est plus long (section 5.2.2)."
+
+  - question: "Chaque instruction d'un Dockerfile crée une couche (layer) que Docker garde en cache."
+    type: vf
+    reponse: vrai
+    explication: "Docker réutilise les couches inchangées pour accélérer les builds suivants (section 5.2.2)."
+
+  - question: "Si seul app.py change, à partir de quelle instruction Docker reconstruit-il l'image (FROM, RUN apt-get update, RUN apt-get install, COPY app.py)?"
+    choix: ["FROM", "La première RUN", "COPY app.py", "Il reconstruit tout"]
+    reponse: 3
+    explication: "Les couches précédentes viennent du cache; seule l'instruction COPY et les suivantes sont refaites (section 5.2.2)."
+
+  - question: "À quoi sert le fichier .dockerignore?"
+    choix:
+      - "À exclure des fichiers lors des directives COPY et ADD"
+      - "À ignorer les erreurs de construction"
+      - "À cacher des conteneurs dans docker ps"
+      - "À désactiver le cache"
+    reponse: 1
+    explication: "Par exemple .git, node_modules ou README.md (section 5.3)."
+
+  - question: "Que fait la directive WORKDIR /usr/share/nginx/html?"
+    choix:
+      - "Elle crée un volume persistant"
+      - "Elle change le dossier courant pour les instructions suivantes"
+      - "Elle expose le dossier sur le réseau"
+      - "Elle efface le dossier"
+    reponse: 2
+    explication: "Un COPY . ./ copie ensuite les fichiers dans ce dossier (section 5.4)."
+
+  - question: "Avec quelle image l'image officielle d'Alpine est-elle construite?"
+    choix: ["FROM ubuntu", "FROM scratch", "FROM debian", "FROM alpine:base"]
+    reponse: 2
+    explication: "FROM scratch (une image vide), puis ADD de l'archive alpine-minirootfs (section 5.6)."
+
+  - question: "Comment créer un fichier de plusieurs lignes pendant la construction?"
+    choix:
+      - "Avec un bloc RUN { echo …; echo …; } > /fichier"
+      - "Avec la directive FILE"
+      - "Avec CMD echo"
+      - "C'est impossible dans un Dockerfile"
+    reponse: 1
+    explication: "Section 5.7 (fichier config.ini)."
+
+  - question: "La directive EXPOSE 8080 publie à elle seule le port 8080 sur l'hôte."
+    type: vf
+    reponse: faux
+    explication: "EXPOSE documente le port; il faut quand même -p 8080:8080 au docker run (section 5.8)."
+
+  - question: "Dans l'exemple EXPOSE 8080 avec httpd, quelle autre modification est nécessaire pour qu'Apache écoute sur 8080?"
+    choix:
+      - "Aucune"
+      - "Modifier Listen 80 en Listen 8080 dans httpd.conf (avec sed)"
+      - "Ajouter ENV PORT=8080"
+      - "Ajouter CMD 8080"
+    reponse: 2
+    explication: "RUN sed -i 's/Listen 80/Listen 8080/' … httpd.conf (section 5.8)."
+
+  - question: "Avec CMD [\"echo\", \"Hello World\"], que fait docker run mon-image echo \"Autre message\"?"
+    choix:
+      - "Il affiche Hello World Autre message"
+      - "Il affiche Autre message : la commande remplace CMD"
+      - "Il affiche Hello World"
+      - "Il provoque une erreur"
+    reponse: 2
+    explication: "CMD est la commande par défaut, entièrement remplaçable (section 5.9)."
+
+  - question: "Avec ENTRYPOINT [\"echo\"], que fait docker run mon-image \"Bonjour\"?"
+    choix:
+      - "Il remplace echo par Bonjour"
+      - "Il exécute echo Bonjour"
+      - "Il affiche une erreur"
+      - "Il ignore l'argument"
+    reponse: 2
+    explication: "Les arguments du docker run s'ajoutent à l'ENTRYPOINT (section 5.9)."
+
+  - question: "Le processus de l'ENTRYPOINT devient le PID 1 : le conteneur vit tant que ce processus est actif."
+    type: vf
+    reponse: vrai
+    explication: "Il reçoit aussi les signaux (SIGTERM) lors d'un docker stop (section 5.9)."
+
+  - question: "Avec ENTRYPOINT [\"curl\"] et CMD [\"--help\"], que fait docker run mon-image https://example.com?"
+    choix:
+      - "curl --help"
+      - "curl https://example.com"
+      - "curl --help https://example.com"
+      - "Une erreur"
+    reponse: 2
+    explication: "CMD fournit les arguments par défaut, remplacés par ceux du docker run (section 5.9)."
+
+  - question: "Pourquoi nginx est-il lancé avec -g \"daemon off;\" comme ENTRYPOINT?"
+    choix:
+      - "Pour qu'il reste au premier plan comme processus principal, sans quoi le conteneur s'arrêterait"
+      - "Pour désactiver le site web"
+      - "Pour économiser la mémoire"
+      - "Pour le lancer en arrière-plan"
+    reponse: 1
+    explication: "Le PID 1 doit rester actif : tant que nginx tourne, le conteneur reste actif (section 5.9)."
+
+  - question: "Dans le laboratoire 2.6, quelle commande installe g++ sans demander de confirmation?"
+    choix: ["apt install g++", "apt install -y g++", "apt-get g++ --yes-no", "apk add g++"]
+    reponse: 2
+    explication: "L'option -y installe sans confirmation (laboratoire 2.6)."

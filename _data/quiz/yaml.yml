@@ -1,0 +1,178 @@
+# Quiz du document 4 - YAML – Introduction (Documentation/Yaml/yaml.md).
+# Le nom du fichier est celui du document, sans .md. Voir GUIDE.md, « Quiz de compréhension ».
+titre: Quiz de compréhension
+nombre: 10   # questions tirées au hasard dans la banque à chaque essai
+questions:
+  - question: "Que veut dire l'acronyme YAML?"
+    choix: ["Yet Another Markup Language", "YAML Ain't Markup Language", "Your Application Markup Language", "Yet Another Modeling Language"]
+    reponse: 2
+    explication: "Un acronyme récursif : YAML n'est pas un langage de balisage (Description)."
+
+  - question: "Quel caractère commence un commentaire en YAML?"
+    choix: ["//", "#", "--", ";"]
+    reponse: 2
+    explication: "# Je suis un commentaire (section 1)."
+
+  - question: "Dans un document YAML, que délimite la ligne --- ?"
+    choix:
+      - "La fin du document"
+      - "La zone des directives et la zone de contenu"
+      - "Le début d'un commentaire sur plusieurs lignes"
+      - "Une liste vide"
+    reponse: 2
+    explication: "--- sépare la zone des directives YAML de la zone de contenu; elle sépare aussi plusieurs documents dans un même fichier (section 1)."
+
+  - question: "En YAML, une chaîne de caractères doit toujours être entourée de guillemets."
+    type: vf
+    reponse: faux
+    explication: "titre: L'Origine des espèces est une chaîne non délimitée, tout à fait valide (section 2.1)."
+
+  - question: "Quel caractère, placé après la clé, commence une chaîne sur plusieurs lignes qui garde les retours à la ligne?"
+    choix: ["|", ">", "&", "*"]
+    reponse: 1
+    explication: "especes: | donne \"mammifère\\noiseau\\nreptile\\npoisson\" (section 2.1)."
+
+  - question: "Que fait le caractère > au début d'une chaîne sur plusieurs lignes?"
+    choix:
+      - "Il garde chaque retour à la ligne"
+      - "Il réunit les lignes en une seule, avec un seul \\n à la fin"
+      - "Il crée une liste"
+      - "Il transforme la chaîne en commentaire"
+    reponse: 2
+    explication: "Le style « plié » : les lignes sont jointes par des espaces (section 2.2)."
+
+  - question: "Dans population: 7.7947e+9, quelle est la notation utilisée?"
+    choix: ["Hexadécimale", "Scientifique", "Binaire", "Une chaîne de caractères"]
+    reponse: 2
+    explication: "7.7947e+9 vaut 7 794 700 000 (section 2.3)."
+
+  - question: "Les valeurs false, False et FALSE représentent toutes le booléen faux."
+    type: vf
+    reponse: vrai
+    explication: "Section 2.4 : la conversion JSON donne false dans les trois cas."
+
+  - question: "Comment représenter la valeur null en YAML?"
+    choix:
+      - "Seulement avec le mot null"
+      - "Par l'absence de valeur après la clé, ou explicitement avec null"
+      - "Avec 0"
+      - "Avec une chaîne vide \"\""
+    reponse: 2
+    explication: "valeur-null: (rien) et autre-valeur-null: null donnent tous deux null (section 2.5)."
+
+  - question: "La valeur date: 2022-02-22 est reconnue comme une date, et non comme une simple chaîne."
+    type: vf
+    reponse: vrai
+    explication: "Convertie en JSON, elle devient \"2022-02-22T00:00:00.000Z\" (section 2.6)."
+
+  - question: "Quel caractère commence chaque élément d'une liste en YAML?"
+    choix: ["*", "-", "+", "#"]
+    reponse: 2
+    explication: "mammifères: puis - chat, - chien, - souris (section 3.1)."
+
+  - question: "Quelle est la version « en ligne » d'une liste?"
+    choix: ["poissons: ( ange, truite, saumon )", "poissons: [ ange, truite, saumon ]", "poissons: { ange, truite, saumon }", "poissons: < ange, truite, saumon >"]
+    reponse: 2
+    explication: "Les crochets, comme en JSON (section 3.1)."
+
+  - question: "En JSON, une liste YAML devient…"
+    choix: ["un objet { }", "un tableau [ ]", "une chaîne", "un nombre"]
+    reponse: 2
+    explication: "\"mammifères\": [\"chat\", \"chien\", \"souris\"] (section 3.1b)."
+
+  - question: "Une structure imbriquée (des clés sous une clé) devient, en JSON…"
+    choix: ["un tableau [ ]", "un objet { }", "une chaîne", "un commentaire"]
+    reponse: 2
+    explication: "Origine-des-espèces: devient un objet avec auteur, date, page et genres (section 3.2)."
+
+  - question: "En YAML, l'indentation est facultative : elle ne sert qu'à la lisibilité."
+    type: vf
+    reponse: faux
+    explication: "L'indentation est obligatoire : elle définit la structure (note de la section 3.1)."
+
+  - question: "Les éléments d'une même liste doivent tous avoir la même indentation."
+    type: vf
+    reponse: vrai
+    explication: "Un élément décalé d'un espace rend le document invalide (note de la section 3.1)."
+
+  - question: "Combien d'espaces faut-il, au minimum, pour indenter les sous-éléments d'un bloc?"
+    choix: ["Au moins un", "Exactement deux", "Exactement quatre", "Une tabulation"]
+    reponse: 1
+    explication: "Au moins un espace, mais toujours la même indentation dans un même bloc (note de la section 3.1)."
+
+  - question: "Dans le manifeste Kubernetes de l'exemple, quelle clé contient la liste des conteneurs du Pod?"
+    choix: ["metadata", "spec.containers", "kind", "apiVersion"]
+    reponse: 2
+    explication: "spec: puis containers: - name: nginx… (section 3.1, exemple Kubernetes)."
+
+  - question: "Dans ce même manifeste, que vaut la clé kind?"
+    choix: ["v1", "Pod", "nginx", "exemple1-1"]
+    reponse: 2
+    explication: "kind: Pod; apiVersion: v1; metadata.name: exemple1-1 (section 3.1)."
+
+  - question: "Qu'est-ce qu'un élément « - souris: » suivi de clés indentées (nom, taille…) dans une liste?"
+    choix:
+      - "Une erreur de syntaxe"
+      - "Un élément de liste qui est lui-même une structure"
+      - "Un commentaire"
+      - "Une nouvelle liste vide"
+    reponse: 2
+    explication: "En JSON : { \"souris\": { \"nom\": \"Mimi\", … } } dans le tableau (section 3.1)."
+
+  - question: "Que donne en JSON l'élément « - curieuse: » (clé sans valeur)?"
+    choix: ["{ \"curieuse\": \"\" }", "{ \"curieuse\": null }", "{ \"curieuse\": false }", "Une erreur"]
+    reponse: 2
+    explication: "Une clé sans valeur vaut null (sections 2.5 et 3.1)."
+
+  - question: "Quel symbole définit une ancre, pour réutiliser un nœud?"
+    choix: ["*", "&", "@", "$"]
+    reponse: 2
+    explication: "auteur : &cDarwin définit l'ancre cDarwin (section 4.1)."
+
+  - question: "Quel symbole fait référence à une ancre déjà définie?"
+    choix: ["&", "*", "%", "!"]
+    reponse: 2
+    explication: "auteur: *cDarwin reprend tout le nœud de l'ancre (section 4.1)."
+
+  - question: "Avec une ancre et une référence, le nœud est recopié en entier dans la représentation JSON."
+    type: vf
+    reponse: vrai
+    explication: "Le-voyage-du-Beagle.auteur contient de nouveau prénom, nom et naissance (section 4.1b)."
+
+  - question: "Que fait la clé <<: *defaut dans une structure?"
+    choix:
+      - "Elle remplace la structure par un commentaire"
+      - "Elle fusionne les clés de l'ancre defaut dans la structure"
+      - "Elle efface les clés de la structure"
+      - "Elle crée une liste"
+    reponse: 2
+    explication: "alice reçoit rôle et actif de par_defaut, puis ajoute nom (section 4.1)."
+
+  - question: "Après une fusion <<: *defaut, une clé redéfinie dans la structure (actif: false) remplace la valeur de l'ancre."
+    type: vf
+    reponse: vrai
+    explication: "bob garde rôle: utilisateur, mais son actif vaut false (section 4.1)."
+
+  - question: "Comment s'écrit une paire clé-valeur en YAML?"
+    choix: ["clé = valeur", "clé: valeur", "clé => valeur", "\"clé\" -> valeur"]
+    reponse: 2
+    explication: "Deux-points, puis un espace : age: 33 (section 2.3)."
+
+  - question: "Que donne age: 33 en JSON?"
+    choix: ["\"age\": \"33\"", "\"age\": 33", "\"age\": [33]", "\"age\": null"]
+    reponse: 2
+    explication: "Un nombre entier, sans guillemets (section 2.3b)."
+
+  - question: "Quel outil en ligne le document propose-t-il pour valider un document YAML?"
+    choix: ["yamllint", "jsonlint", "eslint", "kubectl"]
+    reponse: 1
+    explication: "Validateur en ligne : yamllint; onlineyamltools convertit YAML -> JSON (Description)."
+
+  - question: "Dans quels outils du cours retrouve-t-on des fichiers YAML?"
+    choix:
+      - "Les manifestes Kubernetes et les fichiers docker-compose"
+      - "Les fichiers Dockerfile seulement"
+      - "Les pages HTML"
+      - "Les scripts bash"
+    reponse: 1
+    explication: "Le document montre un manifeste de Pod Kubernetes; Docker Compose utilise aussi YAML (section 3.1 et exemple du document 6)."
