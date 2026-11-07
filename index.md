@@ -124,7 +124,7 @@ Ce cours permettra à l'étudiant, à partir de l'approche DevOps, de réaliser,
   - Qualité de service : Guaranteed, Burstable, BestEffort
 - ![](dessins/cluster.svg) 33 · Préparation de l'atelier cluster K8s
   - Installation d'un cluster avec Vagrant
-- ![](dessins/cluster.svg) 34 · [Installation d'un cluster](Documentation/Kubernetes/Kubernetes-Installation-cluster.md)
+- ![](dessins/cluster.svg) 34 · [Installation d'un cluster](Documentation/Kubernetes/Kubernetes-Installation-cluster.md) · [à revoir]
   - 1 master, 2 nodes · Vagrant · kubeadm
 - ![](dessins/disque.svg) 35 · [Les volumes](Documentation/Kubernetes/Kubernetes-Les-volumes.md) · 👍
   - emptyDir, hostPath, PV et PVC, NFS
