@@ -1,5 +1,7 @@
 # 27 - Guide des Manifestes Kubernetes (Version courte)
 
+*Révision du 2026.11.07*
+
 ## Contenu
 
 - [**Structure de base**](#section-structure-de-base)

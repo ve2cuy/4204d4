@@ -1,6 +1,6 @@
 # 5 - YAML – Référence
 
-*Date: 2 Décembre 2025*
+*Révision du 2026.11.07*
 
 ---
 

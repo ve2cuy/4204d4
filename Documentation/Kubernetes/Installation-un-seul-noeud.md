@@ -1,5 +1,7 @@
 # 24 - Installation d'un amas/cluster Kubernetes avec un seul serveur (contrôleur/noeud) sous Ubuntu.
 
+*Révision du 2026.11.07*
+
 ## Contenu
 
 - [**1 – Préparer le système**](#section-1)

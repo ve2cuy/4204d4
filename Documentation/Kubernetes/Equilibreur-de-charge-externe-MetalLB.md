@@ -1,5 +1,7 @@
 # 40 - Installation et Configuration de MetalLB comme Load Balancer
 
+*Révision du 2026.11.07*
+
 ## Contenu
 
 - [**Qu'est-ce que MetalLB ?**](#section-qu-est-ce-que-metallb)

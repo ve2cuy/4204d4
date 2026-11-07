@@ -1,5 +1,7 @@
 # 17 - 🐳 Docker-compose – Introduction - Partie 3
 
+*Révision du 2026.11.07*
+
 <p align="center">
     <img src="../images/docker-compose-transparent.png" alt="YAML" width="350" />
 </p>

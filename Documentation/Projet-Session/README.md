@@ -1,5 +1,7 @@
 # 49 - ESH26 - Énoncé du projet de session
 
+*Révision du 2026.11.07*
+
 ## 💡 Acte d'énoncer, d'exprimer en termes nets.
 
 ### Version 1.0:2026.05.15

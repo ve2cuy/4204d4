@@ -1,5 +1,7 @@
 # 9 - Convention de nommage des labels
 
+*Révision du 2026.11.07*
+
 ## Contenu
 
 - [**1 – Qu'est-ce que `org.label-schema` ?**](#section-1)

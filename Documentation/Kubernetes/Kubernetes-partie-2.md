@@ -1,5 +1,7 @@
 # 30 - Kubernetes – Partie 2
 
+*Révision du 2026.11.07*
+
 <img src="../images/comvecteezy446657.jpg" alt="" width="" />
 
 ## K8s, déployer une application de complexité moyenne

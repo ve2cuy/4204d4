@@ -1,5 +1,7 @@
 # 1 - 📚 Conteneurs et Kubernetes
 
+*Révision du 2026.11.07*
+
 Ce document vise à expliquer le rôle et la synergie entre les technologies de conteneurisation (comme Docker) et une plateforme d'orchestration comme Kubernetes (K8s).
 
 ---

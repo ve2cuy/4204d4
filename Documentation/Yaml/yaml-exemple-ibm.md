@@ -1,5 +1,7 @@
 # 6 - YAML- Voici un exemple plus complexe 
 
+*Révision du 2026.11.07*
+
 ```yaml
 
 services:

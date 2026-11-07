@@ -1,5 +1,7 @@
 # 4 - YAML – Introduction
 
+*Révision du 2026.11.07*
+
 <p align="center">
     <img src="../images/yaml-768x769.png" alt="YAML" width="250" />
 </p>

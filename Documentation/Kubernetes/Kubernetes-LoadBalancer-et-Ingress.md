@@ -1,5 +1,7 @@
 # 39 - K8S – LoadBalancer externe + ingress
 
+*Révision du 2026.11.07*
+
 <p align="center">
     <img src="../images/load-balancer-icon-19.jpg.png" alt="Load Balancer Icon" width="300" />
 </p>

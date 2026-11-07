@@ -1,5 +1,7 @@
 # 25 - Kubernetes – Introduction
 
+*Révision du 2026.11.07*
+
 <p align="center">
     <img src="../images/k8s.png" alt="" width="300" />
 </p>

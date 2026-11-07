@@ -1,5 +1,7 @@
 # 7 - ☁️ Docker Hub – Introduction
 
+*Révision du 2026.11.07*
+
 ## Publier une IMAGE à partir d'un conteneur PERSONNALISÉ et Stockage PERSISTANT
 
 <p align="center">

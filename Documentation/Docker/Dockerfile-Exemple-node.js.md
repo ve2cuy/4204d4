@@ -1,6 +1,6 @@
 # 10 - Docker – Création d'une image avec une app Node.js
 
-*Date: 1 février 2023 - Révision 2026.11.07*
+*Révision du 2026.11.07*
 
 ---
 

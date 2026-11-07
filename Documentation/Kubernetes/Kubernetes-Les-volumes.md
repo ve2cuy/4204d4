@@ -1,5 +1,7 @@
 # 35 - Kubernetes – Les volumes
 
+*Révision du 2026.11.07*
+
 <p align="center">
     <img src="../images/volumes.png" alt="YAML" width="600" />
 </p>

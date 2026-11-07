@@ -1,5 +1,7 @@
 # 12 - 🐳 Docker Network
 
+*Révision du 2026.11.07*
+
 # Un peu de plaisir avec les réseaux Docker
 
 <p align="center">

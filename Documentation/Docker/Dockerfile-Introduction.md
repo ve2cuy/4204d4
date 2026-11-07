@@ -1,6 +1,8 @@
 
 # 8 - 🐳 Dockerfile – Introduction
 
+*Révision du 2026.11.07*
+
 ## La Dockerfile – tout ce que vous avez toujours voulu savoir
 
 Motivé par nos apprentissages précédents, nous voilà enfin près – du moins, nous tenterons l’exercice – à bâtir une image **docker** personnalisée.

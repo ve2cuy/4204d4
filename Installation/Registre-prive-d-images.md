@@ -1,7 +1,7 @@
 
 # 19 - Registre (Dépôt) privé d’images – Harbor
 
- 29 novembre 2025 - Révision 2026.11.07
+*Révision du 2026.11.07*
 
 <p align="center">
     <img src="Images/logo-harbor.webp" alt="" width="450" />

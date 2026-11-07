@@ -1,5 +1,7 @@
 # 52 - Kubernetes:  Node-RED + Mosquitto + ConfigMap + Secret
 
+*Révision du 2026.11.07*
+
 *Document converti depuis 4204d4.ve2cuy.com — 5 avril 2021*
 
 ## Contenu

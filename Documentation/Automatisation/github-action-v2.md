@@ -1,5 +1,7 @@
 # 21 - Projet Complet : CI/CD avec GitHub Actions et Docker Hub
 
+*Révision du 2026.11.07*
+
 ## Contenu
 
 - [**Vue d'ensemble du projet**](#section-vue-d-ensemble-du-projet)

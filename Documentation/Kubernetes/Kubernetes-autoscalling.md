@@ -1,5 +1,7 @@
 # 46 - Auto Scaling sous Kubernetes
 
+*Révision du 2026.11.07*
+
 <p align="center">
     <img src="../images/auto-scaling.png" alt="Load Balancer Icon" width="300" />
 </p>

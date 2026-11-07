@@ -1,5 +1,7 @@
 # 28 - Guide des Manifestes Kubernetes
 
+*Révision du 2026.11.07*
+
 ## Contenu
 
 - [**Qu'est-ce qu'un Manifeste Kubernetes ?**](#section-qu-est-ce-qu-un-manifeste-kubernetes)

@@ -1,5 +1,7 @@
 # 22 - Introduction à Homepage
 
+*Révision du 2026.11.07*
+
 <p align="center">
   <img src="../images/homepage-logo2.png" alt="" width="400" />
 </p>

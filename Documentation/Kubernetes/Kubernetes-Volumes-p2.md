@@ -1,5 +1,7 @@
 # 36 - Les volumes, partie 2
 
+*Révision du 2026.11.07*
+
 ## Contenu
 
 - [**1 – Volume hostPath**](#section-1)

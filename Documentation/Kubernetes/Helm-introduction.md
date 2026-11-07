@@ -1,5 +1,7 @@
 # 44 - Introduction à Helm
 
+*Révision du 2026.11.07*
+
 Helm est le **gestionnaire de paquets** pour Kubernetes, comparable à `apt` pour Ubuntu ou `npm` pour Node.js. Il simplifie l'installation, la mise à jour et la gestion des applications Kubernetes.
 
 ## Contenu

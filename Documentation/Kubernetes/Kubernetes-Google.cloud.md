@@ -1,5 +1,7 @@
 # 43 - Cluster sur Google Cloud
 
+*Révision du 2026.11.07*
+
 <img src="../images/gcloud.png" alt="" width="400" />
 
 À partir de la console Google-Cloud, créer un cluster Kubernetes

@@ -1,6 +1,6 @@
 # Docker copier/coller
 
-*Date: 2 février 2022 - Révision du 2025.12.05*
+*Révision du 2026.11.07*
 
 ## Contenu
 

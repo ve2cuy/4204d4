@@ -1,5 +1,7 @@
 # 20 - GitHub Action : Build et Push vers Docker Hub
 
+*Révision du 2026.11.07*
+
 ## Contenu
 
 - [**1. Prérequis**](#section-1)

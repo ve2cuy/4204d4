@@ -1,5 +1,7 @@
 # 37 - Les Services Kubernetes
 
+*Révision du 2026.11.07*
+
 <p align="center">
     <img src="../images/k8s-services.avif" alt="" width="500" />
 </p>

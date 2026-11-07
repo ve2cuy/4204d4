@@ -1,5 +1,7 @@
 # 18 - Docker-Compose – Laboratoire (Drupal)
 
+*Révision du 2026.11.07*
+
 *Document converti depuis 4204d4.ve2cuy.com — 23 février 2023*
 
 ## Contenu

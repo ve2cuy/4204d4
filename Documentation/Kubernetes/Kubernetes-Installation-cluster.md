@@ -1,5 +1,7 @@
 # 34 - Kubernetes – Installation
 
+*Révision du 2026.11.07*
+
 *Document converti depuis 4204d4.ve2cuy.com — 7 avril 2021*
 
 <img src="../images/Kubernetes-Installation-cluster/installation-k8s-sur-vm.png" alt="" width="500" />

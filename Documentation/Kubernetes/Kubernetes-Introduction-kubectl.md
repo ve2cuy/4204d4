@@ -1,4 +1,6 @@
 # 26 - Retour sur les commandes de base de `kubectl`
+
+*Révision du 2026.11.07*
 <p align="center">
     <img src="../images/k8s-nginx.png" alt="" width="350" />
 </p>

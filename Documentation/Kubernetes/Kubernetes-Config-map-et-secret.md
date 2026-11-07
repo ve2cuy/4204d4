@@ -1,5 +1,7 @@
 # 31 - K8s - Config Map et Secrets
 
+*Révision du 2026.11.07*
+
 <img src="../images/k8s-configmap.png" alt="" width="550" />
 
 ---

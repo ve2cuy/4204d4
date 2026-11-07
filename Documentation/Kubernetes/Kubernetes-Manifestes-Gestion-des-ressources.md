@@ -1,5 +1,7 @@
 # 29 - Explication détaillée de la section `resources`
 
+*Révision du 2026.11.07*
+
 ## Contenu
 
 - [**Vue d'ensemble**](#section-vue-d-ensemble)

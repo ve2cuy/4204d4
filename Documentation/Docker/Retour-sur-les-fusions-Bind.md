@@ -1,6 +1,8 @@
 
 # 14 - 💾 Docker – Retour sur les fusions (bind) Expérimentation avec MySQL
 
+*Révision du 2026.11.07*
+
 Histoire de bien intégrer les notions acquises lors des ateliers précédents, nous allons revisiter :
 
 ## 👉 NOTE: Si ce laboratoire est réalisé sous Windows, ne pas utiliser `git-bash` pour les exemples des volumes -v.  Utiliser plutôt `PowerShell`.

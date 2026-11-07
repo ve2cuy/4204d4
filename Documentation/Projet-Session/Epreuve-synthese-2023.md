@@ -1,5 +1,7 @@
 # 53 - Épreuve synthèse 2023
 
+*Révision du 2026.11.07*
+
 *Document converti depuis 4204d4.ve2cuy.com — 29 avril 2023*
 
 ---

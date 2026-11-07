@@ -1,6 +1,6 @@
 # 47 - Kubectl – Référence rapide
 
-*2 Décembre 2025*
+*Révision du 2026.11.07*
 
 ## Contenu
 
