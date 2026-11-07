@@ -1,0 +1,137 @@
+# -*- mode: ruby -*-
+# ---------------------------------------------------------------------------
+# Fichier:     Vagrantfile
+# Auteur:      Alain Boudreault
+# Date:        2026.11.07
+# Description: Amas Kubernetes en haute disponibilité (HA), entièrement
+#              défini dans Vagrant :
+#                - 2 équilibreurs de charge (HAProxy + keepalived, IP virtuelle)
+#                - 3 contrôleurs (control-plane, etcd empilé)
+#                - 2 nœuds ouvriers (workers)
+# Démarrage:   vagrant up             (VirtualBox, par défaut)
+#              vagrant up --provider=libvirt   (Linux avec KVM)
+# Connexion:   vagrant ssh k8s-cp1
+# Arrêt:       vagrant halt          Suppression: vagrant destroy -f
+# ---------------------------------------------------------------------------
+require "openssl"
+require "securerandom"
+require "fileutils"
+
+# ----------------------------- Paramètres ----------------------------------
+K8S_VERSION = "v1.37"                 # version mineure de Kubernetes
+BOITE       = "bento/ubuntu-26.04"    # Ubuntu 26.04 (VirtualBox et libvirt)
+RESEAU      = "192.168.56"            # réseau privé des VM
+VIP         = "#{RESEAU}.10"          # IP virtuelle de l'API (keepalived)
+NB_CP       = 3                       # contrôleurs : nombre impair (3, 5)
+NB_WORKERS  = (ENV["NB_WORKERS"] || 2).to_i   # nœuds ouvriers (ou : NB_WORKERS=3 vagrant up)
+
+LBS     = { "k8s-lb1" => "#{RESEAU}.11", "k8s-lb2" => "#{RESEAU}.12" }
+CPS     = (1..NB_CP).to_h      { |i| ["k8s-cp#{i}", "#{RESEAU}.#{20 + i}"] }
+WORKERS = (1..NB_WORKERS).to_h { |i| ["k8s-w#{i}",  "#{RESEAU}.#{30 + i}"] }
+TOUS    = LBS.merge(CPS).merge(WORKERS)
+HOSTS   = TOUS.map { |nom, ip| "#{ip} #{nom}" }.push("#{VIP} k8s-api").join("\n")
+
+# Les VM sont créées une à la fois, dans l'ordre du fichier (libvirt : en parallèle sinon)
+ENV["VAGRANT_NO_PARALLEL"] = "yes"
+
+# ------------- Autorité de certification (CA) et secrets de l'amas ---------
+# Créés une seule fois sur le poste de travail, dans le dossier pki/ (jamais dans Git).
+# Connaître la CA d'avance permet de donner aux nœuds l'empreinte de la CA
+# (--discovery-token-ca-cert-hash) avant même que l'amas existe.
+PKI = File.join(__dir__, "pki")
+unless File.exist?(File.join(PKI, "ca.crt"))
+  FileUtils.mkdir_p(PKI)
+  cle = OpenSSL::PKey::RSA.new(2048)
+  ca = OpenSSL::X509::Certificate.new
+  ca.version    = 2
+  ca.serial     = SecureRandom.random_number(2**63)
+  ca.subject    = ca.issuer = OpenSSL::X509::Name.parse("/CN=kubernetes")
+  ca.public_key = cle.public_key
+  ca.not_before = Time.now - 60
+  ca.not_after  = Time.now + 10 * 365 * 24 * 3600
+  ef = OpenSSL::X509::ExtensionFactory.new(ca, ca)
+  ca.add_extension(ef.create_extension("basicConstraints", "CA:TRUE", true))
+  ca.add_extension(ef.create_extension("keyUsage", "digitalSignature,keyEncipherment,keyCertSign", true))
+  ca.add_extension(ef.create_extension("subjectKeyIdentifier", "hash", false))
+  ca.sign(cle, OpenSSL::Digest.new("SHA256"))
+  File.write(File.join(PKI, "ca.crt"), ca.to_pem)
+  File.write(File.join(PKI, "ca.key"), cle.to_pem, perm: 0600)
+  # Jeton de jonction (format abcdef.0123456789abcdef) et clé de chiffrement des certificats
+  a = [*"a".."z", *"0".."9"]
+  File.write(File.join(PKI, "jeton"), "#{Array.new(6) { a.sample }.join}.#{Array.new(16) { a.sample }.join}")
+  File.write(File.join(PKI, "cle-certificats"), SecureRandom.hex(32))
+end
+CA_HASH = "sha256:" + OpenSSL::Digest::SHA256.hexdigest(
+  OpenSSL::X509::Certificate.new(File.read(File.join(PKI, "ca.crt"))).public_key.public_to_der)
+JETON   = File.read(File.join(PKI, "jeton")).strip
+CLE_CRT = File.read(File.join(PKI, "cle-certificats")).strip
+
+# ------------------------------- Les VM ------------------------------------
+Vagrant.configure("2") do |config|
+  config.vm.box = BOITE
+  config.vm.synced_folder ".", "/vagrant", disabled: true   # pas de dossier partagé
+
+  # Préparation commune (document 24b, sections 2 et 3)
+  def commun(vm, ip)
+    vm.provision "shell", name: "commun", path: "scripts/commun.sh",
+      env: { "K8S_VERSION" => K8S_VERSION, "IP" => ip, "HOSTS" => HOSTS }
+  end
+
+  def ressources(vm, nom, memoire, cpus)
+    vm.provider "virtualbox" do |vb|
+      vb.memory = memoire
+      vb.cpus   = cpus
+      vb.customize ["modifyvm", :id, "--firmware", "efi"]   # la boîte démarre en UEFI
+    end
+    vm.provider "libvirt" do |lv|
+      lv.driver = "kvm"       # la boîte bento demande « qemu » (émulation, très lent)
+      lv.cpu_mode = "host-passthrough"
+      # La boîte démarre en UEFI seulement : micrologiciel OVMF, une NVRAM par VM
+      lv.loader = "/usr/share/OVMF/OVMF_CODE_4M.fd"
+      lv.nvram  = "/var/lib/libvirt/qemu/nvram/ha_#{nom}_VARS.fd"
+      lv.memory = memoire
+      lv.cpus   = cpus
+    end
+  end
+
+  # Équilibreurs de charge : HAProxy + keepalived
+  LBS.each_with_index do |(nom, ip), i|
+    config.vm.define nom do |n|
+      n.vm.hostname = nom
+      n.vm.network "private_network", ip: ip
+      ressources(n.vm, nom, 512, 1)
+      n.vm.provision "shell", name: "equilibreur", path: "scripts/equilibreur.sh",
+        env: { "IP" => ip, "VIP" => VIP, "PRIORITE" => (110 - i * 10).to_s,
+               "CPS" => CPS.map { |c, cip| "#{c}=#{cip}" }.join(" ") }
+    end
+  end
+
+  # Contrôleurs : le premier initialise l'amas, les autres le joignent
+  CPS.each_with_index do |(nom, ip), i|
+    config.vm.define nom do |n|
+      n.vm.hostname = nom
+      n.vm.network "private_network", ip: ip
+      ressources(n.vm, nom, 2048, 2)
+      commun(n.vm, ip)
+      if i == 0
+        n.vm.provision "file", source: "pki/ca.crt", destination: "/tmp/ca.crt"
+        n.vm.provision "file", source: "pki/ca.key", destination: "/tmp/ca.key"
+      end
+      n.vm.provision "shell", name: "controleur", path: "scripts/controleur.sh",
+        env: { "PREMIER" => (i == 0 ? "oui" : "non"), "IP" => ip, "VIP" => VIP,
+               "RESEAU" => RESEAU, "JETON" => JETON, "CA_HASH" => CA_HASH, "CLE_CRT" => CLE_CRT }
+    end
+  end
+
+  # Nœuds ouvriers
+  WORKERS.each do |nom, ip|
+    config.vm.define nom do |n|
+      n.vm.hostname = nom
+      n.vm.network "private_network", ip: ip
+      ressources(n.vm, nom, 2048, 2)
+      commun(n.vm, ip)
+      n.vm.provision "shell", name: "ouvrier", path: "scripts/ouvrier.sh",
+        env: { "VIP" => VIP, "JETON" => JETON, "CA_HASH" => CA_HASH }
+    end
+  end
+end

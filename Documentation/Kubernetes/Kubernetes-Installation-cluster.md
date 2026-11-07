@@ -1,821 +1,731 @@
-# 34 - Kubernetes – Installation
+# 34 - Installation d'un amas HA
 
 *Révision du 2026.11.07*
 
-*Document converti depuis 4204d4.ve2cuy.com — 7 avril 2021*
+<p align="center">
+    <img src="../images/k8s.png" alt="" width="250" />
+</p>
 
-<img src="../images/Kubernetes-Installation-cluster/installation-k8s-sur-vm.png" alt="" width="500" />
+**Objectif de la lecture** : comprendre la haute disponibilité (HA) d'un amas Kubernetes, puis déployer, avec Vagrant, un amas HA complet : deux équilibreurs de charge, trois contrôleurs et deux nœuds ouvriers.
 
-## Notions abordées
+*A.B. aka ve2cuy*
 
-* **Mise en situation**
-* **Création de machines virtuelles avec *Vagrant***
-  * Démarrer les VM – *vagrant up*
-  * Se connecter aux VM – *vagrant ssh*
-  * Désactiver la partition d’échanges
-  * Installer *docker*
-  * Établir un pond entre les réseaux
-  * Activer le DNS local
-* **Installer les applications K8s sur les noeuds – sous Ubuntu SRV 20.04**
-  * Installer la *clé gpg* et le dépôt *apt-get* de Google
-  * Installer les packages: *kubelet*, *kubeadm* et *kubectl*
-* **Initialiser le noeud maître (master node)**
-* **Joindre les noeuds ouvriers (worker node) au cluster K8s**
-* **Ajustements et tests**
-
-**Note**: Une version plus récente des étapes (sous Ubuntu 22.04) est disponible au bas de ce document.
-
----
+> 💡 Ce document suppose que l'installation manuelle d'un amas avec `kubeadm` est connue : [document 24b](Installation-manuelle-K8S.md).
 
 ## Contenu
 
-- [**Mise en situation**](#section-mise-en-situation)
-- [**1 – Mise en place des VM (avec vagrant)**](#section-1)
-  - [1.1 – Lancer le script vagrant](#section-1-1)
-  - [1.2 – Installer docker sur les noeuds](#section-1-2)
-  - [1.3 – Désactiver le fichier d’échanges (swap)](#section-1-3)
-  - [1.4 – Au besoin, installer curl et apt-transport-https](#section-1-4)
-  - [1.5 – Installer la clé gpg et le dépôt apt-get de Google](#section-1-5)
-  - [1.6 – Actualiser le système et installer les modules Kubernetes](#section-1-6)
-- [**2 – Initialiser l’infrastructure du ‘cluster’ K8s**](#section-2)
-- [**3 – Permettre au noeud maître de rouler des Pods**](#section-3)
-- [**4 – Joindre un noeud ouvrier au ‘cluster’ K8s**](#section-4)
-- [**5 – Erreurs possibles avec Vagrant et VirtualBox**](#section-5)
-- [**6 – Tester l’infrastructure K8s**](#section-6)
-- [**7 – Programmer la complétion de code pour kubectl sur le master**](#section-7)
-- [**Conclusion**](#section-conclusion)
-- [**8 – Installation rapide de K8S sous Ubuntu 22.04**](#section-8)
+- [**1 – La haute disponibilité (HA)**](#section-1)
+  - [1.1 – Le point de défaillance unique](#section-1-1)
+  - [1.2 – Les composantes à redonder](#section-1-2)
+  - [1.3 – etcd et le quorum](#section-1-3)
+  - [1.4 – Les deux topologies de kubeadm](#section-1-4)
+  - [1.5 – L'équilibreur de charge de l'API](#section-1-5)
+- [**2 – Le système que nous allons déployer**](#section-2)
+- [**3 – Vagrant**](#section-3)
+  - [3.1 – Présentation](#section-3-1)
+  - [3.2 – Installation](#section-3-2)
+  - [3.3 – Les commandes essentielles](#section-3-3)
+  - [3.4 – Un premier Vagrantfile](#section-3-4)
+- [**4 – L'amas HA entièrement défini dans Vagrant**](#section-4)
+  - [4.1 – Les fichiers du projet](#section-4-1)
+  - [4.2 – Le Vagrantfile](#section-4-2)
+  - [4.3 – La CA et les secrets préparés d'avance](#section-4-3)
+  - [4.4 – Lancer l'amas](#section-4-4)
+- [**5 – Ce que font les scripts, étape par étape**](#section-5)
+  - [5.1 – Les équilibreurs de charge : HAProxy et keepalived](#section-5-1)
+  - [5.2 – Le premier contrôleur](#section-5-2)
+  - [5.3 – Les autres contrôleurs](#section-5-3)
+  - [5.4 – Les nœuds ouvriers](#section-5-4)
+  - [5.5 – Le piège des deux cartes réseau](#section-5-5)
+- [**6 – Vérifier l'amas HA**](#section-6)
+- [**7 – Laboratoire : tests de panne (durée 45 minutes)**](#section-7)
+- [**8 – Gestion des erreurs**](#section-8)
+- [**9 – Gérer les VM avec Vagrant**](#section-9)
 
 ---
 
-## Mise en situation {#section-mise-en-situation}
+## 1 – La haute disponibilité (HA) {#section-1}
 
-À date, nous avons fait nos apprentissages de *Kubernetes* en utilisant un ‘*cluster K8s*‘ d'un seul nœud.
+### 1.1 – Le point de défaillance unique {#section-1-1}
 
-Étant donné que, peu importe le type d’installation *K8s*, nous utilisons habituellement l’application ‘*cli kubectl*‘ pour gérer le ‘*cluster*‘, cela n’a pas été un frein à nos expérimentations.
+L'amas du document 24b a **un seul contrôleur** (`k8s-cp`). C'est un *point de défaillance unique* (*SPOF*, *single point of failure*). Si ce serveur tombe :
 
-Par contre, en entreprise, une infrastructure *K8s* compte plusieurs serveurs : un ou des maîtres et des nœuds ouvriers.
+* les Pods déjà en marche sur les nœuds ouvriers continuent de rouler;
+* mais l'API de Kubernetes ne répond plus : plus de `kubectl`, plus de déploiement, plus de mise à l'échelle;
+* et plus rien ne remplace un Pod qui tombe, puisque l'ordonnanceur et les contrôleurs sont arrêtés;
+* si le disque du contrôleur est perdu, la base etcd l'est aussi : **tout l'état de l'amas disparaît**.
 
-Voici donc comment déployer une infrastructure *Kubernetes* sur des serveurs Linux.
+Un amas **hautement disponible** (*HA, high availability*) n'a aucun point de défaillance unique : chaque composante essentielle existe en plusieurs exemplaires, sur des serveurs différents.
 
-Dans ce laboratoire, nous installerons un noeud maître (*control-plane,master*) et deux (2) noeuds ouvriers (*worker node*).
+### 1.2 – Les composantes à redonder {#section-1-2}
 
----
+| Composante | Comment elle devient redondante |
+|------------|---------------------------------|
+| `kube-apiserver` | Sans état : plusieurs instances actives en même temps, derrière un **équilibreur de charge** |
+| `etcd` | Base de données répartie : plusieurs membres qui se répliquent (algorithme Raft) et votent (**quorum**) |
+| `kube-scheduler`, `kube-controller-manager` | Une instance par contrôleur, mais **une seule active** : les autres attendent (élection d'un leader) |
+| Applications | Plusieurs réplicas, répartis sur plusieurs nœuds ouvriers |
+| Équilibreur de charge de l'API | Deux équilibreurs et une **IP virtuelle** qui passe de l'un à l'autre |
 
-## 1 – Mise en place des VM (avec vagrant) {#section-1}
+### 1.3 – etcd et le quorum {#section-1-3}
 
-Pour notre réseau K8s, nous allons mettre en place trois serveurs Linux grace à l’utilisation de machines virtuelles;
+etcd ne confirme une écriture que si la **majorité** de ses membres l'a acceptée : c'est le **quorum**. Un membre isolé ne peut donc jamais écrire seul, ce qui évite que deux moitiés d'un réseau coupé en deux modifient l'amas chacune de leur côté (*split brain*).
 
-* 1 Master
-* 2 Worker node
+| Membres etcd | Quorum (majorité) | Pannes tolérées |
+|:------------:|:-----------------:|:---------------:|
+| 1 | 1 | 0 |
+| 2 | 2 | **0** |
+| 3 | 2 | **1** |
+| 4 | 3 | 1 |
+| 5 | 3 | **2** |
 
-Dans le but de simplifier la création et l’installation de Linux sur les VM, nous allons utiliser l’outil ‘*Vagrant*‘ qui, à partir d’un fichier de directives, va réaliser toutes les opérations de l’installation automatiquement.
+> 💡 Toujours un **nombre impair** de membres : 2 membres ne tolèrent aucune panne (pire qu'un seul : deux fois plus de chances d'en perdre un), et 4 membres n'en tolèrent pas plus que 3. Un amas HA commence donc à **trois contrôleurs**.
 
-Voici le fichier *Vagrantfile*:
+### 1.4 – Les deux topologies de kubeadm {#section-1-4}
+
+[La documentation de Kubernetes](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/ha-topology/) propose deux topologies.
+
+**etcd empilé** (*stacked etcd*) : chaque contrôleur héberge aussi un membre etcd. C'est la topologie par défaut de `kubeadm`.
 
 ```
-# -*- mode: ruby -*-
-# vi: set ft=ruby :
-# =========================================================================
-# Nom du fichier:     Vagrantfile
-# Auteur:             Alain Boudreault
-# Date:               2021.04.07
-# -------------------------------------------------------------------------
-# M-A-J: 2021.04.15 - Ajout du routage des paquets IP et du DNS local
-# -------------------------------------------------------------------------
-# Démarrage:          vagrant up
-# Lister les VM:      vagrant global-status
-# Login via vagrant:  vagrant ssh nomDeLaMachine
-#   Pour passer en mode root: sudo -s pour passer en root
-#   Pour permettre ssh:       sudo passwd vagrant
-#
-# Login direct:       ssh vagrant@ip (password=vagrant)
-# Arrêt des VM:       vagrant halt
-# Suppression des VM: vagrant destroy
-# =========================================================================
-# https://raw.githubusercontent.com/ve2cuy/4204d4/main/module06/Vagrantfile
-# ---------------
-# Voici un exemple K8s complet: https://github.com/ansilh/k8s-vagrant
-# =========================================================================
+                  Équilibreur de charge (IP virtuelle :6443)
+               ┌──────────────────┼──────────────────┐
+         ┌─────┴──────┐     ┌─────┴──────┐     ┌─────┴──────┐
+         │  k8s-cp1   │     │  k8s-cp2   │     │  k8s-cp3   │
+         │ apiserver  │     │ apiserver  │     │ apiserver  │
+         │ scheduler  │     │ scheduler  │     │ scheduler  │
+         │ controller │     │ controller │     │ controller │
+         │   etcd ◄───┼─────┼──► etcd ◄──┼─────┼──► etcd   │
+         └────────────┘     └────────────┘     └────────────┘
+                      Nœuds ouvriers (kubelet, Pods)
+```
 
+**etcd externe** : les membres etcd sont sur leurs propres serveurs.
+
+| | etcd empilé | etcd externe |
+|---|---|---|
+| Serveurs requis | 3 contrôleurs | 3 contrôleurs **+ 3 serveurs etcd** |
+| Installation | Simple : `kubeadm init` et `kubeadm join --control-plane` | Plus complexe : etcd installé et sécurisé à part |
+| Perte d'un contrôleur | Perte d'une instance de l'API **et** d'un membre etcd | Perte d'une instance de l'API seulement |
+| Usage | La majorité des amas | Grands amas, exigences élevées |
+
+👉 Nous utiliserons la topologie **etcd empilé**.
+
+### 1.5 – L'équilibreur de charge de l'API {#section-1-5}
+
+Les nœuds, `kubectl` et les contrôleurs eux-mêmes doivent joindre l'API par **une seule adresse**, peu importe le contrôleur qui répond. Cette adresse est le **point d'entrée du plan de contrôle**, donné à `kubeadm init` par l'option `--control-plane-endpoint`. Elle ne peut plus être changée facilement après l'installation.
+
+Derrière cette adresse, un équilibreur de charge répartit les connexions TCP (port 6443) entre les contrôleurs **en santé**. Plusieurs solutions sont possibles :
+
+| Solution | Description |
+|----------|-------------|
+| **HAProxy + keepalived** | HAProxy répartit les connexions; keepalived (protocole VRRP) porte une **IP virtuelle** (VIP) sur un des équilibreurs et la déplace sur l'autre en cas de panne. Classique, sur des serveurs dédiés. |
+| kube-vip | IP virtuelle portée directement par les contrôleurs, dans un Pod statique. Pas de serveur de plus. |
+| Équilibreur du nuage | Google Cloud, AWS, Azure : un service géré joue ce rôle. |
+
+👉 Nous utiliserons **HAProxy + keepalived** sur deux serveurs dédiés : un seul équilibreur serait lui-même un point de défaillance unique.
+
+---
+
+## 2 – Le système que nous allons déployer {#section-2}
+
+Sept VM Ubuntu Server 26.04 LTS, dans le réseau privé `192.168.56.0/24` :
+
+| VM | Rôle | Adresse IP | vCPU | Mémoire |
+|----|------|------------|:----:|:-------:|
+| — | **IP virtuelle de l'API** (`k8s-api`) | **192.168.56.10** | | |
+| `k8s-lb1` | Équilibreur de charge (maître VRRP) | 192.168.56.11 | 1 | 512 Mo |
+| `k8s-lb2` | Équilibreur de charge (relève) | 192.168.56.12 | 1 | 512 Mo |
+| `k8s-cp1` | Contrôleur + etcd | 192.168.56.21 | 2 | 2 Go |
+| `k8s-cp2` | Contrôleur + etcd | 192.168.56.22 | 2 | 2 Go |
+| `k8s-cp3` | Contrôleur + etcd | 192.168.56.23 | 2 | 2 Go |
+| `k8s-w1` | Nœud ouvrier | 192.168.56.31 | 2 | 2 Go |
+| `k8s-w2` | Nœud ouvrier | 192.168.56.32 | 2 | 2 Go |
+
+```
+                        kubectl, nœuds ouvriers
+                                  │
+                       https://192.168.56.10:6443  (IP virtuelle)
+                                  │
+                 ┌────────────────┴────────────────┐
+           ┌─────┴─────┐  VRRP (keepalived)  ┌─────┴─────┐
+           │  k8s-lb1  │◄───────────────────►│  k8s-lb2  │
+           │  HAProxy  │                     │  HAProxy  │
+           └─────┬─────┘                     └─────┬─────┘
+                 └──────────┬──────────┬───────────┘
+                     ┌──────┴┐   ┌─────┴─┐   ┌───────┐
+                     │k8s-cp1│   │k8s-cp2│   │k8s-cp3│   etcd : 3 membres
+                     └───────┘   └───────┘   └───────┘
+                           ┌───────┐   ┌───────┐
+                           │k8s-w1 │   │k8s-w2 │          Pods des applications
+                           └───────┘   └───────┘
+```
+
+**Logiciels** : Kubernetes v1.37, containerd 2.2, Flannel, HAProxy et keepalived (paquets d'Ubuntu).
+
+**Ressources du poste de travail** : environ 11 Go de mémoire vive et 20 Go de disque pour les sept VM, avec la virtualisation matérielle (VT-x ou AMD-V) activée. Avec moins de mémoire, réduire `NB_WORKERS` à 1 dans le Vagrantfile.
+
+---
+
+## 3 – Vagrant {#section-3}
+
+### 3.1 – Présentation {#section-3-1}
+
+[Vagrant](https://developer.hashicorp.com/vagrant) (HashiCorp) crée et configure des machines virtuelles à partir d'un fichier texte, le `Vagrantfile`. C'est de l'**infrastructure en tant que code** (*IaC*) : le même fichier produit les mêmes VM, sur tous les postes, autant de fois que nécessaire.
+
+| Notion | Description |
+|--------|-------------|
+| **Box** | Image de base d'une VM (système déjà installé), téléchargée du [catalogue de Vagrant](https://portal.cloud.hashicorp.com/vagrant/discover). Ex. `bento/ubuntu-26.04`. |
+| **Fournisseur** (*provider*) | Le logiciel de virtualisation : VirtualBox (par défaut), libvirt/KVM (Linux), VMware, Parallels, Hyper-V. |
+| **Approvisionnement** (*provisioner*) | Ce qui configure la VM après son premier démarrage : script shell, copie de fichiers, Ansible… |
+| **Réseau** | Une carte NAT (gérée par Vagrant, pour Internet et `vagrant ssh`) et, au besoin, un réseau privé (`private_network`) entre les VM et le poste. |
+
+### 3.2 – Installation {#section-3-2}
+
+| Poste | Installation |
+|-------|--------------|
+| Windows | [VirtualBox](https://www.virtualbox.org/wiki/Downloads), puis [Vagrant](https://developer.hashicorp.com/vagrant/install) (ou `winget install Hashicorp.Vagrant`) |
+| macOS (Intel) | `brew install --cask virtualbox vagrant` |
+| macOS (Apple Silicon) | VirtualBox 7.1+ pour ARM, ou Parallels/VMware Fusion; la boîte `bento/ubuntu-26.04` existe en arm64 |
+| Linux | VirtualBox et Vagrant; ou KVM : `sudo apt install qemu-system-x86 libvirt-daemon-system libvirt-dev ovmf build-essential`, puis `vagrant plugin install vagrant-libvirt` (Vagrant : dépôt apt de [HashiCorp](https://developer.hashicorp.com/vagrant/install)) |
+
+```bash
+vagrant --version
+```
+
+> ⚠️ Sous Windows, Hyper-V (et WSL 2) peut ralentir VirtualBox. Si les VM sont très lentes ou ne démarrent pas, voir la [section 8](#section-8).
+
+### 3.3 – Les commandes essentielles {#section-3-3}
+
+| Commande | Action |
+|----------|--------|
+| `vagrant up [nom]` | Créer (première fois) et démarrer les VM |
+| `vagrant status` | État des VM du projet |
+| `vagrant ssh nom` | Se connecter à une VM (usager `vagrant`, `sudo` sans mot de passe) |
+| `vagrant halt [nom]` | Arrêter proprement |
+| `vagrant reload [nom]` | Redémarrer (et relire le Vagrantfile) |
+| `vagrant provision [nom]` | Relancer l'approvisionnement |
+| `vagrant snapshot save nom photo` | Photo d'une VM (VirtualBox, libvirt) |
+| `vagrant destroy -f [nom]` | Effacer les VM |
+| `vagrant global-status` | Toutes les VM Vagrant du poste |
+| `vagrant box list` | Les boîtes téléchargées |
+
+### 3.4 – Un premier Vagrantfile {#section-3-4}
+
+Un `Vagrantfile` est écrit en Ruby. Voici une VM Ubuntu avec une adresse dans un réseau privé et un script d'approvisionnement :
+
+```ruby
+# Fichier: Vagrantfile
 Vagrant.configure("2") do |config|
-  # master server
-  config.vm.define "k8s-master" do |kmaster|
-    kmaster.vm.synced_folder '.', '/vagrant', disabled: true
-    kmaster.vm.box = "ubuntu/focal64"
-    kmaster.vm.hostname = "k8s-master"
-    # Installer docker sur la VM
-    kmaster.vm.provision "docker"
-    kmaster.vm.box_url = "ubuntu/focal64"
-    kmaster.vm.network :private_network, ip: "192.168.56.101"
-    kmaster.vm.provider :virtualbox do |v|
-      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-      v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-      v.customize ["modifyvm", :id, "--memory", 2048]
-      v.customize ["modifyvm", :id, "--name", "k8s-master"]
-      v.customize ["modifyvm", :id, "--cpus", "2"]
-    end
-    # Activation du ssh hors vagrant:
-    config.vm.provision "shell", inline: <<-SHELL
-      sed -i 's/ChallengeResponseAuthentication no/ChallengeResponseAuthentication yes/g' /etc/ssh/sshd_config
-      service ssh restart
-      # Activer le routage des paquets IP entre les réseaux
-      echo "[SCRIPT][INFO] Activer le routage des paquets IP entre les réseaux:"
-      sysctl -w net.ipv4.ip_forward=1
-      sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
-      echo "[SCRIPT][INFO] Activer la résolution DNS pour les applications locales"
-      systemctl enable systemd-resolved.service
-      systemctl start  systemd-resolved.service
-    SHELL
+  config.vm.box = "bento/ubuntu-26.04"
+  config.vm.hostname = "essai"
+  config.vm.network "private_network", ip: "192.168.56.5"
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = 1024
+    vb.cpus = 1
   end
-
-  numberSrv=2
-  # slave server
-  (1..numberSrv).each do |i|
-    config.vm.define "k8s-node#{i}" do |knode|
-      knode.vm.synced_folder '.', '/vagrant', disabled: true
-      knode.vm.box = "ubuntu/focal64"
-      knode.vm.hostname = "k8s-node#{i}"
-      # Installer docker sur la VM
-      knode.vm.provision "docker"
-      knode.vm.network "private_network", ip: "192.168.56.10#{i+1}"
-      knode.vm.provider "virtualbox" do |v|
-        v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-        v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-        v.name = "k8s-node#{i}"
-        v.memory = 1024
-        v.cpus = 1
-      end
-      # Activation du ssh hors vagrant:
-     config.vm.provision "shell", inline: <<-SHELL
-       sed -i 's/ChallengeResponseAuthentication no/ChallengeResponseAuthentication yes/g' /etc/ssh/sshd_config
-       service ssh restart
-      # Activer le routage des paquets IP entre les réseaux
-      echo "[SCRIPT][INFO] Activer le routage des paquets IP entre les réseaux:"
-      sysctl -w net.ipv4.ip_forward=1
-      sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
-      echo "[SCRIPT][INFO] Activer la résolution DNS pour les applications locales"
-      systemctl enable systemd-resolved.service
-      systemctl start  systemd-resolved.service
-     SHELL
-    end
-  end
+  config.vm.provision "shell", inline: <<-SHELL
+    apt-get update
+    apt-get install -y nginx
+  SHELL
 end
 ```
 
-**NOTE**: Il est possible d’obtenir la version la plus récente de ce Vagrantfile ainsi:
-
-```
-wget https://raw.githubusercontent.com/ve2cuy/4204d4/main/module06/Vagrantfile
-
-# Ou
-
-curl https://raw.githubusercontent.com/ve2cuy/4204d4/main/module06/Vagrantfile > Vagrantfile
-```
-
-### 1.1 – Lancer le script vagrant: {#section-1-1}
-
-Cette opération va créer trois (3) VM Linux.
-
-```
-# Dans le dossier où se trouve le fichier Vagrantfile:
-
-$ vagrant up
-
-# Note: La première fois, vagrant devra télécharger
-# les Box (images de machines virtuelles), ce qui peut prendre du temps.
-
-# Si vous avez déjà la Box, il est possible d'obtenir la version la plus
-# récente avec cette commande:
-
-$ vagrant box update
-```
-
-**Note:** Pour ceux et celles qui aimeraient en apprendre davantage sur vagrant, la documentation de son *‘cli’* est [ici](https://www.vagrantup.com/docs/cli).
-
----
-
-### 1.2 – Installer docker sur les noeuds {#section-1-2}
-
-```
-L'installation de Docker est dans le fichier Vagrantfile
+```bash
+vagrant up           # quelques minutes la première fois (téléchargement de la boîte)
+curl http://192.168.56.5
+vagrant ssh          # exit pour sortir
+vagrant destroy -f
 ```
 
 ---
 
-### 1.3 – Désactiver le fichier d’échanges (swap) {#section-1-3}
+## 4 – L'amas HA entièrement défini dans Vagrant {#section-4}
 
-Kubernetes ne fonctionne pas sur des serveurs pour lesquels la mémoire virtuelle (swap file/partition) est activée.
+### 4.1 – Les fichiers du projet {#section-4-1}
 
-Il faut vérifier les volumes du serveur et au besoin, désactiver la partition d’échange (swap partition).
-
-```
-# Connexion au master de Kubernetes
-vagrant ssh k8s-master
-
-# Afficher les partitions des disques:
-# Vérifier s'il y a une partition d'échanges 'swap';
-df -hv
-
-# Au besoin, désactiver la partition 'swap'
-# Passer en mode root
-sudo -s
-# Désactiver la partition 'swap' pour la session en cours
-swapoff -a
-
-# Renseigner le système pour que le 'swap' soit désactivé à chaque redémarrage
-# Au besoin, commenter la ligne de 'swap'.
-nano /etc/fstab
-
-# Vérifier que le fichier d'échanges est bien désactivé;
-
-df -hv
-```
-
----
-
-### 1.4 – Au besoin, installer curl et apt-transport-https {#section-1-4}
+Les fichiers sont dans le dépôt du cours : [Installation/Kubernetes/HA](https://github.com/ve2cuy/4204d4/tree/main/Installation/Kubernetes/HA).
 
 ```
-apt install curl apt-transport-https
+HA/
+├── Vagrantfile            les 7 VM, leurs adresses, la CA et les secrets
+├── .gitignore             pki/ et .vagrant/ ne vont jamais dans Git
+└── scripts/
+    ├── commun.sh          préparation d'un serveur K8s (document 24b, sections 2 et 3)
+    ├── equilibreur.sh     HAProxy + keepalived
+    ├── controleur.sh      kubeadm init (cp1) ou kubeadm join --control-plane (cp2, cp3)
+    └── ouvrier.sh         kubeadm join (w1, w2)
 ```
 
-**Note**: Pour la Vagrant Box ‘*ubuntu/focal64*‘ ces deux applications sont déjà installées.
-
----
-
-### 1.5 – Installer la clé gpg et le dépôt apt-get de Google {#section-1-5}
-
-Pour être en mesure d’installer les applications nécessaires au fonctionnement de K8s, il faut ajouter la clé des packages Google – qui est l’éditeur de l’application *Kubernetes* – et ajouter l’adresse du dépôt dans la configuration de *apt-get*.
-
-```
-# Ajout de la clé
-curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
-
-# Ajout du dépôt
-cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
-deb https://apt.kubernetes.io/ kubernetes-xenial main
-EOF
+```bash
+# Récupérer le projet
+git clone https://github.com/ve2cuy/4204d4.git
+cd 4204d4/Installation/Kubernetes/HA
 ```
 
-**** NOTE IMPORTANTE**: ** Il faut ajuster le nom du ‘package k8s’ en fonction de la distribution de Linux utilisée.  Par exemple, pour Ubuntu 20.04 le nom du ‘package’ est ‘[kubernetes-focal](https://wiki.ubuntu.com/Releases)‘.  Par contre, au moment d’écrire ce document, Google n’a pas encore [publié de package pour ‘focal’](https://packages.cloud.google.com/apt/dists). Nous allons alors nous rabattre sur la version ‘xenial’
+### 4.2 – Le Vagrantfile {#section-4-2}
 
-### 1.6 – Actualiser le système et installer les modules Kubernetes {#section-1-6}
+Les paramètres sont en tête du fichier :
 
-```
-sudo apt-get update
-
-apt-get install -y kubelet kubeadm kubectl
-```
-
-Ceci termine l’installation des pré-requis
-
----
-
-**Note**: **Si un pare-feu est installé**, il faudra ouvrir les ports suivants:
-
-```
-# Vérifier si le pare-feu est actif:
-ufw status
-
-# Ouverture de ports sur le master:
-sudo ufw allow 6443/tcp
-sudo ufw allow 2379/tcp
-sudo ufw allow 2380/tcp
-sudo ufw allow 10250/tcp
-sudo ufw allow 10251/tcp
-sudo ufw allow 10252/tcp
-sudo ufw allow 10255/tcp
-sudo ufw reload
-
-# Ouverture de ports sur les nodes:
-sudo ufw allow 10251/tcp
-sudo ufw allow 10255/tcp
-sudo ufw reload
+```ruby
+K8S_VERSION = "v1.37"                 # version mineure de Kubernetes
+BOITE       = "bento/ubuntu-26.04"    # Ubuntu 26.04 (VirtualBox et libvirt)
+RESEAU      = "192.168.56"            # réseau privé des VM
+VIP         = "#{RESEAU}.10"          # IP virtuelle de l'API (keepalived)
+NB_CP       = 3                       # contrôleurs : nombre impair (3, 5)
+NB_WORKERS  = (ENV["NB_WORKERS"] || 2).to_i   # nœuds ouvriers (ou : NB_WORKERS=3 vagrant up)
 ```
 
----
+Chaque type de VM reçoit ses scripts, et les valeurs dont ils ont besoin par des variables d'environnement (`env:`). Par exemple, les contrôleurs :
 
-## 2 – Initialiser l’infrastructure du ‘cluster’ K8s {#section-2}
-
-**Étapes:**
-
-1. **Initialiser le noeud maître (master node).**
-2. **Installer un service réseau intra-noeuds**
-3. **Permettre au noeud maître de rouler des Pods**
-4. **Joindre les noeuds ouvriers (worker node) à l’infrastructure.**
-
----
-
-**2.1 –** **Étape 1 – initialiser le noeud maître**
-
-```
-kubeadm init --apiserver-advertise-address=192.168.56.101 --node-name $HOSTNAME --pod-network-cidr=10.244.0.0/16
-
-# ATTENTION: Il sera peut-être nécessaire d'ajuster l'adresse IP du serveur.  Confirmer avec 'ip a':
-
-3: enp0s8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
-    link/ether 08:00:27:9d:c0:ed brd ff:ff:ff:ff:ff:ff
-    inet 192.168.56.101/24 brd 192.168.56.255 scope global enp0s8
-       valid_lft forever preferred_lft forever
-    inet6 fe80::a00:27ff:fe9d:c0ed/64 scope link
-       valid_lft forever preferred_lft forever
-
-------
-Ce qui produira:
-
-[init] Using Kubernetes version: v1.20.5
-[preflight] Running pre-flight checks
-        [WARNING IsDockerSystemdCheck]: detected "cgroupfs" as the Docker cgroup driver. The recommended driver is "systemd". Please follow the guide at https://kubernetes.io/docs/setup/cri/
-        [WARNING SystemVerification]: this Docker version is not on the list of validated versions: 20.10.5. Latest validated version: 19.03
-        [WARNING SystemVerification]: missing optional cgroups: hugetlb
-[preflight] Pulling images required for setting up a Kubernetes cluster
-[preflight] This might take a minute or two, depending on the speed of your internet connection
-[preflight] You can also perform this action in beforehand using 'kubeadm config images pull'
-[certs] Using certificateDir folder "/etc/kubernetes/pki"
-[certs] Generating "ca" certificate and key
-[certs] Generating "apiserver" certificate and key
-[certs] apiserver serving cert is signed for DNS names [k8s-master kubernetes kubernetes.default kubernetes.default.svc kubernetes.default.svc.cluster.local] and IPs [10.96.0.1 192.168.56.101]
-[certs] Generating "apiserver-kubelet-client" certificate and key
-[certs] Generating "front-proxy-ca" certificate and key
-[certs] Generating "front-proxy-client" certificate and key
-[certs] Generating "etcd/ca" certificate and key
-[certs] Generating "etcd/server" certificate and key
-[certs] etcd/server serving cert is signed for DNS names [k8s-master localhost] and IPs [192.168.56.101 127.0.0.1 ::1]
-[certs] Generating "etcd/peer" certificate and key
-[certs] etcd/peer serving cert is signed for DNS names [k8s-master localhost] and IPs [192.168.56.101 127.0.0.1 ::1]
-[certs] Generating "etcd/healthcheck-client" certificate and key
-[certs] Generating "apiserver-etcd-client" certificate and key
-[certs] Generating "sa" key and public key
-[kubeconfig] Using kubeconfig folder "/etc/kubernetes"
-[kubeconfig] Writing "admin.conf" kubeconfig file
-[kubeconfig] Writing "kubelet.conf" kubeconfig file
-[kubeconfig] Writing "controller-manager.conf" kubeconfig file
-[kubeconfig] Writing "scheduler.conf" kubeconfig file
-[kubelet-start] Writing kubelet environment file with flags to file "/var/lib/kubelet/kubeadm-flags.env"
-[kubelet-start] Writing kubelet configuration to file "/var/lib/kubelet/config.yaml"
-[kubelet-start] Starting the kubelet
-[control-plane] Using manifest folder "/etc/kubernetes/manifests"
-[control-plane] Creating static Pod manifest for "kube-apiserver"
-[control-plane] Creating static Pod manifest for "kube-controller-manager"
-[control-plane] Creating static Pod manifest for "kube-scheduler"
-[etcd] Creating static Pod manifest for local etcd in "/etc/kubernetes/manifests"
-[wait-control-plane] Waiting for the kubelet to boot up the control plane as static Pods from directory "/etc/kubernetes/manifests". This can take up to 4m0s
+```ruby
+  CPS.each_with_index do |(nom, ip), i|
+    config.vm.define nom do |n|
+      n.vm.hostname = nom
+      n.vm.network "private_network", ip: ip
+      ressources(n.vm, nom, 2048, 2)
+      commun(n.vm, ip)                                  # scripts/commun.sh
+      if i == 0                                         # le premier contrôleur reçoit la CA
+        n.vm.provision "file", source: "pki/ca.crt", destination: "/tmp/ca.crt"
+        n.vm.provision "file", source: "pki/ca.key", destination: "/tmp/ca.key"
+      end
+      n.vm.provision "shell", name: "controleur", path: "scripts/controleur.sh",
+        env: { "PREMIER" => (i == 0 ? "oui" : "non"), "IP" => ip, "VIP" => VIP,
+               "RESEAU" => RESEAU, "JETON" => JETON, "CA_HASH" => CA_HASH, "CLE_CRT" => CLE_CRT }
+    end
+  end
 ```
 
-```
-Your Kubernetes control-plane has initialized successfully!
+Points à remarquer :
 
-To start using your cluster, you need to run the following as a regular user:
+* Les VM sont créées **une à la fois**, dans l'ordre du fichier : équilibreurs, contrôleurs, puis nœuds ouvriers (`VAGRANT_NO_PARALLEL`).
+* Aucun dossier partagé (`synced_folder … disabled: true`) : les fichiers utiles sont copiés par l'approvisionnement `file`. Le projet fonctionne ainsi avec VirtualBox comme avec libvirt.
+* Le même fichier sert aux deux fournisseurs : les blocs `provider "virtualbox"` et `provider "libvirt"` fixent la mémoire et les processeurs.
+* La boîte `bento/ubuntu-26.04` démarre en **UEFI** seulement. Avec libvirt, il faut donc le micrologiciel OVMF (`lv.loader`, paquet `ovmf`) et forcer KVM (`lv.driver = "kvm"`) : la boîte demande `qemu`, une émulation des centaines de fois plus lente.
 
-  mkdir -p $HOME/.kube
-  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-  sudo chown $(id -u):$(id -g) $HOME/.kube/config
-
-Alternatively, if you are the root user, you can run:
-
-  export KUBECONFIG=/etc/kubernetes/admin.conf
-
-You should now deploy a pod network to the cluster.
-Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
-  https://kubernetes.io/docs/concepts/cluster-administration/addons/
-
-Then you can join any number of worker nodes by running the following on each as root:
-
-kubeadm join 192.168.100.10:6443 --token 0wmo0n.bzxzltx2coxg8hyf \
-    --discovery-token-ca-cert-hash sha256:da332b0aa033dac51112da2ce63d58fde8f582359658568372e95ca2d9be5081
+```ruby
+    vm.provider "libvirt" do |lv|
+      lv.driver   = "kvm"
+      lv.cpu_mode = "host-passthrough"
+      lv.loader   = "/usr/share/OVMF/OVMF_CODE_4M.fd"
+      lv.nvram    = "/var/lib/libvirt/qemu/nvram/ha_#{nom}_VARS.fd"
+    end
 ```
 
----
+### 4.3 – La CA et les secrets préparés d'avance {#section-4-3}
 
-**** NOTE IMPORTANTE: **** **Le message précédent affiche la commande à utiliser, sur les noeuds, pour les joindre au ‘cluster’**.  ***Le jeton de connexion est valide pour 24 heures** ->* **il est possible de le ré-actualiser avec:**
+Pour joindre un amas, un nœud a besoin de trois informations, normalement affichées par `kubeadm init` :
 
-```
-sudo kubeadm token create --print-join-command
-```
+| Information | Option de `kubeadm join` | Rôle |
+|-------------|--------------------------|------|
+| Jeton | `--token` | Authentifie le nœud auprès de l'API (valide 24 heures) |
+| Empreinte de la CA | `--discovery-token-ca-cert-hash` | Le nœud vérifie qu'il parle au **bon** amas (pas à un imposteur) |
+| Clé des certificats | `--certificate-key` | Contrôleurs seulement : déchiffre les certificats partagés (valide 2 heures) |
 
-**NOTE**: En cas de problème avec kubeadm, voir [ici](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/troubleshooting-kubeadm/).
+Dans une installation automatisée, `kubeadm init` n'a pas encore été exécuté quand Vagrant prépare les VM. Le Vagrantfile crée donc ces informations **d'avance**, une seule fois, dans le dossier `pki/` du poste de travail :
 
----
+* l'**autorité de certification** (CA) de l'amas : `pki/ca.crt` et `pki/ca.key`, avec la bibliothèque OpenSSL de Ruby (incluse dans Vagrant, aucun outil à installer). `kubeadm init` utilise une CA déjà présente dans `/etc/kubernetes/pki` au lieu d'en créer une : l'empreinte est donc connue d'avance;
+* le **jeton** (`pki/jeton`) et la **clé des certificats** (`pki/cle-certificats`), passés à `kubeadm init --token … --certificate-key …`.
 
-Corriger le message d’avertissement suivant:
-
-```
-[WARNING IsDockerSystemdCheck]: detected "cgroupfs" as the Docker cgroup driver. The recommended driver is "systemd".
-
-Please follow the guide at https://kubernetes.io/docs/setup/cri/
-```
-
-```
-# Étape 1
-$ sudo nano /etc/docker/daemon.json et ajouter
-
-{
-   "exec-opts": ["native.cgroupdriver=systemd"],
-   "log-driver": "json-file",
-   "log-opts": {
-     "max-size": "100m"
-   },
-   "storage-driver": "overlay2"
- }
-
----
-
-# Étape 2
-sudo nano /etc/sysctl.conf
-
-et décommenter la ligne
-
-#net.ipv4.ip_forward=1
-
-# Étape 3
-redémarrer le master
+```ruby
+CA_HASH = "sha256:" + OpenSSL::Digest::SHA256.hexdigest(
+  OpenSSL::X509::Certificate.new(File.read(File.join(PKI, "ca.crt"))).public_key.public_to_der)
 ```
 
-**Note:** Pour tout remettre à zéro (danger): ***kubeadm reset***
+> ⚠️ `pki/ca.key` donne un contrôle total sur l'amas : il ne doit jamais être publié (`.gitignore`). Pour un nouvel amas, effacer le dossier `pki/` après `vagrant destroy`.
 
----
+### 4.4 – Lancer l'amas {#section-4-4}
 
-**2.2 –** Afficher les noeuds disponibles dans le ‘cluster’ K8s :
+```bash
+cd 4204d4/Installation/Kubernetes/HA
 
-**2.2.1 –** Comme root:
-
-```
-root@k8s-master:/home/vagrant# export KUBECONFIG=/etc/kubernetes/admin.conf
-
-root@k8s-master:/home/vagrant# kubectl get nodes
-NAME         STATUS     ROLES                  AGE     VERSION
-k8s-master   NotReady   control-plane,master   2m53s   v1.20.5
+vagrant up                          # VirtualBox
+# ou, sous Linux avec KVM :
+vagrant up --provider=libvirt
 ```
 
-**2.2.2 –** Comme utilisateur:
+La première fois, Vagrant télécharge la boîte (environ 1 Go), puis crée et configure les sept VM l'une après l'autre : compter de **20 à 30 minutes**. Chaque étape est affichée (`>>> …`) :
 
 ```
-# Note: À faire, une seule fois, sur le master:
+    k8s-lb1: >>> k8s-lb1 prêt (priorité 110, carte eth1)
+    k8s-lb2: >>> k8s-lb2 prêt (priorité 100, carte eth1)
+    k8s-cp1: >>> kubeadm init
+    k8s-cp1: >>> Flannel (carte du réseau 192.168.56.0/24)
+    k8s-cp1: >>> k8s-cp1 : contrôleur prêt
+    k8s-cp2: >>> kubeadm join --control-plane
+    k8s-cp2: {"level":"warn", ... "logger":"etcd-client", ... "retrying of unary invoker failed" ...}
+    k8s-cp2: >>> k8s-cp2 : contrôleur prêt
+    ...
+    k8s-w2: >>> k8s-w2 : nœud ouvrier prêt
+```
 
-mkdir -p $HOME/.kube
-sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-sudo chown $(id -u):$(id -g) $HOME/.kube/config
+> 💡 Les messages `{"level":"warn" ... "etcd-client" ...}` pendant le `join` d'un contrôleur sont normaux : le nouveau membre etcd est d'abord ajouté comme *learner* (apprenti), et kubeadm réessaie jusqu'à ce qu'il soit synchronisé avec le leader.
 
----
-
+```bash
+vagrant status
+vagrant ssh k8s-cp1
 kubectl get nodes
 ```
 
-**Note:** Le ‘STATUS’ du master est ‘**NotReady**‘.  Il reste à installer un service réseau.
+---
+
+## 5 – Ce que font les scripts, étape par étape {#section-5}
+
+Les scripts reprennent l'installation manuelle du [document 24b](Installation-manuelle-K8S.md). Cette section explique ce qui change pour un amas HA; les mêmes commandes peuvent être tapées à la main sur des serveurs sans Vagrant.
+
+### 5.1 – Les équilibreurs de charge : HAProxy et keepalived {#section-5-1}
+
+Sur `k8s-lb1` et `k8s-lb2` ([scripts/equilibreur.sh](https://github.com/ve2cuy/4204d4/blob/main/Installation/Kubernetes/HA/scripts/equilibreur.sh)) :
+
+```bash
+sudo apt install -y haproxy keepalived
+```
+
+**HAProxy** (`/etc/haproxy/haproxy.cfg`) : le port 6443 est réparti entre les trois contrôleurs; un contrôleur dont `/livez` ne répond pas est retiré de la liste.
+
+```
+frontend k8s-api
+    bind *:6443
+    default_backend k8s-controleurs
+
+backend k8s-controleurs
+    balance roundrobin
+    option httpchk GET /livez
+    http-check expect status 200
+    server k8s-cp1 192.168.56.21:6443 check check-ssl verify none inter 3s fall 3 rise 2
+    server k8s-cp2 192.168.56.22:6443 check check-ssl verify none inter 3s fall 3 rise 2
+    server k8s-cp3 192.168.56.23:6443 check check-ssl verify none inter 3s fall 3 rise 2
+```
+
+* `mode tcp` (dans `defaults`) : HAProxy ne déchiffre pas le TLS de l'API, il transmet les connexions.
+* `check-ssl verify none` : la vérification de santé interroge `https://<contrôleur>:6443/livez`.
+* Une page de statistiques est offerte sur le port 8404 de chaque équilibreur : `http://192.168.56.11:8404/`.
+
+**keepalived** (`/etc/keepalived/keepalived.conf`) : les deux équilibreurs s'échangent des annonces VRRP chaque seconde. Celui qui a la plus haute priorité (`k8s-lb1` : 110, `k8s-lb2` : 100) porte l'IP virtuelle `192.168.56.10`.
+
+```
+vrrp_script verifier_haproxy {
+    script "/usr/bin/systemctl is-active --quiet haproxy"
+    interval 2
+    weight -20
+}
+
+vrrp_instance API_K8S {
+    state BACKUP
+    interface eth1
+    virtual_router_id 51
+    priority 110
+    advert_int 1
+    virtual_ipaddress {
+        192.168.56.10/24
+    }
+    track_script {
+        verifier_haproxy
+    }
+}
+```
+
+* Si `k8s-lb1` s'arrête, `k8s-lb2` ne reçoit plus d'annonces et prend l'IP virtuelle.
+* Si HAProxy s'arrête sur `k8s-lb1`, sa priorité baisse de 20 (110 − 20 = 90 < 100) : il cède l'IP virtuelle.
+
+### 5.2 – Le premier contrôleur {#section-5-2}
+
+Sur `k8s-cp1`, après les sections 2 et 3 du document 24b ([scripts/controleur.sh](https://github.com/ve2cuy/4204d4/blob/main/Installation/Kubernetes/HA/scripts/controleur.sh)) :
+
+```bash
+sudo kubeadm init \
+  --control-plane-endpoint "192.168.56.10:6443" \
+  --apiserver-advertise-address "192.168.56.21" \
+  --pod-network-cidr 10.244.0.0/16 \
+  --upload-certs
+```
+
+| Option | Rôle |
+|--------|------|
+| `--control-plane-endpoint` | **L'IP virtuelle** de l'équilibreur : tous les certificats et tous les fichiers `kubeconfig` la désignent. C'est ce qui rend l'amas HA. |
+| `--apiserver-advertise-address` | L'adresse de **ce** contrôleur (son API et son membre etcd) |
+| `--upload-certs` | Chiffre les certificats partagés (CA, etcd, comptes de service) et les dépose dans l'amas (Secret `kubeadm-certs`), pour les autres contrôleurs |
+
+À la fin, `kubeadm init` affiche **deux** commandes `kubeadm join` : une pour les contrôleurs (avec `--control-plane --certificate-key`), une pour les nœuds ouvriers. Le script utilise le jeton et la clé préparés par le Vagrantfile (`--token`, `--certificate-key`).
+
+Ensuite : `~/.kube/config` et Flannel, comme dans le document 24b.
+
+### 5.3 – Les autres contrôleurs {#section-5-3}
+
+Sur `k8s-cp2` et `k8s-cp3` :
+
+```bash
+sudo kubeadm join 192.168.56.10:6443 \
+  --token <jeton> \
+  --discovery-token-ca-cert-hash sha256:<empreinte> \
+  --control-plane \
+  --certificate-key <clé des certificats> \
+  --apiserver-advertise-address 192.168.56.22
+```
+
+`kubeadm` télécharge les certificats partagés, démarre une instance de l'API, du scheduler et du controller-manager, puis ajoute un membre à etcd.
+
+> ⚠️ Les certificats déposés par `--upload-certs` sont effacés **après 2 heures**. Pour joindre un contrôleur plus tard, les déposer de nouveau sur un contrôleur existant (voir la [section 8](#section-8)).
+
+### 5.4 – Les nœuds ouvriers {#section-5-4}
+
+Sur `k8s-w1` et `k8s-w2` ([scripts/ouvrier.sh](https://github.com/ve2cuy/4204d4/blob/main/Installation/Kubernetes/HA/scripts/ouvrier.sh)) : la même commande que dans le document 24b, mais vers **l'IP virtuelle** :
+
+```bash
+sudo kubeadm join 192.168.56.10:6443 \
+  --token <jeton> \
+  --discovery-token-ca-cert-hash sha256:<empreinte>
+```
+
+Le kubelet de chaque nœud parle à l'API par l'IP virtuelle : il ne dépend d'aucun contrôleur en particulier.
+
+### 5.5 – Le piège des deux cartes réseau {#section-5-5}
+
+Une VM Vagrant a **deux cartes réseau** :
+
+| Carte | Réseau | Adresse |
+|-------|--------|---------|
+| 1re (`eth0`, `enp0s3`) | NAT de Vagrant : Internet et `vagrant ssh` | **La même sur toutes les VM** sous VirtualBox (`10.0.2.15`) |
+| 2e (`eth1`, `enp0s8`) | Réseau privé `192.168.56.0/24` | Une par VM |
+
+Par défaut, Kubernetes choisit la carte de la route par défaut, donc la **première**. Trois réglages l'en empêchent :
+
+```bash
+# 1. kubelet annonce l'adresse du réseau privé (scripts/commun.sh)
+echo "KUBELET_EXTRA_ARGS=--node-ip=192.168.56.21" | sudo tee /etc/default/kubelet
+
+# 2. L'API et etcd écoutent sur cette adresse (kubeadm init/join)
+--apiserver-advertise-address 192.168.56.21
+
+# 3. Flannel transporte les paquets des Pods par cette carte (option ajoutée au manifeste)
+- --iface-regex=^192.168.56\.
+```
+
+Sans ces réglages : `kubectl get nodes -o wide` affiche `10.0.2.15` pour tous les nœuds, et `kubectl exec` ou `kubectl logs` échouent (`unable to upgrade connection`).
 
 ---
 
-**2.3 –** **Étape 2 – installer un service réseau pour l’infrastructure K8s.**
+## 6 – Vérifier l'amas HA {#section-6}
 
-```
-# Il y a plusieurs services réseaux disponibles pour K8s, en voici deux:
+Sur `k8s-cp1` (`vagrant ssh k8s-cp1`) :
 
-kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
-
-# Ou bien:
-
-kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
-
------
-podsecuritypolicy.policy/psp.flannel.unprivileged created
-clusterrole.rbac.authorization.k8s.io/flannel created
-clusterrolebinding.rbac.authorization.k8s.io/flannel created
-serviceaccount/flannel created
-configmap/kube-flannel-cfg created
-daemonset.apps/kube-flannel-ds created
-```
-
-**2.3.1 –** Vérifier l’état du Pod flannel (cni):
-
-```
-kubectl get pods -n kube-system
-
----
-
-NAME                                 READY   STATUS    RESTARTS   AGE
-kube-flannel-ds-bw7d8                1/1     Running   3          79m
-kube-flannel-ds-f5t9g                1/1     Running   3          79m
-```
-
----
-
-**2.3.2 –** Programmer le ‘routage’ des paquets IP entre les différents réseaux et de la résolution de noms pour les applications locales.
-
-Ceci est nécessaire pour permettre la communication entre le réseau du host et le réseau des Pods.
-
-**NOTE:** C’est déjà fait dans le Vagrantfile donc, **ne pas exécuter** les commandes suivantes!  **Fun fact**, si jamais vous *outrepassez* cette directive, rien ne sera ‘brisé’, ce sera seulement une perte de temps pour vous **;)-**.
-
-```
-# Activer la redirection de paquets IP V4:
-sudo nano /etc/sysctl.conf
-
-# Uncomment the next line to enable packet forwarding for IPv4
-net.ipv4.ip_forward=1
-
----
-
-# Activer la résolution DNS pour les applications locales"
-systemctl enable systemd-resolved.service
-systemctl start  systemd-resolved.service
-```
-
----
-
-**2.4 –** Afficher les noeuds disponibles :
-
-```
-kubectl get nodes
-NAME         STATUS   ROLES                  AGE   VERSION
-k8s-master   Ready    control-plane,master   13m   v1.20.5
-
-kubectl get services
-NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
-kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   13m
-```
-
-Note: Le ‘STATUS’ du master est ‘**Ready**‘.
-
----
-
-## 3 – Permettre au noeud maître de rouler des Pods {#section-3}
-
-Pour des raisons de sécurité, K8s ne déploie pas de Pods sur le Master.  Par contre, est possible d’activer cette fonction avec la commande suivante:
-
-```
-kubectl taint nodes --all node-role.kubernetes.io/master-
-```
-
----
-
-## 4 – Joindre un noeud ouvrier au ‘cluster’ K8s {#section-4}
-
-Nous allons maintenant joindre le ou les noeuds à l’infrastructure Kubernetes.
-
-À la fin de l’initialisation du noeud maître, la commande à utiliser pour joindre les noeuds au ‘cluster’ a été affichée à l’écran.
-
-Cette commande inclue une clé qui est valide pendant 24 heures (cela pourrait changer avec une nouvelle version de K8s).
-
-Passé ce délai, il est possible de générer une nouvelle clé comme ceci:
-
-```
-sudo kubeadm token create --print-join-command
-```
-
-**4.0 –** Joindre *k8s-node1* à l’infrastructure K8s:
-
-```
-Sur le noeud k8s-node1:
-
-kubeadm join 192.168.100.10:6443 --token 1mijl8.4ltfiinf0rc7e9rf --discovery-token-ca-cert-hash sha256:c7972526ba9d4e66e303b17b947b0777fbf3564abf2c30efebbd2c88efff86d9
-```
-
-**4.1 –** Vérifier la disponibilité des noeuds:
-
-```
- kubectl get nodes
-NAME         STATUS   ROLES                  AGE     VERSION
-k8s-master   Ready    control-plane,master   44m     v1.21.0
-k8s-node1    Ready    <none>                 4m36s   v1.21.0
-```
-
-**4.2 –** Modifier le rôle d’un noeud:
-
-```
-kubectl label node k8s-node1 node-role.kubernetes.io/worker=worker
-
----
-kubectl get nodes
-
-kubectl get nodes
-NAME         STATUS   ROLES                  AGE   VERSION
-k8s-master   Ready    control-plane,master   53m   v1.21.0
-k8s-node1    Ready    worker                 13m   v1.21.0
-
-# kubectl edit node k8s-node1
-```
-
-**4.3 –** Au besoin, répéter les opérations sur les autres noeuds ouvriers.
-
----
-
-## 5 – Erreurs possibles avec Vagrant et VirtualBox {#section-5}
-
-*La création d’une **VM** avec ‘vagrant’ donnera une machine avec **2 CIR**; un réseau NAT et un réseau privé.*
-
-*Par défaut, ‘kubelet‘ utilisera la première CIR, ce qui provoquera une malfunction du système.*
-
-**Symptôme**:
-
-**kubectl run id_du_pod  –image=nginx**
-
-**kubectl exec -it id_du_pod — bash**
-
-*error: unable to upgrade connection: pod does not exist*
-
-**Solution**:
-
-Modifier le fichier de configuration ‘*kubelet*‘ des noeuds ouvriers.
-
-**5.1 –** Identifier l’adresse IP du réseau privé du noeud:
-
-```
-$ root@k8s-node1:/home/vagrant# ip a
----
-3: enp0s8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
-    link/ether 08:00:27:ce:18:ba brd ff:ff:ff:ff:ff:ff
-    inet 192.168.56.102/24 brd 192.168.56.255 scope global enp0s8
-```
-
-**5.2 –**Éditer le fichier de configuration de *kubelet* du noeud:
-
-```
-root@k8s-node1: # nano /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
----
-# Ajouter cette ligne au fichier:
-
-   Environment="KUBELET_EXTRA_ARGS=--node-ip=*.*.*.*"
-   *.*.*.* = Adresse IP de la CIR du réseau privé du noeud,
-   Par exemple,
-
-   Environment="KUBELET_EXTRA_ARGS=--node-ip=192.168.56.102"
----
-
-sudo systemctl daemon-reload
-sudo systemctl restart kubelet
-
----
-# Valider avec:
-
+```bash
 kubectl get nodes -o wide
-
-NAME         STATUS   ROLES                  AGE    VERSION   INTERNAL-IP      EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
-k8s-master   Ready    control-plane,master   161m   v1.21.0   10.0.2.15        <none>        Ubuntu 20.04.2 LTS   5.4.0-71-generic   docker://20.10.6
-k8s-node1    Ready    worker                 121m   v1.21.0   192.168.56.102   <none>        Ubuntu 20.04.2 LTS   5.4.0-71-generic   docker://20.10.6
 ```
 
-**ATTENTION**, Il **ne faut pas** faire cette modification sur le noeud maître sinon, il n’**aura plus accès** à Internet via le réseau **NAT**.  Il ne sera donc plus en mesure de télécharger les images de hub.docker.io.
+```
+NAME      STATUS   ROLES           AGE     VERSION   INTERNAL-IP     OS-IMAGE           KERNEL-VERSION     CONTAINER-RUNTIME
+k8s-cp1   Ready    control-plane   10m     v1.37.2   192.168.56.21   Ubuntu 26.04 LTS   7.0.0-22-generic   containerd://2.2.2
+k8s-cp2   Ready    control-plane   7m41s   v1.37.2   192.168.56.22   Ubuntu 26.04 LTS   7.0.0-22-generic   containerd://2.2.2
+k8s-cp3   Ready    control-plane   4m51s   v1.37.2   192.168.56.23   Ubuntu 26.04 LTS   7.0.0-22-generic   containerd://2.2.2
+k8s-w1    Ready    <none>          2m50s   v1.37.2   192.168.56.31   Ubuntu 26.04 LTS   7.0.0-22-generic   containerd://2.2.2
+k8s-w2    Ready    <none>          33s     v1.37.2   192.168.56.32   Ubuntu 26.04 LTS   7.0.0-22-generic   containerd://2.2.2
+```
 
-Voilà, le commande ‘*kubectl exec -it*‘ devrait maintenant fonctionner 😉
+```bash
+# Le rôle « worker » est seulement une étiquette, à ajouter
+kubectl label node k8s-w1 node-role.kubernetes.io/worker=
+kubectl label node k8s-w2 node-role.kubernetes.io/worker=
+
+# L'adresse de l'API dans la configuration de kubectl : l'IP virtuelle
+kubectl config view -o jsonpath='{.clusters[0].cluster.server}'; echo
+
+# Les trois instances de chaque composante du plan de contrôle
+kubectl get pods -n kube-system -o wide | grep -E 'apiserver|etcd|scheduler|controller'
+```
+
+**Les membres etcd** :
+
+```bash
+kubectl -n kube-system exec etcd-k8s-cp1 -- etcdctl \
+  --endpoints=https://127.0.0.1:2379 \
+  --cacert=/etc/kubernetes/pki/etcd/ca.crt \
+  --cert=/etc/kubernetes/pki/etcd/server.crt \
+  --key=/etc/kubernetes/pki/etcd/server.key \
+  member list -w table
+```
+
+```
+┌──────────────────┬─────────┬─────────┬────────────────────────────┬────────────────────────────┬────────────┐
+│        ID        │ STATUS  │  NAME   │         PEER ADDRS         │        CLIENT ADDRS        │ IS LEARNER │
+├──────────────────┼─────────┼─────────┼────────────────────────────┼────────────────────────────┼────────────┤
+│ 28a928fb76407458 │ started │ k8s-cp3 │ https://192.168.56.23:2380 │ https://192.168.56.23:2379 │      false │
+│ 49dea182b4aa06a3 │ started │ k8s-cp2 │ https://192.168.56.22:2380 │ https://192.168.56.22:2379 │      false │
+│ a654cb086123e8d9 │ started │ k8s-cp1 │ https://192.168.56.21:2380 │ https://192.168.56.21:2379 │      false │
+└──────────────────┴─────────┴─────────┴────────────────────────────┴────────────────────────────┴────────────┘
+```
+
+**Le leader du scheduler et du controller-manager** (un seul actif) :
+
+```bash
+kubectl -n kube-system get lease kube-scheduler kube-controller-manager \
+  -o custom-columns=COMPOSANTE:.metadata.name,LEADER:.spec.holderIdentity
+```
+
+```
+COMPOSANTE                LEADER
+kube-scheduler            k8s-cp1_a15cd319-49ff-42f5-b01a-99fba7a88f15
+kube-controller-manager   k8s-cp1_f54692cf-33dd-429a-bf25-3ae9e437e2ec
+```
+
+**L'IP virtuelle et HAProxy** :
+
+```bash
+# Quel équilibreur porte l'IP virtuelle?
+vagrant ssh k8s-lb1 -c "ip -4 -br addr show eth1"
+
+# État des contrôleurs vu par HAProxy (page de statistiques)
+curl -s "http://192.168.56.11:8404/;csv" | cut -d, -f1,2,18 | grep k8s-cp
+```
+
+```
+eth1             UP             192.168.56.11/24 192.168.56.10/24      ← k8s-lb1 porte l'IP virtuelle
+
+k8s-controleurs,k8s-cp1,UP
+k8s-controleurs,k8s-cp2,UP
+k8s-controleurs,k8s-cp3,UP
+```
 
 ---
 
-## 6 – Tester l’infrastructure K8s {#section-6}
+<img src="../images/labo03.png" alt="" width="700" />
 
+<br>
+
+## 7 – Laboratoire : tests de panne (durée 45 minutes) {#section-7}
+
+Garder un terminal ouvert sur `k8s-cp1` avec une commande qui interroge l'API chaque seconde :
+
+```bash
+while true; do date +%T; kubectl get nodes --no-headers | awk '{print $1, $2}' | tr '\n' ' '; echo; sleep 1; done
 ```
-kubectl create deployment webserver --image=nginx --port 80 --replicas=5
 
-# La prochaine commande permet de vérifier l'exactitude des adresses IP
-kubectl exec -it nom-du-pod -- bash
+Et déployer une application de 6 réplicas :
 
-kubectl expose deployment webserver --port 80 --type=NodePort
-
-kubectl get pods
-
-kubectl scale deploy webserver --replicas=5
+```bash
+kubectl create deployment web --image=nginx:1.28 --replicas=6
+kubectl expose deployment web --port=80 --type=NodePort
 ```
+
+**Test 1 – Panne d'un équilibreur**
+
+1. Repérer l'équilibreur qui porte l'IP virtuelle (section 6).
+2. L'arrêter : `vagrant halt k8s-lb1`.
+3. L'API répond-elle encore? Combien de secondes d'interruption? Où est maintenant l'IP virtuelle?
+4. `vagrant up k8s-lb1` : l'IP virtuelle revient-elle sur `k8s-lb1`? Pourquoi (priorité)?
+
+**Test 2 – Panne d'un contrôleur**
+
+1. Arrêter le contrôleur qui détient le leader du scheduler : `vagrant halt k8s-cp2` (adapter).
+2. L'API répond-elle encore? Que montre la page de statistiques de HAProxy?
+3. Quel contrôleur détient maintenant le leader (lease)?
+4. `etcdctl member list` (depuis un contrôleur en marche) : combien de membres? Le quorum est-il atteint?
+5. Supprimer un Pod de l'application : est-il recréé?
+
+**Test 3 – Perte du quorum**
+
+1. Avec `k8s-cp2` toujours arrêté, arrêter aussi `k8s-cp3`.
+2. L'API répond-elle? Pourquoi, alors que `k8s-cp1` est en marche (voir [1.3](#section-1-3))?
+3. Les Pods de l'application répondent-ils encore (`curl http://192.168.56.31:<NodePort>`)?
+4. Redémarrer `k8s-cp3` : après combien de temps l'API répond-elle de nouveau?
+5. Redémarrer `k8s-cp2`.
+
+**Test 4 – Ajouter un nœud ouvrier**
+
+1. Dans le Vagrantfile, passer `NB_WORKERS` à 3 (ou, pour une commande seulement : `NB_WORKERS=3 vagrant up k8s-w3`; PowerShell : `$env:NB_WORKERS=3`).
+2. `vagrant up k8s-w3`, puis vérifier avec `kubectl get nodes` et ajouter l'étiquette `worker`.
+3. Retirer le nœud proprement : `kubectl drain`, `kubectl delete node k8s-w3`, puis `vagrant destroy -f k8s-w3`.
+4. Le jeton est valide 24 heures : si l'amas a plus d'une journée, que faut-il faire (section 8)?
+
+<details markdown="1">
+<summary>Résultats de nos essais (2026.11.07, VM KVM sur un Xeon E5-2650 v2)</summary>
+
+| Test | Résultat observé |
+|------|------------------|
+| 1 – arrêt de `k8s-lb1` | IP virtuelle sur `k8s-lb2`; **0,5 s** sans API. Au redémarrage, `k8s-lb1` reprend l'IP virtuelle (priorité 110 > 100) sans interruption. |
+| 2 – arrêt de `k8s-cp1` (leader) | **2,5 s** sans API; HAProxy : `k8s-cp1 DOWN`; leaders du scheduler et du controller-manager passés à `k8s-cp3`; etcd : 2 membres sur 3 en santé (quorum atteint); un Pod effacé est recréé (6/6). |
+| 3 – `k8s-cp1` et `k8s-cp3` arrêtés | L'API ne répond plus (1 membre etcd sur 3 : pas de quorum), **mais l'application répond** (HTTP 200) : les Pods et kube-proxy continuent sans le plan de contrôle. API de retour **47 s** après `vagrant up k8s-cp3`. |
+| 4 – `k8s-w3` | Ajouté en 4 minutes avec le jeton et l'empreinte du Vagrantfile. |
+
+</details>
 
 ---
 
-En cas de problème avec le *cluster*, il est possible d’afficher le journal de *kubelet*:
+## 8 – Gestion des erreurs {#section-8}
+
+#### 🤚 kubeadm join : jeton expiré (amas de plus de 24 heures)
+
+Créer de nouveau, sur un contrôleur, le jeton du Vagrantfile (valeur du fichier `pki/jeton` du poste) :
+
+```bash
+sudo kubeadm token create <valeur de pki/jeton>
+```
+
+#### 🤚 kubeadm join --control-plane : « secret kubeadm-certs not found »
+
+Les certificats déposés par `--upload-certs` sont effacés après 2 heures. Sur un contrôleur en marche, les déposer de nouveau avec la clé du Vagrantfile :
+
+```bash
+sudo kubeadm init phase upload-certs --upload-certs --certificate-key <valeur de pki/cle-certificats>
+```
+
+#### 🤚 Tous les nœuds ont l'adresse 10.0.2.15
+
+Le réglage `--node-ip` est absent : voir la [section 5.5](#section-5-5).
+
+#### 🤚 VirtualBox : « The IP address configured for the host-only network is not within the allowed ranges »
+
+Depuis VirtualBox 6.1.28, les réseaux privés doivent être dans `192.168.56.0/21`. Pour une autre plage, créer le fichier `/etc/vbox/networks.conf` (Linux, macOS) :
 
 ```
-sudo journalctl -u kubelet | tail -n 100
+* 10.0.0.0/8 192.168.0.0/16
 ```
+
+#### 🤚 Windows : VM très lentes, ou « VT-x is not available »
+
+Hyper-V, WSL 2 ou l'isolation du noyau (*Memory integrity*) occupent les fonctions de virtualisation. VirtualBox 7 sait fonctionner par-dessus Hyper-V, mais lentement. Pour de meilleures performances : désactiver *Memory integrity* (Sécurité Windows → Sécurité de l'appareil) et la fonction Windows « Plateforme d'hyperviseur », puis redémarrer.
+
+#### 🤚 L'IP virtuelle ne répond pas
+
+```bash
+vagrant ssh k8s-lb1 -c "systemctl status keepalived haproxy --no-pager; ip -4 addr"
+```
+
+Les annonces VRRP circulent en multidiffusion : elles doivent pouvoir passer entre `k8s-lb1` et `k8s-lb2` (réseau privé de Vagrant : oui).
 
 ---
 
-## 7 – Programmer la complétion de code pour *kubectl* sur le master {#section-7}
+## 9 – Gérer les VM avec Vagrant {#section-9}
 
+```bash
+vagrant halt                    # arrêter tout l'amas (à la fin d'une séance)
+vagrant up                      # le redémarrer : l'approvisionnement n'est pas refait
+vagrant snapshot save k8s-cp1 avant-test     # photo d'une VM
+vagrant snapshot restore k8s-cp1 avant-test
+vagrant destroy -f && rm -rf pki   # tout effacer, CA comprise
 ```
-nano ~/.profile
 
-# Ajouter ceci à la fin du fichier:
+**Complétion de code pour kubectl** (sur un contrôleur) :
 
+```bash
+cat >> ~/.bashrc <<'EOF'
 source <(kubectl completion bash)
 alias k=kubectl
-complete -F __start_kubectl k
-```
-
----
-
-## Conclusion {#section-conclusion}
-
-Voilà, nous avons installé un ‘cluster’ *Kubernetes*, composé d’un ‘*master*‘ et de, deux (2) ‘*nodes*‘.
-
-Il ne manque qu’un équilibreur de charge, un point de service, pour les requêtes, par exemple, de type *HTTP*.
-
-Pour cela, il faudra mettre en place ‘[*Ingress*](https://kubernetes.io/fr/docs/concepts/services-networking/ingress/)‘
-
----
-
-**NOTE – Il faut penser à arrêter les VM via vagrant:**
-
-```
-vagrant halt
-
-# Pour redémarrer les VM
-vagrant up
-
-# Pour détruire les VM
-vagrant destroy
-```
-
-Effacer les CIR VirtualBox
-
-```
-VBoxManage hostonlyif remove vboxnet0
-```
-
----
-
-## 8 – Installation rapide de K8S sous Ubuntu 22.04 {#section-8}
-
-```
-# 1 - Désactiver la pagination (swap) du système de fichiers
-sudo swapoff -a && sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
-
-# -------------------------------------------------------------------
-# 2 - Renseigner le démarrage automatique du moteur d'exécution de Docker
-# Note: Il sera installé un peu plus loin dans ce script
-sudo tee /etc/modules-load.d/containerd.conf <<EOF
-overlay
-br_netfilter
+complete -o default -F __start_kubectl k
 EOF
-sudo modprobe overlay && sudo modprobe br_netfilter
-
-# -------------------------------------------------------------------
-# 3 - Permettre le routage des packets IP entre les noeuds
-sudo tee /etc/sysctl.d/kubernetes.conf <<EOF
-net.bridge.bridge-nf-call-ip6tables = 1
-net.bridge.bridge-nf-call-iptables = 1
-net.ipv4.ip_forward = 1
-EOF
-sudo sysctl --system
-
-# -------------------------------------------------------------------
-# 4 - Installer les dép. et le moteur d'exécution de Docker (containerd):
-sudo apt install -y curl gnupg2 software-properties-common apt-transport-https ca-certificates
-sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmour -o /etc/apt/trusted.gpg.d/docker.gpg
-# Ajouter le dépôt contenant les packets de containerd
-sudo add-apt-repository --yes "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-sudo apt update && sudo apt install -y containerd.io
-containerd config default | sudo tee /etc/containerd/config.toml >/dev/null 2>&1
-sudo sed -i 's/SystemdCgroup \= false/SystemdCgroup \= true/g' /etc/containerd/config.toml
-sudo systemctl restart containerd && sudo systemctl enable containerd
-
-# -------------------------------------------------------------------
-# 5 - Ajouter le dépôt contenant les packets de Kubernetes:
-curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmour -o /etc/apt/trusted.gpg.d/kubernetes-xenial.gpg
-sudo apt-add-repository --yes "deb http://apt.kubernetes.io/ kubernetes-xenial main"
-
-# -------------------------------------------------------------------
-# 6 - Installer les services de K8S - sur tous les noeuds:
-sudo apt update && sudo apt install -y kubelet kubeadm kubectl && sudo apt-mark hold kubelet kubeadm kubectl
-
-# -------------------------------------------------------------------
-# ===> ****** Exécuter la ligne suivante seulement sur le MASTER:
-# 7 - Initialiser le cluster K8S
-# NOTE: Remplacer par l'adresse IP de la NIC du MASTER
-sudo kubeadm init --control-plane-endpoint=192.168.139.50
-
-# -------------------------------------------------------------------
-# ===> ****** Exécuter la ligne suivante seulement sur le MASTER:
-# 8 - Renseigner bash pour l'utilisation de la commande kubectl sur le
-# nouveau cluster K8S
-mkdir -p $HOME/.kube
-sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-sudo chown $(id -u):$(id -g) $HOME/.kube/config
-
-# -------------------------------------------------------------------
-# 9 - Exécuter la commande suivante sur tous les worker-node:
-# Joindre les worker-nodes au cluster K8S:
-# Au besoin, obtenir la cmd suivante avec:
-# sudo kubeadm token create --print-join-command
-sudo kubeadm join 192.168.139.50:6443 --token t0vh7g.x6x0md7uxp6xg33s --discovery-token-ca-cert-hash sha256:26b695e3ea1b7da05fd9d8238d475a62dc697b9dbaaeb1c4ee64808199d02567
-
-# -------------------------------------------------------------------
-# ===> ****** Exécuter la ligne suivante seulement sur le MASTER:
-# 10 - Installer un service réseau pour la communication entre les noeuds:
-kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/calico.yaml
-
-# -------------------------------------------------------------------
-# 11- Pour renommer les noeuds (kubectl get nodes)
-kubectl label node k8s01 node-role.kubernetes.io/control-plane-
-kubectl label node k8s01 node-role.kubernetes.io/je-suis-le-boss="true"
-kubectl label node k8s02 node-role.kubernetes.io/ouvrier="true"
-
-# -------------------------------------------------------------------
-# 12 - Renseigner kubectl pour l'utilisation d'un amas distant:
-# À partir du master: Obtenir la configuration du cluster:
-cat ~/.kube/config > un-cluster-k8s.conf
-# Enregistrer la configuration sur le poste de travail et l'utiliser:
-export KUBECONFIG=~/un-cluster-k8s.conf
+source ~/.bashrc
 ```
 
 ---
 
-###### Document rédigé par Alain Boudreault – aka, ve2cuy – version 2023.04.06.01
+## Références
+
+* [Options de topologie HA](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/ha-topology/)
+* [Créer un amas HA avec kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability/)
+* [Équilibrage de charge logiciel (HAProxy, keepalived, kube-vip)](https://github.com/kubernetes/kubeadm/blob/main/docs/ha-considerations.md)
+* [etcd : tolérance aux pannes](https://etcd.io/docs/latest/faq/#what-is-failure-tolerance)
+* [Vagrant](https://developer.hashicorp.com/vagrant/docs), [vagrant-libvirt](https://vagrant-libvirt.github.io/vagrant-libvirt/)
+* [Document 24b : installation manuelle de K8S](Installation-manuelle-K8S.md)
 
 ---
 

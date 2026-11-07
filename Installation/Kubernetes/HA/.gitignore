@@ -1,0 +1,3 @@
+# CA et secrets de l'amas, créés par le Vagrantfile : jamais dans Git
+pki/
+.vagrant/
