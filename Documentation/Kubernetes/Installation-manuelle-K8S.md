@@ -25,6 +25,7 @@
   - [1.1 – Les serveurs de l'amas](#section-1-1)
   - [1.2 – Prérequis de chaque serveur](#section-1-2)
   - [1.3 – Ports réseau](#section-1-3)
+  - [1.4 – Se connecter aux serveurs par un serveur relais (ssh -J)](#section-1-4)
 - [**2 – Préparer chaque serveur (les quatre)**](#section-2)
   - [2.1 – Nom d'hôte et fichier hosts](#section-2-1)
   - [2.2 – Désactiver le fichier d'échange (swap)](#section-2-2)
@@ -106,6 +107,75 @@ Le pare-feu d'Ubuntu (`ufw`) est désactivé par défaut. S'il est actif, il fau
 # Vérifier l'état du pare-feu
 sudo ufw status
 ```
+
+### 1.4 – Se connecter aux serveurs par un serveur relais (`ssh -J`) {#section-1-4}
+
+Les serveurs d'un amas sont souvent dans un **réseau privé** : VM derrière le NAT d'un hyperviseur, réseau isolé d'un laboratoire, nuage. Ils ne sont pas joignables directement du poste de travail. On passe alors par un **serveur relais** (*jump host* ou *bastion*), joignable des deux côtés.
+
+```
+Poste de travail ──ssh──> Serveur relais ──ssh──> k8s-cp
+                          192.168.2.9               192.168.122.50 (réseau privé)
+```
+
+L'option `-J` (*ProxyJump*) de `ssh` fait les deux connexions en une seule commande :
+
+```bash
+ssh -J claude@192.168.2.9 etudiant@192.168.122.50
+```
+
+* `ssh` se connecte d'abord au relais (`claude@192.168.2.9`), puis, à travers lui, à la destination (`etudiant@192.168.122.50`).
+* **Deux mots de passe** sont demandés : celui du relais, puis celui de la destination. Ce n'est pas une authentification à deux facteurs : ce sont deux connexions SSH, chacune avec sa propre authentification (mot de passe ou clé).
+* La connexion vers la destination est chiffrée **de bout en bout** : le relais transmet les paquets sans pouvoir les lire. Aucune clé privée n'est copiée sur le relais.
+
+**Plusieurs relais, copie de fichiers :**
+
+```bash
+# Deux relais successifs, séparés par une virgule
+ssh -J usager@relais1,usager@relais2 etudiant@192.168.122.50
+
+# scp et rsync acceptent aussi le relais
+scp -J claude@192.168.2.9 manifeste.yml etudiant@192.168.122.50:~
+```
+
+**Configuration permanente** dans le fichier `~/.ssh/config` du poste de travail :
+
+```
+Host relais
+    HostName 192.168.2.9
+    User claude
+
+Host k8s-cp k8s-w1 k8s-w2 k8s-w3
+    User etudiant
+    ProxyJump relais
+
+Host k8s-cp
+    HostName 192.168.122.50
+Host k8s-w1
+    HostName 192.168.122.51
+Host k8s-w2
+    HostName 192.168.122.52
+Host k8s-w3
+    HostName 192.168.122.53
+```
+
+```bash
+# Ensuite, simplement :
+ssh k8s-cp
+scp manifeste.yml k8s-w1:~
+
+# Copier sa clé publique sur le relais, puis sur le contrôleur : plus de mot de passe à taper
+ssh-copy-id relais
+ssh-copy-id k8s-cp
+```
+
+**Tunnel vers un service de l'amas** : l'option `-L` rend un port du réseau privé accessible sur le poste de travail.
+
+```bash
+# Le NodePort 30080 du nœud k8s-w1 devient http://localhost:30080 sur le poste de travail
+ssh -L 30080:192.168.122.51:30080 claude@192.168.2.9
+```
+
+> 💡 Un relais est aussi une mesure de sécurité : seul le relais est exposé au réseau extérieur, et tous les accès aux serveurs de l'amas passent par lui.
 
 ---
 
