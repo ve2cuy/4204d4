@@ -41,13 +41,13 @@ Un **Chart** est un package Helm. C'est un ensemble de fichiers qui décrivent u
 Structure d'un Chart :
 ```
 mon-chart/
-├── Chart.yaml          # Métadonnées du chart
-├── values.yaml         # Valeurs de configuration par défaut
-├── templates/          # Templates de manifestes Kubernetes
-│   ├── deployment.yaml
-│   ├── service.yaml
-│   └── ingress.yaml
-└── charts/             # Dépendances (autres charts)
+|-- Chart.yaml          # Métadonnées du chart
+|-- values.yaml         # Valeurs de configuration par défaut
+|-- templates/          # Templates de manifestes Kubernetes
+|   |-- deployment.yaml
+|   |-- service.yaml
+|   `-- ingress.yaml
+`-- charts/             # Dépendances (autres charts)
 ```
 
 ### 2.2 – Repository {#section-2-2}
@@ -300,12 +300,12 @@ helm create mon-application
 
 # Structure créée :
 # mon-application/
-# ├── Chart.yaml
-# ├── values.yaml
-# ├── templates/
-# │   ├── deployment.yaml
-# │   ├── service.yaml
-# │   └── ...
+# |-- Chart.yaml
+# |-- values.yaml
+# |-- templates/
+# |   |-- deployment.yaml
+# |   |-- service.yaml
+# |   `-- ...
 
 # Modifier les templates selon vos besoins
 # Puis installer

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" font-family="Helvetica, Arial, sans-serif" font-size="14">
+  <rect width="760" height="400" rx="12" fill="#ffffff"/>
+  <defs><marker id="f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker></defs>
+  <text x="30" y="36" text-anchor="start" fill="#1d3f8a" font-size="15" font-weight="bold">emptyDir</text>
+  <rect x="30" y="50" width="180" height="70" rx="10" fill="#eef6ee" stroke="#3c8d3c" stroke-width="2"/>
+  <text x="120.0" y="80.0" text-anchor="middle" fill="#1f5a1f" font-weight="bold">Pod A (vivant)</text>
+  <text x="120.0" y="100.0" text-anchor="middle" fill="#333" font-size="13">/tmp/cache [fichiers]</text>
+  <rect x="290" y="50" width="180" height="70" rx="10" fill="#fdecea" stroke="#c0392b" stroke-width="2"/>
+  <text x="380.0" y="80.0" text-anchor="middle" fill="#8e2418" font-weight="bold">Pod A (mort)</text>
+  <text x="380.0" y="100.0" text-anchor="middle" fill="#333" font-size="13">DÉTRUIT avec le Pod</text>
+  <path d="M212 85 L286 85" fill="none" stroke="#555" stroke-width="2" marker-end="url(#f)"/>
+  <text x="30" y="176" text-anchor="start" fill="#1d3f8a" font-size="15" font-weight="bold">hostPath</text>
+  <rect x="30" y="190" width="180" height="70" rx="10" fill="#eef6ee" stroke="#3c8d3c" stroke-width="2"/>
+  <text x="120.0" y="220.0" text-anchor="middle" fill="#1f5a1f" font-weight="bold">Pod A (vivant)</text>
+  <text x="120.0" y="240.0" text-anchor="middle" fill="#333" font-size="13">/data [fichiers]</text>
+  <rect x="290" y="190" width="180" height="70" rx="10" fill="#fdecea" stroke="#c0392b" stroke-width="2"/>
+  <text x="380.0" y="220.0" text-anchor="middle" fill="#8e2418" font-weight="bold">Pod A (mort)</text>
+  <text x="380.0" y="240.0" text-anchor="middle" fill="#333" font-size="13">conteneur détruit</text>
+  <rect x="550" y="190" width="180" height="70" rx="10" fill="#eef6ee" stroke="#3c8d3c" stroke-width="2"/>
+  <text x="640.0" y="220.0" text-anchor="middle" fill="#1f5a1f" font-weight="bold">Pod A (redémarré)</text>
+  <text x="640.0" y="240.0" text-anchor="middle" fill="#333" font-size="13">/data [fichiers] ✓</text>
+  <path d="M212 225 L286 225" fill="none" stroke="#555" stroke-width="2" marker-end="url(#f)"/>
+  <path d="M472 225 L546 225" fill="none" stroke="#555" stroke-width="2" marker-end="url(#f)"/>
+  <rect x="30" y="310" width="700" height="50" rx="10" fill="#fff4e0" stroke="#d08a1a" stroke-width="2"/>
+  <text x="380.0" y="340.0" text-anchor="middle" fill="#8a5300" font-weight="bold">/mnt/data sur le nœud : toujours là</text>
+  <path d="M120 262 L120 306" fill="none" stroke="#d08a1a" stroke-width="2" stroke-dasharray="5 4"/>
+  <path d="M640 262 L640 306" fill="none" stroke="#d08a1a" stroke-width="2" stroke-dasharray="5 4"/>
+  <text x="380" y="388" text-anchor="middle" fill="#333" font-size="13">Les données du hostPath survivent au Pod, mais seulement sur ce nœud</text>
+</svg>

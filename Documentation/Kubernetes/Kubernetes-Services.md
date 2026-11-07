@@ -74,22 +74,7 @@ Imaginez un restaurant avec plusieurs cuisiniers (Pods) :
 
 ### Schéma
 
-```
-┌─────────────────────────────────────┐
-│         Cluster Kubernetes          │
-│                                     │
-│  ┌──────┐    Service (ClusterIP)    │
-│  │ Pod1 │◄───┐  10.96.0.100:80      │
-│  └──────┘    │                      │
-│              ├─► Load Balancer      │
-│  ┌──────┐    │                      │
-│  │ Pod2 │◄───┘                      │
-│  └──────┘                           │
-│                                     │
-│  Accessible uniquement depuis       │
-│  l'intérieur du cluster             │
-└─────────────────────────────────────┘
-```
+<img src="../images/schemas/service-clusterip.svg" alt="Service ClusterIP : un Pod client joint deux Pods par une adresse interne" width="700" />
 
 ### Exemple : Backend API
 
@@ -156,24 +141,7 @@ Le Service crée automatiquement un enregistrement DNS :
 
 ### Schéma
 
-```
-┌─────────────────────────────────────┐
-│         Cluster Kubernetes          │
-│                                     │
-│  Node1: 192.168.1.10:30080          │
-│     ▼                               │
-│  Service (NodePort)                 │
-│     ▼                               │
-│  ┌──────┐    ┌──────┐               │
-│  │ Pod1 │    │ Pod2 │               │
-│  └──────┘    └──────┘               │
-│                                     │
-└─────────────────────────────────────┘
-         ▲
-         │
-    Internet / Réseau externe
-    http://192.168.1.10:30080
-```
+<img src="../images/schemas/service-nodeport.svg" alt="Service NodePort : client externe, port 30080 du nœud, Service, Pods" width="700" />
 
 ### Exemple : Application de test
 
@@ -250,25 +218,7 @@ curl http://<IP-du-noeud>:30080
 
 ### Schéma
 
-```
-┌──────────────────────────────────────┐
-│           Internet                   │
-└───────────────┬──────────────────────┘
-                │
-         LoadBalancer IP
-         192.168.1.240:80
-                │
-┌───────────────▼──────────────────────┐
-│         Cluster Kubernetes           │
-│                                      │
-│  Service (LoadBalancer)              │
-│         ▼                            │
-│  ┌──────────┐  ┌──────────┐          │
-│  │  Pod1    │  │  Pod2    │          │
-│  │  :80     │  │  :80     │          │
-│  └──────────┘  └──────────┘          │
-└──────────────────────────────────────┘
-```
+<img src="../images/schemas/service-loadbalancer.svg" alt="Service LoadBalancer : Internet, IP externe, Service, Pods" width="700" />
 
 ### Exemple : Application web en production
 
@@ -369,26 +319,7 @@ curl http://192.168.1.240
 
 ### Schéma
 
-```
-┌─────────────────────────────────────┐
-│         Cluster Kubernetes          │
-│                                     │
-│  Pod demande:                       │
-│  "database-service"                 │
-│         │                           │
-│         ▼                           │
-│  Service ExternalName               │
-│  Redirige vers:                     │
-│  "db.external.com"                  │
-│                                     │
-└─────────────┬───────────────────────┘
-              │
-              ▼
-    ┌─────────────────────┐
-    │  Service externe    │
-    │  db.external.com    │
-    └─────────────────────┘
-```
+<img src="../images/schemas/service-externalname.svg" alt="Service ExternalName : alias DNS vers un service externe" width="700" />
 
 ### Exemple 1 : Base de données externe
 

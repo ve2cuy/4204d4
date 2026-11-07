@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" font-family="Helvetica, Arial, sans-serif" font-size="14">
+  <rect width="760" height="400" rx="12" fill="#ffffff"/>
+  <defs><marker id="f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker></defs>
+  <rect x="20" y="16" width="720" height="368" rx="12" fill="#f2f2f2" stroke="#888888" stroke-width="2" stroke-dasharray="7 5"/>
+  <text x="34" y="40" fill="#333333" font-weight="bold">Kubernetes</text>
+  <rect x="150" y="56" width="200" height="64" rx="10" fill="#eef6ee" stroke="#3c8d3c" stroke-width="2"/>
+  <text x="250.0" y="83.0" text-anchor="middle" fill="#1f5a1f" font-weight="bold">Pod App</text>
+  <text x="250.0" y="103.0" text-anchor="middle" fill="#333" font-size="13">(nginx)</text>
+  <rect x="410" y="56" width="200" height="64" rx="10" fill="#f3eefb" stroke="#7a52c7" stroke-width="2"/>
+  <text x="510.0" y="83.0" text-anchor="middle" fill="#4b2d8a" font-weight="bold">CronJob</text>
+  <text x="510.0" y="103.0" text-anchor="middle" fill="#333" font-size="13">(sauvegarde)</text>
+  <rect x="230" y="170" width="300" height="66" rx="10" fill="#fff4e0" stroke="#d08a1a" stroke-width="2"/>
+  <text x="380.0" y="198.0" text-anchor="middle" fill="#8a5300" font-weight="bold">Service S3</text>
+  <text x="380.0" y="218.0" text-anchor="middle" fill="#333" font-size="13">MinIO / Garage</text>
+  <rect x="230" y="290" width="300" height="56" rx="10" fill="#e3ecfb" stroke="#3b6fd8" stroke-width="2"/>
+  <text x="380.0" y="323.0" text-anchor="middle" fill="#1d3f8a" font-weight="bold">PVC → stockage disque</text>
+  <path d="M250 122 L330 166" fill="none" stroke="#555" stroke-width="2" marker-end="url(#f)"/>
+  <path d="M510 122 L430 166" fill="none" stroke="#555" stroke-width="2" marker-end="url(#f)"/>
+  <path d="M380 238 L380 286" fill="none" stroke="#555" stroke-width="2" marker-end="url(#f)"/>
+</svg>

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" font-family="Helvetica, Arial, sans-serif" font-size="14">
+  <rect width="760" height="300" rx="12" fill="#ffffff"/>
+  <defs><marker id="f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker></defs>
+  <rect x="20" y="16" width="500" height="268" rx="12" fill="#f2f2f2" stroke="#888888" stroke-width="2" stroke-dasharray="7 5"/>
+  <text x="34" y="40" fill="#333333" font-weight="bold">Amas Kubernetes</text>
+  <rect x="50" y="70" width="200" height="72" rx="10" fill="#eef6ee" stroke="#3c8d3c" stroke-width="2"/>
+  <text x="150.0" y="91.0" text-anchor="middle" fill="#1f5a1f" font-weight="bold">Pod</text>
+  <text x="150.0" y="111.0" text-anchor="middle" fill="#333" font-size="13">demande</text>
+  <text x="150.0" y="131.0" text-anchor="middle" fill="#333" font-size="13">database-service</text>
+  <rect x="290" y="150" width="200" height="92" rx="10" fill="#e3ecfb" stroke="#3b6fd8" stroke-width="2"/>
+  <text x="390.0" y="181.0" text-anchor="middle" fill="#1d3f8a" font-weight="bold">Service ExternalName</text>
+  <text x="390.0" y="201.0" text-anchor="middle" fill="#333" font-size="13">alias DNS (CNAME)</text>
+  <text x="390.0" y="221.0" text-anchor="middle" fill="#333" font-size="13">→ db.external.com</text>
+  <rect x="560" y="160" width="180" height="72" rx="10" fill="#f2f2f2" stroke="#888888" stroke-width="2"/>
+  <text x="650.0" y="191.0" text-anchor="middle" fill="#333333" font-weight="bold">Service externe</text>
+  <text x="650.0" y="211.0" text-anchor="middle" fill="#333" font-size="13">db.external.com</text>
+  <path d="M150 144 L150 196 L286 196" fill="none" stroke="#555" stroke-width="2" marker-end="url(#f)"/>
+  <path d="M492 196 L556 196" fill="none" stroke="#555" stroke-width="2" marker-end="url(#f)"/>
+  <text x="270" y="268" text-anchor="middle" fill="#333" font-size="13">Aucun proxy : seulement une réponse DNS</text>
+</svg>

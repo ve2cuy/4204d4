@@ -347,17 +347,17 @@ jobs:
 
 ```
 mon-projet/
-├── .github/
-│   └── workflows/
-│       └── docker-build.yml
-├── app1/
-│   ├── Dockerfile
-│   └── src/
-├── app2/
-│   ├── Dockerfile
-│   └── src/
-├── .dockerignore
-└── README.md
+|-- .github/
+|   `-- workflows/
+|       `-- docker-build.yml
+|-- app1/
+|   |-- Dockerfile
+|   `-- src/
+|-- app2/
+|   |-- Dockerfile
+|   `-- src/
+|-- .dockerignore
+`-- README.md
 ```
 
 ## 8. Fichier .dockerignore recommandé {#section-8}

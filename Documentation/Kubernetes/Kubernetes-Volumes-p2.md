@@ -156,25 +156,7 @@ Pod redémarre → retrouve les mêmes fichiers ✓
 
 **Exemple visuel**
 
-```
-# emptyDir
-Pod A (vivant)          Pod A (mort)
-┌──────────────┐        ┌──────────────┐
-│  /tmp/cache  │  →→→   │   DÉTRUIT    │
-│  [fichiers]  │        │              │
-└──────────────┘        └──────────────┘
-
-
-# hostPath
-Pod A (vivant)          Pod A (mort)         Pod A (redémarré)
-┌──────────────┐        ┌──────────────┐     ┌──────────────┐
-│  /data       │        │   DÉTRUIT    │     │  /data       │
-│  [fichiers]  │  →→→   │              │ →→→ │  [fichiers]  │ ✓
-└──────────────┘        └──────────────┘     └──────────────┘
-       │                                            │
-       └──────── /mnt/data sur le nœud ────────────┘
-                    (toujours là)
-```
+<img src="../images/schemas/volumes-cycle-de-vie.svg" alt="Cycle de vie des données : emptyDir détruit avec le Pod, hostPath conservé sur le nœud" width="700" />
 
 ---
 
@@ -250,11 +232,11 @@ Contrairement à un système de fichiers classique, S3 ne stocke pas des fichier
 
 ```
 Système de fichiers classique    vs    S3
-─────────────────────────────          ──────────────────────
+-----------------------------          ----------------------
 /home/                                 Bucket: mon-bucket
-  └── photos/                            ├── photo1.jpg
-        ├── photo1.jpg                   ├── photos/photo2.jpg
-        └── photo2.jpg                   └── docs/rapport.pdf
+  `-- photos/                            |-- photo1.jpg
+        |-- photo1.jpg                   |-- photos/photo2.jpg
+        `-- photo2.jpg                   `-- docs/rapport.pdf
 ```
 
 Tout est **à plat** — les `/` dans les noms donnent l'illusion de dossiers, mais ce sont juste des caractères dans la clé.
@@ -346,10 +328,10 @@ Kubernetes et S3 sont **complémentaires** — ils résolvent des problèmes dif
 
 ```
 K8S gère des Pods éphémères        S3 stocke des données persistantes
-──────────────────────────         ─────────────────────────────────
-Pod démarre  ┐                     Objet uploadé  ┐
-Pod travaille│                     Objet existe   │  forever...
-Pod meurt    ┘ ← données perdues!  Objet récupéré ┘
+--------------------------         ---------------------------------
+Pod démarre  +                     Objet uploadé  +
+Pod travaille|                     Objet existe   |  forever...
+Pod meurt    + < données perdues!  Objet récupéré +
 ```
 
 ---
@@ -368,19 +350,7 @@ Pod meurt    ┘ ← données perdues!  Objet récupéré ┘
 
 **Comment ils s'utilisent ensemble**
 
-```
-┌─────────────────────────────────────────┐
-│            Cluster Kubernetes           │
-│                                         │
-│  Pod A ──┐                              │
-│          ├──→ SDK S3 ──→ S3 / MinIO     │
-│  Pod B ──┘      (HTTP)   / Garage       │
-│                              │          │
-│  Pod C ──────────────────────┘          │
-└─────────────────────────────────────────┘
-         Tous les Pods partagent
-         le même stockage via HTTP
-```
+<img src="../images/schemas/s3-partage.svg" alt="Trois Pods partagent un stockage S3 par HTTP" width="700" />
 
 ---
 
@@ -388,7 +358,7 @@ Pod meurt    ┘ ← données perdues!  Objet récupéré ┘
 
 **1. Partage de fichiers entre Pods**
 ```
-Pod upload (réplica 1)  ──→  S3  ←──  Pod download (réplica 2)
+Pod upload (réplica 1)  -->  S3  <--  Pod download (réplica 2)
 ```
 Impossible avec `hostPath` ou `emptyDir` !
 
@@ -428,15 +398,15 @@ spec:
 
 **4. Logs centralisés**
 ```
-Pod A ──→ ┐
-Pod B ──→ ├──→ Fluentd/Vector ──→ S3 (logs archivés)
-Pod C ──→ ┘
+Pod A --> +
+Pod B --> +--> Fluentd/Vector --> S3 (logs archivés)
+Pod C --> +
 ```
 
 **5. Assets statiques (CDN)**
 ```
-Build CI/CD ──→ S3 ──→ CloudFront/CDN ──→ Utilisateurs
-                ↑
+Build CI/CD --> S3 --> CloudFront/CDN --> Utilisateurs
+                ^
          K8S Job d'upload
 ```
 
@@ -444,25 +414,7 @@ Build CI/CD ──→ S3 ──→ CloudFront/CDN ──→ Utilisateurs
 
 **Vue d'ensemble**
 
-```
-                    KUBERNETES
-┌──────────────────────────────────────────┐
-│                                          │
-│  ┌──────────┐    ┌──────────┐           │
-│  │  Pod App │    │ CronJob  │           │
-│  │ (nginx)  │    │ (backup) │           │
-│  └────┬─────┘    └────┬─────┘           │
-│       │               │                 │
-│  ┌────▼───────────────▼─────┐           │
-│  │         S3 Service        │           │
-│  │   (MinIO / Garage)        │           │
-│  └────────────┬──────────────┘           │
-│               │                          │
-│  ┌────────────▼──────────────┐           │
-│  │  PVC  →  Stockage disque  │           │
-│  └───────────────────────────┘           │
-└──────────────────────────────────────────┘
-```
+<img src="../images/schemas/s3-architecture.svg" alt="Architecture : Pod et CronJob, Service S3, PVC" width="700" />
 
 ---
 
@@ -642,17 +594,17 @@ stringData:
 **Architecture résultante :**
 ```
 Pods applicatifs (replicas)
-        │
-        │  SDK S3 standard
-        ▼
+        |
+        |  SDK S3 standard
+        v
   MinIO Service (ClusterIP)
   minio.storage.svc:9000
-        │
-        ▼
+        |
+        v
   MinIO Pod
-        │
-        ▼
-  PVC → PV → /mnt/minio-data (nœud)
+        |
+        v
+  PVC > PV > /mnt/minio-data (nœud)
 ```
 
 **Points clés :**
@@ -875,14 +827,14 @@ env:
 **Architecture résultante :**
 ```
 Pods applicatifs
-      │ SDK S3 standard
-      ▼
+      | SDK S3 standard
+      v
 garage-s3 (Service ClusterIP :3900)
-      │
-      ├── garage-0 (zone1) ──┐
-      ├── garage-1 (zone2)   ├── Réplication x3
-      └── garage-2 (zone3) ──┘
-            │          │
+      |
+      +-- garage-0 (zone1) --+
+      +-- garage-1 (zone2)   +-- Réplication x3
+      +-- garage-2 (zone3) --+
+            |          |
            PVC        PVC
           (meta)     (data)
 ```

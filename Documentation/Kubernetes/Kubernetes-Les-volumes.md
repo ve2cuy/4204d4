@@ -50,17 +50,7 @@ Un `emptyDir` dans Kubernetes est créé sur le nœud (node) qui exécute le Pod
 
 Dans le cas d'un déploiement sur plusieurs noeuds, chaque Pod aura son propre emptyDir isolé et indépendant.
 
-```
-Node 1                          Node 2
-┌─────────────────────┐        ┌─────────────────────┐
-│  Pod A              │        │  Pod B              │
-│  /var/lib/kubelet/  │        │  /var/lib/kubelet/  │
-│  pods/uid-A/...     │        │  pods/uid-B/...     │
-│  emptyDir ← propre  │        │  emptyDir ← propre  │
-└─────────────────────┘        └─────────────────────┘
-         ▲                              ▲
-             Aucun partage entre eux
-```
+<img src="../images/schemas/volumes-emptydir.svg" alt="Deux nœuds, chaque Pod a son propre emptyDir : aucun partage" width="700" />
 
 👉 Ce que ça implique concrètement :
 

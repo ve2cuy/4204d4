@@ -32,23 +32,23 @@ Nous allons créer une application web "SuperMinou v2" avec :
 
 ```
 superminou-v2/
-├── .github/
-│   └── workflows/
-│       ├── docker-build-push.yml      # Workflow principal
-│       └── docker-release.yml         # Workflow pour les releases
-├── src/
-│   ├── index.php                      # Page principale
-│   ├── about.php                      # Page à propos
-│   ├── css/
-│   │   └── style.css                  # Styles
-│   └── images/
-│       └── superminou.png             # Logo
-├── tests/
-│   └── test.sh                        # Tests de validation
-├── Dockerfile                         # Définition de l'image
-├── .dockerignore                      # Fichiers à exclure
-├── docker-compose.yml                 # Pour tester localement
-└── README.md                          # Documentation
+|-- .github/
+|   `-- workflows/
+|       |-- docker-build-push.yml      # Workflow principal
+|       `-- docker-release.yml         # Workflow pour les releases
+|-- src/
+|   |-- index.php                      # Page principale
+|   |-- about.php                      # Page à propos
+|   |-- css/
+|   |   `-- style.css                  # Styles
+|   `-- images/
+|       `-- superminou.png             # Logo
+|-- tests/
+|   `-- test.sh                        # Tests de validation
+|-- Dockerfile                         # Définition de l'image
+|-- .dockerignore                      # Fichiers à exclure
+|-- docker-compose.yml                 # Pour tester localement
+`-- README.md                          # Documentation
 ```
 
 ## Étape 1 : Créer l'application {#section-1}
@@ -762,10 +762,10 @@ docker run -p 8080:80 superminou-v2
 
 ```
 superminou-v2/
-├── .github/workflows/    # GitHub Actions
-├── src/                  # Code source
-├── Dockerfile           # Définition image
-└── docker-compose.yml   # Composition locale
+|-- .github/workflows/    # GitHub Actions
+|-- src/                  # Code source
+|-- Dockerfile           # Définition image
+`-- docker-compose.yml   # Composition locale
 ```
 
 ## 📝 Versioning

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 380" font-family="Helvetica, Arial, sans-serif" font-size="14">
+  <rect width="760" height="380" rx="12" fill="#ffffff"/>
+  <defs><marker id="f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker></defs>
+  <rect x="280" y="16" width="200" height="46" rx="10" fill="#f2f2f2" stroke="#888888" stroke-width="2"/>
+  <text x="380.0" y="44.0" text-anchor="middle" fill="#333333" font-weight="bold">Internet</text>
+  <rect x="250" y="92" width="260" height="56" rx="10" fill="#fff4e0" stroke="#d08a1a" stroke-width="2"/>
+  <text x="380.0" y="115.0" text-anchor="middle" fill="#8a5300" font-weight="bold">IP externe</text>
+  <text x="380.0" y="135.0" text-anchor="middle" fill="#333" font-size="13">192.168.1.240:80 (MetalLB, nuage)</text>
+  <rect x="20" y="170" width="720" height="196" rx="12" fill="#f2f2f2" stroke="#888888" stroke-width="2" stroke-dasharray="7 5"/>
+  <text x="34" y="194" fill="#333333" font-weight="bold">Amas Kubernetes</text>
+  <rect x="270" y="204" width="220" height="46" rx="10" fill="#e3ecfb" stroke="#3b6fd8" stroke-width="2"/>
+  <text x="380.0" y="232.0" text-anchor="middle" fill="#1d3f8a" font-weight="bold">Service LoadBalancer</text>
+  <rect x="190" y="296" width="140" height="52" rx="10" fill="#eef6ee" stroke="#3c8d3c" stroke-width="2"/>
+  <text x="260.0" y="317.0" text-anchor="middle" fill="#1f5a1f" font-weight="bold">Pod1</text>
+  <text x="260.0" y="337.0" text-anchor="middle" fill="#333" font-size="13">:80</text>
+  <rect x="430" y="296" width="140" height="52" rx="10" fill="#eef6ee" stroke="#3c8d3c" stroke-width="2"/>
+  <text x="500.0" y="317.0" text-anchor="middle" fill="#1f5a1f" font-weight="bold">Pod2</text>
+  <text x="500.0" y="337.0" text-anchor="middle" fill="#333" font-size="13">:80</text>
+  <path d="M380 64 L380 88" fill="none" stroke="#555" stroke-width="2" marker-end="url(#f)"/>
+  <path d="M380 150 L380 200" fill="none" stroke="#555" stroke-width="2" marker-end="url(#f)"/>
+  <path d="M350 252 L270 292" fill="none" stroke="#555" stroke-width="2" marker-end="url(#f)"/>
+  <path d="M410 252 L490 292" fill="none" stroke="#555" stroke-width="2" marker-end="url(#f)"/>
+</svg>
