@@ -15,11 +15,11 @@
 - [**5 – Cluster Autoscaler**](#section-5)
 - [**6 – KEDA – Event-Driven Autoscaling**](#section-6)
 - [**7 – Bonnes pratiques**](#section-7)
-  - [1. Toujours définir des `requests` et `limits`](#section-7-1)
-  - [2. Ne pas combiner HPA et VPA en mode `Auto`](#section-7-2)
-  - [3. Configurer les `PodDisruptionBudgets` (PDB)](#section-7-3)
-  - [4. Surveiller les événements de scaling](#section-7-4)
-  - [5. Utiliser `kubectl top` pour valider les métriques](#section-7-5)
+  - [7.1 – Toujours définir des `requests` et `limits`](#section-7-1)
+  - [7.2 – Ne pas combiner HPA et VPA en mode `Auto`](#section-7-2)
+  - [7.3 – Configurer les `PodDisruptionBudgets` (PDB)](#section-7-3)
+  - [7.4 – Surveiller les événements de scaling](#section-7-4)
+  - [7.5 – Utiliser `kubectl top` pour valider les métriques](#section-7-5)
 - [**8 – Récapitulatif des commandes essentielles**](#section-8)
 
 ---
@@ -115,7 +115,7 @@ Charge diminue → métriques sous le seuil → HPA supprime des pods (avec stab
 
 ### Exemple pratique — Scaling sur CPU
 
-#### 1. Déployer une application de test
+#### Étape 1 – Déployer une application de test
 
 ```bash
 kubectl create deployment php-apache \
@@ -125,7 +125,7 @@ kubectl create deployment php-apache \
 kubectl expose deployment php-apache --port=80
 ```
 
-#### 2. Définir les requests de ressources (obligatoire pour HPA)
+#### Étape 2 – Définir les requests de ressources (obligatoire pour HPA)
 
 ```bash
 kubectl set resources deployment php-apache \
@@ -133,7 +133,7 @@ kubectl set resources deployment php-apache \
   --limits=cpu=500m,memory=256Mi
 ```
 
-#### 3. Créer le HPA
+#### Étape 3 – Créer le HPA
 
 ```bash
 # Via kubectl autoscale (méthode rapide)
@@ -171,7 +171,7 @@ spec:
 kubectl apply -f hpa-cpu.yaml
 ```
 
-#### 4. Observer le HPA
+#### Étape 4 – Observer le HPA
 
 ```bash
 kubectl get hpa php-apache --watch
@@ -179,7 +179,7 @@ kubectl get hpa php-apache --watch
 # php-apache  Deployment/php-apache         0%/50%    1         10        1
 ```
 
-#### 5. Générer de la charge (dans un second terminal)
+#### Étape 5 – Générer de la charge (dans un second terminal)
 
 ```bash
 kubectl run load-generator \
@@ -214,7 +214,7 @@ php-apache-c49f9fd4-zv9fk   1/1     Running   0          3m17s
 
 ---
 
-#### 5.1 - Directives regroupées dans un seul manifeste:
+#### Directives regroupées dans un seul manifeste
 
 ```yaml
 # =========================================
@@ -319,7 +319,7 @@ $ kubectl get pods --watch
 ---
 
 
-#### 6. Arrêter la charge et observer le scale-down
+#### Étape 6 – Arrêter la charge et observer le scale-down
 
 ```bash
 $ kubectl delete pod load-generator
@@ -338,7 +338,7 @@ php-apache   Deployment/php-apache   cpu: 0%/50%     1         10        1      
 
 ```
 
-#### 7. Nettoyer
+#### Étape 7 – Nettoyer
 
 ```bash
 kubectl delete deployment php-apache
@@ -428,7 +428,7 @@ kubectl get pods -n kube-system | grep vpa
 
 ### Exemple pratique
 
-#### 1. Déployer une application
+#### Étape 1 – Déployer une application
 
 ```bash
 kubectl create deployment vpa-demo \
@@ -436,7 +436,7 @@ kubectl create deployment vpa-demo \
   --replicas=2
 ```
 
-#### 2. Créer un objet VPA en mode recommandation
+#### Étape 2 – Créer un objet VPA en mode recommandation
 
 ```yaml
 # vpa-demo.yaml
@@ -466,7 +466,7 @@ spec:
 kubectl apply -f vpa-demo.yaml
 ```
 
-#### 3. Consulter les recommandations
+#### Étape 3 – Consulter les recommandations
 
 ```bash
 kubectl describe vpa vpa-demo
@@ -480,7 +480,7 @@ kubectl get vpa vpa-demo -o json | \
   jq '.status.recommendation.containerRecommendations'
 ```
 
-#### 4. Nettoyer
+#### Étape 4 – Nettoyer
 
 ```bash
 kubectl delete deployment vpa-demo
@@ -612,7 +612,7 @@ kubectl describe scaledobject prometheus-scaler
 
 ## 7 – Bonnes pratiques {#section-7}
 
-### 1. Toujours définir des `requests` et `limits` {#section-7-1}
+### 7.1 – Toujours définir des `requests` et `limits` {#section-7-1}
 
 Le HPA ne peut pas fonctionner sans `requests` CPU/mémoire définis sur les conteneurs.
 
@@ -622,13 +622,13 @@ kubectl get deployment my-app -o json | \
   jq '.spec.template.spec.containers[].resources'
 ```
 
-### 2. Ne pas combiner HPA et VPA en mode `Auto` {#section-7-2}
+### 7.2 – Ne pas combiner HPA et VPA en mode `Auto` {#section-7-2}
 
 HPA et VPA en mode automatique peuvent entrer en conflit. Préférez :
 - HPA pour le scaling horizontal
 - VPA en mode `Off` ou `Initial` pour les recommandations
 
-### 3. Configurer les `PodDisruptionBudgets` (PDB) {#section-7-3}
+### 7.3 – Configurer les `PodDisruptionBudgets` (PDB) {#section-7-3}
 
 Un PDB garantit qu'un minimum de pods reste disponible pendant un scale-down.
 
@@ -650,7 +650,7 @@ kubectl apply -f pdb.yaml
 kubectl get pdb
 ```
 
-### 4. Surveiller les événements de scaling {#section-7-4}
+### 7.4 – Surveiller les événements de scaling {#section-7-4}
 
 ```bash
 # Événements HPA
@@ -665,7 +665,7 @@ kubectl logs -n kube-system \
   --tail=50 | grep -i hpa
 ```
 
-### 5. Utiliser `kubectl top` pour valider les métriques {#section-7-5}
+### 7.5 – Utiliser `kubectl top` pour valider les métriques {#section-7-5}
 
 ```bash
 # Ressources des pods en temps réel

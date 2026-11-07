@@ -8,9 +8,9 @@ Helm est le **gestionnaire de paquets** pour Kubernetes, comparable à `apt` pou
 
 - [**1 – Pourquoi utiliser Helm ?**](#section-1)
 - [**2 – Concepts de base**](#section-2)
-  - [1. Chart](#section-2-1)
-  - [2. Repository](#section-2-2)
-  - [3. Release](#section-2-3)
+  - [2.1 – Chart](#section-2-1)
+  - [2.2 – Repository](#section-2-2)
+  - [2.3 – Release](#section-2-3)
 - [**3 – Installation de Helm**](#section-3)
 - [**4 – Commandes essentielles**](#section-4)
 - [**5 – Exemples pratiques**](#section-5)
@@ -35,7 +35,7 @@ helm install mon-wordpress bitnami/wordpress
 
 ## 2 – Concepts de base {#section-2}
 
-### 1. Chart {#section-2-1}
+### 2.1 – Chart {#section-2-1}
 Un **Chart** est un package Helm. C'est un ensemble de fichiers qui décrivent une application Kubernetes complète.
 
 Structure d'un Chart :
@@ -50,10 +50,10 @@ mon-chart/
 └── charts/             # Dépendances (autres charts)
 ```
 
-### 2. Repository {#section-2-2}
+### 2.2 – Repository {#section-2-2}
 Un **Repository** est un dépôt qui contient des Charts, comme Docker Hub pour les images.
 
-### 3. Release {#section-2-3}
+### 2.3 – Release {#section-2-3}
 Une **Release** est une instance déployée d'un Chart dans votre cluster.
 
 ## 3 – Installation de Helm {#section-3}

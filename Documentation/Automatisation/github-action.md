@@ -5,9 +5,9 @@
 ## Contenu
 
 - [**1. Prérequis**](#section-1)
-  - [A. Créer un compte Docker Hub](#section-1-a)
-  - [B. Créer un Access Token Docker Hub](#section-1-b)
-  - [C. Ajouter les secrets dans GitHub](#section-1-c)
+  - [1.1 – Créer un compte Docker Hub](#section-1-1)
+  - [1.2 – Créer un Access Token Docker Hub](#section-1-2)
+  - [1.3 – Ajouter les secrets dans GitHub](#section-1-3)
 - [**2. Workflow de base (`.github/workflows/docker-build.yml`)**](#section-2)
 - [**3. Workflow avec plusieurs Dockerfiles**](#section-3)
 - [**4. Workflow avancé avec tests**](#section-4)
@@ -24,12 +24,12 @@
 
 ## 1. Prérequis {#section-1}
 
-### A. Créer un compte Docker Hub {#section-1-a}
+### 1.1 – Créer un compte Docker Hub {#section-1-1}
 - Allez sur [hub.docker.com](https://hub.docker.com)
 - Créez un compte si nécessaire
 - Notez votre **username Docker Hub**
 
-### B. Créer un Access Token Docker Hub {#section-1-b}
+### 1.2 – Créer un Access Token Docker Hub {#section-1-2}
 1. Connectez-vous à Docker Hub
 2. Allez dans **Account Settings** → **Security**
 3. Cliquez sur **New Access Token**
@@ -37,7 +37,7 @@
 5. Permissions : **Read, Write, Delete**
 6. Copiez le token généré (vous ne pourrez plus le voir après)
 
-### C. Ajouter les secrets dans GitHub {#section-1-c}
+### 1.3 – Ajouter les secrets dans GitHub {#section-1-3}
 1. Allez dans votre repo GitHub
 2. **Settings** → **Secrets and variables** → **Actions**
 3. Cliquez sur **New repository secret**

@@ -57,17 +57,17 @@ git clone https://github.com/ve2cuy/420-4D4.TP03.Depart.git
 ## Contenu
 
 - [**Partie A (10%) – Déployer une infrastructure K8S H.A.**](#section-partie-a-10-deployer-une-infrastructure)
-  - [1 – En équipe de n, il faut déployer 3 serveurs Proxmox.](#section-partie-a-10-deployer-une-infrastructure-1)
-  - [2 – Créer 4 VMs Ubuntu serveur 22.04.](#section-partie-a-10-deployer-une-infrastructure-2)
-  - [3 – Installer un Amas K8S sur les 4 VM](#section-partie-a-10-deployer-une-infrastructure-3)
-  - [4 – Installer le loadbalancer metallb](#section-partie-a-10-deployer-une-infrastructure-4)
-  - [5 – Installer un ingress controler](#section-partie-a-10-deployer-une-infrastructure-5)
-  - [6 – Installer Rancher et tester](#section-partie-a-10-deployer-une-infrastructure-6)
-  - [7 – Importer votre cluster K8S](#section-partie-a-10-deployer-une-infrastructure-7)
-  - [8 – Installer le ‘monitoring’ sur votre cluster](#section-partie-a-10-deployer-une-infrastructure-8)
-  - [9 – Installer Longhorn et tester](#section-partie-a-10-deployer-une-infrastructure-9)
-  - [10 – Tester le cluster de votre équipe à partir de votre poste de travail](#section-partie-a-10-deployer-une-infrastructure-10)
-  - [11 – Documenter toutes les étapes de la mise en place des points précédents](#section-partie-a-10-deployer-une-infrastructure-11)
+  - [A.1 – En équipe de n, il faut déployer 3 serveurs Proxmox.](#section-a-1)
+  - [A.2 – Créer 4 VMs Ubuntu serveur 22.04.](#section-a-2)
+  - [A.3 – Installer un Amas K8S sur les 4 VM](#section-a-3)
+  - [A.4 – Installer le loadbalancer metallb](#section-a-4)
+  - [A.5 – Installer un ingress controler](#section-a-5)
+  - [A.6 – Installer Rancher et tester](#section-a-6)
+  - [A.7 – Importer votre cluster K8S](#section-a-7)
+  - [A.8 – Installer le ‘monitoring’ sur votre cluster](#section-a-8)
+  - [A.9 – Installer Longhorn et tester](#section-a-9)
+  - [A.10 – Tester le cluster de votre équipe à partir de votre poste de travail](#section-a-10)
+  - [A.11 – Documenter toutes les étapes de la mise en place des points précédents](#section-a-11)
 - [**Partie B (40%) – En cours de rédaction Attention – version 0.314159265359 Il y aura des ajouts**](#section-partie-b-40-en-cours-de-redaction-attent)
 - [**Objectif**](#section-objectif)
 - [**1 – Détails de déploiement de l’image principale du projet**](#section-1)
@@ -83,7 +83,7 @@ git clone https://github.com/ve2cuy/420-4D4.TP03.Depart.git
 
 ## Partie A (10%) – Déployer une infrastructure K8S H.A. {#section-partie-a-10-deployer-une-infrastructure}
 
-### 1 – En équipe de n, il faut déployer 3 serveurs Proxmox. {#section-partie-a-10-deployer-une-infrastructure-1}
+### A.1 – En équipe de n, il faut déployer 3 serveurs Proxmox. {#section-a-1}
 
 Le mot de passe pour les serveurs, les VM et Rancher est !abc_def_123_456!
 
@@ -103,7 +103,7 @@ Toutes les adresses IP doivent être fixes, serveurs, VM, nœuds K8s. Voici la p
 
 ---
 
-### 2 – Créer 4 VMs Ubuntu serveur 22.04. {#section-partie-a-10-deployer-une-infrastructure-2}
+### A.2 – Créer 4 VMs Ubuntu serveur 22.04. {#section-a-2}
 
 Il faut créer **4** vms (une VM par équipe) Ubuntu 22.0**4** par serveur Proxmox avec les ressources nécessaires pour rouler K8S, Rancher, metallb, longhorn, Ingress, le monitoring (prometheus, grafana) et les déploiements de la partie 2. Les VMs seront nommées, E1-VM1, E2-VM1, E3-VM1 et E**4**-VM1 sur le serveur **Promox 01**, E1-VM2, E2-VM2 sur le serveur **Promox 01**, E3-VM2 sur le serveur **Promox 02** et E**4**-VM2 sur le serveur **Promox 03**, E1-VM3, E2-VM3, E3-VM3 et E**4**-VM3 sur le serveur **Promox 02** et E1-VM**4**, E2-VM**4**, E3-VM**4** et E**4**-VM**4** sur le serveur **Promox 03**.
 
@@ -111,7 +111,7 @@ Il faut créer **4** vms (une VM par équipe) Ubuntu 22.0**4** par serveur Proxm
 
 ---
 
-### 3 – Installer un Amas K8S sur les 4 VM {#section-partie-a-10-deployer-une-infrastructure-3}
+### A.3 – Installer un Amas K8S sur les 4 VM {#section-a-3}
 
 Il faut installer un amas K8S constitué de 4 noeuds – 1 master, 3 worker – selon la topologie suivante:
 
@@ -120,13 +120,13 @@ Il faut installer un amas K8S constitué de 4 noeuds – 1 master, 3 worker – 
 
 ---
 
-### 4 – Installer le loadbalancer [metallb](https://metallb.universe.tf) {#section-partie-a-10-deployer-une-infrastructure-4}
+### A.4 – Installer le loadbalancer [metallb](https://metallb.universe.tf) {#section-a-4}
 
 * Utiliser 2 adresses IP de la banque des adresses disponibles
 
 ---
 
-### 5 – Installer un ingress controler {#section-partie-a-10-deployer-une-infrastructure-5}
+### A.5 – Installer un ingress controler {#section-a-5}
 
 ```
 alain@k8s01:~$ k get pod -n ingress-nginx
@@ -136,7 +136,7 @@ ingress-nginx-controller-7d9674b7cf-nrb87   1/1     Running                  0  
 
 ---
 
-### 6 – Installer [Rancher](https://www.rancher.com/) et tester {#section-partie-a-10-deployer-une-infrastructure-6}
+### A.6 – Installer [Rancher](https://www.rancher.com/) et tester {#section-a-6}
 
 <img src="../images/Epreuve-synthese-2023/Capture-decran-le-2023-04-29-a-19.16.36.png" alt="" width="500" />
 
@@ -144,13 +144,13 @@ ingress-nginx-controller-7d9674b7cf-nrb87   1/1     Running                  0  
 
 ---
 
-### 7 – Importer votre cluster K8S {#section-partie-a-10-deployer-une-infrastructure-7}
+### A.7 – Importer votre cluster K8S {#section-a-7}
 
 * Cette opération peut-être longue – 30 minutes –
 
 ---
 
-### 8 – Installer le ‘monitoring’ sur votre cluster {#section-partie-a-10-deployer-une-infrastructure-8}
+### A.8 – Installer le ‘monitoring’ sur votre cluster {#section-a-8}
 
 <img src="../images/Epreuve-synthese-2023/Capture-decran-le-2023-04-27-a-10.15.09.png" alt="" width="500" />
 
@@ -158,19 +158,19 @@ ingress-nginx-controller-7d9674b7cf-nrb87   1/1     Running                  0  
 
 ---
 
-### 9 – Installer [Longhorn](https://longhorn.io/) et tester {#section-partie-a-10-deployer-une-infrastructure-9}
+### A.9 – Installer [Longhorn](https://longhorn.io/) et tester {#section-a-9}
 
 <img src="../images/Epreuve-synthese-2023/Capture-decran-le-2023-04-27-a-10.16.39-1024x295.png" alt="" width="500" />
 
 ---
 
-### 10 – Tester le cluster de votre équipe à partir de votre poste de travail {#section-partie-a-10-deployer-une-infrastructure-10}
+### A.10 – Tester le cluster de votre équipe à partir de votre poste de travail {#section-a-10}
 
 * export KUBECONFIG=~/un-cluster-k8s.conf
 
 ---
 
-### 11 – Documenter toutes les étapes de la mise en place des points précédents {#section-partie-a-10-deployer-une-infrastructure-11}
+### A.11 – Documenter toutes les étapes de la mise en place des points précédents {#section-a-11}
 
 **NOOOOOTE**: Chaque étudiant est responsable de la rédaction de son document. **Cette étape n’est pas un travail d’équipe** 🫥.
 

@@ -26,11 +26,11 @@
   - [4.2 – Connexion à un partage NFS (À partir de MacOS)](#section-4-2)
   - [4.3 – Connexion à un partage NFS (À partir de Linux)](#section-4-3)
   - [4.4 – Connexion à un partage NFS à partir de Minikube](#section-4-4)
-- [**5 – Voici un exemple d’un déploiement nginx avec un PV à partir d’une VM sur le cloud de Google**](#section-5)
+- [**5 – Voici un exemple d’un déploiement *nginx* avec un *PV* à partir d’une VM sur le cloud de Google**](#section-5)
 - [**6 – Laboratoire PV/PVC/NFS (durée 30-40 minutes)**](#section-6)
-  - [1 – Vous devez mettre en place un déploiement K8S qui fait rouler](#section-6-1)
-  - [2 – Avec phpMyAdmin, créer un utilisateur et une BD ‘wordpress’](#section-6-2)
-  - [3 – Effacer le déploiement](#section-6-3)
+  - [6.1 – Vous devez mettre en place un déploiement K8S qui fait rouler](#section-6-1)
+  - [6.2 – Avec phpMyAdmin, créer un utilisateur et une BD ‘wordpress’](#section-6-2)
+  - [6.3 – Effacer le déploiement](#section-6-3)
 - [**Astuces**](#section-astuces)
 
 ---
@@ -683,7 +683,7 @@ spec:
 
 ## 6 – Laboratoire PV/PVC/NFS (durée 30-40 minutes) {#section-6}
 
-### 1 – Vous devez mettre en place un déploiement K8S qui fait rouler {#section-6-1}
+### 6.1 – Vous devez mettre en place un déploiement K8S qui fait rouler {#section-6-1}
 
   * ***phpMAadmin*** avec
   * ***MariaDB***
@@ -691,9 +691,9 @@ spec:
           - Il faut créer une **VM Ubuntu** et installer le service ***NFS***
               * le dossier de partage sur le serveur Ubuntu est ***/partage-nfs***
 
-### 2 – Avec phpMyAdmin, créer un utilisateur et une BD ‘wordpress’ {#section-6-2}
+### 6.2 – Avec phpMyAdmin, créer un utilisateur et une BD ‘wordpress’ {#section-6-2}
 
-### 3 – Effacer le déploiement {#section-6-3}
+### 6.3 – Effacer le déploiement {#section-6-3}
 
   * Le relancer et valider que la BD ‘wordpress’ a été préservée.
   * Vérifier le contenu du dossier `/partage-nfs` sur le serveur Ubuntu. Il devrait contenir une structure semblable à ceci:

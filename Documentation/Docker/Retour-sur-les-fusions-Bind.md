@@ -21,7 +21,7 @@ Histoire de bien intégrer les notions acquises lors des ateliers précédents, 
 
 - [**1 – Liaison d'un dossier sur une `alpine`**](#section-1)
 - [**2 – Fusion de ports et persistance (Node-RED)**](#section-2)
-  - [Étape 2 – Expérimentation avec `node-red`](#section-2-2)
+  - [Expérimentation avec `node-red`](#section-2-2)
 - [**3 – Fun with MySQL (Persistance et Port)**](#section-3)
   - [Laboratoire 3.5 - 🛑 Facultatif](#section-3-5)
 - [**4 – Une image MySQL avec une BD personnalisée (Docker Compose)**](#section-4)
@@ -118,7 +118,7 @@ Momo dit: Bonjour le monde!
 
 ## 2 – Fusion de ports et persistance (Node-RED) {#section-2}
 
-### Étape 2 – Expérimentation avec `node-red` {#section-2-2}
+### Expérimentation avec `node-red` {#section-2-2}
 
 **Node-RED** est un outil de développement basé sur des flux de programmation visuelle.
 

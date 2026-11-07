@@ -143,7 +143,7 @@ $ docker info
 
 ## 8 – Tester le registre: {#section-8}
 
-#### 7.1 - Accès à la console de Harbor
+#### 8.1 – Accès à la console de Harbor
 
 **admin:Harbor12345**
 
@@ -151,7 +151,7 @@ $ docker info
 <img src="Images/harbor-console.png" alt="" width="550" />
 
 ---
-#### 7.2 - Utilisation du registre
+#### 8.2 – Utilisation du registre
 
 ```bash
 # Renseigner le fichier hosts du poste de travail pour y ajouter mon.registre.info

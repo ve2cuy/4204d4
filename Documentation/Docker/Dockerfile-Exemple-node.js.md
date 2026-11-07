@@ -7,29 +7,29 @@
 ## Contenu
 
 - [**Section A – Tester l'application Node.js**](#section-a)
-  - [1 – Tester l'application node.js dans un conteneur Ubuntu](#section-a-1)
-  - [2 – Fichier 'package.json'](#section-a-2)
-  - [3 – Application serveur.js](#section-a-3)
-  - [4 – Démarrage de l'application node.js](#section-a-4)
+  - [A.1 – Tester l'application node.js dans un conteneur Ubuntu](#section-a-1)
+  - [A.2 – Fichier 'package.json'](#section-a-2)
+  - [A.3 – Application serveur.js](#section-a-3)
+  - [A.4 – Démarrage de l'application node.js](#section-a-4)
 - [**Section B – Bâtir l'image de l'application**](#section-b)
-  - [5 – Le Dockerfile](#section-b-5)
-  - [6 – Produire l'image de notre application web serveur](#section-b-6)
-  - [7 – Lancer l'application](#section-b-7)
-  - [8 – Tester l'application](#section-b-8)
+  - [B.1 – Le Dockerfile](#section-b-1)
+  - [B.2 – Produire l'image de notre application web serveur](#section-b-2)
+  - [B.3 – Lancer l'application](#section-b-3)
+  - [B.4 – Tester l'application](#section-b-4)
 - [**Section C – Version du serveur avec Express.js**](#section-c)
-  - [9 – serveur02.js avec le module Express.js](#section-c-9)
+  - [C.1 – serveur02.js avec le module Express.js](#section-c-1)
 - [**Section D – Arguments personnalisés**](#section-d)
-  - [10 – Dockerfile avec arguments (Dockerfile.srv03)](#section-d-10)
-  - [11 – serveur03.js - Utilisation d'une variable d'environnement](#section-d-11)
-  - [12 – package.json pour serveur03.js](#section-d-12)
+  - [D.1 – Dockerfile avec arguments (Dockerfile.srv03)](#section-d-1)
+  - [D.2 – serveur03.js - Utilisation d'une variable d'environnement](#section-d-2)
+  - [D.3 – package.json pour serveur03.js](#section-d-3)
 - [**Section E – Image multi-plateforme**](#section-e)
-  - [13 – Création d'une image multi-plateforme](#section-e-13)
+  - [E.1 – Création d'une image multi-plateforme](#section-e-1)
 
 ---
 
 ## Section A – Tester l'application Node.js {#section-a}
 
-### 1 – Tester l'application node.js dans un conteneur Ubuntu {#section-a-1}
+### A.1 – Tester l'application node.js dans un conteneur Ubuntu {#section-a-1}
 
 ```bash
 sudo apt update && sudo apt install npm
@@ -46,7 +46,7 @@ npm install socket.io socket.io-client express --save
 
 ---
 
-### 2 – Fichier 'package.json' {#section-a-2}
+### A.2 – Fichier 'package.json' {#section-a-2}
 
 ```json
 {
@@ -63,7 +63,7 @@ npm install socket.io socket.io-client express --save
 
 ---
 
-### 3 – Application serveur.js {#section-a-3}
+### A.3 – Application serveur.js {#section-a-3}
 
 ```javascript
 // Fichier: serveur.js
@@ -109,7 +109,7 @@ console.log('----------------------------------');
 console.log('Mon petit serveur web Node.js vous écoute sur le port ' + PORT + ' ... cé pas ti fin ca!');
 ```
 
-### 4 – Démarrage de l'application node.js {#section-a-4}
+### A.4 – Démarrage de l'application node.js {#section-a-4}
 
 ```bash
 npm start &
@@ -123,7 +123,7 @@ curl localhost:8080/api
 
 ## Section B – Bâtir l'image de l'application {#section-b}
 
-### 5 – Le Dockerfile {#section-b-5}
+### B.1 – Le Dockerfile {#section-b-1}
 
 ```dockerfile
 # À partir de l'image de base:
@@ -144,7 +144,7 @@ CMD [ "npm","start" ]
 
 ---
 
-### 6 – Produire l'image de notre application web serveur {#section-b-6}
+### B.2 – Produire l'image de notre application web serveur {#section-b-2}
 
 ```bash
 docker build -t notre_serveur_web .
@@ -152,7 +152,7 @@ docker build -t notre_serveur_web .
 
 ---
 
-### 7 – Lancer l'application {#section-b-7}
+### B.3 – Lancer l'application {#section-b-3}
 
 ```bash
 docker run -d --rm -it --name yo -p 80:8080 notre_serveur_web
@@ -160,7 +160,7 @@ docker run -d --rm -it --name yo -p 80:8080 notre_serveur_web
 
 ---
 
-### 8 – Tester l'application {#section-b-8}
+### B.4 – Tester l'application {#section-b-4}
 
 **8.1 Test 1 avec URL /**
 
@@ -175,7 +175,7 @@ docker run -d --rm -it --name yo -p 80:8080 notre_serveur_web
 
 ## Section C – Version du serveur avec Express.js {#section-c}
 
-### 9 – serveur02.js avec le module Express.js {#section-c-9}
+### C.1 – serveur02.js avec le module Express.js {#section-c-1}
 
 ```javascript
 // Fichier: serveur02.js
@@ -244,7 +244,7 @@ var server = app.listen(PORT, function () {
 
 ## Section D – Arguments personnalisés {#section-d}
 
-### 10 – Dockerfile avec arguments (Dockerfile.srv03) {#section-d-10}
+### D.1 – Dockerfile avec arguments (Dockerfile.srv03) {#section-d-1}
 
 ```dockerfile
 # Specify a base image
@@ -271,7 +271,7 @@ CMD [ "npm","start" ]
 
 ---
 
-### 11 – serveur03.js - Utilisation d'une variable d'environnement {#section-d-11}
+### D.2 – serveur03.js - Utilisation d'une variable d'environnement {#section-d-2}
 
 ```javascript
 // Fichier: serveur03.js
@@ -304,7 +304,7 @@ var server = app.listen(PORT, function () {
 
 ---
 
-### 12 – package.json pour serveur03.js {#section-d-12}
+### D.3 – package.json pour serveur03.js {#section-d-3}
 
 ```json
 {
@@ -323,7 +323,7 @@ var server = app.listen(PORT, function () {
 
 ## Section E – Image multi-plateforme {#section-e}
 
-### 13 – Création d'une image multi-plateforme {#section-e-13}
+### E.1 – Création d'une image multi-plateforme {#section-e-1}
 
 [Application en Python - Tutorial DataCamp](https://www.datacamp.com/tutorial/docker-buildx?utm_cid=19589720830&utm_aid=192320612288&utm_campaign=230119_1-ps-other~dsa~tofu-tutorial_2-b2c_3-nam_4-prc_5-na_6-na_7-le_8-pdsh-go_9-nb-e_10-na_11-na&utm_loc=9000502-&utm_mtd=-c&utm_kw=&utm_source=google&utm_medium=paid_search&utm_content=ps-other~nam-en~dsa~tofu~tutorial~docker&gad_source=1&gad_campaignid=19589720830&gbraid=0AAAAADQ9WsHZyFJw8-QtIDRPwnLUtBoZv&gclid=Cj0KCQiAubrJBhCbARIsAHIdxD-HmBU0-05BptvzzImggyA2HmEgGDDYKwZU8XKvuJbtvmJSngRrUwUaAkqOEALw_wcB)
 

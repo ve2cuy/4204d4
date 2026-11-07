@@ -16,9 +16,9 @@
 - [**Comportements détaillés**](#section-comportements-detailles)
 - [**Exemples pratiques**](#section-exemples-pratiques)
 - [**Impact sur le scheduling**](#section-impact-sur-le-scheduling)
-  - [1. Guaranteed (Garanti)](#section-impact-sur-le-scheduling-1)
-  - [2. Burstable (Votre cas)](#section-impact-sur-le-scheduling-2)
-  - [3. BestEffort (Meilleur effort)](#section-impact-sur-le-scheduling-3)
+  - [Guaranteed (Garanti)](#section-impact-sur-le-scheduling-1)
+  - [Burstable (Votre cas)](#section-impact-sur-le-scheduling-2)
+  - [BestEffort (Meilleur effort)](#section-impact-sur-le-scheduling-3)
 - [**Vérifier l'utilisation réelle**](#section-verifier-l-utilisation-reelle)
 - [**Conseils pratiques**](#section-conseils-pratiques)
 - [**Résumé de la configuration suivante**](#section-resume-de-la-configuration-suivante)
@@ -262,7 +262,7 @@ resources:
 
 Kubernetes classe les pods en 3 catégories selon leurs ressources :
 
-### 1. **Guaranteed** (Garanti) {#section-impact-sur-le-scheduling-1}
+### **Guaranteed** (Garanti) {#section-impact-sur-le-scheduling-1}
 ```yaml
 # requests = limits
 resources:
@@ -276,7 +276,7 @@ resources:
 - Priorité la plus élevée
 - Derniers à être évincés
 
-### 2. **Burstable** (Votre cas) {#section-impact-sur-le-scheduling-2}
+### **Burstable** (Votre cas) {#section-impact-sur-le-scheduling-2}
 ```yaml
 # requests < limits
 resources:
@@ -290,7 +290,7 @@ resources:
 - Priorité moyenne
 - Peuvent être évincés si le nœud manque de ressources
 
-### 3. **BestEffort** (Meilleur effort) {#section-impact-sur-le-scheduling-3}
+### **BestEffort** (Meilleur effort) {#section-impact-sur-le-scheduling-3}
 ```yaml
 # Pas de requests ni limits
 resources: {}
