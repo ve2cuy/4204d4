@@ -2,7 +2,7 @@
 
 *Révision du 2026.11.07*
 
-> 🧪 **Nouvelle version du document 24, en cours de validation.** Les commandes seront vérifiées sur un amas réel de quatre VM (Ubuntu 26.04.1 LTS, processeur Intel) avant de remplacer le document 24.
+> ✅ **Nouvelle version du document 24.** Toutes les commandes ont été vérifiées le 2026.11.07 sur un amas de quatre VM (Ubuntu 26.04.1 LTS, noyau 7.0, processeur Intel Xeon) : Kubernetes v1.37.2, containerd 2.2.2, Flannel v0.28.
 
 <p align="center">
     <img src="../images/k8s.png" alt="" width="250" />
@@ -342,11 +342,11 @@ kubectl label node k8s-w3 node-role.kubernetes.io/worker=
 
 ```bash
 kubectl get nodes -o wide
-# NAME     STATUS   ROLES           AGE   VERSION   INTERNAL-IP
-# k8s-cp   Ready    control-plane   20m   v1.37.2   192.168.139.50
-# k8s-w1   Ready    worker          5m    v1.37.2   192.168.139.51
-# k8s-w2   Ready    worker          5m    v1.37.2   192.168.139.52
-# k8s-w3   Ready    worker          5m    v1.37.2   192.168.139.53
+# NAME     STATUS   ROLES           AGE    VERSION   INTERNAL-IP      OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
+# k8s-cp   Ready    control-plane   110s   v1.37.2   192.168.139.50   Ubuntu 26.04.1 LTS   7.0.0-38-generic   containerd://2.2.2
+# k8s-w1   Ready    worker          48s    v1.37.2   192.168.139.51   Ubuntu 26.04.1 LTS   7.0.0-38-generic   containerd://2.2.2
+# k8s-w2   Ready    worker          45s    v1.37.2   192.168.139.52   Ubuntu 26.04.1 LTS   7.0.0-38-generic   containerd://2.2.2
+# k8s-w3   Ready    worker          41s    v1.37.2   192.168.139.53   Ubuntu 26.04.1 LTS   7.0.0-38-generic   containerd://2.2.2
 
 # Les composantes du plan de contrôle et du réseau
 kubectl get pods -n kube-system

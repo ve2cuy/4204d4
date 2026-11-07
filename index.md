@@ -106,7 +106,7 @@ Ce cours permettra à l'étudiant, à partir de l'approche DevOps, de réaliser,
 
 - ![](dessins/serveur.svg) 24 · [Installation manuelle de K8S](Documentation/Kubernetes/Installation-un-seul-noeud.md) · 👍
   - Amas K8s d'un seul serveur sous Linux · worker · kind
-- ![](dessins/cluster.svg) 24b · [Installation manuelle de K8S, nouvelle version](Documentation/Kubernetes/Installation-manuelle-K8S.md) · à valider
+- ![](dessins/cluster.svg) 24b · [Installation manuelle de K8S, nouvelle version](Documentation/Kubernetes/Installation-manuelle-K8S.md) · validé
   - kubeadm · 1 control-plane, 3 workers · Ubuntu 26.04 · K8s 1.37
 - ![](dessins/roue.svg) 25 · [Kubernetes – Introduction](Documentation/Kubernetes/Kubernetes-Introduction.md) · 👍
   - kubectl · pods et déploiements · manifestes
