@@ -53,7 +53,7 @@ docker run --net reseau01 -it -d --name maBD -e MYSQL_ROOT_PASSWORD=password mys
 
 L'option **`-e`** permet de renseigner la variable d'environnement `MYSQL_ROOT_PASSWORD`.
 
-> **NOTE** : Le nom des variables n'est pas fixé de façon arbitraire. Il faut se référer à la documentation de l'image désirée. Par exemple, pour `mariadb` voir ici.
+> **NOTE** : Le nom des variables n'est pas fixé de façon arbitraire. Il faut se référer à la documentation de l'image désirée. Par exemple, pour `mariadb` voir [la page de l'image sur Docker Hub](https://hub.docker.com/_/mariadb) (section *Environment Variables*).
 
 ### Action 1.0 – Expérimentation avec l'option `-e`
 
@@ -67,7 +67,7 @@ Résultat dans le conteneur:
 yo: env
 HOSTNAME=94cc229f2e3e
 PS1=yo: 
-LOGIN-NAME=Fred Lacrosse
+LOGIN_NAME=Fred Lacrosse
 ```
 
 ### Action 1.1 – Renseigner le 'hostname' au démarrage d'un conteneur
@@ -82,7 +82,7 @@ Résultat dans le conteneur:
 ----- 
 / # env
 HOSTNAME=maAlpine
-LOGIN-NAME=Coco Lafortune
+LOGIN_NAME=Coco Lafortune
 ```
 
 > **NOTE** : À défaut de l'option `--hostname`, sa valeur sera le ID du conteneur.
@@ -175,7 +175,7 @@ EXEMPLE: 2.1
   * À partir d'une `alpine`, qui reçoit comme variables d'environnement; **USERNAME** et **PASSWORD**
   * Au démarrage, roule un script `validation.sh` qui vérifie si;
       * `USERNAME == etudiant`
-      * `PASSEWORD == 420`
+      * `PASSWORD == 420`
   * Au besoin, affiche un des messages suivants:
       * « ERR.01 – USERNAME invalide »
       * « ERR.02 – PASSWORD invalide »
@@ -183,10 +183,10 @@ EXEMPLE: 2.1
   * Publier l'image sur docker hub sous `votre-dockerhub-login/alpine-login:latest`
   * Copier le lien dans la discussion Teams.
 
-> **Petit rappel bash:**
+> **Petit rappel de script shell** (l'image `alpine` n'a pas `bash` : utiliser `sh`) **:**
 >
-> ```bash
-> #!/bin/bash
+> ```sh
+> #!/bin/sh
 > # Vérifier le contenu du premier paramètre
 > if [ $1 != "Bob" ] ; then 
 >   echo "Erreur: Nom de login invalide"

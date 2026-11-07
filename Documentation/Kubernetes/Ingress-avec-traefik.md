@@ -156,16 +156,6 @@ spec:
 kubectl apply -f traefik-deployment.yml
 ```
 
-### Option C : Pour Minikube
-
-```bash
-# Activer l'addon Ingress avec Traefik
-minikube addons enable ingress
-
-# Ou utiliser Traefik spécifiquement
-kubectl apply -f https://raw.githubusercontent.com/traefik/traefik/v2.10/docs/content/reference/dynamic-configuration/kubernetes-crd-definition-v1.yml
-```
-
 ## Étape 2 : Vérifier l'installation de Traefik
 
 ```bash
@@ -306,20 +296,6 @@ spec:
 ```
 
 ## Étape 4 : Configuration du DNS local
-
-### Pour Minikube
-
-```bash
-# Obtenir l'IP de Minikube
-minikube ip
-
-# Exemple de sortie: 192.168.49.2
-
-# Ajouter dans /etc/hosts (Linux/Mac) ou C:\Windows\System32\drivers\etc\hosts (Windows)
-192.168.49.2 monapp.local
-192.168.49.2 api.monapp.local
-192.168.49.2 admin.monapp.local
-```
 
 ### Pour un cluster standard
 
@@ -601,7 +577,7 @@ spec:
 kubectl apply -f superminou-complete.yml
 
 # Ajouter dans /etc/hosts
-echo "$(minikube ip) superminou.local" | sudo tee -a /etc/hosts
+echo "<IP externe de Traefik> superminou.local" | sudo tee -a /etc/hosts
 
 # Tester
 curl http://superminou.local
@@ -640,8 +616,8 @@ curl http://localhost:8080
 # Vérifier le service Traefik
 kubectl get svc -n traefik
 
-# Pour Minikube, utiliser le tunnel
-minikube tunnel
+# EXTERNAL-IP <pending> : vérifier l'équilibreur de charge (MetalLB)
+kubectl get pods -n metallb-system
 ```
 
 ## Commandes utiles

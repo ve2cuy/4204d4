@@ -443,8 +443,9 @@ jobs:
 
 ### Image trop grosse
 ```dockerfile
-# Utilisez des images Alpine
-FROM php:8.0-apache-alpine
+# Utilisez des images Alpine (il n'existe pas d'image PHP « apache-alpine » :
+# la variante Alpine de PHP est FPM, à jumeler à nginx)
+FROM php:8.3-fpm-alpine
 
 # Multi-stage builds
 FROM node:18 AS builder

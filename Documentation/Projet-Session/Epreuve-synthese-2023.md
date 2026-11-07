@@ -85,7 +85,7 @@ git clone https://github.com/ve2cuy/420-4D4.TP03.Depart.git
 
 ### A.1 – En équipe de n, il faut déployer 3 serveurs Proxmox. {#section-a-1}
 
-Le mot de passe pour les serveurs, les VM et Rancher est !abc_def_123_456!
+Le mot de passe pour les serveurs, les VM et Rancher sera communiqué en classe.
 
 Toutes les adresses IP doivent être fixes, serveurs, VM, nœuds K8s. Voici la plage disponible:
 
@@ -448,7 +448,7 @@ Voici la page d’accueil d’une nouvelle installation de ***Mattermost***:
     * le fichier hosts
     * un seul manifest – incluant les services, ingress, espace de nom, volumes, secrets, …
 
-### Pondération:       50% (10/40) Date de remise:  2022.05.19 (minuit)
+### Pondération:       50% (10/40) Date de remise:  2023.05.19 (minuit)
 
 ---
 

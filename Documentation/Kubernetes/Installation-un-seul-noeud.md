@@ -362,19 +362,71 @@ kubectl label node nom-du-noeud node-role.kubernetes.io/worker=worker
 
 ## 7 – Mise à jour du cluster {#section-7}
 
+Kubernetes se met à jour **une version mineure à la fois** (ex. 1.33 → 1.34, jamais 1.32 → 1.34). Il faut d'abord mettre à jour le serveur maître (control-plane), puis chaque nœud ouvrier.
+
+**Étape 1 – Pointer apt sur le dépôt de la nouvelle version** (sur chaque serveur)
+
 ```bash
 export K8S_VERSION=v1.34
-curl -fsSL https://pkgs.k8s.io/core:/stable:/${K8S_VERSION}/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+curl -fsSL https://pkgs.k8s.io/core:/stable:/${K8S_VERSION}/deb/Release.key | sudo gpg --dearmor --yes -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/${K8S_VERSION}/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
 
 sudo apt update
 
-sudo apt-mark unhold kubeadm
-sudo apt install -y kubeadm='1.34'
-sudo apt-mark hold kubeadm
-
-# TODO: compléter la procédure de mise à jour
+# Versions offertes, ex. 1.34.1-1.1
+apt-cache madison kubeadm
 ```
+
+**Étape 2 – Mettre à jour kubeadm, puis le plan de contrôle** (sur le maître)
+
+```bash
+# Remplacer 1.34.1-1.1 par la version affichée par apt-cache madison
+sudo apt-mark unhold kubeadm
+sudo apt install -y kubeadm='1.34.1-1.1'
+sudo apt-mark hold kubeadm
+kubeadm version
+
+# Vérifier ce qui sera mis à jour, puis appliquer
+sudo kubeadm upgrade plan
+sudo kubeadm upgrade apply v1.34.1
+```
+
+**Étape 3 – Mettre à jour kubelet et kubectl** (sur le maître)
+
+```bash
+kubectl drain nom-du-maitre --ignore-daemonsets
+
+sudo apt-mark unhold kubelet kubectl
+sudo apt install -y kubelet='1.34.1-1.1' kubectl='1.34.1-1.1'
+sudo apt-mark hold kubelet kubectl
+sudo systemctl daemon-reload
+sudo systemctl restart kubelet
+
+kubectl uncordon nom-du-maitre
+```
+
+**Étape 4 – Chaque nœud ouvrier**, un à la fois : faire l'étape 1, mettre à jour `kubeadm` comme à l'étape 2, puis :
+
+```bash
+# Sur le nœud
+sudo kubeadm upgrade node
+
+# Sur le maître
+kubectl drain nom-du-noeud --ignore-daemonsets --delete-emptydir-data
+
+# Sur le nœud : kubelet et kubectl, comme à l'étape 3
+sudo apt-mark unhold kubelet kubectl
+sudo apt install -y kubelet='1.34.1-1.1' kubectl='1.34.1-1.1'
+sudo apt-mark hold kubelet kubectl
+sudo systemctl daemon-reload
+sudo systemctl restart kubelet
+
+# Sur le maître
+kubectl uncordon nom-du-noeud
+kubectl get nodes
+```
+
+**Référence :** [Mettre à jour un amas kubeadm](https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/)
 
 ---
 
@@ -414,11 +466,12 @@ sudo kubeadm join 192.168.139.50:6443 --token 64th0n.eknzv4kxm1mxwl4o --discover
 ## 11 – Retirer un noeud du cluster {#section-11}
 
 ```
-# Sur le master
+# Sur le master : déplacer les pods ailleurs, puis retirer le noeud de l'amas
 kubectl drain nom-du-noeud --ignore-daemonsets --delete-emptydir-data
+kubectl delete node nom-du-noeud
 
 # Sur le noeud, pour repartir à zéro
-kubeadm reset
+sudo kubeadm reset -f
 
 ```
 
@@ -465,7 +518,7 @@ Have a nice day! 👋
 kind delete cluster --name mon-multinode-cluster
 ```
 
-[Référence]()
+**Référence :** [kind – Quick Start](https://kind.sigs.k8s.io/docs/user/quick-start/)
 
 ---
 

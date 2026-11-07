@@ -224,17 +224,17 @@ spec:
 # http://192.168.1.11:30080  (si plusieurs nœuds)
 ```
 
-### Avec Minikube
+### Essai
 
 ```bash
 # Créer le service
 kubectl apply -f webapp-nodeport.yml
 
-# Obtenir l'URL d'accès
-minikube service webapp-nodeport --url
+# Adresse IP des nœuds (colonne INTERNAL-IP)
+kubectl get nodes -o wide
 
-# Ou ouvrir directement dans le navigateur
-minikube service webapp-nodeport
+# Tester
+curl http://<IP-du-noeud>:30080
 ```
 
 ---
@@ -613,14 +613,14 @@ spec:
 
 | Critère | ClusterIP | NodePort | LoadBalancer | ExternalName |
 |---------|-----------|----------|--------------|--------------|
-| **Accès externe** | ❌ Non | ✅ Oui | ✅ Oui | ✅ Oui |
+| **Accès externe** | ❌ Non | ✅ Oui | ✅ Oui | ❌ Non (alias DNS vers l'extérieur) |
 | **IP dédiée** | ❌ Non | ❌ Non | ✅ Oui | ❌ Non |
 | **Load balancing** | ✅ Oui | ✅ Oui | ✅ Oui | ❌ Non |
 | **Production** | ✅ Oui | ❌ Non | ✅ Oui | ✅ Oui |
 | **Coût cloud** | Gratuit | Gratuit | 💰 Payant *| Gratuit |
-| **Usage typique** | Services internes | Dev/Test | Apps publiques | Services externes |
+| **Usage typique** | Services internes | Dev/Test | Apps publiques | Joindre un service externe |
 
-\* Peut-être implémenté localement, par exemple, MetalLB.
+\* Peut être implémenté localement, par exemple, MetalLB.
 
 ---
 
@@ -644,8 +644,8 @@ kubectl get endpoints mon-service
 kubectl run test --rm -it --image=busybox -- sh
 wget -O- http://mon-service
 
-# Pour NodePort : obtenir l'URL (Minikube)
-minikube service mon-service --url
+# Pour NodePort : obtenir le port attribué
+kubectl get svc mon-service -o jsonpath='{.spec.ports[0].nodePort}'
 
 # Pour LoadBalancer : obtenir l'IP externe
 kubectl get svc mon-service -o jsonpath='{.status.loadBalancer.ingress[0].ip}'

@@ -29,11 +29,11 @@ En utilisant des ‘***Pods***‘, des ‘***configMaps***‘ et des ‘***secre
 
 **Note**:  Pour connaître la raison d’un ‘**crash**‘ de pod:
 
-> **kubectl logs –previews NOM-DU-POD**
+> **kubectl logs --previous NOM-DU-POD**
 >
 > Pour forcer le suppression d’un Pod:
 >
-> **kubectl delete pods NOM-DU-POD –grace-period=0 –force**
+> **kubectl delete pods NOM-DU-POD --grace-period=0 --force**
 
 ---
 
@@ -354,7 +354,11 @@ spec:
 ```
 kubectl apply -f node-red-depart.yml
 
-minikube service node-red
+# Adresse externe du service (EXTERNAL-IP, fournie par MetalLB)
+kubectl get service node-red
+
+# Ou bien, sans équilibreur de charge :
+kubectl port-forward --address 0.0.0.0 svc/node-red 1880:1880
 ```
 
 <img src="../images/Kubernetes-Node-RED-Mosquitto/node-red02-1024x396.png" alt="" width="500" />

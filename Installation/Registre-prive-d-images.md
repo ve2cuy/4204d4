@@ -82,10 +82,10 @@ http:
 
 ## 5 – Exécuter le script ./prepare {#section-5}
 
-En cas d'erreur de permission:
+En cas d'erreur de permission, exécuter le script avec `sudo` (comme le recommande la documentation de Harbor), plutôt que d'ouvrir le dossier en écriture à tous les utilisateurs :
 
 ```
-sudo chmod a+rw /home/user/harbor/ -R
+sudo ./prepare
 ```
 
 ## 6 – Exécuter docker compose up {#section-6}

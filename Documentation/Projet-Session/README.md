@@ -108,7 +108,7 @@
 
 * À partir d'un déploiment `k8s` local (soit via VMs ou Docker-Desktop)
     * Installer `metallb`
-    * Installer  `traefik` (http://dashbord.esh26)
+    * Installer  `traefik` (http://dashboard.esh26)
         * Note: Sous `docker-desktop` il faut utiliser `127.0.0.1 dashboard.esh26 wordpress.esh26 ...` dans `hosts`, sinon, il faut utiliser l'adress IP publique du service `traefik`.
     * Déployer `homepage` 
         * Utiliser l'image du dépot harbor
@@ -157,8 +157,8 @@
 
 ### Détails
 
-* Les fichiers de configuaration sont disponibles via des `configmap` voir [ici](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-Config-map-et-secret.html)
-* L'image provient du dépôt `harbor` via `harbor.matricule.duckdns.org/esh26/harbor:esh26` 
+* Les fichiers de configuration sont disponibles via des `configmap` voir [ici](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-Config-map-et-secret.html)
+* L'image provient du dépôt `harbor` via `harbor.matricule.duckdns.org/esh26/homepage:esh26` 
 
 NOTE: 🛑 Si `harbor` a été démarré avec le mot de passe par défaut, il faudra effacer la base de données et recommencer la configuration:
 
@@ -174,7 +174,7 @@ sudo docker-compose up -d
 
 ## Wordpress {#section-wordpress}
 
-* Des thèmes supplémentaires proviennent du volune `NFS`  `/esh26/wordpress/themes` voir [ici](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-Les-volumes.html)
+* Des thèmes supplémentaires proviennent du volume `NFS`  `/esh26/wordpress/themes` voir [ici](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-Les-volumes.html)
 * Ils doivent-être copiés localement par un conteneur d'initialisation.
   * Ou bien le dossier NFS peut-être monté localement, à vous de choisir.
 * Les thèmes sont disponibles -->  [ici](https://github.com/ve2cuy/4204d4/tree/main/Documentation/Projet-Session/themes-wp) 
@@ -525,7 +525,7 @@ Il faut déployer le gestionnaire de photos `Immich` en utilisant un volume `NFS
 <br/>
 
 ```
-#/etc/export
+#/etc/exports
 /esh26/immich  *(rw,sync,no_subtree_check,all_squash,anonuid=65534,anongid=65534,insecure)
 ```
 

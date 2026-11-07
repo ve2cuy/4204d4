@@ -167,7 +167,7 @@ Tester l'application WordPress de la CIE ABC et le service phpMyadmin.
 | `docker compose logs` | Affiche les logs de tous les services. |
 | `docker compose ps` | Affiche l'état des services. |
 | `docker compose stop` | Arrête les conteneurs (sans les supprimer). |
-| `docker compose down` | Arrête et supprime les conteneurs, réseaux et volumes par défaut. |
+| `docker compose down` | Arrête et supprime les conteneurs et les réseaux. Les volumes sont conservés; `docker compose down -v` les supprime aussi. |
 
 -----
 
@@ -338,7 +338,7 @@ HTTPD_PORT=88
 
 Pour configurer dynamiquement Nginx à partir de variables d'environnement (`PORT=8080`), on utilise la substitution (`envsubst`).
 
-### Fichier **`config.site`** (template)
+### Fichier **`site.template`** (template)
 
 ```nginx
 server {
@@ -354,15 +354,16 @@ server {
 ### Fichier **`docker-compose.yml`** (avec `envsubst`)
 
 ```yaml
-web:
-  image: nginx
-  volumes:
-    - ./site.template:/etc/nginx/conf.d/site.template
-  ports:
-    - "3000:8080"
-  environment:
-    - PORT=8080
-  command: /bin/sh -c "envsubst < /etc/nginx/conf.d/site.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"
+services:
+  web:
+    image: nginx
+    volumes:
+      - ./site.template:/etc/nginx/conf.d/site.template
+    ports:
+      - "3000:8080"
+    environment:
+      - PORT=8080
+    command: /bin/sh -c "envsubst < /etc/nginx/conf.d/site.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"
 ```
 
 ---

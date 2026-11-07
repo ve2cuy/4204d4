@@ -111,7 +111,7 @@ Si le Deployment a plusieurs réplicas sur des nœuds différents, chaque Pod vo
 **Quand l'utiliser ?**
 - Dans un **DaemonSet** (collecte de logs, monitoring) — le Pod tourne sur chaque nœud donc le `hostPath` est cohérent
 - Pour accéder aux **sockets système** (`docker.sock`, `containerd.sock`)
-- En **développement local** (Docker Desktop, Minikube)
+- En **développement local** (Docker Desktop, amas d'un seul nœud)
 - **Jamais** pour partager des données entre réplicas en production
 
 ---
@@ -361,7 +361,8 @@ Pod meurt    ┘ ← données perdues!  Objet récupéré ┘
 | Stockage temporaire | `emptyDir` | Perdu à la mort du Pod |
 | Stockage sur le nœud | `hostPath` | Lié à un seul nœud |
 | Stockage persistant | `PVC` | Complexe, souvent bloqué sur un nœud |
-| **Stockage partagé entre tous les Pods** | ❌ Pas natif | → **C'est là que S3 entre en jeu** |
+| **Stockage partagé entre tous les Pods** | `PVC` ReadWriteMany (NFS) | Système de fichiers partagé, à installer et administrer |
+| **Stockage d'objets accessible par HTTP** | ❌ Pas natif | → **C'est là que S3 entre en jeu** |
 
 ---
 

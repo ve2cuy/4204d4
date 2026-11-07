@@ -50,11 +50,11 @@
 
 ## Mise en situation {#section-mise-en-situation}
 
-À date, nous avons fait nos apprentissages de *Kubernetes* en utilisant le ‘*cluster K8s*‘ proposé par *minikube*.
+À date, nous avons fait nos apprentissages de *Kubernetes* en utilisant un ‘*cluster K8s*‘ d'un seul nœud.
 
 Étant donné que, peu importe le type d’installation *K8s*, nous utilisons habituellement l’application ‘*cli kubectl*‘ pour gérer le ‘*cluster*‘, cela n’a pas été un frein à nos expérimentations.
 
-Par contre, en entreprise, il est peu probable qu’on vous demande de mettre en place une infrastructure *K8s* avec *minikube*.
+Par contre, en entreprise, une infrastructure *K8s* compte plusieurs serveurs : un ou des maîtres et des nœuds ouvriers.
 
 Voici donc comment déployer une infrastructure *Kubernetes* sur des serveurs Linux.
 

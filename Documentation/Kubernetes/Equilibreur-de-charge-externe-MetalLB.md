@@ -73,34 +73,6 @@ kubectl get pods -n metallb-system
 
 ## Étape 3 : Configuration de MetalLB {#section-3}
 
-### Pour Minikube
-
-```bash
-# Obtenir la plage d'IP disponible
-minikube ip
-# Exemple: 192.168.49.2
-
-# Si votre Minikube est sur 192.168.49.2
-# Utilisez une plage comme 192.168.49.100-192.168.49.110
-```
-
-**Fichier : `metallb-config-minikube.yml`**
-
-```yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  namespace: metallb-system
-  name: config
-data:
-  config: |
-    address-pools:
-    - name: default
-      protocol: layer2
-      addresses:
-      - 192.168.49.100-192.168.49.110
-```
-
 ### Configuration Layer 2 (Mode standard)
 
 **Fichier : `metallb-ipaddresspool.yml`**

@@ -25,7 +25,7 @@
   - [4.1 – Mise en place d’un volume NFS sur un serveur Ubuntu 20.04](#section-4-1)
   - [4.2 – Connexion à un partage NFS (À partir de MacOS)](#section-4-2)
   - [4.3 – Connexion à un partage NFS (À partir de Linux)](#section-4-3)
-  - [4.4 – Connexion à un partage NFS à partir de Minikube](#section-4-4)
+  - [4.4 – Le client NFS sur les nœuds](#section-4-4)
 - [**5 – Voici un exemple d’un déploiement *nginx* avec un *PV* à partir d’une VM sur le cloud de Google**](#section-5)
 - [**6 – Laboratoire PV/PVC/NFS (durée 30-40 minutes)**](#section-6)
   - [6.1 – Vous devez mettre en place un déploiement K8S qui fait rouler](#section-6-1)
@@ -156,7 +156,7 @@ Je suis 420-4D4 ;)-
       medium: Memory
 ```
 
-**Note 1**: Sous Minikube, les Pods sont stockés dans la VM de minikube dans le dossier `'cd /var/lib/kubelet/pods/'`. Pour avoir accès à la VM de minikube il suffit de taper la commande: `'minikube ssh'`.
+**Note 1**: Sur un nœud de l'amas, les volumes des Pods sont stockés dans le dossier `/var/lib/kubelet/pods/`.
 
 **Note 2**: Sous Docker-Desktop, les Pods sont stockés dans la VM Ubuntu-K8s. Pour avoir accès à la VM, il suffit de taper la commande: `kubectl debug node/docker-desktop -it --image=ubuntu`.
 
@@ -199,7 +199,7 @@ spec:
       type: Directory
 ```
 
-**Note:** Sous minikube, le dossier sera monté dans la VM de minikube.
+**Note:** Le dossier est celui du nœud sur lequel le Pod est placé, pas celui du poste de travail.
 
 -----
 
@@ -241,7 +241,7 @@ spec:
     path: "/mnt/pv"
 ```
 
-**NOTE**: Sous Minikube, le **hostPath** pointe dans la VM de cette dernière. Il est possible d’en consulter le contenu avec la commande: `minikube ssh`.
+**NOTE**: Le **hostPath** pointe dans le système de fichiers du nœud qui exécute le Pod. Il faut s'y connecter (ssh) pour en consulter le contenu.
 
 Voici une liste des types de stockages supportés par K8S:
 
@@ -332,7 +332,7 @@ spec:
 **Action 3.3.1 –** Se connecter au Pod et créer un nouveau fichier:
 
 ```bash
-exec -it example3-3 -- bash
+kubectl exec -it example3-3 -- bash
 
 cd /usr/share/nginx/html/
 echo "Ici la voix des Misterons!" > index.html
@@ -437,33 +437,9 @@ drwxr-xr-x 2 nobody nogroup 4096 Apr 20 15:01 'Test a partir de MacOS'
 
 -----
 
-### 4.4 – Connexion à un partage NFS à partir de Minikube: {#section-4-4}
+### 4.4 – Le client NFS sur les nœuds {#section-4-4}
 
-**ATTENTION, LA SECTION 4.4 NE S’APPLIQUE PAS AU PROJET DE SESSION\!\!\!**
-
-```bash
-√ semaine10 % minikube ssh
-                         _             _            
-            _         _ ( )           ( )           
-  ___ ___  (_)  ___  (_)| |/')  _   _ | |_      __  
-/' _ ` _ `\| |/' _ `\| || , <  ( ) ( )| '_`\  /'__`\
-| ( ) ( ) || || ( ) || || |\`\ | (_) || |_) )(  ___/
-(_) (_) (_)(_)(_) (_)(_)(_) (_)`\___/'(_,__/'`\____)
-
-$ ping 192.168.2.185
-PING 192.168.2.185 (192.168.2.185): 56 data bytes
-64 bytes from 192.168.2.185: seq=0 ttl=63 time=7.435 ms
-64 bytes from 192.168.2.185: seq=1 ttl=63 time=5.655 ms
-
-$ sudo mount -t nfs 192.168.2.185:/var/nfs/420-4D4 /tmp
-$ ls /tmp
-'Test a partir de MacOS'
-$
-```
-
-**Note**: ***Les volumes externes de type NFS ne fonctionne pas bien sous Minikube. Il est préférable d’expérimenter avec un cluster Kubernetes.***
-
-**4.4.2 – IMPORTANT** – Le client **NFS** doit-être installé sur tous les noeuds de l’infrastructure Kubernetes:
+**IMPORTANT** – Le client **NFS** doit-être installé sur tous les noeuds de l’infrastructure Kubernetes:
 
 ```bash
 apt install nfs-common
@@ -476,8 +452,6 @@ kubectl describe pod example4-6
 
 Warning  FailedMount  4m55s (x8 over 5m59s)  kubelet MountVolume.SetUp failed for volume "pv-nfs" : mount failed: exit status 32
 ```
-
-**ATTENTION, LA SECTION 4.4 NE S’APPLIQUE PAS AU PROJET DE SESSION\!\!\!**
 
 -----
 
@@ -685,7 +659,7 @@ spec:
 
 ### 6.1 – Vous devez mettre en place un déploiement K8S qui fait rouler {#section-6-1}
 
-  * ***phpMAadmin*** avec
+  * ***phpMyAdmin*** avec
   * ***MariaDB***
       + Le dossier de stockage des BD du SGBD doit être sur un ***PV/PVC*** de type **NFS**
           - Il faut créer une **VM Ubuntu** et installer le service ***NFS***
@@ -725,7 +699,7 @@ drwx------ 2 mysql mysql      4096 Apr 28 14:46 wordpress
 Le Pod qui roule le SGBD va tenter un `'chown'` sur le dossier de partage NFS. Ce qui va provoquer un `'CrashLoopBackOff'` du Pod et un log :
 
 ```bash
-$ k logs mariadb
+$ kubectl logs mariadb
 
 2022-04-28 16:44:13+00:00 [Note] [Entrypoint]: Entrypoint script for MariaDB Server 1:10.7.3+maria~focal started.
 chown: changing ownership of '/var/lib/mysql/': Operation not permitted
@@ -750,8 +724,8 @@ Pour exécuter le conteneur avec les droits de ce propriétaire, il faut ajouter
 
 ```yaml
       containers:
-      - name: mysql
-        image: mysql
+      - name: mariadb
+        image: mariadb
         securityContext:
           runAsUser: 65534
           allowPrivilegeEscalation: false

@@ -337,7 +337,7 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 d09c5b00adca        hello-world         "/hello"            50 minutes ago      Exited (0) 50 minutes ago                   charming_mcnulty
 
 # Il peut-être redémarré à partir de son ID
-$docker restart d09c5b00adca$ 
+$ docker restart d09c5b00adca
 
 # Ou, en utilisant le nom du conteneur: 
 $ docker restart charming_mcnulty
@@ -442,7 +442,7 @@ ce5bde565bfa        alpine              "/bin/sh"           4 minutes ago       
 
 Voici comment réinitialiser à zéro votre installation de docker :
 
-> 🛑 DANGER : CETTE COMMANDE EFFACE AUSSI LES IMAGES DE MINIKUBE***
+> 🛑 DANGER : CETTE COMMANDE EFFACE TOUS LES CONTENEURS, TOUTES LES IMAGES ET TOUS LES VOLUMES, Y COMPRIS CEUX DE KUBERNETES SOUS DOCKER DESKTOP
 
 **Commande pour Linux/macOS :**
 
@@ -512,7 +512,7 @@ root@eb66bdef2f73:/usr/share/nginx/html# ls
 # 2 - Créer un nouveau document html
 $ echo "<center><h1>Mon serveur WEB</h1></center>" > index2.html
 # Ou installer nano dans le conteneur:
-$ apt update $$ apt install nano -y
+$ apt update && apt install nano -y
 
 # 3 - Tester dans le fureteur
 ```
@@ -574,7 +574,7 @@ $ docker inspect serveur-web
 $ docker inspect serveur-web | grep  "IPAddress"
     "IPAddress": "172.17.0.3",
 
- $ inspect serveur-web | grep  "Image"
+$ docker inspect serveur-web | grep "Image"
     "Image": "sha256:325b00a35073d9aa1d3df16da8afbbae1ac7d824c505f7490cd5cdbb79d60f6d",
     "Image": "nginx:latest",
 ```

@@ -6,25 +6,21 @@
 
 ---
 
-Contenu:
-
-3. **[Les 'configmaps'](#item3)**
-4. **[Monter un volume à partir d'un configmap](#item4)**
-5. **Laboratoire**
-   1. **Déployer une application utilisant un configmap comme source d'un dossier**
-6. **[Les 'secrets'](#item6)**
-7. **[Exemple complet, mosquitto+Node-RED+volume+configMap+secret](#item7)** (**TP02**)
-
----
-
 ## Contenu
 
 - [**1 – Les 'configMaps'**](#section-1)
-  - [1.1 – La directive 'envFrom'](#section-1-1)
-  - [Laboratoire 1 – 👉 IMPORTANT](#section-1-1-2)
+  - [1.1 – Un premier configMap](#section-1-1)
+  - [1.2 – MySql avec un configMap](#section-1-2)
+  - [1.3 – La directive 'envFrom'](#section-1-3)
+  - [1.4 – Laboratoire 👉 IMPORTANT](#section-1-4)
 - [**2 – Monter un volume à partir d'un configmap**](#section-2)
-  - [2.1 – configMap + volume](#section-2-1)
+  - [2.1 – Volume monté localement sur un nœud](#section-2-1)
+  - [2.2 – configMap + volume](#section-2-2)
+  - [2.3 – Utilisation d'un configMap comme source d'un dossier](#section-2-3)
 - [**3 – Les 'secrets'**](#section-3)
+  - [3.1 – Créer un secret avec le cli](#section-3-1)
+  - [3.2 – Création et utilisation d'un manifeste de type 'secret'](#section-3-2)
+  - [3.3 – Laboratoire](#section-3-3)
 - [**4 – TP2: Mosquitto+node-red**](#section-4)
 
 ---
@@ -45,9 +41,11 @@ Par exemple,
 
 Au lieu de coder, en dur, ces informations dans les fichiers manifestes, il est possible de les enregistrer dans une BD locale.
 
+### 1.1 – Un premier configMap {#section-1-1}
+
 Voici un exemple:
 
-**Action 3.1 –** Renseigner le fichier 'unConfigMap.yml'
+**Action 1.1.1 –** Renseigner le fichier 'unConfigMap.yml'
 
 ```
 # ------------------------------------------------------------------------------
@@ -77,7 +75,7 @@ data:
 
 Voici comment utiliser ce configMap:
 
-**Action 3.2 –** Renseigner le fichier manisfeste 'busybox.yml'
+**Action 1.1.2 –** Renseigner le fichier manisfeste 'busybox.yml'
 
 ```
 # ------------------------------------------------------------
@@ -135,15 +133,15 @@ spec:
           key: unBlocDeClef
 ```
 
-**Labo 3.2.1 –** Appliquer les deux (2) manifestes et valider la présence des variables d'environnement.
+**Labo 1.1.3 –** Appliquer les deux (2) manifestes et valider la présence des variables d'environnement.
 
 ---
 
-### **MySql avec un configmap**
+### 1.2 – MySql avec un configMap {#section-1-2}
 
 Voici un exemple d'utilisation 'MySQL' de variables individuelles d'environnement, via un 'configMap'
 
-**Action 3.3 –** Renseigner le fichier suivant:
+**Action 1.2.1 –** Renseigner le fichier suivant:
 
 ```
 # Fichier: mysqlConfigMap.yml
@@ -163,7 +161,7 @@ data:
   MYSQL_PASSWORD: wp
 ```
 
-**Action 3.4 –** Renseigner le fichier suivant:
+**Action 1.2.2 –** Renseigner le fichier suivant:
 
 ```
 # ------------------------------------------------------------
@@ -216,20 +214,20 @@ spec:
           key: MYSQL_PASSWORD
 ```
 
-**Action 3.4.1 –** Appliquer les deux manifestes:
+**Action 1.2.3 –** Appliquer les deux manifestes:
 
 ```
-Kubectl apply -f mysqlConfigMap.yml
+kubectl apply -f mysqlConfigMap.yml
 
 # Attention, l'ordre est important.  
 # Le 'configmap' doit exister avant de créer le 'pod'. 
 
-Kubectl apply -f mysql.yml
+kubectl apply -f mysql.yml
 ```
 
 **Validation:**
 
-**Action 3.5 –** Valider la création de la BD 'wordpress'
+**Action 1.2.4 –** Valider la création de la BD 'wordpress'
 
 ```
 $ kubectl exec -it  pod/meta-mysql -- mysql -uwp -pwp
@@ -249,7 +247,7 @@ mysql> show databases;
 +--------------------+
 ```
 
-**Action 3.5.1 –**Valider la création du compte 'wp'
+**Action 1.2.5 –**Valider la création du compte 'wp'
 
 ```
 mysql> SELECT user,host FROM mysql.user;
@@ -265,7 +263,7 @@ mysql> SELECT user,host FROM mysql.user;
 +------------------+-----------+
 ```
 
-**Action 3.5.2 –**Valider les droits du compte 'wp'
+**Action 1.2.6 –**Valider les droits du compte 'wp'
 
 ```
 mysql> show grants for 'wp';
@@ -281,11 +279,11 @@ mysql> show grants for 'wp';
 
 *Un version 'bloc' ne fonctionnera pas ici. Le conteneur 'mysql' s'attend à trouver des variables individuelles. Dans le cas d'une consolidation de**l'insertion de plusieurs variables, il est possible d'utiliser la directive 'envFrom:'.  Voici un exemple;*
 
-### 1.1 – La directive 'envFrom' {#section-1-1}
+### 1.3 – La directive 'envFrom' {#section-1-3}
 
 La directive '*envFrom*' permet l'importation des toutes les variables d'un '*configMap*'.
 
-**Action 3.6.1 –** Renseigner le fichier suivant:
+**Action 1.3.1 –** Renseigner le fichier suivant:
 
 ```
 # -----------------------------------------------------------------
@@ -324,21 +322,21 @@ spec:
         name: mysql-env
 ```
 
-**Action 3.6.2 –** Appliquer le manifeste et vérifier que le SGBD fonctionne selon les directives des variables d'environnement.
+**Action 1.3.2 –** Appliquer le manifeste et vérifier que le SGBD fonctionne selon les directives des variables d'environnement.
 
 ```
 $ kubectl apply -f mysql-v2.yml
 
-$ Kubectl exec -it  pod/meta-mysql-v2 -- mysql -uwp -pwp
+$ kubectl exec -it  pod/meta-mysql-v2 -- mysql -uwp -pwp
 ```
 
 ---
 
 <img src="../images/labo03.png" alt="" width="700" />
 
-### Laboratoire 1 – 👉 IMPORTANT {#section-1-1-2}
+### 1.4 – Laboratoire 👉 IMPORTANT {#section-1-4}
 
-Reprendre le **Laboratoire 1, Section 2 de ce [--> document](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-partie-2.html)** en utilisant la directive **`envFrom`** pour les variables d'environnement du SGDB et de WordPress.
+Reprendre le **[Laboratoire 2.1 – Déployer une application WordPress](Kubernetes-partie-2.md#section-2-1)** du document 30 en utilisant la directive **`envFrom`** pour les variables d'environnement du SGDB et de WordPress.
 
 **Note**:  Il faut utiliser deux `configMap`.
 
@@ -352,11 +350,13 @@ Reprendre le **Laboratoire 1, Section 2 de ce [--> document](https://ve2cuy.gith
 
 ---
 
-### Voici l'exemple d'un volume K8S monté localement sur un noeud.
+### 2.1 – Volume monté localement sur un nœud {#section-2-1}
+
+Voici l'exemple d'un volume K8S monté localement sur un noeud.
 
 **Note**: Ceci n'est pas une pratique recommandée.
 
-**Action 4.1 –** Créer un dossier et un fichier index.html, pour la liaison avec un pod de type nginx:
+**Action 2.1.1 –** Créer un dossier et un fichier index.html, pour la liaison avec un pod de type nginx:
 
 ```
 # 1 - créer un dossier sur un des noeuds du cluster
@@ -374,7 +374,7 @@ pwd
 echo 'Ceci est la page index.html du serveur web.' > web-data/index.html
 ```
 
-**Action 4.2 –** Renseigner le manifeste suivant:
+**Action 2.1.2 –** Renseigner le manifeste suivant:
 
 NOTE: 💡 Il faut remarquer et renseigner correctement la clé `nodeName:`
 
@@ -414,7 +414,7 @@ spec:
       type: Directory
 ```
 
-**Action 4.3 –** Appliquer le manifeste et tester la liaison de volume:
+**Action 2.1.3 –** Appliquer le manifeste et tester la liaison de volume:
 
 ```
 # 1 - appliquer le manifeste
@@ -443,18 +443,7 @@ Référence Kubernetes sur les [volumes](https://kubernetes.io/docs/tasks/config
 
 ---
 
-### NOTE: Volume hostPath sur Minikube
-La version **Minikube** de **Linux** n'**expose pas automatiquement** le système de fichiers du host aux Pods.
-
-Il faut monter manuellement  les volumes de la façon suivante:
-
-```
-minikube mount /home/alain/420-4d4/web-data:/usr/share/nginx/html
-```
-
----
-
-💡 Une autre alternative et d'utiliser la directive '***DirectoryOrCreate***'
+💡 Une alternative est d'utiliser la directive '***DirectoryOrCreate***'
 
 ```
   volumes:
@@ -469,13 +458,7 @@ Cette directive va créer le dossier automatiquement sur le noeud où roulera le
 En s'y connectant, il sera possible de valider la présence du dossier:
 
 ```
-$ minikube ssh
-                         _             _            
-            _         _ ( )           ( )           
-  ___ ___  (_)  ___  (_)| |/')  _   _ | |_      __  
-/' _ ` _ `\| |/' _ `\| || , <  ( ) ( )| '_`\  /'__`\
-| ( ) ( ) || || ( ) || || |\`\ | (_) || |_) )(  ___/
-(_) (_) (_)(_)(_) (_)(_)(_) (_)`\___/'(_,__/'`\____)
+$ ssh <nœud où roule le pod>
 
 $ ls /home/alain/420-4d4/web-data
 index.html
@@ -483,11 +466,11 @@ index.html
 
 ---
 
-### 2.1 – configMap + volume {#section-2-1}
+### 2.2 – configMap + volume {#section-2-2}
 
 Dans l'exemple suivant, nous allons renseigner le contenu d'un fichier lié à un pod à partir d'un configMap.
 
-**Action 4.4.1 –** Renseigner le manifeste suivant:
+**Action 2.2.1 –** Renseigner le manifeste suivant:
 
 ```
 # ------------------------------------------------------------------------------
@@ -513,7 +496,7 @@ data:
     <bold>;-)</bold>
 ```
 
-**Action 4.4.2 –** Renseigner le manifeste suivant:
+**Action 2.2.2 –** Renseigner le manifeste suivant:
 
 ```
 # -------------------------------------------------------------
@@ -578,39 +561,38 @@ spec:
       nodePort: 30003
 ```
 
-**Action 4.4.3 –** Appliquer les manifestes et tester l'application
+**Action 2.2.3 –** Appliquer les manifestes et tester l'application
 
 ```
 $ kubectl apply -f configMapNginx.yml
 $ kubectl apply -f nginx+volumeVer2.yml
 $ kubectl port-forward --address 192.168.2.49,localhost svc/nginx-service 8080:80
 
-# minikube service nginx-service
 ```
 
-**Note:** Le manifeste pour nginx est identique à celui que nous avons vu [ici à l'action 3.10](Kubernetes-Introduction.md#action-310--consolidation-des-deux-schémas).  *Seules les directives au volume ont été ajoutées.*
+**Note:** Le manifeste pour nginx est identique à celui que nous avons vu [ici à l'action 3.2.10 du document 25](Kubernetes-Introduction.md#action-3-2-10).  *Seules les directives au volume ont été ajoutées.*
 
 ---
 
-**4.5 –** **Utilisation d'un configMap comme source d'un dossier**
+### 2.3 – Utilisation d'un configMap comme source d'un dossier {#section-2-3}
 
-**Action 4.5.0 –** Créer deux fichiers, **i1.html et** **i2.html**, dans le dossier **web-data**:
+**Action 2.3.1 –** Créer deux fichiers, **i1.html et** **i2.html**, dans le dossier **web-data**:
 
 ```
 echo "Ceci est le fichier i1.html" > web-data/i1.html
 echo "Ceci est le fichier i2.html" > web-data/i2.html
 ```
 
-### Créer un configmap à partir de la ligne de commande
+#### Créer un configmap à partir de la ligne de commande
 
-**Action 4.5 –** Créer un ConfigMap avec le cli, **kubectl create configmap**:
+**Action 2.3.2 –** Créer un ConfigMap avec le cli, **kubectl create configmap**:
 
 ```
 # Créer un configMap, contenant deux fichiers, avec le cli:
 kubectl create configmap un-dir --from-file=web-data/i1.html --from-file=web-data/i2.html
 ```
 
-**Action 4.5.1 –** Afficher le contenu du *configmap*:
+**Action 2.3.3 –** Afficher le contenu du *configmap*:
 
 ```
 kubectl describe configmaps un-dir 
@@ -630,7 +612,7 @@ Ceci est le fichier i2.html
 Events:  <none>
 ```
 
-**Action 4.5.2 –** Renseigner un manifeste qui utilise le *configmap* comme source d'un dossier local:
+**Action 2.3.4 –** Renseigner un manifeste qui utilise le *configmap* comme source d'un dossier local:
 
 ```
 # ------------------------------------------------------
@@ -692,7 +674,7 @@ spec:
       nodePort: 30003
 ```
 
-**Action 4.5.3 –** **À vous de tester, dans un fureteur, les deux documents du serveur Web.**
+**Action 2.3.5 –** **À vous de tester, dans un fureteur, les deux documents du serveur Web.**
 
 ---
 
@@ -704,13 +686,17 @@ spec:
 
 ---
 
-Kubernetes offre la possibilité d'insérer des informations encryptées grace à l'utilisation de l'objet 'secret'.
+Kubernetes offre la possibilité de stocker des informations sensibles grâce à l'utilisation de l'objet 'secret'.
+
+> ⚠️ Un 'secret' n'est **pas chiffré** : son contenu est seulement **encodé en base64**, ce que n'importe qui peut décoder (`base64 -d`). Il est séparé des configMaps pour en limiter l'accès (droits RBAC) et peut être chiffré dans etcd si l'administrateur de l'amas l'active.
 
 Voyons comment cela fonctionne.
 
+### 3.1 – Créer un secret avec le cli {#section-3-1}
+
 Pré-requis – Savoir créer le contenu d'un objet à partir d'un littéral.  Par exemple,
 
-**Action 6.0 –** Créer, avec le cli, un configmap à partir d'un littéral:
+**Action 3.1.1 –** Créer, avec le cli, un configmap à partir d'un littéral:
 
 ```
 kubectl create configmap nom-projet --from-literal=NOM_PROJET="Intro aux secrets K8s"
@@ -729,7 +715,7 @@ Intro aux secrets K8s
 Events:  <none>
 ```
 
-**Action 6.0.1 –** Éditer le configmap, ajouter la ligne 6 (VERSION: V1.0):
+**Action 3.1.2 –** Éditer le configmap, ajouter la ligne 6 (VERSION: V1.0):
 
 ```
 $ kubectl edit configmaps nom-projet
@@ -747,7 +733,7 @@ metadata:
   uid: 2943be07-a21d-4f1e-a000-b8a89f39df6e
 ```
 
-**Action 6.0.2 –** Afficher le contenu du configmap édité:
+**Action 3.1.3 –** Afficher le contenu du configmap édité:
 
 ```
 $ kubectl describe configmaps nom-projet
@@ -768,7 +754,7 @@ Events:  <none>
 
 **Voila, nous sommes prêt à passer à l'action.**
 
-**Action 6.1 –** Créer, avec le cli, un '*secret*' à partir d'un littéral:
+**Action 3.1.4 –** Créer, avec le cli, un '*secret*' à partir d'un littéral:
 
 ```
 kubectl create secret generic mysql-password --from-literal=MYSQL_ROOT_PASSWORD=JTELEDISPAS
@@ -778,7 +764,7 @@ secret/mysql-password created
 # ATTENTION au nom du secret, seulement [a-z,-,.]
 ```
 
-**Action 6.1.1 –** Afficher l'objet 'secret:mysql-password':
+**Action 3.1.5 –** Afficher l'objet 'secret:mysql-password':
 
 ```
 $ kubectl get secrets
@@ -806,7 +792,7 @@ $ kubectl edit secrets mysql-password
 # Note: Remarquez l'encodage du mot de passe, base64.
 ```
 
-**Action 6.2 –** Renseigner le manifeste suivant:
+**Action 3.1.6 –** Renseigner le manifeste suivant:
 
 ```
 # ------------------------------------------------------------
@@ -836,25 +822,25 @@ spec:
           key: MYSQL_ROOT_PASSWORD # MYSQL_ROOT_PASSWORD est le nom de la var dans le secret
 ```
 
-**Action 6.2.1 –** Appliquer le manifeste et tester le SGDB:
+**Action 3.1.7 –** Appliquer le manifeste et tester le SGDB:
 
 ```
 kubectl apply -f mysql+secret.yml 
 
 kubectl exec -it mysql-secret -- bash
 
-root@mysql-secret:/# mysql -uroot -JTELEDISPAS
+root@mysql-secret:/# mysql -uroot -pJTELEDISPAS
 
 mysql> show DATABASES;
 ```
 
 ---
 
-### Création et utilisation d'un manifeste de type 'secret'
+### 3.2 – Création et utilisation d'un manifeste de type 'secret' {#section-3-2}
 
 Voici comment renseigner un manifeste de type 'secret' et l'utiliser en un seul bloc dans un conteneur.
 
-**Action 6.3 –** Renseigner un manifeste de type 'secret', 'top-secret-mysql.yml':
+**Action 3.2.1 –** Renseigner un manifeste de type 'secret', 'top-secret-mysql.yml':
 
 ```
 # Fichier: top-secret-mysql.yml
@@ -870,7 +856,7 @@ data:
   mysql-root-password: aWxmaXRkZWxhc29ydGU= # echo -n 'ilfitdelasorte' | base64
 ```
 
-**Action 6.3.1 –** Renseigner un manifeste de type 'Pod', 'mysql\_secretV2.yml':
+**Action 3.2.2 –** Renseigner un manifeste de type 'Pod', 'mysql\_secretV2.yml':
 
 ```
 # ------------------------------------------------------------
@@ -896,7 +882,7 @@ spec:
         name: top-secret-mysql
 ```
 
-**Action 6.3.1 –** Appliquer les deux (2) manifestes et tester l'application
+**Action 3.2.3 –** Appliquer les deux (2) manifestes et tester l'application
 
 **NOTE**: Le SGBD retournera des messages d'erreur lors du démarrage (*kubectl logs mysql-secret-v2*):
 
@@ -930,9 +916,9 @@ mysql> show DATABASES;
 
 <img src="../images/labo02.png" alt="" width="700" />
 
-### Laboratoire 3
+### 3.3 – Laboratoire {#section-3-3}
 
-Reprendre le **Laboratoire 3 de ce --> [document](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-partie-2.html) ** en utilisant une ressource 'secret' pour le mot de passe et un configMap pour les autres informations.
+Reprendre le **[Laboratoire 2.3 – Déployer PostgreSQL et pgadmin4](Kubernetes-partie-2.md#section-2-3)** du document 30 en utilisant une ressource 'secret' pour le mot de passe et un configMap pour les autres informations.
 
 ---
 

@@ -29,7 +29,7 @@
 | `docker image prune -a` | Supprimer images inutilisées | `docker image prune -a` |
 | `docker container prune` | Supprimer tous les conteneurs arrêtés | `docker container prune` |
 | `docker volume prune` | Supprimer volumes non utilisés | `docker volume prune` |
-| `docker system prune -a` | **Nettoyer images, conteneurs, volumes et réseaux inutilisés** | `docker system prune -a` |
+| `docker system prune -a` | **Nettoyer images, conteneurs arrêtés et réseaux inutilisés** (ajouter `--volumes` pour les volumes) | `docker system prune -a --volumes` |
 | `docker logs -f CONTAINER` | Afficher les logs d’un conteneur en continu | `docker logs -f web` |
 | `docker logs --since 1h CONTAINER` | Afficher les logs depuis une période donnée | `docker logs --since 1h web` |
 | `docker exec -it CONTAINER CMD` | Exécuter une commande dans un conteneur en cours | `docker exec -it web /bin/sh` |
@@ -54,7 +54,7 @@
 | `docker system df` | Afficher l’utilisation disque par Docker | `docker system df` |
 | `docker login` | Se connecter à un registre Docker | `docker login` |
 | `docker logout` | Se déconnecter d’un registre Docker | `docker logout` |
-| `docker scan IMAGE` | Scanner une image pour vulnérabilités (Docker Scan) | `docker scan myapp:1.0` |
+| `docker scout cves IMAGE` | Scanner une image pour vulnérabilités (Docker Scout, remplace `docker scan`) | `docker scout cves myapp:1.0` |
 | `docker history IMAGE` | Voir l’historique des couches d’une image | `docker history myapp:1.0` |
 | `docker compose up -d` | Lancer les services définis dans docker-compose / compose V2 | `docker compose up -d` |
 | `docker compose build` | Construire les images définies par Compose | `docker compose build` |

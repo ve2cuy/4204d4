@@ -324,9 +324,6 @@ Events:
 # Sur un cluster local:
 $ kubectl port-forward --address 192.168.2.49,localhost svc/mongo-express-service 9000:8081
 
-
-# Sur minikube:
-$ minikube service mongo-express-service
 ```
 
 Ce qui va donner:

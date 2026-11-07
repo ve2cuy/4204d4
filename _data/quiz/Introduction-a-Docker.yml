@@ -140,7 +140,7 @@ questions:
       - "Elle redémarre tous les conteneurs"
       - "Elle met à jour toutes les images"
     reponse: 2
-    explication: "Après avoir arrêté tous les conteneurs, elle remet Docker à zéro. Attention : elle efface aussi les images de Minikube (section 2.13)."
+    explication: "Après avoir arrêté tous les conteneurs, elle remet Docker à zéro. Attention : elle efface aussi les volumes et les images de Kubernetes sous Docker Desktop (section 2.13)."
 
   - question: "Dans docker run -d -p 8080:80 nginx, que représente 8080?"
     choix:

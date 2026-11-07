@@ -85,7 +85,7 @@
 | :--- | :--- |
 | `kubectl create sa <name>` | Créer ServiceAccount |
 | `kubectl get clusterrolebinding -A` | Lister bindings |
-| `kubectl auth can-i get pods --as=system:sa:ns:sa` | Vérifier accès |
+| `kubectl auth can-i get pods --as=system:serviceaccount:<ns>:<sa>` | Vérifier accès |
 
 -----
 

@@ -214,7 +214,7 @@ body {
   margin: 0 auto;
   font-family: Tahoma, Verdana, Arial, sans-serif;
 }
-h1 { <span style="color: #6f82bf;">color: #6f82bf;</span>
+h1 { color: #6f82bf;
   font-weight: normal;
 }
 </style>

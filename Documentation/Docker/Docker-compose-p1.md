@@ -83,7 +83,7 @@ docker compose up
 **Résultat :**
 
 ```
-Creating network "lab01-docker compose_default" with the default driver
+Creating network "lab01-docker-compose_default" with the default driver
 Pulling srv01 (alpine:)...
 ...
 Status: Downloaded newer image for alpine:latest
@@ -105,7 +105,7 @@ serveur03 exited with code 0
 **Équivalent `docker run` :**
 
 ```bash
-docker create network lab01-docker-compose_default
+docker network create lab01-docker-compose_default
 docker run --name serveur01 --network lab01-docker-compose_default alpine
 docker run --name serveur02 --network lab01-docker-compose_default alpine
 docker run --name serveur03 --network lab01-docker-compose_default alpine
@@ -270,7 +270,8 @@ services:
     image: nginx
     container_name: serveurWEB
     volumes:
-      - ./templates/site.template:/etc/nginx/templates
+      # Les fichiers *.template du dossier sont copiés, variables remplacées, dans /etc/nginx/conf.d
+      - ./templates:/etc/nginx/templates
       - ./contenuweb:/usr/share/nginx/html:rw
     ports:
       - "8080:80"

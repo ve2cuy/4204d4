@@ -154,7 +154,7 @@ Sans cette ressource, aucune IP ne sera annoncée en ARP/NDP → les LoadBalance
 ### 2.2.2 – Appliquer le manifeste
 
 ```bash
-kubectl apply -f Metallb-config.yaml
+kubectl apply -f metallb-config.yaml
 ```
 
 ---
@@ -266,7 +266,7 @@ Il est maintenant possible d'avoir accès au réseau k8s via cette adresse IP:
 * 👉 Ajouter l'entrée suivante au fichier hosts du poste de travail:
 ```
 # Remplacer par l'adresse IP externe de votre 'load balancer'
-192.168.139.92    dashboard.labo420 whoami.labo420 superminou.labo40 superpitou.labo420
+192.168.139.92    dashboard.labo420 whoami.labo420 superminou.labo420 superpitou.labo420
 ```
 
 **NOTE**: Dans le cas d'un déploiement sans load balancer, utiliser un port-forward:

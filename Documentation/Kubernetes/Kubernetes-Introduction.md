@@ -13,13 +13,21 @@
   - [1.1 – Les avantages des outils d'orchestration de K8s](#section-1-1)
   - [1.2 – Les particularités](#section-1-2)
   - [1.3 – Les composantes de Kubernetes](#section-1-3)
-- [**2 – Minikube et kubectl**](#section-2)
-  - [2.8 – Le manifeste de déploiement – un fichier YAML](#section-2-8)
-  - [Labo 2.12 – Exercice](#section-2-12)
+- [**2 – L'amas (cluster) et kubectl**](#section-2)
+  - [2.7 – Le manifeste de déploiement – un fichier YAML](#section-2-7)
+  - [Labo 2.11 – Exercice](#section-2-11)
 - [**3 – Les manifestes de K8s**](#section-3)
   - [3.1 – Manifeste d'un Pod](#section-3-1)
   - [3.2 – Manifeste d'un déploiement](#section-3-2)
-- [**4 – Référence : les types de ressources K8S**](#section-4)
+- [**4 – Kubernetes avec Docker Desktop**](#section-4)
+  - [4.1 – Activer Kubernetes](#section-4-1)
+  - [4.2 – Le contexte de kubectl](#section-4-2)
+  - [4.3 – Accéder aux services](#section-4-3)
+  - [4.4 – Utiliser une image construite localement](#section-4-4)
+  - [4.5 – Volumes et accès au nœud](#section-4-5)
+  - [4.6 – Réinitialiser ou désactiver l'amas](#section-4-6)
+  - [4.7 – Laboratoire (durée 20 minutes)](#section-4-7)
+- [**5 – Référence : les types de ressources K8S**](#section-5)
 
 ---
 
@@ -105,215 +113,28 @@ Voici un schéma présentant l'architecture de base de Kubernetes:
 
 ### Helm
 
-[Helm](https://helm.sh/) est un registre de gestion de packages d'applications pour K8s.
+[Helm](https://helm.sh/) est un gestionnaire de paquets (charts) d'applications pour K8s. Les charts sont publiés dans des dépôts, que l'on peut chercher sur :
 
 [artifacthub.io](https://artifacthub.io)
 
 ---
 
-## 👉 **Note**: Si l'apprentissage passe par Docker-Desktop ou bien un cluster local alors il faut sauter à la section [Action 2.2](#action_2_2)
-
----
-
-## 2 – Minikube et kubectl {#section-2}
+## 2 – L'amas (cluster) et kubectl {#section-2}
 
 ### Description
 
-Minikube est un environnement local de tests de la technologie Kubernetes.
-
-C'est un système qui est proposé à l'intérieur d'une VM et qui permet d'apprendre la plupart des aspects de K8s sans avoir à installer un(des) serveur(s) maître(s) et des nœuds (ouvrier/worker). La VM de Minikube est configurée avec un nœud 'maître/ouvrier'.
-
-La commande `cli` standard de gestion de l'environnement K8s, `kubectl`, est disponible pour gérer le système Minikube.
+La commande `kubectl` est l'outil standard, en ligne de commande, de gestion d'un amas (cluster) Kubernetes. Elle s'adresse au serveur d'API du serveur maître pour créer, lister, modifier et effacer les ressources de l'amas.
 
 ### Pré-requis
 
-* Installation de [minikube](https://minikube.sigs.k8s.io/docs/start/)
-* Installation de [kubectl](https://kubernetes.io/fr/docs/tasks/tools/install-kubectl/)
+* Un amas Kubernetes fonctionnel, au choix :
+  * le serveur d'un seul nœud du [document 24](Installation-un-seul-noeud.md) (kubeadm), ou un amas créé avec [kind](https://kind.sigs.k8s.io);
+  * Docker Desktop, avec l'option `Enable Kubernetes` (voir l'image suivante et la [section 4](#section-4)).
+* Installation de [kubectl](https://kubernetes.io/fr/docs/tasks/tools/install-kubectl/) (déjà présent sur le serveur du document 24 et avec Docker Desktop)
 
-Voir <https://kind.sigs.k8s.io> ou Docker-desktop comme alternative.
+<img src="../images/Capture-decran-le-2022-05-09-a-14.32.17.png" alt="" width="600" />
 
-### Action 2.1 – Démarrage de minikube
-
-```bash
-$ minikube start
-
-# Résultat attendu:
-minikube v1.16.0 sur Darwin 10.15.4
-minikube 1.17.1 est disponible ! Téléchargez-le ici : https://github.com/kubernetes/minikube/releases/tag/v1.17.1
-To disable this notice, run: 'minikube config set WantUpdateNotification false'
-Utilisation du pilote docker basé sur le profil existant
-Démarrage du noeud de plan de contrôle minikube dans le cluster minikube
-Pulling base image ...
-docker "minikube" container est manquant, il va être recréé.
-Creating docker container (CPUs=2, Memory=1988MB) ...
-Préparation de Kubernetes v1.20.0 sur Docker 20.10.0...
-   Generating certificates and keys ...
-   Booting up control plane ...
-   Configuring RBAC rules ...
-Verifying Kubernetes components...
-Enabled addons: storage-provisioner, default-storageclass
-Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
-```
-
-**Note**: Par défaut, le gestionnaire d'amas devrait démarrer en utilisant le pilote de VM de Docker.
-
-### Action 2.1.1 – Afficher l'état du service
-
-```bash
-$ minikube status
-
-# Résultat:
-minikube
-type: Control Plane
-host: Running
-kubelet: Running
-apiserver: Running
-kubeconfig: Configured
-timeToStop: Nonexistent
-```
-
-### Alternative de démarrage de minikube
-
-#### 2.1b – Démarrer un amas (cluster) en utilisant le pilote VM de VirtualBox
-
-```bash
-minikube start --driver=virtualbox
-
-# NOTE: Suite à un problème de détection de la fonction BIOS VT-x dans les Lab D-139 et D-137,
-# il faut ajouter l'option --no-vtx-check au démarrage de minikube sous pilote virtualbox.
-
-# Au besoin, la commande suivante, dans PowerShell admin, pourra aider:
-# bcdedit /set hypervisorlaunchtype off
-
-# Démarrage avec Hyper-v
-minikube start --driver=hyperv --force
-```
-
-#### 2.1c – Renseigner virtualbox comme pilote VM par défaut
-
-```bash
-minikube config set driver virtualbox
-```
-
-#### 2.1d – Démarrer Minikube avec un contrôle des ressources
-
-```bash
-minikube start \
-  --driver=docker \
-  --container-runtime=docker \
-  --cpus 4 \
-  --memory 8192
-
-# Driver: virtualbox, parallels, vmwarefusion, hyperkit, vmware, docker, podman (def to auto-detect)
-```
-
-#### 2.1e – Démarrer un amas multi-nœud
-
-```bash
-minikube start --nodes 2 -p demo-multinode
-```
-
-**Référence:** [Démarrage de minikube](https://minikube.sigs.k8s.io/docs/start/)
-
----
-
-### Action 2.1.2 – Lister les modules (addons) de Minikube
-
-```bash
-minikube addons list
-
-# Résultat:
-# |-----------------------------|----------|--------------|
-# |         ADDON NAME          | PROFILE  |    STATUS    |
-# |-----------------------------|----------|--------------|
-# | ambassador                  | minikube | disabled     |
-# | csi-hostpath-driver         | minikube | disabled     |
-# | dashboard                   | minikube | enabled ✅   |
-# | default-storageclass        | minikube | enabled ✅   |
-# | efk                         | minikube | disabled     |
-# | freshpod                    | minikube | disabled     |
-# | gcp-auth                    | minikube | disabled     |
-# | gvisor                      | minikube | disabled     |
-# | helm-tiller                 | minikube | disabled     |
-# | ingress                     | minikube | enabled ✅   |
-# | ingress-dns                 | minikube | disabled     |
-# | istio                       | minikube | disabled     |
-# | istio-provisioner           | minikube | disabled     |
-# | kubevirt                    | minikube | disabled     |
-# | logviewer                   | minikube | disabled     |
-# | metallb                     | minikube | disabled     |
-# | metrics-server              | minikube | disabled     |
-# | nvidia-driver-installer     | minikube | disabled     |
-# | nvidia-gpu-device-plugin    | minikube | disabled     |
-# | olm                         | minikube | disabled     |
-# | pod-security-policy         | minikube | disabled     |
-# | registry                    | minikube | disabled     |
-# | registry-aliases            | minikube | disabled     |
-# | registry-creds              | minikube | disabled     |
-# | storage-provisioner         | minikube | enabled ✅   |
-# | storage-provisioner-gluster | minikube | disabled     |
-# | volumesnapshots             | minikube | disabled     |
-# |-----------------------------|----------|--------------|
-```
-
----
-
-### 2.1.3 – Utilisation de minikube avec le pilote 'Docker' (si problème avec le pilote virtualbox)
-
-```bash
-# Installer (ou configurer) Docker-Desktop avec wsl2
-# - Pas d'Hyper-V
-
-# Ajouter le support 'kubernetes' dans Docker-Desktop (voir l'image suivante)
-
-# Au besoin, effacer ancienne VM Virtualbox
-$ minikube delete
-
-# Démarrer avec pilote Docker
-$ minikube start --driver=docker
-
-# Pas besoin de renseigner la clé 'nodePort: 300xx' dans le service.
-
-# Activer un tunnel avec minikube pour l'accès aux services de type LoadBalancer
-$ minikube tunnel
-
-# Tester dans le fureteur en utilisant l'adresse 'localhost:PortDuService'
-# Par exemple, http://localhost:8080
-```
-TODO: À retirer du document
-
-<img src="../images/Capture-decran-le-2022-05-09-a-14.32.17.png" alt="400" width="" />
-
-### 2.1.4 – Exemple d'un manifeste pour un service utilisant le pilote 'Docker' avec minikube
-
-```yaml
-# #################################################################
-# Service pour NextCloud
-# #################################################################
-apiVersion: v1
-kind: Service
-metadata:
-  name: service-nextcloud
-spec:
-  selector:
-    app: nextcloud
-  type: LoadBalancer
-  ports:
-    - name: http
-      protocol: TCP
-      port: 81
-      targetPort: 80
-      nodePort: 30081  # Pas requis avec le pilote 'Docker'
-```
-
-<img src="../images/Capture-decran-le-2022-05-09-a-16.23.58-1024x569.png" alt="" width="600"/>
-
----
-
-## Kubernetes – Introduction (suite)
-
-<a id="action_2_2"></a>
-### 👉 Action 2.2 – Interaction avec l'amas (cluster) de nœuds (les serveurs)
+### Action 2.1 – Interaction avec l'amas (cluster) de nœuds (les serveurs)
 
 La commande `kubectl`
 
@@ -322,12 +143,12 @@ $ kubectl get nodes
 
 # Résultat:
 NAME           STATUS   ROLES                  AGE    VERSION
-monCluster     Ready    control-plane,master   106s   v1.20.0
+k8stest        Ready    control-plane          106s   v1.29.15
 ```
 
-**NOTE:** Selon la configuration du cluster, il est possible qu'il n'y ait qu'un seul nœud, le `master/worker` (serveur maître/ouvrier) qui est le gestionnaire de l'orchestration et aussi le nœud ouvrier.
+**NOTE:** Selon la configuration du cluster, il est possible qu'il n'y ait qu'un seul nœud, le `control-plane` (serveur maître/ouvrier) qui est le gestionnaire de l'orchestration et aussi le nœud ouvrier.
 
-### Action 2.3 – Obtenir la liste des 'pods'
+### Action 2.2 – Obtenir la liste des 'pods'
 
 Le pod est une abstraction du conteneur.
 
@@ -340,7 +161,7 @@ No resources found in default namespace.
 
 **Note**: Vide, nous n'avons pas encore lancé de déploiement.
 
-### Action 2.4 – Obtenir la liste des 'services'
+### Action 2.3 – Obtenir la liste des 'services'
 
 ```bash
 $ kubectl get services
@@ -354,7 +175,7 @@ kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   7m15s
 
 **Nous allons maintenant ajouter des pods à notre système.**
 
-### Action 2.5 – Afficher l'aide de la commande create
+### Action 2.4 – Afficher l'aide de la commande create
 
 ```bash
 $ kubectl create -h
@@ -386,7 +207,7 @@ Available Commands:
 
 **NOTE:** Avec Kubernetes, le `pod` est la plus petite unité possible d'une application. Ils sont habituellement créés par l'intermédiaire d'un `deployment`. L'objet `deployment` permet d'assurer la présence constante des `pods` constituant une application.
 
-### Action 2.5.1a – Créer un pod
+### Action 2.4.1a – Créer un pod
 
 ```bash
 $ kubectl run ma-alpine --image=alpine
@@ -427,7 +248,7 @@ NAME        READY   STATUS      RESTARTS   AGE
 ma-alpine   0/1     Completed   0          34s
 ```
 
-### Action 2.5.1b – Générer un manifeste YAML à partir d'une commande en ligne
+### Action 2.4.1b – Générer un manifeste YAML à partir d'une commande en ligne
 
 ```bash
 $ kubectl run ma-alpine --image=alpine --restart=Never --dry-run=client -oyaml
@@ -461,7 +282,7 @@ $ kubectl apply -f creer-pod-alpine.yaml
 
 ---
 
-### Action 2.5.2 – Créer un pod 'interactif'
+### Action 2.4.2 – Créer un pod 'interactif'
 
 ```bash
 $ kubectl run ma-alpine -it --image=alpine
@@ -475,7 +296,7 @@ $ kubectl attach ma-alpine -c ma-alpine -i -t
 
 ---
 
-### Action 2.6 – Créer un pod à partir d'un déploiement
+### Action 2.5 – Créer un pod à partir d'un déploiement
 
 ```bash
 # Syntaxe:
@@ -492,7 +313,7 @@ deployment.apps/serveur-web created
 
 **Note:** Comme pour Docker, les images sont téléchargées à partir de hub.docker.com.
 
-### Action 2.7 – Afficher les déploiements et les pods
+### Action 2.6 – Afficher les déploiements et les pods
 
 ```bash
 $ kubectl get deployment
@@ -519,13 +340,13 @@ Le `replicaset` permet de gérer les répliques – le nombre d'instances – d'
 
 **NOTE:** Nous n'avons pas à interagir avec les `replicaset`. Nous le ferons avec les déploiements et les pods.
 
-### Action 2.7.2 – Interagir avec un pod
+### Action 2.6.2 – Interagir avec un pod
 
 ```bash
 $ kubectl exec -it serveur-web-54bf66d477-8ctwr -- bash
 ```
 
-### Action 2.7.3 – Exposer le port du serveur Web via le(s) pod(s)
+### Action 2.6.3 – Exposer le port du serveur Web via le(s) pod(s)
 
 ```bash
 $ kubectl expose deployment serveur-web --port=80
@@ -574,7 +395,7 @@ Et tout ce qui est sous le déploiement est géré par Kubernetes.
 
 Voici la suite.
 
-### 2.8 – Le manifeste de déploiement – un fichier YAML {#section-2-8}
+### 2.7 – Le manifeste de déploiement – un fichier YAML {#section-2-7}
 
 Pour assurer la gestion correcte du déploiement, K8s a généré un manifeste de déploiement. Plus tard, nous verrons comment renseigner nos propres manifestes. Ce schéma contient des informations telles que: le nombre de duplicatas requis, la version des images, les ports exposés, etc.
 
@@ -586,7 +407,7 @@ Le fichier est constitué de trois sections:
 
 Les informations des manifestes sont stockées sur le nœud maître dans la bibliothèque `etcd`.
 
-### Action 2.8.1 – Édition du manifeste de déploiement
+### Action 2.7.1 – Édition du manifeste de déploiement
 
 ```bash
 kubectl edit deployment serveur-web
@@ -629,7 +450,7 @@ spec:
 
 **NOTE:** Lors de la création du déploiement, `k8s` a généré un fichier de configuration avec des valeurs par défaut.
 
-### Action 2.9 – Apportons une modification au fichier de configuration
+### Action 2.8 – Apportons une modification au fichier de configuration
 
 Version `nginx:1.18-alpine-perl`
 
@@ -661,7 +482,7 @@ $ kubectl edit deployment serveur-web
 # deployment.apps/serveur-web edited
 ```
 
-### Action 2.10 – Afficher le résultat
+### Action 2.9 – Afficher le résultat
 
 ```bash
 $ kubectl get pod
@@ -672,7 +493,7 @@ serveur-web-6589df7667-vzzq4   1/1     Running   0          101s
 
 **NOTE:** Remarquez la modification du nom du 'pod'. De plus, suite à la modification, le déploiement a été automatique.
 
-### Action 2.11 – Afficher l'historique des duplicatas
+### Action 2.10 – Afficher l'historique des duplicatas
 
 ```bash
 $ kubectl get replicaset
@@ -686,7 +507,7 @@ serveur-web-6589df7667   1         1         1       4m56s
 
 ---
 
-### 💡2.11.1b - Exemples avec namespaces
+### 💡 2.10.1 – Exemples avec namespaces
 
 ```bash
 kubectl get ns
@@ -695,7 +516,7 @@ kubectl get pod -A
 kubectl get pod -n kube-system
 ```
 
-### Action 2.11.2 – Afficher le log d'un pod
+### Action 2.10.2 – Afficher le log d'un pod
 
 ```bash
 $ kubectl logs serveur-web-54bf66d477-8ctwr
@@ -711,7 +532,7 @@ $ kubectl logs serveur-web-54bf66d477-8ctwr
 /docker-entrypoint.sh: Configuration complete; ready for start up
 ```
 
-### Action 2.11.3 – Obtenir une liste exhaustive d'informations sur un pod
+### Action 2.10.3 – Obtenir une liste exhaustive d'informations sur un pod
 
 ```bash
 $ kubectl describe pod serveur-web-54bf66d477-8ctwr
@@ -720,7 +541,7 @@ $ kubectl describe pod serveur-web-54bf66d477-8ctwr
 Name:         serveur-web-54bf66d477-8ctwr
 Namespace:    default
 Priority:     0
-Node:         minikube/192.168.99.100
+Node:         k8stest/192.168.2.50
 Start Time:   Sat, 20 Mar 2021 17:47:22 -0400
 Labels:       app=serveur-web
               pod-template-hash=54bf66d477
@@ -737,11 +558,11 @@ Containers:
 
 **Note:** Il est possible d'appliquer la commande précédente sur d'autres objets. Par exemple, `kubectl describe deployments`.
 
-### Labo 2.12 – Exercice {#section-2-12}
+### Labo 2.11 – Exercice {#section-2-11}
 
 Renseigner 3 duplicatas dans le schéma puis, afficher la liste des pods.
 
-### Action 2.13 – Effacer un déploiement
+### Action 2.12 – Effacer un déploiement
 
 ```bash
 $ kubectl delete deployment serveur-web
@@ -780,7 +601,7 @@ spec:                               # Spécification (état désiré) de la ress
 
 ### 3.1 – Manifeste d'un Pod {#section-3-1}
 
-#### Action 3.0.1 – Manifeste d'un Pod, renseigner le fichier uneAlpine.yml
+#### Action 3.1.1 – Manifeste d'un Pod, renseigner le fichier uneAlpine.yml
 
 ```yaml
 # ------------------------------------------------------------
@@ -810,7 +631,7 @@ spec:
 
 **Note:** Remarquer le type du manifeste – `kind: Pod`.
 
-#### Action 3.0.2 – Déployer le système
+#### Action 3.1.2 – Déployer le système
 
 ```bash
 $ kubectl apply -f uneAlpine.yml
@@ -825,7 +646,7 @@ meta-une-alpine                0/1     Completed   0          92s
 
 **Note:** Remarquer le 'STATUS: Completed'
 
-#### Action 3.0.3 – Afficher les logs du déploiement précédent
+#### Action 3.1.3 – Afficher les logs du déploiement précédent
 
 ```bash
 $ kubectl logs meta-une-alpine
@@ -837,7 +658,7 @@ ENV01=YoDouloudou
 ENV02=Coucou
 ```
 
-#### Action 3.0.3.1 – Faire un test
+#### Action 3.1.3.1 – Faire un test
 
 ```yaml
 kind: Pod
@@ -849,13 +670,13 @@ metadata:
 
 Résultat?
 
-#### Action 3.0.3.2 – Effacer le résultat d'un manifeste
+#### Action 3.1.3.2 – Effacer le résultat d'un manifeste
 
 ```bash
 $ kubectl delete -f nomDuManifeste.yml
 ```
 
-#### Action 3.0.4 – Manifeste d'un Pod avec deux conteneurs
+#### Action 3.1.4 – Manifeste d'un Pod avec deux conteneurs
 
 Fichier `alpine-v2.yml`:
 
@@ -899,7 +720,7 @@ kubectl get pod
 # alpine-v2                      2/2     Running     0          7m30s
 ```
 
-#### Action 3.0.5 – Obtenir les détails du pod précédent
+#### Action 3.1.5 – Obtenir les détails du pod précédent
 
 ```bash
 kubectl get pods alpine-v2 -o json > resultat.json
@@ -950,7 +771,7 @@ Voici un extrait du fichier `resultat.json`:
     ],
 ```
 
-#### Action 3.0.5.1 – Extraire des informations du résultat JSON
+#### Action 3.1.5.1 – Extraire des informations du résultat JSON
 
 Par exemple, la liste des conteneurs:
 
@@ -970,7 +791,7 @@ kubectl get pods --all-namespaces -o=jsonpath='{range .items[*]}{"\n"}{.metadata
 
 Référence: [kubernetes](https://kubernetes.io/docs/tasks/access-application-cluster/list-all-running-container-images/)
 
-#### Action 3.0.6 – Exécuter une commande dans un conteneur
+#### Action 3.1.6 – Exécuter une commande dans un conteneur
 
 Lorsque le Pod en possède plusieurs:
 
@@ -982,7 +803,7 @@ kubectl exec -it alpine-v2 --container conteneur-alpine01 -- /bin/sh
 
 ---
 
-#### 3.0.7a – Utilisation d'un conteneur d'initialisation
+#### 3.1.7a – Utilisation d'un conteneur d'initialisation
 
 ```yaml
 # ---------------------------------------------------------
@@ -1034,7 +855,7 @@ curl 10.244.0.12
 
 ---
 
-#### 3.0.7b – Utilisation d'un autre conteneur d'initialisation
+#### 3.1.7b – Utilisation d'un autre conteneur d'initialisation
 
 ```yaml
 # ---------------------------------------------------------
@@ -1067,7 +888,7 @@ spec:
       mountPath: /usr/share/nginx/html
 ```
 
-#### 3.0.7c – Utilisation d'un autre conteneur d'initialisation
+#### 3.1.7c – Utilisation d'un autre conteneur d'initialisation
 
 ```yaml
 # ---------------------------------------------------------
@@ -1103,13 +924,13 @@ spec:
 
 ### 3.2 – Manifeste d'un déploiement {#section-3-2}
 
-#### Action 3.1 – Manifeste d'un déploiement
+#### Action 3.2.1 – Manifeste d'un déploiement
 
-Renseigner le fichier `3.1-deploiement-nginx.yml` suivant:
+Renseigner le fichier `3.2.1-deploiement-nginx.yml` suivant:
 
 ```yaml
 # ---------------------------------------------------------
-# Fichier: 3.1-deploiement-nginx.yml
+# Fichier: 3.2.1-deploiement-nginx.yml
 # Auteur:  Alain Boudreault
 # Déploiement de deux pods nginx version 1.16
 # ---------------------------------------------------------
@@ -1150,27 +971,27 @@ spec:
 
 **Note:** Remarquer – `kind: Deployment`
 
-#### Action 3.2 – Renseigner le fichier service
+#### Action 3.2.2 – Renseigner le fichier service
 
-Fichier `3.2-service-nginx.yml`:
+Fichier `3.2.2-service-nginx.yml`:
 
 ```yaml
 # -------------------------------------------------------------------------------------
-# Fichier: 3.2-service-nginx.yml
+# Fichier: 3.2.2-service-nginx.yml
 # Auteur:  Alain Boudreault
 # Voici comment exposer un service de type Cluster-IP -via un port- au réseau local K8s 
-# pour accéder aux pods nginx déployés dans le manifeste 3.1-deploiement-nginx.yml
+# pour accéder aux pods nginx déployés dans le manifeste 3.2.1-deploiement-nginx.yml
 # Le lien entre le service et les pods est fait via les labels:
 #   selector:
 #    app: nginx
-# fait référence au label app: nginx dans le manifeste 3.1-deploiement-nginx.yml
+# fait référence au label app: nginx dans le manifeste 3.2.1-deploiement-nginx.yml
 # -------------------------------------------------------------------------------------
 apiVersion: v1
 kind: Service
 metadata:
   name: nginx-service
 spec:
-  # fait référence au label app: nginx dans le manifeste 3.1-deploiement-nginx.yml
+  # fait référence au label app: nginx dans le manifeste 3.2.1-deploiement-nginx.yml
   selector:
     app: nginx 
   ports:
@@ -1183,16 +1004,16 @@ spec:
 
 **Note:** Remarquer – `kind: Service`
 
-#### Action 3.3 – Appliquer les schémas
+#### Action 3.2.3 – Appliquer les schémas
 
 Nous allons maintenant appliquer nos deux schémas: le déploiement et le service.
 
 ```bash
-$ kubectl apply -f 3.1-deploiement-nginx.yml
+$ kubectl apply -f 3.2.1-deploiement-nginx.yml
 
 deployment.apps/nginx-deployment created
 
-$ kubectl apply -f 3.2-service-nginx.yml
+$ kubectl apply -f 3.2.2-service-nginx.yml
 
 service/nginx-service created
 
@@ -1208,7 +1029,7 @@ kubernetes      ClusterIP   10.96.0.1       <none>        443/TCP   26d
 nginx-service   ClusterIP   10.108.129.91   <none>        80/TCP    82s
 ```
 
-#### Action 3.4 – Vérifier que le service achemine bien les requêtes
+#### Action 3.2.4 – Vérifier que le service achemine bien les requêtes
 
 ```bash
 $ kubectl describe service nginx-service
@@ -1229,14 +1050,14 @@ Events:            <none>
 
 **Note:** Remarquer la ligne `Endpoints: 172.17.0.2:80,172.17.0.5:80`. Les requêtes seront envoyées vers deux pods sur leur port 80.
 
-#### Action 3.5 – Vérifier l'adresse IP des deux pods
+#### Action 3.2.5 – Vérifier l'adresse IP des deux pods
 
 ```bash
 $ kubectl get pod -o wide
 
 NAME                               READY   STATUS    RESTARTS   AGE   IP           NODE
-nginx-deployment-f4b7bbcbc-qt8kd   1/1     Running   0          12m   172.17.0.5   minikube
-nginx-deployment-f4b7bbcbc-tcr7l   1/1     Running   0          12m   172.17.0.2   minikube
+nginx-deployment-f4b7bbcbc-qt8kd   1/1     Running   0          12m   172.17.0.5   k8stest
+nginx-deployment-f4b7bbcbc-tcr7l   1/1     Running   0          12m   172.17.0.2   k8stest
 ```
 
 **Action:** Tester dans le fureteur disponible sur le serveur:
@@ -1246,7 +1067,7 @@ nginx-deployment-f4b7bbcbc-tcr7l   1/1     Running   0          12m   172.17.0.2
 
 ---
 
-#### Action 3.6 – Obtenir le schéma complet du déploiement
+#### Action 3.2.6 – Obtenir le schéma complet du déploiement
 
 Il est disponible dans le `etcd`:
 
@@ -1254,7 +1075,7 @@ Il est disponible dans le `etcd`:
 $ kubectl get deployment nginx-deployment -o yaml > nginx-dep-info.yml
 ```
 
-#### Action 3.7 – Exposer nginx au monde extérieur
+#### Action 3.2.7 – Exposer nginx au monde extérieur
 
 Service type: `LoadBalancer`
 
@@ -1264,18 +1085,18 @@ En rappel, voici la configuration de service-nginx:
 nginx-service   ClusterIP   10.108.129.91   <none>        80/TCP    26m
 ```
 
-Voici une version modifiée du fichier `3.2-service-nginx.yml` de l'action 3.2:
+Voici une version modifiée du fichier `3.2.2-service-nginx.yml` de l'action 3.2.2:
 
 ```yaml
 # --------------------------------------------------------------------------------------
-# Fichier: 3.7-service-nginx-LB.yml
+# Fichier: 3.2.7-service-nginx-LB.yml
 # Auteur:  Alain Boudreault
 # Voici comment exposer un service de type LoadBalancer -via un port- au reseau local K8s 
-# pour accéder aux pods nginx déployés dans le manifeste 3.1-deploiement-nginx.yml
+# pour accéder aux pods nginx déployés dans le manifeste 3.2.1-deploiement-nginx.yml
 # Le lien entre le service et les pods est fait via les labels:
 #   selector:
 #    app: nginx
-# fait référence au label app: nginx dans le manifeste 3.1-deploiement-nginx.yml
+# fait référence au label app: nginx dans le manifeste 3.2.1-deploiement-nginx.yml
 # --------------------------------------------------------------------------------------
 apiVersion: v1
 kind: Service
@@ -1296,10 +1117,10 @@ spec:
       nodePort: 30000
 ```
 
-#### Action 3.8 – Appliquer le schéma modifié
+#### Action 3.2.8 – Appliquer le schéma modifié
 
 ```bash
-$ kubectl apply -f 3.7-service-nginx-LB.yml
+$ kubectl apply -f 3.2.7-service-nginx-LB.yml
 
 service/nginx-service configured
 
@@ -1310,48 +1131,37 @@ kubernetes      ClusterIP      10.96.0.1       <none>        443/TCP        26d
 nginx-service   LoadBalancer   10.108.129.91   <pending>     80:30000/TCP   60m
 ```
 
-**Note:** Remarquer que `nginx-service` est maintenant de type `LoadBalancer`. Remarquer aussi que 'EXTERNAL-IP' est `<pending>` car sous Minikube, la gestion des adresses externes est légèrement différente. Nous aurons une étape de plus à réaliser avant que le serveur Web soit disponible via notre poste de travail.
+**Note:** Remarquer que `nginx-service` est maintenant de type `LoadBalancer`. Remarquer aussi que 'EXTERNAL-IP' est `<pending>` : sur un amas installé avec kubeadm, aucun équilibreur de charge ne fournit d'adresse externe. Ce rôle sera confié à MetalLB, plus loin dans le cours (documents 38 et 40).
 
-~~**Action 3.9 – Attribuer une adresse IP externe à nginx-service**~~
+En attendant, un service `LoadBalancer` est aussi un service `NodePort` : le serveur Web est disponible sur le port 30000 de chaque nœud.
 
 ```bash
-minikube service nginx-service
+# Adresse IP du nœud
+$ kubectl get nodes -o wide
 
-minikube service list
+# Tester dans le fureteur ou avec curl
+$ curl http://<adresse IP du nœud>:30000
 
-# Note: Sous Docker_Desktop+Kubernetes, le tunnel vers votre machine sera automatique 
-# et le service accessible via 'localhost'
-
-# |-------------|---------------|--------------|-----------------------------|
-# |  NAMESPACE  |     NAME      | TARGET PORT  |             URL             |
-# |-------------|---------------|--------------|-----------------------------|
-# | default     | kubernetes    | No node port |
-# | default     | nginx-service |           80 | http://192.168.59.100:30000 |
-# | kube-system | kube-dns      | No node port |
-# |-------------|---------------|--------------|-----------------------------|
-
-# Note: Selon la version de minikube et/ou du pilote de VM, il est possible
-# que le fureteur soit lancé automatiquement.
+# Note: Sous Docker Desktop + Kubernetes, l'adresse externe est 'localhost'
+# et le service est accessible via http://localhost
 ```
 
-**NOTE:** En classe, (D139) nous avons remarqué que le 'tunneling' de services ne fonctionnait pas avec le driver 'docker'. Voir:
+#### Action 3.2.9 – Tester le service
 
-* https://minikube.sigs.k8s.io/docs/handbook/accessing/
-* https://stackoverflow.com/questions/40767164/expose-port-in-minikube
-* https://serverfault.com/questions/1052349/unable-to-connect-to-minikube-ingress-via-minikube-ip
+Ouvrir `http://<adresse IP du nœud>:30000` dans un fureteur et actualiser la page plusieurs fois.
 
-#### Action 3.10 – Consolidation des deux schémas
+#### Action 3.2.10 – Consolidation des deux schémas {#action-3-2-10}
 
-Renseigner le fichier `3.10-nginx-dep-service.yml`:
+Renseigner le fichier `3.2.10-nginx-dep-service.yml`:
 
 ```yaml
 # -----------------------------------------------------------
-# Fichier: 3.10-nginx-dep-service.yml
+# Fichier: 3.2.10-nginx-dep-service.yml
 # Auteur:  Alain Boudreault
 # -----------------------------------------------------------
 # Voici la version consolidée de:
-#    3.1-deploiement-nginx.yml et
-#    3.7-service-nginx-LB.yml
+#    3.2.1-deploiement-nginx.yml et
+#    3.2.7-service-nginx-LB.yml
 # -----------------------------------------------------------
 apiVersion: apps/v1
 kind: Deployment
@@ -1408,21 +1218,179 @@ spec:
       nodePort: 30080
 ```
 
-#### Labo 3.11 – Exercice
+#### Labo 3.2.11 – Exercice
 
-Effacer les déploiements précédents, redéployer à partir du fichier 3.10 et tester le service Web.
+Effacer les déploiements précédents, redéployer à partir du fichier 3.2.10 et tester le service Web.
 
-#### Labo 3.12 – Exercice
+#### Labo 3.2.12 – Exercice
 
-Remplacer l'image nginx utilisée dans le fichier de labo 3.11 par `alainboudreault/phpweb` et augmenter le nombre de duplicatas à 20.
+Remplacer l'image nginx utilisée dans le fichier de labo 3.2.11 par `alainboudreault/phpweb` et augmenter le nombre de duplicatas à 20.
 
 * Tester dans deux fureteurs différents
 * Actualiser la page des fureteurs plusieurs fois
-* Tester dans un terminal: `curl http://192.168.99.100:30080/info.php`
+* Tester dans un terminal: `curl http://<adresse IP du nœud>:30080/info.php`
 
 ---
 
-## 4 – Référence : les types de ressources K8S {#section-4}
+## 4 – Kubernetes avec Docker Desktop {#section-4}
+
+Docker Desktop (Windows et macOS) contient un amas Kubernetes complet, prêt à l'emploi. C'est la façon la plus simple de faire les actions de ce document sur son poste de travail, sans serveur Linux : l'amas tourne dans la VM de Docker Desktop et `kubectl` est installé avec lui.
+
+> 💡 L'amas de Docker Desktop sert à apprendre et à tester. Pour le projet de session et l'épreuve synthèse, nous utiliserons un vrai amas (documents 24 et 34).
+
+### 4.1 – Activer Kubernetes {#section-4-1}
+
+**Action 4.1.1 –** Dans Docker Desktop : ⚙️ `Settings` → `Kubernetes` → cocher `Enable Kubernetes` → `Apply & restart`.
+
+<img src="../images/Capture-decran-le-2022-05-09-a-14.32.17.png" alt="" width="600" />
+
+Selon la version de Docker Desktop, il est possible de choisir le type d'amas (`Cluster settings`) :
+
+| Type | Description |
+|------|-------------|
+| `kubeadm` | Un seul nœud, nommé `docker-desktop`. Le choix par défaut. |
+| `kind` | Un ou plusieurs nœuds (ex. 1 maître et 2 ouvriers), version de Kubernetes au choix. |
+
+Le premier démarrage télécharge les images de Kubernetes : il faut compter quelques minutes. L'icône **Kubernetes running**, au bas de la fenêtre de Docker Desktop, devient verte lorsque l'amas est prêt.
+
+> 💡 Prévoir au moins 4 Go de mémoire pour la VM (⚙️ `Settings` → `Resources`).
+
+**Action 4.1.2 –** Vérifier l'amas :
+
+```bash
+$ kubectl get nodes
+
+# Résultat:
+NAME             STATUS   ROLES           AGE   VERSION
+docker-desktop   Ready    control-plane   2m    v1.32.2
+
+$ kubectl get pods -n kube-system
+```
+
+**Note:** Le seul nœud, `docker-desktop`, est à la fois maître et ouvrier. Les pods de l'application y sont placés.
+
+### 4.2 – Le contexte de kubectl {#section-4-2}
+
+`kubectl` peut gérer plusieurs amas : le serveur du document 24, Docker Desktop, un amas sur Google Cloud... Chaque amas est un **contexte** du fichier `~/.kube/config`. Docker Desktop y ajoute le contexte `docker-desktop`.
+
+**Action 4.2.1 –** Lister les contextes et choisir celui de Docker Desktop :
+
+```bash
+$ kubectl config get-contexts
+
+# Résultat:
+CURRENT   NAME                          CLUSTER          AUTHINFO           NAMESPACE
+*         docker-desktop                docker-desktop   docker-desktop
+          kubernetes-admin@kubernetes   kubernetes       kubernetes-admin
+
+$ kubectl config use-context docker-desktop
+$ kubectl config current-context
+```
+
+> 💡 Avant chaque commande importante, vérifier le contexte courant : `kubectl delete` dans le mauvais contexte efface les ressources du mauvais amas! Le menu de l'icône de Docker Desktop (barre des tâches) permet aussi de changer de contexte.
+
+### 4.3 – Accéder aux services {#section-4-3}
+
+Sous Docker Desktop, l'accès aux services est plus simple que sur un serveur :
+
+| Type de service | Adresse depuis le poste de travail |
+|-----------------|------------------------------------|
+| `ClusterIP` | Aucune; utiliser `kubectl port-forward` |
+| `NodePort` | `http://localhost:<nodePort>`, ex. `http://localhost:30080` |
+| `LoadBalancer` | `http://localhost:<port>`; `EXTERNAL-IP` vaut `localhost` |
+
+**Action 4.3.1 –** Déployer nginx et l'exposer avec un service `LoadBalancer` :
+
+```bash
+$ kubectl create deployment web-dd --image=nginx --replicas=2
+$ kubectl expose deployment web-dd --type=LoadBalancer --port=8080 --target-port=80
+
+$ kubectl get service web-dd
+
+# Résultat:
+NAME     TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+web-dd   LoadBalancer   10.104.12.80   localhost     8080:31544/TCP   5s
+
+$ curl http://localhost:8080
+```
+
+**Note:** Contrairement à un amas installé avec kubeadm, l'adresse externe n'est pas `<pending>` : Docker Desktop joue le rôle de l'équilibreur de charge. Le port d'un service `LoadBalancer` doit être libre sur le poste de travail (attention aux conteneurs Docker qui utilisent déjà 8080).
+
+**Action 4.3.2 –** Avec `port-forward`, pour un service `ClusterIP` :
+
+```bash
+$ kubectl port-forward svc/web-dd 9090:8080
+# Tester http://localhost:9090, puis Ctrl+C pour arrêter
+```
+
+### 4.4 – Utiliser une image construite localement {#section-4-4}
+
+Avec l'amas de type `kubeadm`, Kubernetes utilise le même moteur que Docker : une image construite avec `docker build` est disponible pour les pods, **sans la pousser** sur Docker Hub.
+
+**Action 4.4.1 –** Construire une image et la déployer :
+
+```bash
+$ docker build -t mon-app:1.0 .
+```
+
+```yaml
+# Extrait d'un manifeste de déploiement
+    spec:
+      containers:
+      - name: mon-app
+        image: mon-app:1.0
+        # Ne pas chercher l'image sur Docker Hub
+        imagePullPolicy: IfNotPresent
+```
+
+**Note:** Sans `imagePullPolicy: IfNotPresent`, une image dont l'étiquette est `latest` (ou sans étiquette) est toujours cherchée sur Docker Hub : erreur `ErrImagePull`. Avec un amas de type `kind`, les nœuds ont leur propre magasin d'images : il faut pousser l'image vers un registre.
+
+### 4.5 – Volumes et accès au nœud {#section-4-5}
+
+* La classe de stockage par défaut, `hostpath`, crée automatiquement les PV demandés par les PVC. Les données sont dans la VM de Docker Desktop.
+* Un volume `hostPath` désigne un dossier **de la VM**, pas du poste de travail.
+
+**Action 4.5.1 –** Se connecter au nœud `docker-desktop` :
+
+```bash
+$ kubectl debug node/docker-desktop -it --image=ubuntu
+# Le système de fichiers du nœud est monté sous /host
+root@docker-desktop:/# ls /host/var/lib/kubelet/pods
+root@docker-desktop:/# exit
+```
+
+```bash
+$ kubectl get storageclass
+
+# Résultat:
+NAME                 PROVISIONER          RECLAIMPOLICY   VOLUMEBINDINGMODE   ALLOWVOLUMEEXPANSION   AGE
+hostpath (default)   docker.io/hostpath   Delete          Immediate           false                  10d
+```
+
+### 4.6 – Réinitialiser ou désactiver l'amas {#section-4-6}
+
+* ⚙️ `Settings` → `Kubernetes` → `Reset Kubernetes Cluster` : efface **toutes** les ressources (déploiements, services, volumes) et redémarre un amas vide.
+* Décocher `Enable Kubernetes` arrête l'amas et libère la mémoire de la VM.
+* La commande `docker system prune -a` peut effacer les images de Kubernetes : l'amas les téléchargera de nouveau au prochain démarrage.
+
+<img src="../images/labo02.png" alt="" width="700" />
+
+<br>
+
+### 4.7 – Laboratoire (durée 20 minutes) {#section-4-7}
+
+Sous Docker Desktop :
+
+1. Activer Kubernetes et sélectionner le contexte `docker-desktop`.
+2. Appliquer le manifeste consolidé de l'[action 3.2.10](#action-3-2-10), en remplaçant `nodePort: 30080` par `nodePort: 30081`.
+3. Tester le serveur Web avec `http://localhost:80` (service `LoadBalancer`) puis avec `http://localhost:30081` (port du nœud).
+4. Passer à 5 duplicatas avec `kubectl scale` et vérifier que les 5 pods sont sur le nœud `docker-desktop` (`kubectl get pods -o wide`).
+5. Revenir au contexte de l'amas du document 24 et vérifier, avec `kubectl get deployments`, que ce déploiement n'y existe pas.
+6. Effacer le déploiement et le service sous Docker Desktop.
+
+---
+
+## 5 – Référence : les types de ressources K8S {#section-5}
 
 | NOM | NOM COURT | VERSION API | NAMESPACED | KIND |
 |-----|-----------|-------------|------------|------|

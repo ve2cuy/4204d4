@@ -84,7 +84,7 @@ especes: |
 {
    "titre" :       "L'Origine des espèces",
    "sous-titre" :  "L'origine des espèces au moyen de la sélection naturelle ou la préservation des races favorisées dans la lutte pour la survie",
-   "especes" :     "mammifère\noiseau\reptile\npoisson"
+   "especes" :     "mammifère\noiseau\nreptile\npoisson\n"
 }
 ```
 
@@ -385,8 +385,8 @@ mammifères2:
   "mammifères": [
     {
       "chat": [
-        "chat1",
-        "chat2"
+        "brun",
+        "noir"
       ]
     },
     "chien",

@@ -26,7 +26,7 @@
 
 5- Renseigne la configuration d'apache pour gérer un erreur 404. 
    1. Copie le fichier `404.html` dans le dossier `error/`
-6- Renseigne la configuration d'apache pour gérer un erreur 403, de type `Too many requests`, via le module `mod_evasive`. Voir plus bas pour les détails. 
+6- Renseigne la configuration d'apache pour gérer l'erreur 403 (`Forbidden`) que renvoie le module `mod_evasive` lorsqu'un client fait trop de requêtes (l'équivalent du code 429 `Too Many Requests`). Voir plus bas pour les détails. 
    1. Copie le fichier `blocked.html` dans le dossier `error/`
    2. Utilise un argument du build pour renseigner le `DOSPageCount`, `DOSPageInterval` et `DOSBlockingPeriod`
    3. Le module `mod-evasive` est requis et doit-être activé, `ref.: a2enmod`.
@@ -43,9 +43,9 @@
 </IfModule>
 ```
 
-👉 IMPORTANT: Les paramètres fonctionnels du module `evasice` doit-être renseignés lors du `build`. Sinon, il faut fournir les valeurs par défaut mentionnées dans l'exemple précédant. 
+👉 IMPORTANT: Les paramètres fonctionnels du module `mod_evasive` doit-être renseignés lors du `build`. Sinon, il faut fournir les valeurs par défaut mentionnées dans l'exemple précédant. 
 
-👉 👉 De plus, faut éditer (sed) le fichier `blocker.html` pour qu'il affiche les valeurs renseignées lors du build.  Par exemple, si `DOSBlockingPeriod = 60` alors la page `blocker.html` affichera le message "Votre accès sera automatiquement rétabli dans 60 secondes" et le `timer` sera ajusté en fonction de cette valeur.
+👉 👉 De plus, faut éditer (sed) le fichier `blocked.html` pour qu'il affiche les valeurs renseignées lors du build.  Par exemple, si `DOSBlockingPeriod = 60` alors la page `blocked.html` affichera le message "Votre accès sera automatiquement rétabli dans 60 secondes" et le `timer` sera ajusté en fonction de cette valeur.
 
 ---
 

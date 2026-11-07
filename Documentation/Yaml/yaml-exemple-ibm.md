@@ -79,7 +79,6 @@ networks:
 
 ```json
 {
-  "version": "3.8",
   "services": {
     "web": {
       "image": "nginx:alpine",

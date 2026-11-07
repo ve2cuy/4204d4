@@ -39,6 +39,8 @@ Ce document explique comment installer Docker à partir d'une **CLI**.
 
 ```bash
 # Au besoin, retirer le mot de passe sur sudo
+# ⚠️ Seulement sur une VM de laboratoire : tout programme lancé par cet
+#    utilisateur pourra alors devenir root sans mot de passe.
 sudo visudo
     # Ajouter la ligne suivante:
     leNomUtilisateur ALL=(ALL) NOPASSWD: ALL

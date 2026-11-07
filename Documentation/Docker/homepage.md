@@ -253,7 +253,7 @@ services:
     image: ghcr.io/gethomepage/homepage:latest
     container_name: homepage
     ports:
-      - "${HOMEGAGE_PORT}:3000"
+      - "${HOMEPAGE_PORT}:3000"
     volumes:
       - ./homepage-config:/app/config
       # Pour Windows
@@ -405,7 +405,7 @@ ARCANE_PORT=3552
 PIHOLE_DNS_PORT=553
 PIHOLE_HTTP_PORT=81
 PIHOLE_HTTPS_PORT=443
-HOMEGAGE_PORT=80
+HOMEPAGE_PORT=80
 ```
 
 Lancer et tester le projet dans un fureteur.  ❗️ Note: Au besoin, ajuster la variable HOST_IP.

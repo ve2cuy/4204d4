@@ -107,7 +107,7 @@ Ce cours permettra à l'étudiant, à partir de l'approche DevOps, de réaliser,
 - ![](dessins/serveur.svg) 24 · [Installation d'un nœud unique](Documentation/Kubernetes/Installation-un-seul-noeud.md) · 👍
   - Amas K8s d'un seul serveur sous Linux · worker · kind
 - ![](dessins/roue.svg) 25 · [Kubernetes – Introduction](Documentation/Kubernetes/Kubernetes-Introduction.md) · 👍
-  - Minikube et kubectl · pods et déploiements · manifestes
+  - kubectl · pods et déploiements · manifestes
 - ![](dessins/terminal.svg) 26 · [kubectl, renforcement](Documentation/Kubernetes/Kubernetes-Introduction-kubectl.md)
   - run, create, expose, scale, logs · conteneur d'initialisation
 - ![](dessins/yaml.svg) 27 · [Manifestes expliqués, version courte](Documentation/Kubernetes/Kubernetes-Manifestes-Expliques-version-courte.md)

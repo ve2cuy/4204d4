@@ -30,7 +30,7 @@ questions:
   - question: "Quel caractère, placé après la clé, commence une chaîne sur plusieurs lignes qui garde les retours à la ligne?"
     choix: ["|", ">", "&", "*"]
     reponse: 1
-    explication: "especes: | donne \"mammifère\\noiseau\\nreptile\\npoisson\" (section 2.1)."
+    explication: "especes: | donne \"mammifère\\noiseau\\nreptile\\npoisson\\n\" (section 2.1)."
 
   - question: "Que fait le caractère > au début d'une chaîne sur plusieurs lignes?"
     choix:

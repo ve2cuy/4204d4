@@ -15,9 +15,9 @@
 - [**7. `memory: 512Mi` (dans limits)**](#section-7)
 - [**Comportements détaillés**](#section-comportements-detailles)
 - [**Exemples pratiques**](#section-exemples-pratiques)
-- [**Impact sur le scheduling**](#section-impact-sur-le-scheduling)
+- [**Classes de qualité de service (QoS) et éviction**](#section-impact-sur-le-scheduling)
   - [Guaranteed (Garanti)](#section-impact-sur-le-scheduling-1)
-  - [Burstable (Votre cas)](#section-impact-sur-le-scheduling-2)
+  - [Burstable (l'exemple de ce document)](#section-impact-sur-le-scheduling-2)
   - [BestEffort (Meilleur effort)](#section-impact-sur-le-scheduling-3)
 - [**Vérifier l'utilisation réelle**](#section-verifier-l-utilisation-reelle)
 - [**Conseils pratiques**](#section-conseils-pratiques)
@@ -37,7 +37,7 @@ La section `resources` définit les **ressources CPU et mémoire** allouées à 
 resources:
   requests:       # Ressources garanties (minimum)
     cpu: 100m     # 10% d'un CPU
-    memory: 128Mi # 128Mg
+    memory: 128Mi # 128 Mio (mébioctets)
   limits:         # Ressources maximales (plafond)
     cpu: 500m     # 50% d'un CPU
     memory: 512Mi
@@ -258,9 +258,11 @@ resources:
 
 ---
 
-## Impact sur le scheduling {#section-impact-sur-le-scheduling}
+## Classes de qualité de service (QoS) et éviction {#section-impact-sur-le-scheduling}
 
-Kubernetes classe les pods en 3 catégories selon leurs ressources :
+Le placement d'un pod sur un nœud (scheduling) se fait seulement selon ses `requests`. Kubernetes classe aussi les pods en 3 catégories de qualité de service (QoS) selon leurs ressources. Cette classe ne change pas le placement : elle détermine l'**ordre d'éviction** lorsqu'un nœud manque de mémoire.
+
+Pour voir la classe d'un pod : `kubectl get pod <nom> -o jsonpath='{.status.qosClass}'`
 
 ### **Guaranteed** (Garanti) {#section-impact-sur-le-scheduling-1}
 ```yaml
@@ -273,10 +275,10 @@ resources:
     cpu: 500m
     memory: 512Mi
 ```
-- Priorité la plus élevée
-- Derniers à être évincés
+- `requests` = `limits`, pour le CPU **et** la mémoire, dans **chaque** conteneur du pod
+- Les mieux protégés : derniers à être évincés
 
-### **Burstable** (Votre cas) {#section-impact-sur-le-scheduling-2}
+### **Burstable** (l'exemple de ce document) {#section-impact-sur-le-scheduling-2}
 ```yaml
 # requests < limits
 resources:
@@ -287,15 +289,15 @@ resources:
     cpu: 500m
     memory: 512Mi
 ```
-- Priorité moyenne
-- Peuvent être évincés si le nœud manque de ressources
+- Au moins un conteneur a des `requests` ou des `limits`, sans être Guaranteed
+- Évincés après les BestEffort si le nœud manque de mémoire
 
 ### **BestEffort** (Meilleur effort) {#section-impact-sur-le-scheduling-3}
 ```yaml
 # Pas de requests ni limits
 resources: {}
 ```
-- Priorité la plus basse
+- Aucune garantie de ressources
 - Premiers à être évincés
 
 ---

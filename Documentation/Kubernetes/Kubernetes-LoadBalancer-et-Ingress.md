@@ -29,7 +29,7 @@ Kubernetes ne m'offre pas de service de balance de charge (load balancer externe
 
 La raison étant que ces services sont habituellement intégrés aux systèmes des fournisseurs Infonuagique: Google Cloud, Azure, AWS, etc.
 
-En labo, nous avons utilisé le tunnel de minikube ou bien celui de Docker Desktop/K8s comme solution externe.
+En labo, nous avons utilisé `kubectl port-forward`, les services `NodePort` ou bien le tunnel de Docker Desktop/K8s comme solution externe.
 
 Pour le déploiement natif d'un amas K8S, il faut se rabattre sur des solutions tierces.
 
@@ -145,7 +145,7 @@ metadata:
 ### 2.2.2 – Appliquer le manifeste
 
 ```bash
-kubectl apply -f Metallb-config.yaml
+kubectl apply -f metallb-config.yaml
 ```
 
 ---
