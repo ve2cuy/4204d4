@@ -86,7 +86,7 @@ Un `inspect` de l'image devrait afficher:
 
 12-  Les logs d'erreurs d'apache2 doivent-être enregistrés dans `/meslogs/apache2.log`
 
-13-  Publier votre solution sur docker hub sous `identifiant/formatif:1.0`.
+13-  Publier votre solution sur docker hub sous `identifiant/formatif:1.0` et `identifiant/formatif:latest`.
 
 ---
 
@@ -96,7 +96,7 @@ Un `inspect` de l'image devrait afficher:
 
 14- Le contenu de votre fichier `Dockerfile` doit être accessible à l'adresse: **http://localhost/info.txt**
 15- Inscrire en commentaire, dans le fichier, la commande à utiliser pour produire l'image.; `# docker build …`
-16- Il faut publier l'image finale sur docker hub sous: **votrecompte/docker-lab version latest et 1.0**
+16- Il faut publier l'image finale sur docker hub sous: **identifiant/formatif, versions 1.0 et latest**
 
 ---
 

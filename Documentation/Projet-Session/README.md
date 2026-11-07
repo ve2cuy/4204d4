@@ -124,7 +124,7 @@
             * http://jenkins.esh26/
             * http://wordpress.esh26/
             * http://mattermost.esh26/
-            * https://harbor.matricule.duckdns.org  👉 Accès seulement en `https`!
+            * https://harbor-matricule.duckdns.org  👉 Accès seulement en `https`!
         * 👉 Le lien pour la page `homepage` est http://tp02.esh26  
 
 ---
@@ -158,7 +158,7 @@
 ### Détails
 
 * Les fichiers de configuration sont disponibles via des `configmap` voir [ici](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-Config-map-et-secret.html)
-* L'image provient du dépôt `harbor` via `harbor.matricule.duckdns.org/esh26/homepage:esh26` 
+* L'image provient du dépôt `harbor` via `harbor-matricule.duckdns.org/esh26/homepage:esh26` 
 
 NOTE: 🛑 Si `harbor` a été démarré avec le mot de passe par défaut, il faudra effacer la base de données et recommencer la configuration:
 
@@ -174,7 +174,7 @@ sudo docker-compose up -d
 
 ## Wordpress {#section-wordpress}
 
-* Des thèmes supplémentaires proviennent du volume `NFS`  `/esh26/wordpress/themes` voir [ici](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-Les-volumes.html)
+* Des thèmes supplémentaires proviennent du volume `NFS`  `/esh26/themes` voir [ici](https://ve2cuy.github.io/4204d4/Documentation/Kubernetes/Kubernetes-Les-volumes.html)
 * Ils doivent-être copiés localement par un conteneur d'initialisation.
   * Ou bien le dossier NFS peut-être monté localement, à vous de choisir.
 * Les thèmes sont disponibles -->  [ici](https://github.com/ve2cuy/4204d4/tree/main/Documentation/Projet-Session/themes-wp) 
@@ -327,7 +327,7 @@ spec:
     spec:
       containers:
       - name: homepage
-        image: harbor.matricule.duckdns.org/esh26/homepage:esh26
+        image: harbor-matricule.duckdns.org/esh26/homepage:esh26
 ```
 
 ---
