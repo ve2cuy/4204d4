@@ -144,6 +144,8 @@ Ce cours permettra à l'étudiant, à partir de l'approche DevOps, de réaliser,
 - ![](dessins/badge.svg) 42 · ServiceAccount · 🧠
 - ![](dessins/nuage.svg) 43 · [Cluster sur Google Cloud](Documentation/Kubernetes/Kubernetes-Google.cloud.md) · 🧠
   - gcloud · contexte du cluster · facturation
+- ![](dessins/nuage.svg) 43b · [Amas GKE à la demande avec Terraform](Documentation/Kubernetes/GKE-Terraform.md)
+  - OpenTofu · apply et destroy · nœuds Spot · garde-fous contre les coûts
 - ![](dessins/roue.svg) 44 · [Helm – Introduction](Documentation/Kubernetes/Helm-introduction.md) · 👍
   - Charts, repositories et releases · exemples
 - ![](dessins/engrenage.svg) 45 · Automatisation des builds d'images · 🧠
