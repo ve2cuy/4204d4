@@ -401,6 +401,13 @@ backend k8s-controleurs
 * `check-ssl verify none` : la vérification de santé interroge `https://<contrôleur>:6443/livez`.
 * Une page de statistiques est offerte sur le port 8404 de chaque équilibreur : `http://192.168.56.11:8404/`.
 
+> 💡 Avec VirtualBox, le réseau privé `192.168.56.0/24` est joignable directement du poste de travail : la page s'ouvre dans le fureteur. Si les VM sont sur **un autre serveur** (par exemple un serveur Linux du labo avec libvirt), passer par un tunnel SSH ([document 24b, section 1.4](Installation-manuelle-K8S.md#section-1-4)) :
+>
+> ```bash
+> # lb1 sur http://localhost:8404/, lb2 sur http://localhost:8405/
+> ssh -N -L 8404:192.168.56.11:8404 -L 8405:192.168.56.12:8404 usager@serveur
+> ```
+
 **keepalived** (`/etc/keepalived/keepalived.conf`) : les deux équilibreurs s'échangent des annonces VRRP chaque seconde. Celui qui a la plus haute priorité (`k8s-lb1` : 110, `k8s-lb2` : 100) porte l'IP virtuelle `192.168.56.10`.
 
 ```
