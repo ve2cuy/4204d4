@@ -1,0 +1,7 @@
+# État et fichiers propres à chaque étudiant : jamais dans Git
+.terraform/
+*.tfstate
+*.tfstate.*
+terraform.tfvars
+.terraform.tfstate.lock.info
+plan.bin

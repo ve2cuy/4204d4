@@ -1,0 +1,7 @@
+# Copier ce fichier en terraform.tfvars et l'adapter
+projet   = "info420"
+etudiant = "e1234567"       # matricule ou nom, en minuscules
+expire   = "2026-11-08"     # le lendemain : nettoyage automatique après cette date
+# nb_noeuds    = 3
+# type_machine = "e2-medium"
+# spot         = true
