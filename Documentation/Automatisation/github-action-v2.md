@@ -11,6 +11,9 @@
 - [**Étape 3 : Configuration GitHub Actions**](#section-3)
 - [**Étape 4 : Docker Compose pour tests locaux**](#section-4)
 - [**Étape 5 : Documentation**](#section-5)
+- [**Étape 6 : Configuration GitHub**](#section-6)
+  - [6.1 – Créer le repository](#section-6-1)
+  - [6.2 – Configurer les secrets](#section-6-2)
 - [**Étape 7 : Utilisation**](#section-7)
 - [**🎯 Résultat final**](#section-resultat-final)
 
@@ -698,7 +701,7 @@ services:
 
 ### Fichier : `README.md`
 
-```markdown
+````markdown
 # 🐱 SuperMinou v2
 
 Application de démonstration pour CI/CD avec GitHub Actions et Docker Hub.
@@ -707,17 +710,17 @@ Application de démonstration pour CI/CD avec GitHub Actions et Docker Hub.
 
 ### Utiliser l'image Docker Hub
 
-\`\`\`bash
+```bash
 # Télécharger et exécuter l'image
 docker run -p 8080:80 votre-username/superminou-v2:latest
 
 # Ouvrir dans le navigateur
 open http://localhost:8080
-\`\`\`
+```
 
 ### Build local
 
-\`\`\`bash
+```bash
 # Cloner le repo
 git clone https://github.com/votre-username/superminou-v2.git
 cd superminou-v2
@@ -728,7 +731,7 @@ docker-compose up --build
 # Ou build manuel
 docker build -t superminou-v2 .
 docker run -p 8080:80 superminou-v2
-\`\`\`
+```
 
 ## 📦 Images disponibles
 
@@ -759,22 +762,22 @@ docker run -p 8080:80 superminou-v2
 
 ### Structure
 
-\`\`\`
+```
 superminou-v2/
 ├── .github/workflows/    # GitHub Actions
 ├── src/                  # Code source
 ├── Dockerfile           # Définition image
 └── docker-compose.yml   # Composition locale
-\`\`\`
+```
 
 ## 📝 Versioning
 
 Pour créer une nouvelle release:
 
-\`\`\`bash
+```bash
 git tag v1.0.0
 git push origin v1.0.0
-\`\`\`
+```
 
 Cela déclenche automatiquement:
 - Build de l'image
@@ -796,11 +799,11 @@ MIT License
 ## 👤 Auteur
 
 Votre Nom - [@votre-username](https://github.com/votre-username)
-\`\`\`
+````
 
-## Étape 6 : Configuration GitHub
+## Étape 6 : Configuration GitHub {#section-6}
 
-### 6.1 Créer le repository
+### 6.1 – Créer le repository {#section-6-1}
 
 ```bash
 # Initialiser Git
@@ -814,7 +817,7 @@ git branch -M main
 git push -u origin main
 ```
 
-### 6.2 Configurer les secrets
+### 6.2 – Configurer les secrets {#section-6-2}
 
 1. Aller sur Docker Hub → Account Settings → Security
 2. Créer un Access Token
