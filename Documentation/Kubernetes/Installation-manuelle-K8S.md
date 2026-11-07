@@ -112,10 +112,7 @@ sudo ufw status
 
 Les serveurs d'un amas sont souvent dans un **réseau privé** : VM derrière le NAT d'un hyperviseur, réseau isolé d'un laboratoire, nuage. Ils ne sont pas joignables directement du poste de travail. On passe alors par un **serveur relais** (*jump host* ou *bastion*), joignable des deux côtés.
 
-```
-Poste de travail ──ssh──> Serveur relais ──ssh──> k8s-cp
-                          192.168.2.9               192.168.122.50 (réseau privé)
-```
+<img src="../images/ha/relais-ssh.svg" alt="Poste de travail, serveur relais, puis k8s-cp dans un réseau privé" width="700" />
 
 L'option `-J` (*ProxyJump*) de `ssh` fait les deux connexions en une seule commande :
 

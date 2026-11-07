@@ -6,7 +6,7 @@
     <img src="../images/k8s.png" alt="" width="250" />
 </p>
 
-**Objectif de la lecture** : comprendre la haute disponibilité (HA) d'un amas Kubernetes, puis déployer, avec Vagrant, un amas HA complet : deux équilibreurs de charge, trois contrôleurs et deux nœuds ouvriers.
+**Objectif de la lecture** : comprendre la haute disponibilité (HA) d'un amas Kubernetes, puis déployer, avec Vagrant, un amas HA complet : deux équilibreurs de charge, trois contrôleurs et deux nœuds ouvriers, dans une VM Ubuntu sous Hyper-V.
 
 *A.B. aka ve2cuy*
 
@@ -21,10 +21,10 @@
   - [1.4 – Les deux topologies de kubeadm](#section-1-4)
   - [1.5 – L'équilibreur de charge de l'API](#section-1-5)
 - [**2 – Le système que nous allons déployer**](#section-2)
-- [**3 – Vagrant**](#section-3)
-  - [3.1 – Présentation](#section-3-1)
-  - [3.2 – Installation](#section-3-2)
-  - [3.3 – Les commandes essentielles](#section-3-3)
+- [**3 – Le poste de travail : Hyper-V et une VM Ubuntu**](#section-3)
+  - [3.1 – Créer la VM Ubuntu Server sous Hyper-V](#section-3-1)
+  - [3.2 – Préparer la VM : KVM, libvirt et Vagrant](#section-3-2)
+  - [3.3 – Vagrant](#section-3-3)
   - [3.4 – Un premier Vagrantfile](#section-3-4)
 - [**4 – L'amas HA entièrement défini dans Vagrant**](#section-4)
   - [4.1 – Les fichiers du projet](#section-4-1)
@@ -87,18 +87,7 @@ etcd ne confirme une écriture que si la **majorité** de ses membres l'a accept
 
 **etcd empilé** (*stacked etcd*) : chaque contrôleur héberge aussi un membre etcd. C'est la topologie par défaut de `kubeadm`.
 
-```
-                  Équilibreur de charge (IP virtuelle :6443)
-               ┌──────────────────┼──────────────────┐
-         ┌─────┴──────┐     ┌─────┴──────┐     ┌─────┴──────┐
-         │  k8s-cp1   │     │  k8s-cp2   │     │  k8s-cp3   │
-         │ apiserver  │     │ apiserver  │     │ apiserver  │
-         │ scheduler  │     │ scheduler  │     │ scheduler  │
-         │ controller │     │ controller │     │ controller │
-         │   etcd ◄───┼─────┼──► etcd ◄──┼─────┼──► etcd   │
-         └────────────┘     └────────────┘     └────────────┘
-                      Nœuds ouvriers (kubelet, Pods)
-```
+<img src="../images/ha/topologie-empilee.svg" alt="Topologie etcd empilé : trois contrôleurs, chacun avec un membre etcd" width="700" />
 
 **etcd externe** : les membres etcd sont sur leurs propres serveurs.
 
@@ -142,34 +131,102 @@ Sept VM Ubuntu Server 26.04 LTS, dans le réseau privé `192.168.56.0/24` :
 | `k8s-w1` | Nœud ouvrier | 192.168.56.31 | 2 | 2 Go |
 | `k8s-w2` | Nœud ouvrier | 192.168.56.32 | 2 | 2 Go |
 
-```
-                        kubectl, nœuds ouvriers
-                                  │
-                       https://192.168.56.10:6443  (IP virtuelle)
-                                  │
-                 ┌────────────────┴────────────────┐
-           ┌─────┴─────┐  VRRP (keepalived)  ┌─────┴─────┐
-           │  k8s-lb1  │◄───────────────────►│  k8s-lb2  │
-           │  HAProxy  │                     │  HAProxy  │
-           └─────┬─────┘                     └─────┬─────┘
-                 └──────────┬──────────┬───────────┘
-                     ┌──────┴┐   ┌─────┴─┐   ┌───────┐
-                     │k8s-cp1│   │k8s-cp2│   │k8s-cp3│   etcd : 3 membres
-                     └───────┘   └───────┘   └───────┘
-                           ┌───────┐   ┌───────┐
-                           │k8s-w1 │   │k8s-w2 │          Pods des applications
-                           └───────┘   └───────┘
-```
+<img src="../images/ha/systeme-ha.svg" alt="Système déployé : IP virtuelle, deux équilibreurs, trois contrôleurs, deux nœuds ouvriers" width="700" />
 
 **Logiciels** : Kubernetes v1.37, containerd 2.2, Flannel, HAProxy et keepalived (paquets d'Ubuntu).
 
-**Ressources du poste de travail** : environ 11 Go de mémoire vive et 20 Go de disque pour les sept VM, avec la virtualisation matérielle (VT-x ou AMD-V) activée. Avec moins de mémoire, réduire `NB_WORKERS` à 1 dans le Vagrantfile.
+**Ressources** : les sept VM demandent environ 11 Go de mémoire vive et 20 Go de disque. Elles roulent dans une VM Ubuntu Server de 14 Go (section 3); avec moins de mémoire, réduire `NB_WORKERS` à 1.
 
 ---
 
-## 3 – Vagrant {#section-3}
+## 3 – Le poste de travail : Hyper-V et une VM Ubuntu {#section-3}
 
-### 3.1 – Présentation {#section-3-1}
+En classe, l'amas est créé **dans une VM Ubuntu Server** qui roule sous **Hyper-V** sur le poste Windows 11. Les sept VM de l'amas sont des VM **imbriquées** : des VM (KVM) dans une VM (Hyper-V).
+
+<img src="../images/ha/couches-labo.svg" alt="Couches du laboratoire : Windows 11, Hyper-V, VM Ubuntu Server, KVM et les sept VM" width="700" />
+
+Pourquoi Hyper-V? Docker Desktop et WSL 2 utilisent Hyper-V. Quand Hyper-V est actif, VirtualBox et VMware Workstation ne peuvent plus offrir la virtualisation matérielle (VT-x, AMD-V) à leurs VM : seul Hyper-V permet alors la **virtualisation imbriquée**. Docker Desktop, WSL et l'amas cohabitent ainsi sur le même poste.
+
+### 3.1 – Créer la VM Ubuntu Server sous Hyper-V {#section-3-1}
+
+**Prérequis** : Windows 11 Pro, Éducation ou Entreprise (Hyper-V n'existe pas dans l'édition Famille), droits d'administrateur, 24 Go de mémoire vive ou plus sur le poste, l'image ISO d'[Ubuntu Server 26.04 LTS](https://ubuntu.com/download/server).
+
+| VM `k8s-lab` | Valeur |
+|--------------|--------|
+| Génération | 2 (UEFI) |
+| Processeurs | 8 vCPU (au moins 6) |
+| Mémoire | 14 Go, **statique** (la mémoire dynamique empêche la virtualisation imbriquée) |
+| Disque | 80 Go |
+| Réseau | Commutateur `Default Switch` (NAT de Windows) |
+
+Dans **PowerShell, en administrateur** :
+
+```powershell
+# 1. Activer Hyper-V (redémarrage demandé), s'il ne l'est pas déjà
+Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
+
+# 2. Créer la VM
+New-VM -Name k8s-lab -Generation 2 -MemoryStartupBytes 14GB `
+  -NewVHDPath "C:\VM\k8s-lab.vhdx" -NewVHDSizeBytes 80GB -SwitchName "Default Switch"
+Set-VMMemory    -VMName k8s-lab -DynamicMemoryEnabled $false
+Set-VMProcessor -VMName k8s-lab -Count 8 -ExposeVirtualizationExtensions $true
+Set-VMFirmware  -VMName k8s-lab -SecureBootTemplate MicrosoftUEFICertificateAuthority
+Set-VM          -VMName k8s-lab -AutomaticCheckpointsEnabled $false
+
+# 3. Démarrer sur l'ISO d'Ubuntu Server
+Add-VMDvdDrive  -VMName k8s-lab -Path "C:\ISO\ubuntu-26.04.1-live-server-amd64.iso"
+Set-VMFirmware  -VMName k8s-lab -FirstBootDevice (Get-VMDvdDrive -VMName k8s-lab)
+Start-VM k8s-lab
+vmconnect localhost k8s-lab
+```
+
+* `-ExposeVirtualizationExtensions $true` : **la** commande qui permet la virtualisation imbriquée. Elle ne s'applique qu'à une VM arrêtée.
+* `-SecureBootTemplate MicrosoftUEFICertificateAuthority` : le démarrage sécurisé accepte Linux (le modèle par défaut n'accepte que Windows).
+
+**Installer Ubuntu Server** dans la fenêtre de la VM : nom de la machine `k8s-lab`, un usager (ex. `etudiant`), et cocher **Install OpenSSH server**. Après l'installation, noter l'adresse IP de la VM :
+
+```bash
+ip -4 -br addr show eth0
+```
+
+> 💡 Le `Default Switch` donne une adresse en `172.x.x.x` qui peut changer au redémarrage de Windows. Se connecter du **Terminal Windows** par `ssh etudiant@<adresse>`, ou par le nom `ssh etudiant@k8s-lab.mshome.net` (nom publié par le `Default Switch`).
+
+### 3.2 – Préparer la VM : KVM, libvirt et Vagrant {#section-3-2}
+
+Dans la VM `k8s-lab` (session SSH) :
+
+```bash
+# La virtualisation imbriquée fonctionne si /dev/kvm existe
+ls -l /dev/kvm
+
+# Récupérer le projet du cours et préparer la VM (environ 5 minutes)
+git clone https://github.com/ve2cuy/4204d4.git
+bash 4204d4/Installation/Kubernetes/HA/preparer-hote.sh
+
+# Fermer la session et se reconnecter : l'usager vient d'être ajouté au groupe libvirt
+exit
+```
+
+Le script [preparer-hote.sh](https://github.com/ve2cuy/4204d4/blob/main/Installation/Kubernetes/HA/preparer-hote.sh) installe :
+
+| Logiciel | Rôle |
+|----------|------|
+| `qemu-system-x86`, `libvirt-daemon-system` | L'hyperviseur KVM et son gestionnaire, libvirt |
+| `ovmf` | Le micrologiciel UEFI des VM |
+| Vagrant (dépôt apt de HashiCorp) | La création des VM à partir du `Vagrantfile` |
+| `vagrant-libvirt` (greffon, compilé sur place) | Le fournisseur libvirt de Vagrant |
+
+Il crée aussi la réserve de stockage `default` de libvirt et fait de libvirt le fournisseur par défaut de Vagrant (`VAGRANT_DEFAULT_PROVIDER`). Résultat attendu :
+
+```
+>>> Virtualisation matérielle
+/dev/kvm présent, 8 processeur(s) avec VT-x/AMD-V
+...
+>>> Prêt : Vagrant 2.4.9, vagrant-libvirt (0.12.2, global)
+>>> Fermer la session et se reconnecter (groupe libvirt), puis : vagrant up
+```
+
+### 3.3 – Vagrant {#section-3-3}
 
 [Vagrant](https://developer.hashicorp.com/vagrant) (HashiCorp) crée et configure des machines virtuelles à partir d'un fichier texte, le `Vagrantfile`. C'est de l'**infrastructure en tant que code** (*IaC*) : le même fichier produit les mêmes VM, sur tous les postes, autant de fois que nécessaire.
 
@@ -180,24 +237,7 @@ Sept VM Ubuntu Server 26.04 LTS, dans le réseau privé `192.168.56.0/24` :
 | **Approvisionnement** (*provisioner*) | Ce qui configure la VM après son premier démarrage : script shell, copie de fichiers, Ansible… |
 | **Réseau** | Une carte NAT (gérée par Vagrant, pour Internet et `vagrant ssh`) et, au besoin, un réseau privé (`private_network`) entre les VM et le poste. |
 
-### 3.2 – Installation {#section-3-2}
-
-| Poste | Installation |
-|-------|--------------|
-| Windows 11 | [VirtualBox](https://www.virtualbox.org/wiki/Downloads), [Vagrant](https://developer.hashicorp.com/vagrant/install) et [Git](https://git-scm.com/download/win) (ou `winget install Oracle.VirtualBox Hashicorp.Vagrant Git.Git`) |
-| macOS (Intel) | `brew install --cask virtualbox vagrant` |
-| macOS (Apple Silicon) | VirtualBox 7.1+ pour ARM, ou Parallels/VMware Fusion; la boîte `bento/ubuntu-26.04` existe en arm64 |
-| Linux | VirtualBox et Vagrant; ou KVM : `sudo apt install qemu-system-x86 libvirt-daemon-system libvirt-dev ovmf build-essential`, puis `vagrant plugin install vagrant-libvirt` (Vagrant : dépôt apt de [HashiCorp](https://developer.hashicorp.com/vagrant/install)) |
-
-```bash
-vagrant --version
-```
-
-> ⚠️ Sous Windows, Hyper-V (et WSL 2) peut ralentir VirtualBox. Si les VM sont très lentes ou ne démarrent pas, voir la [section 8](#section-8).
-
-> 💡 **Windows 11** : les commandes `vagrant` se tapent dans PowerShell (ou le Terminal Windows). Les commandes `kubectl`, `curl`, `grep`… de ce document se tapent **dans les VM** (`vagrant ssh k8s-cp1`), sous bash. Dans PowerShell 5, `curl` est un alias d'`Invoke-WebRequest` : taper `curl.exe`, ou ouvrir l'adresse dans le fureteur.
-
-### 3.3 – Les commandes essentielles {#section-3-3}
+**Les commandes essentielles** (dans la VM `k8s-lab`) :
 
 | Commande | Action |
 |----------|--------|
@@ -222,9 +262,13 @@ Vagrant.configure("2") do |config|
   config.vm.box = "bento/ubuntu-26.04"
   config.vm.hostname = "essai"
   config.vm.network "private_network", ip: "192.168.56.5"
-  config.vm.provider "virtualbox" do |vb|
-    vb.memory = 1024
-    vb.cpus = 1
+  config.vm.provider "libvirt" do |lv|
+    lv.driver   = "kvm"                                  # la boîte demande « qemu » (émulation)
+    lv.cpu_mode = "host-passthrough"
+    lv.loader   = "/usr/share/OVMF/OVMF_CODE_4M.fd"      # la boîte démarre en UEFI
+    lv.nvram    = "/var/lib/libvirt/qemu/nvram/essai_VARS.fd"
+    lv.memory   = 1024
+    lv.cpus     = 1
   end
   config.vm.provision "shell", inline: <<-SHELL
     apt-get update
@@ -234,11 +278,14 @@ end
 ```
 
 ```bash
-vagrant up           # quelques minutes la première fois (téléchargement de la boîte)
-curl http://192.168.56.5      # PowerShell : curl.exe http://192.168.56.5
-vagrant ssh          # exit pour sortir
+mkdir essai && cd essai          # y placer le Vagrantfile
+vagrant up                       # quelques minutes la première fois (téléchargement de la boîte)
+curl http://192.168.56.5         # page d'accueil de nginx
+vagrant ssh                      # exit pour sortir
 vagrant destroy -f
 ```
+
+> 💡 Le `Vagrantfile` du projet HA (section 4) contient aussi les réglages de VirtualBox : sur un poste Linux ou macOS **sans** Hyper-V, il fonctionne directement avec VirtualBox (`vagrant up --provider=virtualbox`).
 
 ---
 
@@ -248,24 +295,17 @@ vagrant destroy -f
 
 Les fichiers sont dans le dépôt du cours : [Installation/Kubernetes/HA](https://github.com/ve2cuy/4204d4/tree/main/Installation/Kubernetes/HA).
 
-```
-HA/
-├── Vagrantfile            les 7 VM, leurs adresses, la CA et les secrets
-├── .gitignore             pki/ et .vagrant/ ne vont jamais dans Git
-└── scripts/
-    ├── commun.sh          préparation d'un serveur K8s (document 24b, sections 2 et 3)
-    ├── equilibreur.sh     HAProxy + keepalived
-    ├── controleur.sh      kubeadm init (cp1) ou kubeadm join --control-plane (cp2, cp3)
-    └── ouvrier.sh         kubeadm join (w1, w2)
-```
+| Fichier | Rôle |
+|---------|------|
+| `Vagrantfile` | Les 7 VM, leurs adresses, la CA et les secrets |
+| `preparer-hote.sh` | Préparation de la VM `k8s-lab` : KVM, libvirt, Vagrant (section 3.2) |
+| `scripts/commun.sh` | Préparation d'un serveur K8s (document 24b, sections 2 et 3) |
+| `scripts/equilibreur.sh` | HAProxy + keepalived |
+| `scripts/controleur.sh` | `kubeadm init` (cp1) ou `kubeadm join --control-plane` (cp2, cp3) |
+| `scripts/ouvrier.sh` | `kubeadm join` (w1, w2) |
+| `.gitignore`, `.gitattributes` | `pki/` et `.vagrant/` jamais dans Git; scripts en fins de ligne Unix |
 
-```bash
-# Récupérer le projet
-git clone https://github.com/ve2cuy/4204d4.git
-cd 4204d4/Installation/Kubernetes/HA
-```
-
-> 💡 Sans Git : télécharger le dépôt en ZIP (bouton *Code* → *Download ZIP* sur GitHub) et le décompresser. Les scripts `.sh` doivent garder des fins de ligne Unix (LF) : le fichier `.gitattributes` du projet l'impose à Git, même sous Windows, et Vagrant convertit au besoin les scripts qu'il envoie aux VM.
+Le projet a été récupéré dans la VM `k8s-lab` à la section 3.2 (`git clone`).
 
 ### 4.2 – Le Vagrantfile {#section-4-2}
 
@@ -303,7 +343,7 @@ Chaque type de VM reçoit ses scripts, et les valeurs dont ils ont besoin par de
 Points à remarquer :
 
 * Les VM sont créées **une à la fois**, dans l'ordre du fichier : équilibreurs, contrôleurs, puis nœuds ouvriers (`VAGRANT_NO_PARALLEL`).
-* Aucun dossier partagé (`synced_folder … disabled: true`) : les fichiers utiles sont copiés par l'approvisionnement `file`. Le projet fonctionne ainsi avec VirtualBox comme avec libvirt.
+* Aucun dossier partagé (`synced_folder … disabled: true`) : les fichiers utiles sont copiés par l'approvisionnement `file`. Le projet fonctionne ainsi avec libvirt comme avec VirtualBox.
 * Le même fichier sert aux deux fournisseurs : les blocs `provider "virtualbox"` et `provider "libvirt"` fixent la mémoire et les processeurs.
 * La boîte `bento/ubuntu-26.04` démarre en **UEFI** seulement. Avec libvirt, il faut donc le micrologiciel OVMF (`lv.loader`, paquet `ovmf`) et forcer KVM (`lv.driver = "kvm"`) : la boîte demande `qemu`, une émulation des centaines de fois plus lente.
 
@@ -341,11 +381,9 @@ CA_HASH = "sha256:" + OpenSSL::Digest::SHA256.hexdigest(
 ### 4.4 – Lancer l'amas {#section-4-4}
 
 ```bash
-cd 4204d4/Installation/Kubernetes/HA
-
-vagrant up                          # VirtualBox
-# ou, sous Linux avec KVM :
-vagrant up --provider=libvirt
+# Dans la VM k8s-lab
+cd ~/4204d4/Installation/Kubernetes/HA
+vagrant up
 ```
 
 La première fois, Vagrant télécharge la boîte (environ 1 Go), puis crée et configure les sept VM l'une après l'autre : compter de **20 à 30 minutes**. Chaque étape est affichée (`>>> …`) :
@@ -405,12 +443,16 @@ backend k8s-controleurs
 * `check-ssl verify none` : la vérification de santé interroge `https://<contrôleur>:6443/livez`.
 * Une page de statistiques est offerte sur le port 8404 de chaque équilibreur : `http://192.168.56.11:8404/`.
 
-> 💡 Avec VirtualBox, le réseau privé `192.168.56.0/24` est joignable directement du poste de travail : la page s'ouvre dans le fureteur. Si les VM sont sur **un autre serveur** (par exemple un serveur Linux du labo avec libvirt), passer par un tunnel SSH ([document 24b, section 1.4](Installation-manuelle-K8S.md#section-1-4)) :
->
-> ```bash
-> # lb1 sur http://localhost:8404/, lb2 sur http://localhost:8405/
-> ssh -N -L 8404:192.168.56.11:8404 -L 8405:192.168.56.12:8404 usager@serveur
-> ```
+Le réseau `192.168.56.0/24` est dans la VM `k8s-lab` : depuis le fureteur de Windows, passer par un tunnel SSH ([document 24b, section 1.4](Installation-manuelle-K8S.md#section-1-4)), dans le Terminal Windows :
+
+```bash
+# lb1 sur http://localhost:8404/, lb2 sur http://localhost:8405/
+ssh -N -L 8404:192.168.56.11:8404 -L 8405:192.168.56.12:8404 etudiant@<adresse de k8s-lab>
+```
+
+<img src="../images/ha/haproxy-stats.png" alt="Page de statistiques de HAProxy : les trois contrôleurs UP" width="800" />
+
+Dans le tableau `k8s-controleurs`, chaque contrôleur est vert (`UP`); la colonne `LastChk` donne le résultat de la dernière vérification de santé (`L7OK/200` : `/livez` a répondu 200). Un contrôleur arrêté passe au rouge (`DOWN`) après trois vérifications ratées (`fall 3`).
 
 **keepalived** (`/etc/keepalived/keepalived.conf`) : les deux équilibreurs s'échangent des annonces VRRP chaque seconde. Celui qui a la plus haute priorité (`k8s-lb1` : 110, `k8s-lb2` : 100) porte l'IP virtuelle `192.168.56.10`.
 
@@ -556,15 +598,11 @@ kubectl -n kube-system exec etcd-k8s-cp1 -- etcdctl \
   member list -w table
 ```
 
-```
-┌──────────────────┬─────────┬─────────┬────────────────────────────┬────────────────────────────┬────────────┐
-│        ID        │ STATUS  │  NAME   │         PEER ADDRS         │        CLIENT ADDRS        │ IS LEARNER │
-├──────────────────┼─────────┼─────────┼────────────────────────────┼────────────────────────────┼────────────┤
-│ 28a928fb76407458 │ started │ k8s-cp3 │ https://192.168.56.23:2380 │ https://192.168.56.23:2379 │      false │
-│ 49dea182b4aa06a3 │ started │ k8s-cp2 │ https://192.168.56.22:2380 │ https://192.168.56.22:2379 │      false │
-│ a654cb086123e8d9 │ started │ k8s-cp1 │ https://192.168.56.21:2380 │ https://192.168.56.21:2379 │      false │
-└──────────────────┴─────────┴─────────┴────────────────────────────┴────────────────────────────┴────────────┘
-```
+| ID | STATUS | NAME | PEER ADDRS | CLIENT ADDRS | IS LEARNER |
+|----|--------|------|------------|--------------|------------|
+| 28a928fb76407458 | started | k8s-cp3 | https://192.168.56.23:2380 | https://192.168.56.23:2379 | false |
+| 49dea182b4aa06a3 | started | k8s-cp2 | https://192.168.56.22:2380 | https://192.168.56.22:2379 | false |
+| a654cb086123e8d9 | started | k8s-cp1 | https://192.168.56.21:2380 | https://192.168.56.21:2379 | false |
 
 **Le leader du scheduler et du controller-manager** (un seul actif) :
 
@@ -637,7 +675,7 @@ kubectl expose deployment web --port=80 --type=NodePort
 
 1. Avec `k8s-cp2` toujours arrêté, arrêter aussi `k8s-cp3`.
 2. L'API répond-elle? Pourquoi, alors que `k8s-cp1` est en marche (voir [1.3](#section-1-3))?
-3. Les Pods de l'application répondent-ils encore? Ouvrir `http://192.168.56.31:<NodePort>` dans le fureteur du poste.
+3. Les Pods de l'application répondent-ils encore? Dans la VM `k8s-lab` : `curl http://192.168.56.31:<NodePort>`.
 4. Redémarrer `k8s-cp3` : après combien de temps l'API répond-elle de nouveau?
 5. Redémarrer `k8s-cp2`.
 
@@ -684,21 +722,41 @@ sudo kubeadm init phase upload-certs --upload-certs --certificate-key <valeur de
 
 Le réglage `--node-ip` est absent : voir la [section 5.5](#section-5-5).
 
-#### 🤚 VirtualBox : « The IP address configured for the host-only network is not within the allowed ranges »
+#### 🤚 /dev/kvm absent dans la VM k8s-lab
 
-Depuis VirtualBox 6.1.28, les réseaux privés doivent être dans `192.168.56.0/21`. Pour une autre plage, créer le fichier `/etc/vbox/networks.conf` (Linux, macOS) :
+La virtualisation imbriquée n'est pas activée. VM arrêtée, dans PowerShell administrateur :
+
+```powershell
+Stop-VM -Name k8s-lab
+Set-VMProcessor -VMName k8s-lab -ExposeVirtualizationExtensions $true
+Set-VMMemory    -VMName k8s-lab -DynamicMemoryEnabled $false
+Start-VM -Name k8s-lab
+```
+
+#### 🤚 vagrant up : « Waiting for domain to get an IP address... » sans fin
+
+La VM ne démarre pas. Causes possibles : `lv.loader` absent (la boîte démarre en UEFI seulement : la console montre « No bootable device »), ou `lv.driver = "kvm"` absent (émulation `qemu`, des dizaines de minutes). Vérifier les réglages `provider "libvirt"` du Vagrantfile, puis `vagrant destroy -f` et `vagrant up`.
+
+#### 🤚 vagrant up : « Storage pool not found: no storage pool with matching name 'default' »
+
+La réserve de stockage de libvirt n'existe pas : relancer `preparer-hote.sh`, ou :
+
+```bash
+sudo virsh pool-define-as default dir --target /var/lib/libvirt/images
+sudo virsh pool-start default && sudo virsh pool-autostart default
+```
+
+#### 🤚 vagrant up : « Permission denied » sur `/var/run/libvirt/libvirt-sock`
+
+L'usager n'est pas encore dans le groupe `libvirt` : fermer la session SSH et se reconnecter.
+
+#### 🤚 VirtualBox (poste sans Hyper-V) : « The IP address configured for the host-only network is not within the allowed ranges »
+
+Depuis VirtualBox 6.1.28, les réseaux privés doivent être dans `192.168.56.0/21`. Pour une autre plage, créer le fichier `/etc/vbox/networks.conf` :
 
 ```
 * 10.0.0.0/8 192.168.0.0/16
 ```
-
-#### 🤚 Windows : VM très lentes, ou « VT-x is not available »
-
-Hyper-V, WSL 2 ou l'isolation du noyau (*Memory integrity*) occupent les fonctions de virtualisation. VirtualBox 7 sait fonctionner par-dessus Hyper-V, mais lentement. Pour de meilleures performances : désactiver *Memory integrity* (Sécurité Windows → Sécurité de l'appareil) et la fonction Windows « Plateforme d'hyperviseur », puis redémarrer.
-
-#### 🤚 Windows : « /bin/bash^M: bad interpreter » ou « $'\r': command not found »
-
-Un script `.sh` a des fins de ligne Windows (CRLF), par exemple après une modification avec un éditeur mal configuré. Le convertir en LF (VS Code : cliquer sur `CRLF` dans la barre d'état → `LF`), puis `vagrant provision <nom>`.
 
 #### 🤚 L'IP virtuelle ne répond pas
 
@@ -717,8 +775,7 @@ vagrant halt                    # arrêter tout l'amas (à la fin d'une séance)
 vagrant up                      # le redémarrer : l'approvisionnement n'est pas refait
 vagrant snapshot save k8s-cp1 avant-test     # photo d'une VM
 vagrant snapshot restore k8s-cp1 avant-test
-vagrant destroy -f              # tout effacer...
-rm -rf pki                      # ... CA comprise (PowerShell : Remove-Item -Recurse -Force pki)
+vagrant destroy -f && rm -rf pki   # tout effacer, CA comprise
 ```
 
 **Complétion de code pour kubectl** (sur un contrôleur) :

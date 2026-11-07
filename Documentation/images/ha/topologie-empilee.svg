@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" font-family="Helvetica, Arial, sans-serif" font-size="14">
+  <rect width="760" height="420" rx="12" fill="#ffffff"/>
+  <defs><marker id="f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker></defs>
+  <!-- Équilibreur -->
+  <rect x="180" y="20" width="400" height="44" rx="8" fill="#e3ecfb" stroke="#3b6fd8" stroke-width="2"/>
+  <text x="380" y="47" text-anchor="middle" fill="#1d3f8a" font-weight="bold">Équilibreur de charge · IP virtuelle :6443</text>
+  <g stroke="#555" stroke-width="2" fill="none">
+    <path d="M380 64 V82 M150 82 H610 M150 82 V100 M380 82 V100 M610 82 V100"/>
+  </g>
+  <!-- Contrôleurs -->
+  <g>
+    <rect x="45" y="100" width="210" height="200" rx="10" fill="#eef6ee" stroke="#3c8d3c" stroke-width="2"/>
+    <rect x="275" y="100" width="210" height="200" rx="10" fill="#eef6ee" stroke="#3c8d3c" stroke-width="2"/>
+    <rect x="505" y="100" width="210" height="200" rx="10" fill="#eef6ee" stroke="#3c8d3c" stroke-width="2"/>
+  </g>
+  <g fill="#1f5a1f" font-weight="bold" text-anchor="middle">
+    <text x="150" y="124">k8s-cp1</text><text x="380" y="124">k8s-cp2</text><text x="610" y="124">k8s-cp3</text>
+  </g>
+  <g fill="#ffffff" stroke="#8fbf8f">
+    <rect x="60" y="136" width="180" height="26" rx="5"/><rect x="60" y="168" width="180" height="26" rx="5"/><rect x="60" y="200" width="180" height="26" rx="5"/>
+    <rect x="290" y="136" width="180" height="26" rx="5"/><rect x="290" y="168" width="180" height="26" rx="5"/><rect x="290" y="200" width="180" height="26" rx="5"/>
+    <rect x="520" y="136" width="180" height="26" rx="5"/><rect x="520" y="168" width="180" height="26" rx="5"/><rect x="520" y="200" width="180" height="26" rx="5"/>
+  </g>
+  <g fill="#333" text-anchor="middle" font-size="13">
+    <text x="150" y="154">kube-apiserver</text><text x="150" y="186">kube-scheduler</text><text x="150" y="218">controller-manager</text>
+    <text x="380" y="154">kube-apiserver</text><text x="380" y="186">kube-scheduler</text><text x="380" y="218">controller-manager</text>
+    <text x="610" y="154">kube-apiserver</text><text x="610" y="186">kube-scheduler</text><text x="610" y="218">controller-manager</text>
+  </g>
+  <g fill="#fff4e0" stroke="#d08a1a" stroke-width="2">
+    <rect x="60" y="246" width="180" height="36" rx="6"/><rect x="290" y="246" width="180" height="36" rx="6"/><rect x="520" y="246" width="180" height="36" rx="6"/>
+  </g>
+  <g fill="#8a5300" font-weight="bold" text-anchor="middle">
+    <text x="150" y="269">etcd</text><text x="380" y="269">etcd</text><text x="610" y="269">etcd</text>
+  </g>
+  <!-- Réplication etcd -->
+  <g stroke="#d08a1a" stroke-width="2" stroke-dasharray="5 4" fill="none" marker-start="url(#f)" marker-end="url(#f)">
+    <path d="M242 264 H288"/><path d="M472 264 H518"/>
+    <path d="M150 284 V318 H610 V284"/>
+  </g>
+  <text x="380" y="336" text-anchor="middle" fill="#8a5300" font-size="13">réplication Raft entre les 3 membres etcd (quorum : 2)</text>
+  <!-- Ouvriers -->
+  <rect x="180" y="356" width="400" height="44" rx="8" fill="#f3eefb" stroke="#7a52c7" stroke-width="2"/>
+  <text x="380" y="383" text-anchor="middle" fill="#4b2d8a" font-weight="bold">Nœuds ouvriers · kubelet et Pods</text>
+</svg>

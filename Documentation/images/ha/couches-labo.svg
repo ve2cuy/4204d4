@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" font-family="Helvetica, Arial, sans-serif" font-size="14">
+  <rect width="760" height="330" rx="12" fill="#ffffff"/>
+  <rect x="16" y="16" width="728" height="298" rx="12" fill="#f2f2f2" stroke="#888" stroke-width="2"/>
+  <text x="32" y="40" fill="#333" font-weight="bold">Poste Windows 11 <tspan font-weight="normal" fill="#555" font-size="13">· Docker Desktop, WSL 2</tspan></text>
+  <rect x="36" y="54" width="688" height="244" rx="10" fill="#e3ecfb" stroke="#3b6fd8" stroke-width="2"/>
+  <text x="52" y="78" fill="#1d3f8a" font-weight="bold">Hyper-V <tspan font-weight="normal" fill="#333" font-size="13">· virtualisation imbriquée (ExposeVirtualizationExtensions)</tspan></text>
+  <rect x="56" y="92" width="648" height="190" rx="10" fill="#eef6ee" stroke="#3c8d3c" stroke-width="2"/>
+  <text x="72" y="116" fill="#1f5a1f" font-weight="bold">VM Ubuntu Server 26.04 « k8s-lab » <tspan font-weight="normal" fill="#333" font-size="13">· KVM, libvirt, Vagrant</tspan></text>
+  <rect x="76" y="130" width="608" height="136" rx="10" fill="#fff4e0" stroke="#d08a1a" stroke-width="2"/>
+  <text x="92" y="154" fill="#8a5300" font-weight="bold">Réseau privé 192.168.56.0/24 <tspan font-weight="normal" fill="#333" font-size="13">· VM créées par vagrant up</tspan></text>
+  <g fill="#ffffff" stroke="#3b6fd8" stroke-width="1.5"><rect x="92" y="170" width="132" height="34" rx="6"/><rect x="234" y="170" width="132" height="34" rx="6"/></g>
+  <g fill="#ffffff" stroke="#3c8d3c" stroke-width="1.5"><rect x="376" y="170" width="92" height="34" rx="6"/><rect x="478" y="170" width="92" height="34" rx="6"/><rect x="580" y="170" width="92" height="34" rx="6"/></g>
+  <g fill="#ffffff" stroke="#7a52c7" stroke-width="1.5"><rect x="234" y="216" width="132" height="34" rx="6"/><rect x="376" y="216" width="132" height="34" rx="6"/></g>
+  <g text-anchor="middle" fill="#333" font-size="13">
+    <text x="158" y="192">k8s-lb1</text><text x="300" y="192">k8s-lb2</text>
+    <text x="422" y="192">k8s-cp1</text><text x="524" y="192">k8s-cp2</text><text x="626" y="192">k8s-cp3</text>
+    <text x="300" y="238">k8s-w1</text><text x="442" y="238">k8s-w2</text>
+  </g>
+</svg>
