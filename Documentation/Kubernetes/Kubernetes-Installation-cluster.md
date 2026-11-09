@@ -1,6 +1,6 @@
 # 34 - Installation d'un amas HA
 
-*Révision du 2026.11.07*
+*Révision du 2026.11.09*
 
 <p align="center">
     <img src="../images/k8s.png" alt="" width="250" />
@@ -643,6 +643,13 @@ k8s-controleurs,k8s-cp3,UP
 
 ## 7 – Laboratoire : tests de panne (durée 45 minutes) {#section-7}
 
+Voici, en animation, ce que les tests de cette section vont montrer : six états de l'amas, du fonctionnement normal à la perte du quorum, puis le retour à la normale. Suivre les appels de `kubectl` (en bleu) et le trafic de l'application (en vert).
+
+<img src="../images/ha/ha-pannes-anime.svg" alt="Animation en six états : fonctionnement normal; panne de k8s-lb1, l'IP virtuelle passe à k8s-lb2; panne du leader k8s-cp1, etcd garde le quorum; k8s-cp1 et k8s-cp3 arrêtés, l'API est hors service mais l'application répond; k8s-cp3 redémarre; retour à la normale" width="900" />
+
+*L'animation dure 36 secondes ([l'ouvrir seule](../images/ha/ha-pannes-anime.svg)).*
+
+
 Garder un terminal ouvert sur `k8s-cp1` avec une commande qui interroge l'API chaque seconde :
 
 ```bash
@@ -805,6 +812,6 @@ source ~/.bashrc
 ## Crédits
 
 *Document rédigé par Alain Boudreault © 2021-2027*  
-*Révision 2026.11.07.1*  
+*Révision 2026.11.09.1*  
 
 *Contenu par [VE2CUY](https://ve2cuy.github.io/blog/)*
