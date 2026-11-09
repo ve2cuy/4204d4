@@ -478,8 +478,26 @@ vrrp_instance API_K8S {
 }
 ```
 
+| Réglage | Sens |
+|---------|------|
+| `state BACKUP` (sur les deux) | Aucun maître imposé : il est **élu** par la priorité. |
+| `virtual_router_id 51` | Le même numéro sur les deux équilibreurs : ils forment une seule paire VRRP. |
+| `priority` | `k8s-lb1` : 110, `k8s-lb2` : 100. La plus haute priorité porte l'IP virtuelle. |
+| `advert_int 1` | Le maître s'annonce chaque seconde. Après environ **3 s** sans annonce, la relève prend l'IP. |
+| `track_script` | Toutes les 2 s, vérifie que HAProxy roule; sinon, la priorité baisse de 20. |
+
 * Si `k8s-lb1` s'arrête, `k8s-lb2` ne reçoit plus d'annonces et prend l'IP virtuelle.
 * Si HAProxy s'arrête sur `k8s-lb1`, sa priorité baisse de 20 (110 − 20 = 90 < 100) : il cède l'IP virtuelle.
+* Au retour de `k8s-lb1` (priorité 110), il reprend l'IP virtuelle.
+
+> 💡 **Qui fait quoi?** HAProxy roule dans les **deux** équilibreurs, mais seul celui qui porte l'IP virtuelle reçoit les appels; l'autre attend, prêt à prendre la relève. **keepalived choisit l'équilibreur** qui répond à `192.168.56.10`; **HAProxy, sur cet équilibreur, choisit le contrôleur** en santé qui traite l'appel.
+
+Pour l'observer (`vagrant ssh k8s-lb1`, puis `k8s-lb2`) :
+
+```bash
+ip -4 addr show | grep 192.168.56.10          # présente sur le maître seulement
+sudo journalctl -u keepalived | grep -i state # passages MASTER / BACKUP
+```
 
 ### 5.2 – Le premier contrôleur {#section-5-2}
 
