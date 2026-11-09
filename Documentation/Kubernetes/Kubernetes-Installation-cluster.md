@@ -483,7 +483,7 @@ vrrp_instance API_K8S {
 | `state BACKUP` (sur les deux) | Aucun maître imposé : il est **élu** par la priorité. |
 | `virtual_router_id 51` | Le même numéro sur les deux équilibreurs : ils forment une seule paire VRRP. |
 | `priority` | `k8s-lb1` : 110, `k8s-lb2` : 100. La plus haute priorité porte l'IP virtuelle. |
-| `advert_int 1` | Le maître s'annonce chaque seconde. Après environ **3 s** sans annonce, la relève prend l'IP. |
+| `advert_int 1` | Le maître s'annonce chaque seconde. Après environ **3 s** sans annonce (panne brutale), la relève prend l'IP. Lors d'un arrêt propre, le maître annonce son départ (priorité 0) : la bascule est alors presque immédiate (0,5 s au test 1 de la section 7). |
 | `track_script` | Toutes les 2 s, vérifie que HAProxy roule; sinon, la priorité baisse de 20. |
 
 * Si `k8s-lb1` s'arrête, `k8s-lb2` ne reçoit plus d'annonces et prend l'IP virtuelle.
