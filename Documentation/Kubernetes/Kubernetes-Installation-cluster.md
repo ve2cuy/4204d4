@@ -1,6 +1,6 @@
 # 34 - Installation d'un amas HA
 
-*Révision du 2026.11.09*
+*Révision du 2026.11.10*
 
 <p align="center">
     <img src="../images/k8s.png" alt="" width="250" />
@@ -450,6 +450,8 @@ Le réseau `192.168.56.0/24` est dans la VM `k8s-lab` : depuis le fureteur de Wi
 ssh -N -L 8404:192.168.56.11:8404 -L 8405:192.168.56.12:8404 etudiant@<adresse de k8s-lab>
 ```
 
+Le tunnel occupe le terminal tant qu'il est ouvert (`Ctrl+C` pour le fermer). Les autres façons de faire, en arrière-plan et pour `kubectl`, sont dans le [document 24b, section 1.4](Installation-manuelle-K8S.md#section-1-4).
+
 <img src="../images/ha/haproxy-stats.png" alt="Page de statistiques de HAProxy : les trois contrôleurs UP" width="800" />
 
 Dans le tableau `k8s-controleurs`, chaque contrôleur est vert (`UP`); la colonne `LastChk` donne le résultat de la dernière vérification de santé (`L7OK/200` : `/livez` a répondu 200). Un contrôleur arrêté passe au rouge (`DOWN`) après trois vérifications ratées (`fall 3`).
@@ -830,6 +832,6 @@ source ~/.bashrc
 ## Crédits
 
 *Document rédigé par Alain Boudreault © 2021-2027*  
-*Révision 2026.11.09.1*  
+*Révision 2026.11.10.1*  
 
 *Contenu par [VE2CUY](https://ve2cuy.github.io/blog/)*

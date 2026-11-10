@@ -1,6 +1,6 @@
 # 24b - Installation manuelle de K8S
 
-*Révision du 2026.11.07*
+*Révision du 2026.11.10*
 
 > ✅ **Nouvelle version du document 24.** Toutes les commandes ont été vérifiées le 2026.11.07 sur un amas de quatre VM (Ubuntu 26.04.1 LTS, noyau 7.0, processeur Intel Xeon) : Kubernetes v1.37.2, containerd 2.2.2, Flannel v0.28.
 
@@ -176,12 +176,52 @@ type $env:USERPROFILE\.ssh\id_ed25519.pub | ssh relais "mkdir -p ~/.ssh && cat >
 type $env:USERPROFILE\.ssh\id_ed25519.pub | ssh k8s-cp "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys"
 ```
 
-**Tunnel vers un service de l'amas** : l'option `-L` rend un port du réseau privé accessible sur le poste de travail.
+**Tunnel vers un service de l'amas** : l'option `-L port_local:destination:port` rend un port du réseau privé accessible sur le poste de travail. L'option `-N` ouvre le tunnel sans ouvrir de session (pas d'invite de commande sur le relais).
 
 ```bash
 # Le NodePort 30080 du nœud k8s-w1 devient http://localhost:30080 sur le poste de travail
-ssh -L 30080:192.168.122.51:30080 claude@192.168.2.9
+ssh -N -L 30080:192.168.122.51:30080 claude@192.168.2.9
 ```
+
+> ⚠️ Le tunnel se lance **sur le poste de travail**, là où le fureteur ou `kubectl` l'utilisera. Lancé dans une session déjà ouverte sur le relais (invite `claude@srvclaude:~$`), il écoute sur le relais lui-même : le poste reçoit alors `connection refused`.
+
+**Au premier plan ou en arrière-plan**
+
+| Mode | Commande | Pour l'arrêter |
+|------|----------|----------------|
+| **Premier plan** : le terminal reste occupé, rien n'est affiché | `ssh -N -L 30080:192.168.122.51:30080 claude@192.168.2.9` | `Ctrl+C` dans ce terminal |
+| **Arrière-plan** (macOS, Linux, WSL) : `ssh` rend la main après le mot de passe | `ssh -f -N -L 30080:192.168.122.51:30080 claude@192.168.2.9` | `pkill -f "30080:192.168.122.51"` |
+
+* Au premier plan, le tunnel vit tant que le terminal reste ouvert : le plus simple, dans un deuxième onglet.
+* En arrière-plan, le tunnel survit à la fermeture du terminal; il faut penser à l'arrêter. Ajouter `-o ExitOnForwardFailure=yes` pour que `ssh` s'arrête en erreur si le port local est déjà pris, plutôt que de passer en arrière-plan sans tunnel.
+* **Windows** (PowerShell) : l'option `-f` n'est pas offerte par le client OpenSSH de Windows. Utiliser le premier plan dans un deuxième onglet du Terminal Windows, ou, avec une clé SSH (pas de mot de passe à taper), une fenêtre réduite :
+
+```powershell
+Start-Process ssh -ArgumentList "-N -L 30080:192.168.122.51:30080 relais" -WindowStyle Minimized
+# Pour l'arrêter : fermer cette fenêtre, ou
+Get-Process ssh | Stop-Process
+```
+
+**`kubectl` sur le poste de travail, par un tunnel vers l'API** (port 6443 du contrôleur) :
+
+```bash
+# 1. Copier la configuration de kubectl du contrôleur (une seule fois)
+scp -J claude@192.168.2.9 etudiant@192.168.122.50:.kube/config ~/.kube/amas-24b.yaml
+
+# 2. La faire pointer vers le tunnel. Le certificat de l'API ne contient pas
+#    127.0.0.1 : tls-server-name lui présente le nom k8s-cp, qui y figure.
+kubectl --kubeconfig ~/.kube/amas-24b.yaml config set-cluster kubernetes \
+  --server=https://127.0.0.1:6443 --tls-server-name=k8s-cp
+
+# 3. Ouvrir le tunnel (premier plan dans un autre terminal, ou -f)
+ssh -f -N -L 6443:192.168.122.50:6443 claude@192.168.2.9
+
+# 4. Utiliser kubectl
+export KUBECONFIG=~/.kube/amas-24b.yaml        # PowerShell : $env:KUBECONFIG="$HOME\.kube\amas-24b.yaml"
+kubectl get nodes
+```
+
+> 💡 Si `ssh` répond `bind: Address already in use`, un autre logiciel occupe déjà le port local 6443 (par exemple Kubernetes de Docker Desktop). Prendre un autre port local, `-L 16443:192.168.122.50:6443`, et `--server=https://127.0.0.1:16443` à l'étape 2.
 
 > 💡 Un relais est aussi une mesure de sécurité : seul le relais est exposé au réseau extérieur, et tous les accès aux serveurs de l'amas passent par lui.
 
@@ -695,6 +735,6 @@ kind delete cluster --name mon-amas
 ## Crédits
 
 *Document rédigé par Alain Boudreault © 2021-2027*  
-*Révision 2026.11.07.1*  
+*Révision 2026.11.10.1*  
 
 *Contenu par [VE2CUY](https://ve2cuy.github.io/blog/)*
