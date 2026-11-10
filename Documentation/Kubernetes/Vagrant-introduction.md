@@ -434,12 +434,14 @@ vagrant ssh -c "uptime"
 
 ### 4.3 – Les photos (snapshots) {#section-4-3}
 
-Une photo garde l'état du disque d'une VM. Pratique avant une manipulation risquée :
+Une photo garde l'état du disque d'une VM. Pratique avant une manipulation risquée. Sur ce poste, prendre les photos **VM arrêtée** ([9.13](#section-9-13)) :
 
 ```bash
-vagrant snapshot save avant              # prendre une photo nommée « avant »
+vagrant halt
+vagrant snapshot save avant              # photo nommée « avant » : quelques secondes
+vagrant up
 vagrant ssh -c "touch fichier-perdu; ls"
-vagrant snapshot restore avant           # revenir à la photo (redémarre la VM)
+vagrant snapshot restore avant           # arrête la VM, revient à la photo, redémarre : 1 minute
 vagrant ssh -c "ls"                      # fichier-perdu a disparu
 vagrant snapshot list
 vagrant snapshot delete avant
@@ -728,7 +730,7 @@ Partir de l'exemple 3 en marche (section 6.3), avec la page de statistiques ouve
 2. **Retour du serveur.** `vagrant up web1`. Après combien de secondes `web1` revient-il dans la rotation? Pourquoi `vagrant up` est-il beaucoup plus rapide que la première fois?
 3. **Un troisième serveur.** `NB_WEB=3 vagrant up web3`. Le tourniquet passe-t-il par `web3`? Pourquoi pas? Lancer `NB_WEB=3 vagrant provision lb`, puis vérifier de nouveau. Expliquer.
 4. **Le piège de la variable.** Lancer `vagrant status` sans `NB_WEB=3`. Que devient `web3` dans la liste? Comment éviter ce piège (indice : où est lue la valeur par défaut de `NB_WEB`)?
-5. **Une photo.** Prendre une photo de `lb` (`vagrant snapshot save lb bon`), effacer la configuration de HAProxy (`vagrant ssh lb -c "sudo rm /etc/haproxy/haproxy.cfg && sudo systemctl restart haproxy"`), constater la panne, puis restaurer la photo.
+5. **Une photo.** Arrêter `lb` et en prendre une photo (`vagrant halt lb`, puis `vagrant snapshot save lb bon`), le redémarrer (`vagrant up lb`), effacer la configuration de HAProxy (`vagrant ssh lb -c "sudo rm /etc/haproxy/haproxy.cfg && sudo systemctl restart haproxy"`), constater la panne, puis restaurer la photo.
 6. Effacer toutes les VM : `NB_WEB=3 vagrant destroy -f`. Vérifier dans la fenêtre de VirtualBox qu'il ne reste aucune VM `d33-…`.
 
 ### Partie B – Écrire un Vagrantfile (35 minutes)
@@ -746,7 +748,7 @@ Dans un nouveau dossier `$WINHOME/vagrant/labo33`, écrire un `Vagrantfile` qui 
 
 Valider :
 
-1. `vagrant up` se termine sans erreur.
+1. `vagrant up` se termine sans erreur (environ 5 minutes).
 2. `vagrant ssh -c "docker ps"` fonctionne **sans** `sudo`.
 3. La page d'accueil de nginx s'affiche dans le navigateur de Windows, à <http://localhost:8081> et à <http://192.168.56.40>.
 4. Après `vagrant reload`, la page s'affiche encore, sans rien relancer à la main.
@@ -812,7 +814,7 @@ Dans le dossier du projet. `[nom]` vise une VM d'un projet à plusieurs VM; sans
 | `vagrant suspend` / `vagrant resume` | Veille / réveil |
 | `vagrant reload [nom]` | Redémarrer en relisant le `Vagrantfile` |
 | `vagrant provision [nom]` | Relancer l'approvisionnement sur une VM en marche |
-| `vagrant snapshot save/restore/list/delete [nom] photo` | Photos |
+| `vagrant snapshot save/restore/list/delete [nom] photo` | Photos (VM arrêtée : [9.13](#section-9-13)) |
 | `vagrant destroy -f [nom]` | Effacer les VM |
 | `vagrant global-status [--prune]` | Toutes les VM Vagrant du poste (`--prune` : oublier les VM disparues) |
 | `vagrant box list` | Boîtes téléchargées |
@@ -980,6 +982,14 @@ Depuis WSL, `curl http://192.168.56.20` ou `ping 192.168.56.20` ne répond pas, 
 `vagrant global-status` liste des VM qui n'existent plus, ou des projets d'un autre dossier.
 
 **Solution** : `vagrant global-status --prune`. Pour une VM restée dans VirtualBox après l'effacement de son dossier de projet : l'arrêter puis la supprimer dans la fenêtre de VirtualBox (*Retirer*, puis *Supprimer tous les fichiers*).
+
+### 9.13 – La VM reste figée après la restauration d'une photo {#section-9-13}
+
+`vagrant snapshot restore` se termine comme en 9.3 (*Timed out while waiting for the machine to boot*), puis `vagrant halt` ou `vagrant destroy` ne rend plus la main.
+
+**Cause** : la photo a été prise **VM en marche**. Elle contient alors aussi l'état de la mémoire, et la restauration reprend la VM là où elle était. Avec VirtualBox sur Hyper-V, cette reprise laisse parfois Linux figé.
+
+**Solution** : prendre les photos **VM arrêtée** (`vagrant halt`, puis `vagrant snapshot save`). La restauration redémarre alors la VM normalement, en une minute. Pour débloquer une VM figée : dans la fenêtre de VirtualBox, clic droit sur la VM, *Fermer*, puis *Éteindre*; si la fenêtre ne répond pas, terminer les processus `VBoxHeadless.exe` de cette VM dans le Gestionnaire des tâches. Ensuite : `vagrant destroy -f`.
 
 ---
 
