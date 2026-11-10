@@ -202,13 +202,21 @@ Start-Process ssh -ArgumentList "-N -L 30080:192.168.122.51:30080 relais" -Windo
 Get-Process ssh | Stop-Process
 ```
 
-**`kubectl` sur le poste de travail, par un tunnel vers l'API** (port 6443 du contrôleur) :
+**`kubectl` sur le poste de travail, par un tunnel vers l'API** (port 6443 du contrôleur)
+
+`kubectl` lit sa configuration (adresse de l'API, certificats, clé de l'administrateur) dans un fichier *kubeconfig*. Celui de l'amas est sur le contrôleur, dans `~/.kube/config`. On en fait une copie sur le poste de travail, **dans un fichier à part** pour ne pas écraser la configuration existante (Docker Desktop, autre amas), et la variable d'environnement `KUBECONFIG` indique à `kubectl` quel fichier utiliser.
+
+Prérequis : `kubectl` sur le poste (Windows : `winget install Kubernetes.kubectl`; macOS : `brew install kubectl`; Docker Desktop l'installe aussi).
+
+**macOS, Linux ou WSL :**
 
 ```bash
-# 1. Copier la configuration de kubectl du contrôleur (une seule fois)
+# 1. Copier le fichier config du contrôleur sur le poste (une seule fois)
+mkdir -p ~/.kube
 scp -J claude@192.168.2.9 etudiant@192.168.122.50:.kube/config ~/.kube/amas-24b.yaml
+chmod 600 ~/.kube/amas-24b.yaml          # il contient la clé de l'administrateur de l'amas
 
-# 2. La faire pointer vers le tunnel. Le certificat de l'API ne contient pas
+# 2. Le faire pointer vers le tunnel. Le certificat de l'API ne contient pas
 #    127.0.0.1 : tls-server-name lui présente le nom k8s-cp, qui y figure.
 kubectl --kubeconfig ~/.kube/amas-24b.yaml config set-cluster kubernetes \
   --server=https://127.0.0.1:6443 --tls-server-name=k8s-cp
@@ -216,10 +224,41 @@ kubectl --kubeconfig ~/.kube/amas-24b.yaml config set-cluster kubernetes \
 # 3. Ouvrir le tunnel (premier plan dans un autre terminal, ou -f)
 ssh -f -N -L 6443:192.168.122.50:6443 claude@192.168.2.9
 
-# 4. Utiliser kubectl
-export KUBECONFIG=~/.kube/amas-24b.yaml        # PowerShell : $env:KUBECONFIG="$HOME\.kube\amas-24b.yaml"
+# 4. Choisir ce fichier avec la variable d'environnement, puis utiliser kubectl
+export KUBECONFIG=~/.kube/amas-24b.yaml
 kubectl get nodes
 ```
+
+**Windows (PowerShell) :**
+
+```powershell
+# 1. Copier le fichier config du contrôleur sur le poste (une seule fois)
+mkdir -Force $HOME\.kube
+scp -J claude@192.168.2.9 etudiant@192.168.122.50:.kube/config $HOME\.kube\amas-24b.yaml
+
+# 2. Le faire pointer vers le tunnel
+kubectl --kubeconfig $HOME\.kube\amas-24b.yaml config set-cluster kubernetes `
+  --server=https://127.0.0.1:6443 --tls-server-name=k8s-cp
+
+# 3. Ouvrir le tunnel, dans un deuxième onglet du Terminal Windows (le laisser ouvert)
+ssh -N -L 6443:192.168.122.50:6443 claude@192.168.2.9
+
+# 4. Choisir ce fichier avec la variable d'environnement, puis utiliser kubectl
+$env:KUBECONFIG = "$HOME\.kube\amas-24b.yaml"
+kubectl get nodes
+```
+
+**La variable d'environnement `KUBECONFIG`**
+
+| Portée | macOS, Linux, WSL | Windows (PowerShell) |
+|--------|-------------------|----------------------|
+| Ce terminal seulement | `export KUBECONFIG=~/.kube/amas-24b.yaml` | `$env:KUBECONFIG = "$HOME\.kube\amas-24b.yaml"` |
+| Tous les prochains terminaux | ajouter la ligne `export` à `~/.zshrc` (macOS) ou `~/.bashrc` (Linux, WSL) | `[Environment]::SetEnvironmentVariable("KUBECONFIG", "$HOME\.kube\amas-24b.yaml", "User")`, puis ouvrir un nouveau terminal |
+| Revenir à `~/.kube/config` | `unset KUBECONFIG` | `Remove-Item Env:KUBECONFIG` (et, si elle est permanente : `[Environment]::SetEnvironmentVariable("KUBECONFIG", $null, "User")`) |
+| Vérifier | `echo $KUBECONFIG` | `$env:KUBECONFIG` |
+
+* Sans la variable, l'option `--kubeconfig` choisit le fichier pour une seule commande : `kubectl --kubeconfig ~/.kube/amas-24b.yaml get nodes`.
+* `kubectl config view --minify` affiche la configuration utilisée; la ligne `server:` doit être `https://127.0.0.1:6443`.
 
 > 💡 Si `ssh` répond `bind: Address already in use`, un autre logiciel occupe déjà le port local 6443 (par exemple Kubernetes de Docker Desktop). Prendre un autre port local, `-L 16443:192.168.122.50:6443`, et `--server=https://127.0.0.1:16443` à l'étape 2.
 
