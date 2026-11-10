@@ -1,0 +1,36 @@
+# Document 33, exemple 3 : trois VM, un équilibreur de charge et deux serveurs Web
+RESEAU   = "192.168.56"
+NB_WEB   = (ENV["NB_WEB"] || 2).to_i          # ex. : NB_WEB=3 vagrant up
+SERVEURS = (1..NB_WEB).map { |i| ["web#{i}", "#{RESEAU}.#{30 + i}"] }
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "bento/ubuntu-26.04"
+  config.vm.synced_folder ".", "/vagrant", disabled: true   # pas besoin ici
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.cpus   = 1
+    vb.memory = 768
+  end
+
+  # Les serveurs Web : web1, web2, ...
+  SERVEURS.each do |nom, ip|
+    config.vm.define nom do |n|
+      n.vm.hostname = nom
+      n.vm.network "private_network", ip: ip
+      n.vm.provider("virtualbox") { |vb| vb.name = "d33-#{nom}" }
+      n.vm.provision "shell", name: "web", path: "scripts/web.sh",
+        env: { "NOM" => nom, "IP" => ip }
+    end
+  end
+
+  # L'équilibreur de charge, créé en dernier
+  config.vm.define "lb" do |n|
+    n.vm.hostname = "lb"
+    n.vm.network "private_network", ip: "#{RESEAU}.30"
+    n.vm.network "forwarded_port", guest: 80,   host: 8080   # le site
+    n.vm.network "forwarded_port", guest: 8404, host: 8404   # les statistiques
+    n.vm.provider("virtualbox") { |vb| vb.name = "d33-lb" }
+    n.vm.provision "shell", name: "equilibreur", path: "scripts/equilibreur.sh",
+      env: { "SERVEURS" => SERVEURS.map { |nom, ip| "#{nom}:#{ip}" }.join(" ") }
+  end
+end

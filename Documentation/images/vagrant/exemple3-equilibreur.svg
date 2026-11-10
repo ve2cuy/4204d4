@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" font-family="Helvetica, Arial, sans-serif" font-size="14">
+  <defs>
+    <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker>
+  </defs>
+  <rect width="760" height="300" rx="12" fill="#ffffff"/>
+  <!-- Navigateur -->
+  <rect x="20" y="104" width="170" height="92" rx="10" fill="#f2f2f2" stroke="#888" stroke-width="2"/>
+  <text x="105" y="128" text-anchor="middle" fill="#333" font-weight="bold">Windows</text>
+  <text x="105" y="150" text-anchor="middle" fill="#333" font-size="12" font-family="Consolas, monospace">localhost:8080</text>
+  <text x="105" y="168" text-anchor="middle" fill="#333" font-size="12" font-family="Consolas, monospace">localhost:8404</text>
+  <text x="105" y="186" text-anchor="middle" fill="#555" font-size="12">navigateur, curl</text>
+  <!-- Réseau privé -->
+  <rect x="236" y="20" width="504" height="260" rx="12" fill="#fff4e0" stroke="#d08a1a" stroke-width="2"/>
+  <text x="252" y="44" fill="#8a5300" font-weight="bold">Réseau privé 192.168.56.0/24</text>
+  <!-- lb -->
+  <rect x="270" y="98" width="180" height="104" rx="10" fill="#e3ecfb" stroke="#3b6fd8" stroke-width="2"/>
+  <text x="360" y="122" text-anchor="middle" fill="#1d3f8a" font-weight="bold">lb · 192.168.56.30</text>
+  <text x="360" y="144" text-anchor="middle" fill="#333" font-size="13">HAProxy</text>
+  <text x="360" y="164" text-anchor="middle" fill="#555" font-size="12">:80 site (tourniquet)</text>
+  <text x="360" y="182" text-anchor="middle" fill="#555" font-size="12">:8404 statistiques</text>
+  <!-- web -->
+  <rect x="540" y="62" width="180" height="70" rx="10" fill="#eef6ee" stroke="#3c8d3c" stroke-width="2"/>
+  <text x="630" y="90" text-anchor="middle" fill="#1f5a1f" font-weight="bold">web1 · .31</text>
+  <text x="630" y="112" text-anchor="middle" fill="#333" font-size="13">nginx :80</text>
+  <rect x="540" y="168" width="180" height="70" rx="10" fill="#eef6ee" stroke="#3c8d3c" stroke-width="2"/>
+  <text x="630" y="196" text-anchor="middle" fill="#1f5a1f" font-weight="bold">web2 · .32</text>
+  <text x="630" y="218" text-anchor="middle" fill="#333" font-size="13">nginx :80</text>
+  <!-- flèches -->
+  <line x1="190" y1="150" x2="266" y2="150" stroke="#555" stroke-width="2" marker-end="url(#fl)"/>
+  <text x="105" y="220" text-anchor="middle" fill="#555" font-size="12">ports redirigés</text>
+  <text x="105" y="236" text-anchor="middle" fill="#555" font-size="12">vers lb (80, 8404)</text>
+  <line x1="450" y1="132" x2="536" y2="100" stroke="#555" stroke-width="2" marker-end="url(#fl)"/>
+  <line x1="450" y1="168" x2="536" y2="200" stroke="#555" stroke-width="2" marker-end="url(#fl)"/>
+  <text x="488" y="266" text-anchor="middle" fill="#555" font-size="12">créé en dernier : ses scripts reçoivent la liste des serveurs</text>
+</svg>

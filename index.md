@@ -124,8 +124,8 @@ Ce cours permettra à l'étudiant, à partir de l'approche DevOps, de réaliser,
   - envFrom · volume à partir d'un configmap · secrets
 - ![](dessins/jauge.svg) 32 · [Gestion des ressources](Documentation/Kubernetes/Kubernetes-Manifestes-Gestion-des-ressources.md) · 👍
   - Qualité de service : Guaranteed, Burstable, BestEffort
-- ![](dessins/cluster.svg) 33 · Préparation de l'atelier cluster K8s
-  - Installation d'un cluster avec Vagrant
+- ![](dessins/cluster.svg) 33 · [Introduction à Vagrant](Documentation/Kubernetes/Vagrant-introduction.md)
+  - VirtualBox et WSL sous Windows 11 · approvisionnement · plusieurs VM et HAProxy
 - ![](dessins/cluster.svg) 34 · [Installation d'un amas HA](Documentation/Kubernetes/Kubernetes-Installation-cluster.md)
   - Haute disponibilité · etcd · HAProxy et keepalived · Vagrant
 - ![](dessins/disque.svg) 35 · [Les volumes](Documentation/Kubernetes/Kubernetes-Les-volumes.md) · 👍

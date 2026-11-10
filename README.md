@@ -80,7 +80,7 @@
 * [25 - Kubernetes – Partie 2](Documentation/Kubernetes/Kubernetes-partie-2.md) 👍
 * [26 - Kubernetes – Config Map et Secrets](Documentation/Kubernetes/Kubernetes-Config-map-et-secret.md) 👍
 * [27 - Kubernetes – Gestion des ressources](Documentation/Kubernetes/Kubernetes-Manifestes-Gestion-des-ressources.md) 👍
-* 28 - Préparation à l'atelier d'installation d'un 'cluster' K8s avec Vagrant (page introuvable)
+* [28 - Introduction à Vagrant (VirtualBox et WSL)](Documentation/Kubernetes/Vagrant-introduction.md)
 * [29 - Kubernetes – Installation d'un cluster; 1 Master, 2 Nodes](Documentation/Kubernetes/Kubernetes-Installation-cluster.md)
 * [30 - Kubernetes – Les volumes](Documentation/Kubernetes/Kubernetes-Les-volumes.md) 👍
 * [30b-Kubernetes – Les volumes P2](Documentation/Kubernetes/Kubernetes-Volumes-p2.md) 🧠  

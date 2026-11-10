@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" font-family="Helvetica, Arial, sans-serif" font-size="14">
+  <defs>
+    <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker>
+  </defs>
+  <rect width="760" height="400" rx="12" fill="#ffffff"/>
+  <rect x="16" y="16" width="728" height="368" rx="12" fill="#f2f2f2" stroke="#888" stroke-width="2"/>
+  <text x="32" y="40" fill="#333" font-weight="bold">Poste Windows 11 <tspan font-weight="normal" fill="#555" font-size="13">· Hyper-V actif (WSL 2, Docker Desktop)</tspan></text>
+
+  <!-- WSL -->
+  <rect x="36" y="56" width="300" height="190" rx="10" fill="#eef6ee" stroke="#3c8d3c" stroke-width="2"/>
+  <text x="52" y="80" fill="#1f5a1f" font-weight="bold">WSL 2 · Ubuntu</text>
+  <text x="52" y="98" fill="#333" font-size="12">réseau en miroir, option metadata</text>
+  <rect x="56" y="112" width="260" height="44" rx="6" fill="#ffffff" stroke="#3c8d3c" stroke-width="1.5"/>
+  <text x="186" y="131" text-anchor="middle" fill="#333" font-size="13" font-weight="bold">vagrant up, ssh, halt…</text>
+  <text x="186" y="148" text-anchor="middle" fill="#555" font-size="12">Vagrant 2.4.9 (même version)</text>
+  <rect x="56" y="168" width="260" height="60" rx="6" fill="#ffffff" stroke="#3c8d3c" stroke-width="1.5"/>
+  <text x="186" y="188" text-anchor="middle" fill="#333" font-size="13" font-weight="bold">Projet (Vagrantfile)</text>
+  <text x="186" y="206" text-anchor="middle" fill="#555" font-size="12">/mnt/c/Users/&lt;usager&gt;/vagrant/…</text>
+  <text x="186" y="221" text-anchor="middle" fill="#555" font-size="12">= C:\Users\&lt;usager&gt;\vagrant\…</text>
+
+  <!-- VirtualBox -->
+  <rect x="424" y="56" width="300" height="190" rx="10" fill="#e3ecfb" stroke="#3b6fd8" stroke-width="2"/>
+  <text x="440" y="80" fill="#1d3f8a" font-weight="bold">VirtualBox 7.2 <tspan font-weight="normal" fill="#333" font-size="12">(programme Windows)</tspan></text>
+  <text x="440" y="98" fill="#333" font-size="12">passe par Hyper-V : 1 vCPU par VM</text>
+  <rect x="444" y="112" width="260" height="116" rx="8" fill="#fff4e0" stroke="#d08a1a" stroke-width="2"/>
+  <text x="456" y="132" fill="#8a5300" font-size="13" font-weight="bold">Réseau privé 192.168.56.0/24</text>
+  <g fill="#ffffff" stroke="#7a52c7" stroke-width="1.5">
+    <rect x="456" y="144" width="74" height="30" rx="6"/><rect x="537" y="144" width="74" height="30" rx="6"/><rect x="618" y="144" width="74" height="30" rx="6"/>
+  </g>
+  <g text-anchor="middle" fill="#333" font-size="13"><text x="493" y="164">VM 1</text><text x="574" y="164">VM 2</text><text x="655" y="164">VM 3</text></g>
+  <text x="574" y="196" text-anchor="middle" fill="#555" font-size="12">carte hôte de Windows : 192.168.56.1</text>
+  <text x="574" y="214" text-anchor="middle" fill="#555" font-size="12">+ une carte NAT par VM (Internet)</text>
+
+  <!-- Flèche WSL -> VirtualBox -->
+  <line x1="316" y1="134" x2="440" y2="134" stroke="#555" stroke-width="2" marker-end="url(#fl)"/>
+  <text x="380" y="124" text-anchor="middle" fill="#333" font-size="12">VBoxManage.exe</text>
+
+  <!-- Flèche SSH -->
+  <line x1="440" y1="196" x2="320" y2="196" stroke="#555" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#fl)"/>
+  <text x="380" y="214" text-anchor="middle" fill="#333" font-size="12">SSH par</text>
+  <text x="380" y="230" text-anchor="middle" fill="#333" font-size="12">127.0.0.1:2222</text>
+
+  <!-- Bas : Windows -->
+  <rect x="36" y="264" width="688" height="104" rx="10" fill="#ffffff" stroke="#888" stroke-width="1.5"/>
+  <text x="52" y="288" fill="#333" font-weight="bold">Côté Windows</text>
+  <text x="52" y="310" fill="#333" font-size="13">• Ports redirigés : <tspan font-family="Consolas, monospace">http://localhost:8080</tspan> dans le navigateur, joignable aussi de WSL</text>
+  <text x="52" y="332" fill="#333" font-size="13">• Réseau privé : <tspan font-family="Consolas, monospace">192.168.56.x</tspan> joignable de Windows et des VM, <tspan font-weight="bold">pas de WSL</tspan></text>
+  <text x="52" y="354" fill="#333" font-size="13">• Boîtes téléchargées : <tspan font-family="Consolas, monospace">C:\Users\&lt;usager&gt;\.vagrant.d</tspan> · VM : dossier de VirtualBox</text>
+</svg>

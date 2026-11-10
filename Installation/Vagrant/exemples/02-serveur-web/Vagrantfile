@@ -1,0 +1,24 @@
+# Document 33, exemple 2 : un serveur Web approvisionné par un script
+Vagrant.configure("2") do |config|
+  config.vm.box      = "bento/ubuntu-26.04"
+  config.vm.hostname = "web"
+
+  # Port 80 de la VM => port 8080 de Windows (http://localhost:8080)
+  config.vm.network "forwarded_port", guest: 80, host: 8080
+  # Réseau privé : la VM, Windows et WSL se joignent par cette adresse
+  config.vm.network "private_network", ip: "192.168.56.20"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.name   = "d33-web"
+    vb.cpus   = 1
+    vb.memory = 1024
+  end
+
+  # Approvisionnement : exécuté en root au premier « vagrant up »
+  config.vm.provision "shell", inline: <<-SHELL
+    rm -f /etc/netplan/01-netcfg.yaml   # défaut de la boîte : document 33, section 9.5
+    apt-get update -q
+    apt-get install -y -q nginx
+    cp /vagrant/index.html /var/www/html/index.html
+  SHELL
+end

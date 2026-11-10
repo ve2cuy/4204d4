@@ -1,0 +1,11 @@
+# Document 33, exemple 1 : une première VM
+Vagrant.configure("2") do |config|
+  config.vm.box      = "bento/ubuntu-26.04"   # l'image de départ (la boîte)
+  config.vm.hostname = "premiere"             # le nom de la machine dans Linux
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.name   = "d33-premiere"   # le nom affiché dans VirtualBox
+    vb.cpus   = 1                # 1 seul processeur : voir la section 9.4
+    vb.memory = 1024             # en Mo
+  end
+end
